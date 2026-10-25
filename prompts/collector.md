@@ -9,7 +9,7 @@
 - 取得先と経路は `docs/sources.md` に従う（最初に1回読む）
 
 ## 調査の順番と予算
-検索と取得は合計20回まで。上限に達したら残りは `unconfirmed` に列挙して終える。1つの情報源は2回試して取れなければ諦める。検索スニペットだけで数値を確定せず、必ず元ページを開く。
+検索と取得は合計20回まで（初回、または前回AS_OFから3週間以上空いた場合は30回まで）。上限に達したら残りは `unconfirmed` に列挙して終える。1つの情報源は2回試して取れなければ諦める。検索スニペットだけで数値を確定せず、必ず元ページを開く。
 
 P1（毎回、この順）
 1. 前回AS_OF以降の決算・ガイダンス：NVDA、AMD、AVGO、MRVL、TSM、ASML、AMAT、LRCX、KLAC、MU、SNDK、SK hynix、Samsung、Kioxia、Nanya、Winbond、MSFT、GOOGL、AMZN、META、ORCL のうち該当するもの
