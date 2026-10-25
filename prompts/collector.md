@@ -7,6 +7,8 @@
 - 前回基準：`handoff/latest.yaml` の AS_OF と FUNDAMENTAL_LEVELS（前回の値）
 - 市場データ：`semis_manifest.json`（基準日 us_as_of、欠損 missing_tickers、品質フラグ flags、マクロ）。終値やテクニカルはここにあるので調べ直さない
 - 取得先と経路は `docs/sources.md` に従う（最初に1回読む）
+- シェルがない通常のチャットでは raw URL で読む：`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/docs/sources.md`、`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/handoff/latest.yaml`、`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/semis_manifest.json`
+- 通常のチャットでは出力したYAMLを私が判定のチャットに貼る。ファイル保存の指示がなければチャットに出力するだけでよい
 
 ## 調査の順番と予算
 検索と取得は合計20回まで（初回、または前回AS_OFから3週間以上空いた場合は30回まで）。上限に達したら残りは `unconfirmed` に列挙して終える。1つの情報源は2回試して取れなければ諦める。検索スニペットだけで数値を確定せず、必ず元ページを開く。

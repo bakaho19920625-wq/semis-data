@@ -1,4 +1,158 @@
 # SEMI_HANDOFF
-# まだレポートを実行していません。初回のレポート後に、このファイルを引継ぎYAMLで置き換えます。
-PROMPT_VERSION: v5.1
+PROMPT_VERSION: v6
+AS_OF: {market: 2026-10-23, report_check: "2026-10-26 01:05 JST"}
 PREVIOUS_REPORT: 前回基準未確認
+DATA:
+  github_us_as_of: 2026-10-23
+  run_status: "prices/macro/snapshot すべて success（run_utc 2026-10-25T15:50:35Z、66銘柄、欠損なし）"
+  missing:
+    - "DRAM: SMA200・52週（short_history:142、設定日2026-04-02）"
+    - "SKHY: SMA200・52週（short_history:75）"
+    - "QRVO: short_history:6・stale:14d（広がりの有効数から自動除外、原因未確認）"
+    - "DTWEXBGS は 2026-10-16 時点（週次遅延）、DFII10/DGS10 は 2026-10-22 時点"
+    - "証拠: 装置4社決算、Nanya/Winbond月次、HBM/DDR4/スポット価格、対中規制・地政学、CPI/FOMC、CoWoS能力、HBF/CXL/CPO、AI効率化、Kioxia/SanDisk、DRAM ETFのNAV乖離・スプレッド・AUM"
+  web_fallback:
+    - "SKHY ADS比率: SEC EDGAR 424B4（2026-07-09、CIK 0002120882）で 1 ADS＝普通株0.1株、公募価格US$149、177.9M ADS を確認（検索1回・取得1回）"
+  notes: "初回。PROMPT_VERSION v6（プレースホルダーは v5.1 表記、前回比なし）。証拠YAMLは検索9・取得11で上限20に到達。除外が30%超のA・F・E・Xは確信度上限B"
+VIEW: {semiconductor: やや強気, memory: やや強気}
+SCORES:
+  total: {score: 67.5, band: "62.5-72.5", change_vs_prev: "N/A（初回）"}
+  category: {ai: "17.3/20", memory: "17.8/25", foundry_equipment: "18.1/20", earnings_valuation: "7.5/10", technical: "3.1/10", macro: "3.8/15"}
+  sub: {ai_infra: 86.4, memory_cycle: 71.3, foundry_equipment: 90.4, earnings_valuation: 75.0, macro: 25.0, sox_momentum: 38.8, memory_equity_momentum: 13.8, technical: 31.3}
+  coverage_pct: {A: 55, M: 100, F: 65, E: 40, X: 35, S: 100, D: 100}
+  drivers:
+    - "初回のため段階変更なし（今回値を基準として記録）"
+LEVELS:
+  A: {A1: 2, A2: 1, A3: "未確認(除外)", A4: "未確認(除外)", A5: "未確認(除外)", A6: 1}
+  M: {M1: 1, M2: 1, M3: 1, M4: 0, M5: 1, M6: 1}
+  F: {F1: 2, F2: "未確認(除外)", F3: 1}
+  E: {E1: 1, E2: "未確認(除外)", E3: "未確認(除外)"}
+  X: {X1: -1, X2: "未確認(除外)", X3: "未確認(除外)", X4: "未確認(除外)"}
+  S: {S1: 1, S2: -2, S3: -1, S4: -1, S5: 0}
+  D: {D1: -2, D2: -2, D3: -2, D4: -1, D5: 2, D6: -2}
+LEVEL_NOTES:
+  A1: "+2: 4社2026年CapExガイダンス合計US$735〜750B（7月）、2Q26実績+77% YoY、GOOGL/AMZN引き上げ・META下限引き上げ・MSFTはリース再分類（同一基準US$190B相当）。tier4"
+  A2: "+1: NVDA/AMD/AVGO/MRVLの期間内開示なし。TSMC HPC 68%・先端パッケージ需給ギャップ継続・HBM4のVera Rubin向け売上反映（報道）を間接証拠としR11で半額"
+  A6: "+1: AMZN「2027年も需要＞能力」、GOOGL「2027年大幅増」、MSFT「FY27増」。前払い・長期契約の数値なし"
+  M1: "+1: TrendForce 4Q26 conventional DRAM +10〜15%・NAND +15〜20%、eSSDのみ上昇幅拡大、mobile縮小、server一部LTA帯。JPM 10/19上方修正。HBM価格未確認。3Qは推定SK hynix DRAM ASP +22%→減速"
+  M2: "+1: Micron FQ4 +30.8% QoQ・FQ1ガイド+13.4% QoQ、Cloud Memory +18% QoQ、Samsung暫定OP +20% QoQ。bit出荷・搭載量は非開示"
+  M3: "+1: eSSD供給契約済み・server LTA・PC OEMの2027年逼迫想定・Micron粗利率87%。wafer/歩留まりの一次データなし（R3）"
+  M4: "0: Micron棚卸資産US$10.372B（+21% QoQ、売上比20.7%→19.1%、日数非開示）。川下PC完成品在庫高、スマホ・client SSD在庫消化。減産なし→混在"
+  M5: "+1: LTA・契約済み供給・AMZNのメモリーコスト理由のCapEx引き上げ（R12良い要素）。Micron FY26 CapEx US$27.37B、FY27非開示、SK hynix 2027は10/29"
+  M6: "+1: eSSDは段階5（売上で確認）。KVキャッシュ/HBF/CXL未調査、R4の代替条件なし"
+  F1: "+2: TSMC 3Q26 NT$1,494.24B +50.9% YoY（6-K）、9月+54.6%、1〜9月+41.1%→加速、7nm以下79%・2nm 8%初出、4Q guide +14.1% QoQ"
+  F3: "+1: 先端パッケージ需給ギャップ縮小に取り組み中・5倍レチクル量産（CEO、報道）。CoWoS能力数値・前倒し未確認"
+  E1: "+1: TSMC 4Q guide US$52.3〜54.3B・通年約44%・CapEx据え置き、Micron FQ1 US$61.5B±1.5B（+13.4% QoQ）。前回ガイダンス・コンセンサス比未確認"
+  X1: "-1: DFII10 2.64%（10/22）21本+1bp→0、DTWEXBGS 121.405（10/16）21本+2.484（+2.09%）→1段階下げ。5本は実質−14bp・ドル−0.04で直近は緩和方向"
+EVIDENCE_CONFIDENCE: "総合C（A: C／M: B／F: B／E: C／X: C／S・D: A）"
+REGIME: "ファンダ上昇局面（契約価格上昇の3〜4四半期目、利益率は過去最高圏）× 株価は高値比 SOX −26%・DRAM −42%・SK hynix原株 −56%の調整。市場は2027年ピークアウトを先行して織り込み中（解釈）。SOX・SOXXは上向きSMA200の直上"
+KEY_CHANGE: "初回：基準設定。ファンダ（やや強気）と価格モメンタム（S 38.8／D 13.8）の不一致が最大の特徴。装置4社・対中規制・マクロが未確認のまま装置株が−20〜25%/1か月"
+SIGNALS:
+  AI_CAPEX: "強気（2026ガイダンス合計US$735〜750B、3社引き上げ。3Q更新は10/27〜29）"
+  TSMC_FOUNDRY: "強気（3Q +50.9% YoY加速、4Q guide +14% QoQ、2nm 8%）"
+  EQUIPMENT: "未確認（4社決算未取得。株価 AMAT −20.5%・LRCX −25.1%・KLAC −22.2%/1か月）"
+  ADVANCED_PACKAGING: "やや強気（需給ギャップ継続、能力数値未確認）"
+  HBM: "未確認（価格QoQ・HBM4比率なし。HBM4はVera Rubin向け3Q反映・段階4、シェアSKH 50%/Samsung 33%/MU 18%）"
+  COMMODITY_DRAM: "強気・減速（4Q26 +10〜15% QoQ予測、JPM上方修正）"
+  LEGACY_DRAM: "未確認（DDR4スポット・Nanya/Winbond未取得）"
+  NAND_TLC: "強気（NAND全体4Q26 +15〜20%、TLC個別未確認）"
+  NAND_QLC: "未確認"
+  NAND_ESSD: "強気（4Q26で唯一上昇幅拡大、新規供給契約済み、段階5）"
+  HBF_SCM: "未確認（未調査）"
+  MEMORY_CAPEX_QUALITY: "中立〜良（LTA・契約済み供給あり。mix数値・2027年CapEX未確認）"
+  INVENTORY: "注意（川下PC完成品在庫高、スマホ・client SSD在庫消化、Micron$在庫+21% QoQ・日数非開示）"
+  OPTICAL_MEMORY_TIERING: "未確認（未調査、R4）"
+  SRAM_ARCHITECTURE: "未確認（未調査、R6）"
+  AI_EFFICIENCY: "未確認（未調査、R7）"
+  KOREA_MARKET_STRUCTURE: "弱気（SK hynix原株高値比−56%、Samsung −41%、ウォン1か月+3.3%高、SKHYプレミアム42%）"
+DRAM_ETF:
+  signal: "弱気（D1 −2。終値47.06＜SMA20 54.60＜SMA50 56.62、SMA20傾き−8.5%）"
+  holdings_as_of: "2026-09-30（ウェイト表は空欄、ロゴのみ Micron・Samsung・SK hynix・CXMT・Seagate）"
+  nav_premium: "未確認"
+  limitation: "設定142営業日でSMA200・52週N/A。アクティブ運用・スワップ・非分散型。NAV乖離・スプレッド・AUM未確認のためテクニカル確信度B。CXMT（R10）・Seagate（HDD）を含み純DRAMではない"
+SKHY_ADR:
+  premium_pct: 42.28
+  avg20: 42.92
+  ratio_verified: "確認済み（SEC 424B4 2026-07-09: 1 ADS＝普通株0.1株、公募価格US$149、177.9M ADS、Nasdaq GS）。比率はmanifestと一致＝プレミアムは実在"
+  signal: "価格形成リスク（R13: 業績加点せず。理論値96.31へ縮小すれば約−30%。20日レンジ35.5〜55.1%、上場来最低14.8%。再預託制限が持続要因の候補・解釈）"
+FUNDAMENTAL_LEVELS:
+  - {item: "TSMC 3か月累計売上YoY（NT$）", value: "+50.9%（3Q26）", as_of: 2026-10-15, source: "TSMC 6-K"}
+  - {item: "TSMC 単月売上YoY", value: "+54.6%（2026-09、NT$511.86B、MoM −0.6%）", as_of: 2026-10-08, source: "pr.tsmc.com/english/news/3343"}
+  - {item: "TSMC 1〜9月累計YoY", value: "+41.1%（NT$3,898.73B）", as_of: 2026-10-08, source: "pr.tsmc.com/english/news/3343"}
+  - {item: "TSMC 先端ノード比率（7nm以下／3nm／2nm）", value: "79% / 33% / 8%（3Q26）", as_of: 2026-10-15, source: "TSMC 6-K"}
+  - {item: "TSMC 4Q26売上ガイダンス", value: "US$52.3〜54.3B（中央値+14.1% QoQ）、粗利率65〜67%", as_of: 2026-10-15, source: "TSMC 6-K"}
+  - {item: "TSMC 2026年設備投資ガイダンス", value: "US$60〜64B（据え置き）", as_of: 2026-10-15, source: "CRN Asia（報道）"}
+  - {item: "ハイパースケーラー4社 四半期CapEx合計YoY", value: "+77%（2Q26、約US$171.8B、+29% QoQ）", as_of: 2026-07-31, source: "platformonomics.com/?p=41900（tier4）"}
+  - {item: "ハイパースケーラー4社 2026年CapExガイダンス合計", value: "US$735〜750B（7月時点。4月US$695〜725B、1月US$640B超）", as_of: 2026-07-31, source: "platformonomics.com/?p=41900（tier4）"}
+  - {item: "Conventional DRAM 契約価格QoQ（TrendForce予測）", value: "+10〜15%（4Q26）", as_of: 2026-09-30, source: "technews.tw/?p=1622115"}
+  - {item: "NAND Flash 契約価格QoQ（TrendForce予測）", value: "+15〜20%（4Q26）", as_of: 2026-09-30, source: "technews.tw/?p=1622115"}
+  - {item: "DRAM／NAND 契約価格QoQ（J.P. Morgan推定）", value: "DRAM +10〜15%（従来+3〜8%）／NAND +15〜20%（従来0〜5%）（4Q26）", as_of: 2026-10-19, source: "mt.co.kr 2026-10-19（tier3）"}
+  - {item: "HBM価格前期比（TrendForce）", value: "未確認", as_of: "N/A", source: "N/A"}
+  - {item: "Micron 四半期売上／non-GAAP粗利率／EPS", value: "US$54.23B / 87.0% / US$33.42（FQ4 2026）。FQ1 2027ガイダンス US$61.5B±1.5B / 約86.25% / US$38.15±1.00", as_of: 2026-09-30, source: "Micron 8-K ex99.1"}
+  - {item: "Micron 棚卸資産（US$）", value: "US$10.372B（+21% QoQ、売上比19.1%、日数非開示）", as_of: 2026-09-03, source: "Micron 8-K ex99.1"}
+  - {item: "Micron FY2026設備投資", value: "純額US$27.37B（PP&E総額US$30.71B）、FY27非開示", as_of: 2026-09-30, source: "Micron 8-K ex99.1"}
+  - {item: "Samsung 四半期営業利益（暫定）", value: "107.40兆ウォン（3Q26、+20.0% QoQ、+782% YoY、営業利益率55.1%）", as_of: 2026-10-08, source: "news.samsung.com"}
+  - {item: "SK hynix 3Q26営業利益コンセンサス（FnGuide）", value: "76.964兆ウォン（4Q26 87.27兆ウォン）、発表10/29", as_of: 2026-10-19, source: "mt.co.kr 2026-10-19"}
+  - {item: "E3基準: 株価 NVDA／TSM／MU／ASML", value: "210.96／418.51／877.55／1,571.80（予想PER・EPS予想は未収集）", as_of: 2026-10-23, source: "data ブランチ"}
+  - {item: "E3参考: MU 単純年率化PER（推定）", value: "約5.8倍（877.55 ÷ FQ1ガイダンスEPS 38.15×4）", as_of: 2026-10-23, source: "計算（推定）"}
+  - {item: "X1基準: DFII10／DGS10／DTWEXBGS", value: "2.64%（10/22、21本+1bp）／4.96%／121.405（10/16、21本+2.09%）", as_of: 2026-10-22, source: "FRED"}
+  - {item: "SKHY プレミアム／20日平均／理論値", value: "42.28% / 42.92% / US$96.31", as_of: 2026-10-23, source: "adr_premium.csv"}
+FORECASTS:
+  open: []
+  new: [F2026-10-23-1, F2026-10-23-2, F2026-10-23-3, F2026-10-23-4, F2026-10-23-5, F2026-10-23-6]
+  resolved: []
+TRACK_RECORD: {hit: 0, miss: 0, void: 0, brier_avg: "N/A"}
+REVERSAL_RISKS:
+  triggered:
+    - "DRAM ETFの相対強度低下・下落日出来高増（D2 −2、対SPY 20本−22.5%、上昇/下落出来高比0.60、高値比−41.7%。流動性は未確認）"
+  warning:
+    - "AI CapEx鈍化・収益化失望（一次データは強いが市場が織り込み中。10/27〜29の3Q決算が検証点）"
+    - "在庫増（川下PC完成品在庫高、スマホ・client SSD在庫消化、Micron$在庫+21% QoQ）"
+    - "装置受注の悪化（4社未確認のまま株価−20〜25%/1か月）"
+    - "金利・ドル（10年名目5%近辺、実質2.64%・63本+21bp、広義ドル21本+2.1%）。対中規制・地政学は未確認"
+    - "韓国市場・SKHYプレミアム（原株高値比−56%、プレミアム20日レンジ35〜55%）"
+SCENARIOS:
+  "0-3M": {bull: 30, base: 45, bear: 25, base_case: "CapEx維持・SK hynix好決算でも2027年供給増懸念と金利5%が残り、SOXはSMA200（10,690）維持・SMA50（11,950）未満のレンジ10,000〜12,500。4Q26契約価格は予測どおり上昇、1Q27予測は上昇継続・減速。DRAM ETF 45〜57"}
+  "3-12M": {bull: 25, base: 45, bear: 30, base_case: "契約価格の上昇率は1H27に鈍化、2Q27以降は横ばい〜小幅下落の製品も出るがHBM・eSSDはプラス。利益率は高水準から緩やかに低下。SOX 10,000〜14,000、メモリー株は低PERの乖離が続く"}
+  "1-3Y": {bull: 30, base: 40, bear: 30, base_case: "2027年に調整を挟み2028年に次のサイクル。AI構造需要でサイクル振幅は従来より小さいが消えない"}
+TOP_UPSIDE_TRIGGER: "10/27〜29の4社3Q決算で2026年CapEx維持/引き上げ＋2027年増加の明言、10/29 SK hynixで4Q ASP上昇継続・HBM4価格・2027年CapEXが『良いCAPEX』（R12）と確認→SOXXがSMA50（533）回復、半導体SMA50上比率40%超"
+TOP_DOWNSIDE_TRIGGER: "装置2社以上のWFE見通し引き下げ、または4Q26契約価格の実績がTrendForce予測を下回る／1Q27予測が下落に転じる＋SOXが終値でSMA200（10,690）を割り込む。SKHYプレミアム30%割れ"
+THESIS_INVALIDATION: "未発動。条件（いずれか1つで発動しラベルを1段階下げる）: (1) 4社のうち2社以上が2026年CapExを引き下げ、(2) TrendForceの1Q27 conventional DRAM契約価格予測がマイナス、(3) TSMCが4Q26または2026年通年ガイダンスを引き下げ"
+NEXT_CHECKPOINTS:
+  - "2026-10-27〜30: MSFT/GOOGL/META/AMZN 3Q決算（CapEx 3Q実績・2026/2027ガイダンス）→A1・A6、予測F2026-10-23-2"
+  - "2026-10-28（未確認）: FOMC→X1・X2"
+  - "2026-10-29: SK hynix 3Q26（ASP・HBM4・2027年CapEX・在庫日数・株主還元）→M1・M5、予測F2026-10-23-1"
+  - "2026-10-30前後: Samsung 3Q26確報（DS内訳・bit成長・ASP）→M2"
+  - "2026-10下旬〜11上旬: KLA（WFE・中国比率→F2）、AMD（DC→A2）、QCOM、ARM"
+  - "2026-11-10前後: TSMC 10月月次→F1、予測F2026-10-23-3"
+  - "2026-11中旬: AMAT FQ4（F2）、Kioxia 2Q、Nanya/Winbond 10月月次（legacy）"
+  - "2026-11下旬（未確認）: NVIDIA FQ3 2027→A2"
+  - "2026-12中旬: Micron FQ1 2027実績（予測F2026-10-23-4）、FOMC"
+  - "2026-12下旬: TrendForce 1Q27契約価格予測→M1・THESIS_INVALIDATION(2)"
+  - "市場: SOX/SOXXのSMA200（10,690/472）、半導体SMA50上比率20%回復、DRAM 45.30、SKHYプレミアム30%、予測F2026-10-23-5（SOX 9,500）"
+UNCONFIRMED_ITEMS:
+  - "装置4社（ASML 3Q26・LRCX・KLAC・AMAT）のbacklog・WFE見通し・中国比率（F2除外。株価急落の説明がつかない）"
+  - "NVDA/AMD/AVGO/MRVLの直近ガイダンス・DC売上（A2は間接証拠で+1）、Oracle RPO・CapEx"
+  - "クラウドAI売上・利益率（A3）、DC建設・電力契約（A4）、電力・冷却・ネットワーク制約（A5）"
+  - "HBM価格QoQ・HBM4比率、server DDR5・DDR4の個別%、DRAM/NANDスポット、TrendForce 3Q26実績"
+  - "Nanya・Winbond 9月月次、Nanya 3Q26決算、Kioxia・SanDisk直近決算"
+  - "対中輸出規制・関税（232条等）・台湾/韓国の重大ニュース（X3・X4除外）"
+  - "米CPI（9月分）・9月FOMC・次回FOMC日程（X2除外）"
+  - "TSMC 3Q26コンセンサス比較・通年成長率の前回ガイダンス値、CoWoS月産能力の数値"
+  - "予想PER・EPS予想（NVDA・TSM・MU・ASML）（E3除外）、決算サプライズのコンセンサス比（E2除外）"
+  - "DRAM ETFのNAV乖離・スプレッド・AUM・保有ウェイト・上位集中（Cboe／EDGAR N-PORT）"
+  - "HBF/CXL/CPO/SRAM中心設計の段階、AI効率化の本番採用、分解・BOM"
+  - "QRVOのstale:14d・short_history:6の原因"
+  - "4社CapEx数値の一次確認（10-Q／決算資料。今回はtier4集計記事）"
+PRIMARY_SOURCES:
+  - "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm（TSMC 3Q26 6-K）"
+  - "https://pr.tsmc.com/english/news/3343（TSMC 2026年9月月次）"
+  - "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000018/a2026q4ex991-pressrelease.htm（Micron FQ4 2026）"
+  - "https://news.samsung.com/global/samsung-electronics-announces-earnings-guidance-for-third-quarter-2026（Samsung 3Q26暫定）"
+  - "https://www.sec.gov/Archives/edgar/data/0002120882/000119312526299963/d32785d424b4.htm（SK hynix 424B4 2026-07-09、ADS比率）"
+  - "https://technews.tw/?p=1622115（TrendForce 4Q26契約価格予測、2026-09-30）"
+  - "https://www.mt.co.kr/en/industry/2026/10/19/2026101913371799572（SK hynix コンセンサス・JPM推定、2026-10-19）"
+  - "https://www.crnasia.com/news/2026/components-and-peripherals/tsmc-third-quarter-revenue-tops-guidance-as-ceo-says-ai-dema（TSMC説明会報道）"
+  - "https://platformonomics.com/?p=41900（4社CapEx集計、2026-07-31、tier4）"
+  - "https://www.roundhillinvestments.com/etf/dram/（DRAM ETF公式）"
+  - "data ブランチ: semis_manifest.json / levels.json / semis_snapshot.csv / adr_premium.csv / macro_daily.csv（us_as_of 2026-10-23）"
