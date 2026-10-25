@@ -388,24 +388,15 @@ def append_history(path, new_rows, keys):
     return int(len(new))
 
 
-# ---------- main ----------
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default="out")
-    ap.add_argument("--config", default="config.json")
-    a = ap.parse_args()
-    with open(a.config, encoding="utf-8") as f:
-        cfg = json.load(f)
-
-    ppath = os.path.join(a.out, "prices_daily.csv.gz")
-    if not os.path.exists(ppath):
-        print("prices_daily.csv.gz がありません。", file=sys.stderr)
-        sys.exit(1)
-    px = pd.read_csv(ppath)
+# ---------- 一括計算（build_signals.py からも使う） ----------
+def load_prices(path):
+    px = pd.read_csv(path)
     px["date"] = pd.to_datetime(px["date"])
-    px = px.drop_duplicates(subset=["ticker", "date"], keep="last").sort_values(["ticker", "date"])
-    pman = read_json(os.path.join(a.out, "prices_manifest.json")) or {}
+    return px.drop_duplicates(subset=["ticker", "date"], keep="last").sort_values(["ticker", "date"])
 
+
+def compute_all(px, cfg):
+    """日足から snapshot・flags・ADR・広がり・段階・スコアをまとめて計算する。"""
     no_volume, lev = set(cfg.get("no_volume", [])), cfg.get("leveraged", {})
     asia = tuple(cfg.get("asia_suffixes", []))
     closes = {t: g.set_index("date")["close"].astype(float).sort_index() for t, g in px.groupby("ticker")}
@@ -436,17 +427,39 @@ def main():
             flags.setdefault(t, []).append(f"stale:{d}d")
     num = snap.select_dtypes("number").columns.difference(["n_obs", "high_window", "days_behind_us"])
     snap[num] = snap[num].astype(float).round(4)
-    write_atomic(snap, os.path.join(a.out, "semis_snapshot.csv"))
 
     adr, adr_sum = adr_tables(px, cfg)
-    if not adr.empty:
-        write_atomic(adr.round(4), os.path.join(a.out, "adr_premium.csv"))
-    for s in adr_sum:
-        if s.get("ratio_or_data_suspect"):
-            flags.setdefault(s["ads"], []).append("adr_ratio_or_data_suspect")
-
+    for s_ in adr_sum:
+        if s_.get("ratio_or_data_suspect"):
+            flags.setdefault(s_["ads"], []).append("adr_ratio_or_data_suspect")
     breadth = {k: breadth_stats(snap, v) for k, v in cfg["breadth_sets"].items()}
     levels, scores = compute_levels(snap, cfg, adr_sum, breadth)
+    return {"snap": snap, "flags": flags, "missing": missing, "us_asof": us_asof,
+            "adr": adr, "adr_sum": adr_sum, "breadth": breadth, "levels": levels, "scores": scores}
+
+
+# ---------- main ----------
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", default="out")
+    ap.add_argument("--config", default="config.json")
+    a = ap.parse_args()
+    with open(a.config, encoding="utf-8") as f:
+        cfg = json.load(f)
+
+    ppath = os.path.join(a.out, "prices_daily.csv.gz")
+    if not os.path.exists(ppath):
+        print("prices_daily.csv.gz がありません。", file=sys.stderr)
+        sys.exit(1)
+    px = load_prices(ppath)
+    pman = read_json(os.path.join(a.out, "prices_manifest.json")) or {}
+
+    r = compute_all(px, cfg)
+    snap, flags, missing, us_asof = r["snap"], r["flags"], r["missing"], r["us_asof"]
+    adr, adr_sum, breadth, levels, scores = r["adr"], r["adr_sum"], r["breadth"], r["levels"], r["scores"]
+    write_atomic(snap, os.path.join(a.out, "semis_snapshot.csv"))
+    if not adr.empty:
+        write_atomic(adr.round(4), os.path.join(a.out, "adr_premium.csv"))
     asof_str = us_asof.strftime("%Y-%m-%d")
     write_atomic({"us_as_of": asof_str, "definitions_version": DEFINITIONS_VERSION, "config_version": cfg.get("config_version"),
                   "levels": levels, "scores": scores}, os.path.join(a.out, "levels.json"))

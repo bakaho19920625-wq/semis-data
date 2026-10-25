@@ -19,6 +19,7 @@
 | `semis_manifest.json` | 最初に読む。基準日 `us_as_of`、欠損、品質フラグ、S/Dスコア、騰落の広がり、ADR要約、マクロ最新値 |
 | `levels.json` | モメンタムの段階 S1〜S5・D1〜D6（−2〜+2）と入力値、S/D/TECHNICAL スコア |
 | `semis_snapshot.csv` | 銘柄ごとの最新テクニカル指標 |
+| `daily_signals.json` | 日次シグナル：前営業日との比較で検出した変化点（SMAクロス、RSI、高安更新、出来高、段階変更、ADR、VIX、金利）、主要銘柄の表、意識される水準 |
 | `history_key.csv` / `history_levels.csv` | 主要銘柄の指標と段階の日次履歴（前回比の計算用） |
 | `adr_premium.csv` | SK hynix ADS（SKHY）の理論価値とプレミアム（直近60営業日） |
 | `macro_daily.csv` | FRED：DGS10、DFII10、DTWEXBGS |
@@ -30,8 +31,9 @@
 
 - `tickers.txt` … 取得する銘柄（編集するだけで追加・削除できる）
 - `config.json` … グループ、ベンチマーク、広がりの銘柄集合、ADR比率、段階の閾値、配点
-- `fetch_prices.py` / `fetch_macro.py` / `build_snapshot.py` … 取得と計算（指標の定義は build_snapshot.py の先頭）
-- `prompts/collector.md` / `prompts/judge.md` … 2段階プロンプト（Claudeプロジェクトの指示にそのまま貼れる）
+- `fetch_prices.py` / `fetch_macro.py` / `build_snapshot.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、シグナルの定義は build_signals.py の先頭）
+- `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト
+- `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
 - `docs/sources.md` / `docs/universe_kpi.md` … 収集時に必要なときだけ読む参照資料
 - `handoff/` … レポート間の引継ぎ（latest.yaml、日付別の控え、予測台帳 forecasts.csv）
 - `evidence/` … 証拠YAMLの控え
