@@ -187,6 +187,7 @@ def watch_levels(snap):
                   **{f"dist_sma{w}": (None if pd.isna(r[f"dist_sma{w}"]) else round(float(r[f"dist_sma{w}"]), 2)) for w in (20, 50, 200)},
                   "low20": None if pd.isna(r["low20"]) else round(float(r["low20"]), 2), "high20": None if pd.isna(r["high20"]) else round(float(r["high20"]), 2),
                   "low60": None if pd.isna(r["low60"]) else round(float(r["low60"]), 2), "high60": None if pd.isna(r["high60"]) else round(float(r["high60"]), 2),
+                  **{f"dist_{k}": (None if pd.isna(r[k]) else round((float(r[k]) / float(r["close"]) - 1) * 100, 2)) for k in ("low20", "high20", "low60", "high60")},
                   "rsi14": None if pd.isna(r["rsi14"]) else round(float(r["rsi14"]), 1),
                   "dd_from_high": None if pd.isna(r["dd_from_high"]) else round(float(r["dd_from_high"]), 1)}
     return out

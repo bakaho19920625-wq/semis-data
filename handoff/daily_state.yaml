@@ -1,5 +1,7 @@
 # daily_state
 # 日次レポートの状態。前日に報じたニュースのURLを控え、重複を避ける。
-last_us_as_of: null
-reported_urls: []
+last_us_as_of: "2026-10-23"
+reported_urls:
+  - "https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html"
+  - "https://stockti.com/earnings-calendar/oct-26-30-2026"
 review_candidates: []
