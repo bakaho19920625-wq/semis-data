@@ -1,0 +1,5 @@
+# daily_state
+# 日次レポートの状態。前日に報じたニュースのURLを控え、重複を避ける。
+last_us_as_of: null
+reported_urls: []
+review_candidates: []
