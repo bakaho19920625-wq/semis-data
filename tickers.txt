@@ -1,0 +1,84 @@
+# 半導体・メモリー定点観測で取得する銘柄（1行に1銘柄。# 以降はメモ）
+# 追加・削除はこのファイルを編集するだけでOK。グループ分けは config.json で行う。
+
+# --- 指数・ETF ---
+^GSPC      # S&P 500指数（出来高なし）
+SPY
+QQQ
+^SOX       # PHLX半導体指数（出来高なし）
+SOXX
+SMH
+DRAM       # Roundhill Memory ETF（運用期間が短い）
+SOXL       # 日次3倍レバレッジ
+^VIX
+
+# --- 金利・為替 ---
+^TNX       # 米10年国債利回り（%）
+USDJPY=X   # ドル円
+KRW=X      # ドル/ウォン（1ドル当たりウォン）
+
+# --- AI・ロジック ---
+NVDA
+AMD
+AVGO
+MRVL
+TSM
+INTC
+ARM
+QCOM
+TXN
+ADI
+NXPI
+MCHP
+ON
+MPWR
+RMBS
+LSCC
+SWKS
+QRVO
+SNPS
+CDNS
+
+# --- 装置 ---
+ASML
+AMAT
+LRCX
+KLAC
+TER
+ENTG
+ONTO
+FORM
+NVMI
+CAMT
+
+# --- メモリー・ストレージ（米国） ---
+MU
+SNDK
+SKHY       # SK hynix ADS（1 ADS = 普通株0.1株）
+WDC
+STX
+
+# --- メモリー（アジア現地株） ---
+000660.KS  # SK hynix
+005930.KS  # Samsung Electronics 普通株
+285A.T     # Kioxia Holdings
+2408.TW    # Nanya Technology
+2344.TW    # Winbond Electronics
+
+# --- 後工程・光・ネットワーク ---
+AMKR
+ASX        # ASE Technology ADR
+ANET
+LITE
+COHR
+CRDO
+ALAB
+MTSI
+SITM
+
+# --- ハイパースケーラー ---
+MSFT
+GOOGL
+AMZN
+META
+ORCL

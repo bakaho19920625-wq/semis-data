@@ -1,0 +1,55 @@
+{
+  "config_version": "1.1",
+  "groups": {
+    "market": ["^GSPC", "SPY", "QQQ", "^SOX", "SOXX", "SMH", "DRAM", "SOXL", "^VIX"],
+    "rates_fx": ["^TNX", "USDJPY=X", "KRW=X"],
+    "ai_logic": ["NVDA", "AMD", "AVGO", "MRVL", "TSM", "INTC", "ARM", "QCOM"],
+    "equipment": ["ASML", "AMAT", "LRCX", "KLAC", "TER", "ONTO"],
+    "memory_us": ["MU", "SNDK", "SKHY", "WDC", "STX"],
+    "memory_asia": ["000660.KS", "005930.KS", "285A.T", "2408.TW", "2344.TW"],
+    "packaging_network": ["AMKR", "ASX", "ANET", "LITE", "COHR", "CRDO", "ALAB"],
+    "hyperscalers": ["MSFT", "GOOGL", "AMZN", "META", "ORCL"]
+  },
+  "benchmarks": ["SOXX", "SPY", "QQQ"],
+  "breadth_sets": {
+    "semis_broad": ["NVDA", "AMD", "AVGO", "MRVL", "TSM", "INTC", "ARM", "QCOM", "TXN", "ADI", "NXPI", "MCHP", "ON", "MPWR",
+                    "RMBS", "LSCC", "SWKS", "QRVO", "SNPS", "CDNS", "ASML", "AMAT", "LRCX", "KLAC", "TER", "ENTG", "ONTO",
+                    "FORM", "NVMI", "CAMT", "MU", "SNDK", "SKHY", "WDC", "STX", "AMKR", "ASX", "COHR", "LITE", "CRDO",
+                    "ALAB", "MTSI", "SITM"],
+    "memory": ["MU", "SNDK", "SKHY", "WDC", "STX", "000660.KS", "005930.KS", "285A.T", "2408.TW", "2344.TW"]
+  },
+  "history_tickers": ["^GSPC", "QQQ", "^SOX", "SOXX", "SMH", "DRAM", "SOXL", "^VIX", "^TNX", "USDJPY=X", "KRW=X", "MU", "SKHY", "SNDK", "NVDA", "TSM"],
+  "no_volume": ["^GSPC", "^SOX", "^VIX", "^TNX", "USDJPY=X", "KRW=X"],
+  "asia_suffixes": [".KS", ".T", ".TW"],
+  "leveraged": {"SOXL": 3},
+  "adr": [
+    {
+      "ads": "SKHY",
+      "local": "000660.KS",
+      "fx": "KRW=X",
+      "local_shares_per_ads": 0.1,
+      "ratio_source": "SEC Form 424B4 (2026-07-09): Each ADS represents one-tenth of a common share",
+      "timing_note": "KRX終値（韓国15:30）は同じ日付の米国終値の約14.5時間前。同日比較は近似値",
+      "suspect_abs_premium_pct": 15,
+      "suspect_days": 5
+    }
+  ],
+  "levels": {
+    "S1": {"name": "trend", "tickers": ["^SOX", "SOXX", "SMH"], "tiebreak": "SOXX", "near_pct": 2.0},
+    "S2": {"name": "breadth", "set": "semis_broad", "bands": [20, 40, 60, 80]},
+    "S3": {"name": "updown_volume", "ticker": "SOXX", "bands": [0.70, 0.80, 0.97, 1.15]},
+    "S4": {"name": "relative_strength", "ticker": "SOXX", "bench": "SPY", "confirm_bench": "QQQ", "bands_60": [-10, -3, 3, 10]},
+    "S5": {"name": "vol_regime", "ticker": "SOXX", "vix": "^VIX", "vix_bands": [15, 22], "rv_ratio_bands": [0.90, 1.15]},
+    "D1": {"name": "dram_trend", "ticker": "DRAM", "near_pct": 2.0},
+    "D2": {"name": "dram_relative_strength", "ticker": "DRAM", "benches": ["SOXX", "SPY"]},
+    "D3": {"name": "memory_breadth", "set": "memory", "bands": [20, 40, 60, 80]},
+    "D4": {"name": "memory_updown_volume", "tickers": ["DRAM", "MU"], "bands": [0.70, 0.80, 0.97, 1.15]},
+    "D5": {"name": "adr_consistency", "ads": "SKHY", "gap_bands": [1, 2, 4, 6]},
+    "D6": {"name": "dram_drawdown", "ticker": "DRAM", "dd_bands": [-35, -25, -15, -8], "rv_penalty_ratio": 1.15}
+  },
+  "weights": {
+    "S": {"S1": 30, "S2": 20, "S3": 15, "S4": 20, "S5": 15},
+    "D": {"D1": 25, "D2": 20, "D3": 20, "D4": 15, "D5": 10, "D6": 10}
+  },
+  "calibration_note": "S2〜S5の帯は2023-10〜2026-10のSOXX・40銘柄の分布で、各段階の出現比率が偏りすぎないよう設定。D1〜D6は実データ未検証（DRAM設定以降の履歴が短い）。3回のレポート後に見直す。"
+}

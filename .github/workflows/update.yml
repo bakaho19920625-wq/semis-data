@@ -1,0 +1,95 @@
+# 半導体・メモリー定点観測用のデータを毎日取得し、「data」ブランチに保存する
+# 失敗したステップがあっても、前回のファイルを残したまま run_status.json に結果を記録する
+name: update-semis-data
+
+on:
+  schedule:
+    # 月〜金の 22:27 UTC ＝ 日本時間 火〜土の朝 7:27（米国の取引終了後）
+    - cron: "27 22 * * 1-5"
+  workflow_dispatch: # 「Run workflow」ボタンで手動実行もできる
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-semis-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      # 前回のdataブランチの中身を out/ に戻す。今回失敗したファイルは前回のまま残る
+      - name: Restore previous data
+        run: |
+          mkdir -p out
+          if git fetch -q --depth 1 origin data; then
+            git archive --format=tar FETCH_HEAD | tar -x -C out
+            echo "restored previous data branch"
+          else
+            echo "no previous data branch (first run)"
+          fi
+
+      - id: prices
+        name: Fetch prices (Yahoo)
+        continue-on-error: true
+        run: python fetch_prices.py --out out
+
+      - id: macro
+        name: Fetch macro (FRED)
+        continue-on-error: true
+        run: python fetch_macro.py --out out
+
+      - id: snapshot
+        name: Build snapshot and levels
+        continue-on-error: true
+        run: python build_snapshot.py --out out
+
+      - name: Write run status
+        env:
+          PRICES: ${{ steps.prices.outcome }}
+          MACRO: ${{ steps.macro.outcome }}
+          SNAPSHOT: ${{ steps.snapshot.outcome }}
+        run: |
+          python - <<'EOF'
+          import json, os
+          from datetime import datetime, timezone
+          s = {
+            "run_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "steps": {"prices": os.environ["PRICES"], "macro": os.environ["MACRO"], "snapshot": os.environ["SNAPSHOT"]},
+            "note": "failure のステップの出力ファイルは前回のまま。semis_manifest.json の us_as_of で日付を確認すること",
+          }
+          json.dump(s, open("out/run_status.json", "w"), ensure_ascii=False, indent=2)
+          print(json.dumps(s, ensure_ascii=False, indent=2))
+          EOF
+
+      - name: Publish to data branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd out
+          rm -rf .git
+          git init -q
+          git checkout -q -b data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "data $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" data
+
+      # 価格取得が失敗した日は、保存はしたうえでジョブを失敗にして通知メールが届くようにする
+      - name: Fail job if prices step failed
+        if: steps.prices.outcome == 'failure'
+        run: |
+          echo "価格の取得に失敗しました。dataブランチは前回の内容のままです。"
+          exit 1
