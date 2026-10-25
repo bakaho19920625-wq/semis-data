@@ -15,7 +15,7 @@
 3. 採点：S1～S5・D1～D6は `levels.json` を転記。A・M・F・E・Xは3節のアンカーで判定し、1節の手順で点数にする。前回値は `history_key.csv`・`history_levels.csv`・前回YAMLから取る。
 4. 反転リスク、シナリオ、新しい予測（13～15節）。
 5. 出力（出力形式）。
-6. 引継ぎの保存：`handoff/latest.yaml`、`handoff/YYYY-MM-DD.yaml`、`handoff/forecasts.csv`、`evidence/YYYY-MM-DD.yaml`（証拠YAMLの控え）を main にコミット（メッセージ `report YYYY-MM-DD`）。書き込めない環境では、YAMLと forecasts.csv の追加行を出力し、私が保存する。
+6. 保存：レポート本文を `reports/YYYY-MM-DD.md`、引継ぎを `handoff/latest.yaml` と `handoff/YYYY-MM-DD.yaml`、予測を `handoff/forecasts.csv`、証拠YAMLの控えを `evidence/latest.yaml` と `evidence/YYYY-MM-DD.yaml` に置き、main にコミット（メッセージ `report YYYY-MM-DD`）。書き込めない環境では、YAMLと forecasts.csv の追加行を出力し、私が保存する。
 
 ## 共通ルール
 - 数値には対象日・発表日・出典を付ける（証拠YAMLの値はその出典を引き継ぐ）。確認済み／非開示／未確認／推定／市場予想を区別し、推測で埋めない。
