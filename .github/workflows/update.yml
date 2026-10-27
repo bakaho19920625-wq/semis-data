@@ -4,8 +4,11 @@ name: update-semis-data
 
 on:
   schedule:
-    # 月〜金の 22:27 UTC ＝ 日本時間 火〜土の朝 7:27（米国の取引終了後）
-    - cron: "27 22 * * 1-5"
+    # 月〜金の 21:47 UTC と 22:47 UTC ＝ 日本時間 火〜土の朝 6:47 と 7:47（米国の取引終了後）。
+    # GitHubの定期実行は数時間遅れることがあるため2回にしている。2回目は同じ内容を上書きするだけ。
+    # それでも遅れた日は、日次レポートの実行時に手動で起動する（prompts/daily.md 手順1）。
+    - cron: "47 21 * * 1-5"
+    - cron: "47 22 * * 1-5"
   workflow_dispatch: # 「Run workflow」ボタンで手動実行もできる
 
 permissions:
