@@ -1,18 +1,25 @@
 # daily_state
 # 日次レポートの状態。前日に報じたニュースのURLを控え、重複を避ける。
-last_us_as_of: "2026-10-27"
+last_us_as_of: "2026-10-28"
 reported_urls:
   - "https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html"
   - "https://stockti.com/earnings-calendar/oct-26-30-2026"
   - "https://www.thestar.com.my/tech/tech-news/2026/10/19/us-chip-stocks-rise-after-steepest-weekly-selloff-in-months"
   - "https://www.sec.gov/Archives/edgar/data/0001047127/000104712726000049/amkr9302026erex-991.htm"
   - "https://tickzen.app/insights/alphabet-goog-q3-2026-earnings"
+  - "https://www.sec.gov/Archives/edgar/data/0002120882/000119312526434994/d162547d6k.htm"
 review_candidates:
-  - "X2（インフレ・流動性）：10月中旬の強いインフレ指標による利上げ観測（報道10/19）。FOMC（10/28）の結果と合わせて判定。週次では除外していた"
+  - "X2（インフレ・流動性）：FOMC（10/28）の結果で判定。10月中旬の利上げ観測、事前の利上げ確率は五分五分との報道（二次情報）"
   - "反転リスクに『AI投資の資金調達・信用（CoreWeave債務）』を独立項目として置くか検討"
-  - "X1：実質金利21本変化−19bp（10/26）、広義ドル21本+1.0%（10/23）。週次で−1にした理由はほぼ外れた"
-  - "週次NEXT_CHECKPOINTSのGOOGL決算日は10/28引け後（10/27ではない）"
+  - "X1：実質金利21本変化−19bp（10/27）。ただし10/28に10年名目5.045%へ上昇"
+  - "M1・M2・E2：SK hynix 3Q26営業利益83.3兆ウォン（前期比+37.6%、コンセンサス76.96兆を約8%上回る）。HBM・ASP・2027年CapEXは説明会資料で確認"
+  - "決算日の訂正：GOOGLは10/28引け後、SK hynixは10/28（韓国9:00）"
+pending_forecast_resolution:
+  - "F2026-10-23-1：条件を満たした（営業利益83.3兆ウォン≥73兆ウォン）。次回の週次でhitとして確定"
+unconfirmed_next_daily:
+  - "GOOGL・MSFT・META・KLAC・STX の 10/28 引け後決算（CapEx、WFE見通し）"
+  - "FOMC 10/28 の結果"
+  - "ORCL +10.73%（出来高2.94倍）の材料"
 notes:
-  - "2026-10-27 08:55 JST：朝の定期ワークフローが起動せず、手動で再実行した"
-  - "2026-10-28 08:54 JST：同上。前日分の定期実行は約3時間遅れ（10/27 01:32 UTC）。ワークフローの定期実行を21:47と22:47 UTCの2回に変更"
+  - "2026-10-27・10-28・10-29 08:54 JST：朝の定期ワークフローが起動せず、手動で再実行。定期実行は10/27 01:32 UTCの1回のみ"
   - "10/26のS3は出来高の確定値で再計算すると−1（当日報告は−2）"
