@@ -1,25 +1,32 @@
-# daily_state
-# 日次レポートの状態。前日に報じたニュースのURLを控え、重複を避ける。
-last_us_as_of: "2026-10-28"
+last_us_as_of: '2026-10-28'
 reported_urls:
-  - "https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html"
-  - "https://stockti.com/earnings-calendar/oct-26-30-2026"
-  - "https://www.thestar.com.my/tech/tech-news/2026/10/19/us-chip-stocks-rise-after-steepest-weekly-selloff-in-months"
-  - "https://www.sec.gov/Archives/edgar/data/0001047127/000104712726000049/amkr9302026erex-991.htm"
-  - "https://tickzen.app/insights/alphabet-goog-q3-2026-earnings"
-  - "https://www.sec.gov/Archives/edgar/data/0002120882/000119312526434994/d162547d6k.htm"
+- https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html
+- https://stockti.com/earnings-calendar/oct-26-30-2026
+- https://www.thestar.com.my/tech/tech-news/2026/10/19/us-chip-stocks-rise-after-steepest-weekly-selloff-in-months
+- https://www.sec.gov/Archives/edgar/data/0001047127/000104712726000049/amkr9302026erex-991.htm
+- https://tickzen.app/insights/alphabet-goog-q3-2026-earnings
+- https://www.sec.gov/Archives/edgar/data/0002120882/000119312526434994/d162547d6k.htm
+- https://www.federalreserve.gov/monetarypolicy/files/monetary20261028a1.pdf
+- https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066700/meta-09302026xexhibit991.htm
+- https://www.cnbc.com/2026/10/28/alphabet-googl-earnings-q3-2026.html
+- https://www.cnbc.com/2026/10/28/microsoft-msft-q1-earnings-report-2027.html
+- https://www.cnbc.com/2026/10/28/neocloud-stocks-drop-after-microsoft-revises-capex-down.html
 review_candidates:
-  - "X2（インフレ・流動性）：FOMC（10/28）の結果で判定。10月中旬の利上げ観測、事前の利上げ確率は五分五分との報道（二次情報）"
-  - "反転リスクに『AI投資の資金調達・信用（CoreWeave債務）』を独立項目として置くか検討"
-  - "X1：実質金利21本変化−19bp（10/27）。ただし10/28に10年名目5.045%へ上昇"
-  - "M1・M2・E2：SK hynix 3Q26営業利益83.3兆ウォン（前期比+37.6%、コンセンサス76.96兆を約8%上回る）。HBM・ASP・2027年CapEXは説明会資料で確認"
-  - "決算日の訂正：GOOGLは10/28引け後、SK hynixは10/28（韓国9:00）"
+- X2（インフレ・流動性）：FOMC 10/28は3.75〜4.00%で据え置き、10対2（Cook・Hammackが利上げを主張）、『インフレは高止まり』。−1以下を検討
+- 反転リスクに『AI投資の資金調達・信用（CoreWeave債務）』を独立項目として置くか検討
+- X1：実質金利21本変化−19bp（10/27）。ただし10/28に10年名目5.045%へ上昇
+- M1・M2・E2：SK hynix 3Q26営業利益83.3兆ウォン（前期比+37.6%、コンセンサス76.96兆を約8%上回る）。HBM・ASP・2027年CapEXは説明会資料で確認
+- 決算日の訂正：GOOGLは10/28引け後、SK hynixは10/28（韓国9:00）
+- A1：Meta 2026年CapEx 1,350〜1,450億ドル（下限引き上げ、10/21発表）、Alphabet据え置き（見出し）、Microsoftは『予想を下回る』（見出し、中身未確認）。Amazonは10/29引け後
 pending_forecast_resolution:
-  - "F2026-10-23-1：条件を満たした（営業利益83.3兆ウォン≥73兆ウォン）。次回の週次でhitとして確定"
+- F2026-10-23-1：条件を満たした（営業利益83.3兆ウォン≥73兆ウォン）。次回の週次でhitとして確定
 unconfirmed_next_daily:
-  - "GOOGL・MSFT・META・KLAC・STX の 10/28 引け後決算（CapEx、WFE見通し）"
-  - "FOMC 10/28 の結果"
-  - "ORCL +10.73%（出来高2.94倍）の材料"
+- Alphabet・Microsoftの決算の数値（CapExガイダンス、Microsoftの『予想を下回る』の基準）
+- KLAC・STXの10/28引け後決算
+- Amazon・SNDK・INTCの10/29引け後決算
+- ORCL +10.73%（10/28）の材料
 notes:
-  - "2026-10-27・10-28・10-29 08:54 JST：朝の定期ワークフローが起動せず、手動で再実行。定期実行は10/27 01:32 UTCの1回のみ"
-  - "10/26のS3は出来高の確定値で再計算すると−1（当日報告は−2）"
+- 2026-10-27・10-28・10-29 08:54 JST：朝の定期ワークフローが起動せず、手動で再実行。定期実行は10/27 01:32 UTCの1回のみ
+- 10/26のS3は出来高の確定値で再計算すると−1（当日報告は−2）
+- 2026-10-29 09:10 JST：日次の予約タスクがユーザーにより手動実行された。データは同じ10/28のため、10/28のレポートに追記のみ。予約（10/29
+  23:53 UTC）は有効のままなので新たな予約はしていない
