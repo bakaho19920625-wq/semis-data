@@ -1,4 +1,4 @@
-last_us_as_of: '2026-10-28'
+last_us_as_of: '2026-10-29'
 reported_urls:
 - https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html
 - https://stockti.com/earnings-calendar/oct-26-30-2026
@@ -11,22 +11,28 @@ reported_urls:
 - https://www.cnbc.com/2026/10/28/alphabet-googl-earnings-q3-2026.html
 - https://www.cnbc.com/2026/10/28/microsoft-msft-q1-earnings-report-2027.html
 - https://www.cnbc.com/2026/10/28/neocloud-stocks-drop-after-microsoft-revises-capex-down.html
+- https://ir.aboutamazon.com/news-release/news-release-details/2026/Amazon-com-Announces-Third-Quarter-Results/default.aspx
+- https://finance.yahoo.com/markets/stocks/articles/did-microsoft-really-cut-capex-103636032.html
+- https://huggingnews.com/earnings/microsoft-guides-q2-azure-growth-to-50percent-trims-2026-capex-to-170b-o-5740d918
+- https://qz.com/google-microsoft-ai-spending-estimates-miss-neocloud-stocks-102926
 review_candidates:
+- A1：4社2026年CapEx＝Meta 1,350〜1,450億ドル（下限引き上げ、一次）、Amazon 約2,200億ドル維持（一次）、Alphabet据え置き（見出し）、Microsoft
+  約1,700億ドルへ縮小（見出し、会計上の要因との見方）。仮説崩壊条件(1)は非該当。市場は『期待に届かない』と評価（GOOGL −12.6%）
 - X2（インフレ・流動性）：FOMC 10/28は3.75〜4.00%で据え置き、10対2（Cook・Hammackが利上げを主張）、『インフレは高止まり』。−1以下を検討
-- 反転リスクに『AI投資の資金調達・信用（CoreWeave債務）』を独立項目として置くか検討
-- X1：実質金利21本変化−19bp（10/27）。ただし10/28に10年名目5.045%へ上昇
-- M1・M2・E2：SK hynix 3Q26営業利益83.3兆ウォン（前期比+37.6%、コンセンサス76.96兆を約8%上回る）。HBM・ASP・2027年CapEXは説明会資料で確認
-- 決算日の訂正：GOOGLは10/28引け後、SK hynixは10/28（韓国9:00）
-- A1：Meta 2026年CapEx 1,350〜1,450億ドル（下限引き上げ、10/21発表）、Alphabet据え置き（見出し）、Microsoftは『予想を下回る』（見出し、中身未確認）。Amazonは10/29引け後
+- 反転リスクに『AI投資の資金調達・信用』を独立項目として置くか（Amazon直近12か月FCF −424億ドル、CoreWeave債務）
+- X1：実質金利21本変化−23bp（10/28）
+- M・E：SK hynix 3Q26営業利益83.3兆ウォン（コンセンサス比約+8%）。メモリー株は10/29に反落
+- 決算日の訂正：GOOGLは10/28、SK hynixは10/28、Metaは10/21
 pending_forecast_resolution:
-- F2026-10-23-1：条件を満たした（営業利益83.3兆ウォン≥73兆ウォン）。次回の週次でhitとして確定
+- F2026-10-23-1：条件を満たした（営業利益83.3兆ウォン≥73兆ウォン）。週次でhitとして確定
+- F2026-10-23-2：条件を満たした可能性が高い（Meta引き上げ・Amazon維持は一次、Alphabet維持は見出し）。Alphabetの一次確認後、週次で確定
 unconfirmed_next_daily:
-- Alphabet・Microsoftの決算の数値（CapExガイダンス、Microsoftの『予想を下回る』の基準）
-- KLAC・STXの10/28引け後決算
-- Amazon・SNDK・INTCの10/29引け後決算
-- ORCL +10.73%（10/28）の材料
+- Alphabet・Microsoftの2026年CapExガイダンスの一次確認（Microsoftは同一基準での比較）
+- KLAC（10/28）・SNDK・INTC（10/29）の決算内容
+- MRVL −13.24%、TER −5.43%、Samsung −4.13%（10/29）の材料
 notes:
 - 2026-10-27・10-28・10-29 08:54 JST：朝の定期ワークフローが起動せず、手動で再実行。定期実行は10/27 01:32 UTCの1回のみ
 - 10/26のS3は出来高の確定値で再計算すると−1（当日報告は−2）
 - 2026-10-29 09:10 JST：日次の予約タスクがユーザーにより手動実行された。データは同じ10/28のため、10/28のレポートに追記のみ。予約（10/29
   23:53 UTC）は有効のままなので新たな予約はしていない
+- 2026-10-30 08:53 JST：朝の定期ワークフローが起動せず、手動で再実行。前日分は約3.5時間遅れで動いた
