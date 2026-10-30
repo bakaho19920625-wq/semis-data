@@ -1,4 +1,4 @@
-last_us_as_of: '2026-10-29'
+last_us_as_of: '2026-10-30'
 reported_urls:
 - https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html
 - https://stockti.com/earnings-calendar/oct-26-30-2026
@@ -15,24 +15,31 @@ reported_urls:
 - https://finance.yahoo.com/markets/stocks/articles/did-microsoft-really-cut-capex-103636032.html
 - https://huggingnews.com/earnings/microsoft-guides-q2-azure-growth-to-50percent-trims-2026-capex-to-170b-o-5740d918
 - https://qz.com/google-microsoft-ai-spending-estimates-miss-neocloud-stocks-102926
+- https://en.sedaily.com/international/2026/10/31/nasdaq-falls-29-percent-on-ai-spending-fears-intel-plunges
 review_candidates:
+- 下方トリガーの価格条件が成立（SOX終値10,688.80 < SMA200 10,781.40、週次基準値10,690も下回る）。ファンダ条件（装置WFE、契約価格）は未確認。S
+  23.8・TECHNICAL 21.9に急低下
+- X4（地政学）：イラン情勢拡大懸念、ブレント117.64ドル、ホルムズ海峡でタンカー攻撃の報道（10/30）。週次では除外していた
+- 反転リスク『AI CapEx鈍化・収益化失望』を発動に上げるか：CapExは維持でも、Amazonの売上・EPS未達とFCF −424億ドルで『AI投資は行き過ぎ』との懸念が表面化（10/30
+  SOX −7.2%）
+- M2・M4：Intelの説明で、メモリー価格の高騰（HBMへの生産シフト）によりPC向け売上が前年比−5%。川下需要の圧迫
 - A1：4社2026年CapEx＝Meta 1,350〜1,450億ドル（下限引き上げ、一次）、Amazon 約2,200億ドル維持（一次）、Alphabet据え置き（見出し）、Microsoft
-  約1,700億ドルへ縮小（見出し、会計上の要因との見方）。仮説崩壊条件(1)は非該当。市場は『期待に届かない』と評価（GOOGL −12.6%）
-- X2（インフレ・流動性）：FOMC 10/28は3.75〜4.00%で据え置き、10対2（Cook・Hammackが利上げを主張）、『インフレは高止まり』。−1以下を検討
-- 反転リスクに『AI投資の資金調達・信用』を独立項目として置くか（Amazon直近12か月FCF −424億ドル、CoreWeave債務）
-- X1：実質金利21本変化−23bp（10/28）
-- M・E：SK hynix 3Q26営業利益83.3兆ウォン（コンセンサス比約+8%）。メモリー株は10/29に反落
+  約1,700億ドル（見出し、会計要因の見方）。仮説崩壊条件(1)は非該当
+- X2：FOMC 10/28据え置き、10対2（利上げ主張2票）。X1：実質金利21本−28bp（10/29）
+- 反転リスクに『AI投資の資金調達・信用』を独立項目として置くか
+- M・E：SK hynix 3Q26営業利益83.3兆ウォン（コンセンサス比約+8%）
 - 決算日の訂正：GOOGLは10/28、SK hynixは10/28、Metaは10/21
 pending_forecast_resolution:
 - F2026-10-23-1：条件を満たした（営業利益83.3兆ウォン≥73兆ウォン）。週次でhitとして確定
 - F2026-10-23-2：条件を満たした可能性が高い（Meta引き上げ・Amazon維持は一次、Alphabet維持は見出し）。Alphabetの一次確認後、週次で確定
 unconfirmed_next_daily:
-- Alphabet・Microsoftの2026年CapExガイダンスの一次確認（Microsoftは同一基準での比較）
-- KLAC（10/28）・SNDK・INTC（10/29）の決算内容
-- MRVL −13.24%、TER −5.43%、Samsung −4.13%（10/29）の材料
+- Intel・SanDiskの3Q（FQ1）決算の一次資料とガイダンス
+- Alphabet・Microsoftの2026年CapExの一次確認
+- AMD・QCOM・ARMの決算日（来週）
 notes:
 - 2026-10-27・10-28・10-29 08:54 JST：朝の定期ワークフローが起動せず、手動で再実行。定期実行は10/27 01:32 UTCの1回のみ
 - 10/26のS3は出来高の確定値で再計算すると−1（当日報告は−2）
 - 2026-10-29 09:10 JST：日次の予約タスクがユーザーにより手動実行された。データは同じ10/28のため、10/28のレポートに追記のみ。予約（10/29
   23:53 UTC）は有効のままなので新たな予約はしていない
 - 2026-10-30 08:53 JST：朝の定期ワークフローが起動せず、手動で再実行。前日分は約3.5時間遅れで動いた
+- 2026-10-31 08:53 JST：朝の定期ワークフローが起動せず、手動で再実行。前日分は約3.5時間遅れ
