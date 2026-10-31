@@ -122,6 +122,17 @@ def main():
     us_asof = last.get("SPY", last.max())
     stale = sorted(last[last < us_asof].index.tolist())
 
+    # 前回より古い基準日のデータで上書きしない（Yahooが最新日を返さないことがある）
+    prev = None
+    try:
+        with open(os.path.join(a.out, "prices_manifest.json"), encoding="utf-8") as f:
+            prev = json.load(f).get("us_as_of")
+    except (OSError, ValueError):
+        prev = None
+    if prev and us_asof < prev:
+        print(f"取得したデータの基準日 {us_asof} が前回 {prev} より古いため、前回のファイルを残して終了します。", file=sys.stderr)
+        sys.exit(2)
+
     write_atomic(px, os.path.join(a.out, "prices_daily.csv.gz"), compression="gzip")
     finished = datetime.now(timezone.utc)
     manifest = {
