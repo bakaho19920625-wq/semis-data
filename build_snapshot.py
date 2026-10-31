@@ -471,7 +471,7 @@ def main():
     keycols = ["close", "ret_1d", "ret_1w", "ret_1m", "sma20", "sma50", "sma200", "rsi14", "vol_ratio20", "updown_vol_ratio10",
                "dd_from_high", "rv20", "rs_spy_20", "rs_spy_60", "rs_soxx_20", "rs_soxx_60"]
     kh = [{"us_as_of": asof_str, "ticker": r["ticker"], "last_date": r["last_date"], **{c: r.get(c) for c in keycols if c in snap.columns}}
-          for _, r in snap.iterrows() if r["ticker"] in cfg["history_tickers"]]
+          for _, r in snap.iterrows() if r["ticker"] in cfg["history_tickers"] and str(r["last_date"]) <= asof_str]
     n_kh = append_history(os.path.join(a.out, "history_key.csv"), kh, ["us_as_of", "ticker"])
 
     now = datetime.now(timezone.utc)
