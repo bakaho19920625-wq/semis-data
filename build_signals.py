@@ -21,6 +21,14 @@
   sector_rs_flip     セクター内区分（対SOXX）が leader⇄laggard に変わった
   next_candidate_new／next_candidate_out 調整耐性の「次の候補」に入った／外れた。late_break_new 「後崩れ」に新しく入った
   corr_state_change  SOXXの調整窓の状態（調整中・回復中・完了・なし）が変わった
+  v6.2 追加（市場比のRS線）
+  rs_line        RS線（銘柄÷SPY）が52週高値を更新（株価より先なら high）、主要銘柄のRS線が21日EMAを上抜け・下抜け
+
+RS線（rs_lines。セクター内RS＝対SOXXとは別。こちらは市場全体＝SPY比）
+  RS線 = 終値 ÷ SPY終値（同じ日付どうし）。補助にQQQ比も出す。米国上場の銘柄・ETFだけ（アジア株・為替・指数は対象外）。
+  RS新高値 = 当日値が直近252本の過去値すべてを上回る（253本必要。米国株仕様v4.2 E7と同じ定義）。
+  RSが株価に先行 = RS新高値の日に、株価が252日終値高値から rs_lead_price_gap_pct 以上下にある。
+  SOXLは3倍レバで比率がゆがむため対象外（SOXXのRS線で代用）。
 """
 import argparse
 import json
@@ -44,8 +52,117 @@ DEFAULT_THR = {
     "vix_level": 25, "vix_spike_pct": 20,
     "real_rate_5d_bp": 15,
     "fx_move": 1.5,
+    "rs_window": 252, "rs_ema": 21,
+    "rs_lead_price_gap_pct": 2.0,   # RS新高値の日に株価がこれ以上（%）高値の下なら「先行」
+    "rs_first_gap_days": 20,        # 前回のRS新高値からこの営業日数以上あいたら「久しぶり」と書く
 }
 INDEX_LIKE = {"^GSPC", "SPY", "QQQ", "^SOX", "SOXX", "SMH", "^VIX"}
+RS_BENCH, RS_AUX = "SPY", "QQQ"
+RS_EXCLUDE = {"^GSPC", "SPY", "QQQ", "^SOX", "^VIX", "SOXL"}           # 自分自身・指数・レバETF
+RS_CORE = ["SOXX", "SMH", "DRAM", "NVDA", "TSM", "MU", "SNDK", "SKHY"]  # 21日EMAクロスをシグナルにする銘柄
+RS_GROUPS = ["market", "memory_us", "ai_logic", "equipment", "packaging_network", "hyperscalers"]
+
+
+def _r(x, nd=2):
+    return None if x is None or pd.isna(x) else round(float(x), nd)
+
+
+def rs_line_stats(c, b, i, thr):
+    """c, b：同じ日付に揃えた銘柄とベンチマークの終値。i：基準日の位置。RS線の状態を返す。"""
+    w, n_ema = int(thr["rs_window"]), int(thr["rs_ema"])
+    rs = c / b
+    prior_max = rs.shift(1).rolling(w, min_periods=w).max()     # 過去252本（当日を含まない）
+    is_nh = rs > prior_max
+    px_prior_max = c.shift(1).rolling(w, min_periods=w).max()
+    px_hi = c.rolling(w, min_periods=w).max()                   # 当日を含む252日終値高値
+    rs_hi = rs.rolling(w, min_periods=w).max()
+    e = rs.ewm(span=n_ema, adjust=False, min_periods=n_ema).mean()
+    if pd.isna(rs.iloc[i]):
+        return None
+    enough = pd.notna(prior_max.iloc[i])
+    nh = bool(is_nh.iloc[i]) if enough else None
+    past = np.where(is_nh.iloc[:i].fillna(False).values)[0]
+    since = int(i - past[-1]) if len(past) else None
+    px_gap = (c.iloc[i] / px_hi.iloc[i] - 1) * 100 if pd.notna(px_hi.iloc[i]) else np.nan
+    px_nh = bool(c.iloc[i] > px_prior_max.iloc[i]) if pd.notna(px_prior_max.iloc[i]) else None
+    above = None if pd.isna(e.iloc[i]) else bool(rs.iloc[i] > e.iloc[i])
+    above_y = None if (i < 1 or pd.isna(e.iloc[i - 1]) or pd.isna(rs.iloc[i - 1])) else bool(rs.iloc[i - 1] > e.iloc[i - 1])
+    cross = None if above is None or above_y is None or above == above_y else ("up" if above else "down")
+    return {
+        "rs_new_high": nh,
+        "leads_price": None if nh is None else bool(nh and pd.notna(px_gap) and px_gap <= -thr["rs_lead_price_gap_pct"]),
+        "price_new_high": px_nh,
+        "days_since_prev_rs_high": since,   # None＝履歴内（最大約3年）にRS新高値なし
+        "rs_pct_from_52w_high": _r((rs.iloc[i] / rs_hi.iloc[i] - 1) * 100 if pd.notna(rs_hi.iloc[i]) else np.nan, 1),
+        "price_pct_from_52w_high": _r(px_gap, 1),
+        "above_ema21": above,
+        "cross_ema21": cross,
+        "dist_ema21_pct": _r((rs.iloc[i] / e.iloc[i] - 1) * 100 if pd.notna(e.iloc[i]) else np.nan),
+        "ema21_slope_5d_pct": _r((e.iloc[i] / e.iloc[i - 5] - 1) * 100 if i >= 5 and pd.notna(e.iloc[i - 5]) else np.nan),
+        "rs_chg_21d_pct": _r((rs.iloc[i] / rs.iloc[i - 21] - 1) * 100 if i >= 21 and pd.notna(rs.iloc[i - 21]) else np.nan),
+        "history_ok": bool(enough),
+    }
+
+
+def rs_lines(px, cfg, thr, us_asof):
+    """米国上場銘柄のRS線（対SPY、補助で対QQQ）。返り値：(rs_lines の辞書, シグナルのリスト)"""
+    C = px.pivot(index="date", columns="ticker", values="close").sort_index()
+    if RS_BENCH not in C:
+        return {"status": "missing", "note": "SPYの日足がありません"}, []
+    C = C[C[RS_BENCH].notna() & (C.index <= us_asof)].astype(float)
+    i = len(C) - 1
+    asia, fx = tuple(cfg.get("asia_suffixes", [])), set(cfg["groups"].get("rates_fx", []))
+    group_of = {t: g for g, ts in cfg["groups"].items() for t in ts}
+    names = [t for g in RS_GROUPS for t in cfg["groups"].get(g, [])]
+    names = [t for t in dict.fromkeys(names) if t in C and t not in RS_EXCLUDE and t not in fx and not t.endswith(asia)]
+    spy = C[RS_BENCH]
+    spy_hi = spy.rolling(int(thr["rs_window"]), min_periods=int(thr["rs_window"])).max().iloc[i]
+
+    rows, sig = [], []
+    for t in names:
+        if pd.isna(C[t].iloc[i]):
+            continue  # 基準日の終値がない（取得遅れ）
+        s = rs_line_stats(C[t], spy, i, thr)
+        if s is None:
+            continue
+        q = rs_line_stats(C[t], C[RS_AUX], i, thr) if RS_AUX in C and t != RS_AUX else None
+        rows.append({"ticker": t, "group": group_of.get(t, ""), **s,
+                     "qqq": None if q is None else {k: q[k] for k in ("rs_new_high", "above_ema21", "rs_pct_from_52w_high", "rs_chg_21d_pct")}})
+        if s["rs_new_high"]:
+            gap = s["days_since_prev_rs_high"]
+            gap_txt = "（履歴内で初）" if gap is None else (f"（前回のRS新高値から{gap}営業日ぶり）" if gap >= thr["rs_first_gap_days"] else "")
+            if s["leads_price"]:
+                sig.append({"type": "rs_line", "ticker": t, "severity": "high", "value": s["price_pct_from_52w_high"],
+                            "detail": f"RS線（対SPY）が52週高値を更新、株価は高値から{s['price_pct_from_52w_high']:+.1f}%（RSが株価に先行）{gap_txt}"})
+            else:
+                sig.append({"type": "rs_line", "ticker": t, "severity": "medium", "value": s["price_pct_from_52w_high"],
+                            "detail": f"RS線（対SPY）が52週高値を更新、株価も高値圏（高値から{s['price_pct_from_52w_high']:+.1f}%）{gap_txt}"})
+        if t in RS_CORE and s["cross_ema21"]:
+            sig.append({"type": "rs_line", "ticker": t, "severity": "medium", "value": s["dist_ema21_pct"],
+                        "detail": f"RS線（対SPY）が21日EMAを{'上抜け' if s['cross_ema21'] == 'up' else '下抜け'}（EMAとの差 {s['dist_ema21_pct']:+.2f}%）"})
+
+    ok = [r for r in rows if r["above_ema21"] is not None]
+    out = {
+        "status": "ok",
+        "as_of": C.index[i].strftime("%Y-%m-%d"),
+        "bench": RS_BENCH, "aux_bench": RS_AUX,
+        "definition": "RS線＝終値÷SPY終値。RS新高値＝当日値が過去252本すべてを上回る（253本必要）。"
+                      f"先行＝RS新高値の日に株価が252日終値高値から{thr['rs_lead_price_gap_pct']}%以上下。SOXLは対象外（SOXXで代用）。",
+        "spy_pct_from_52w_high": _r((spy.iloc[i] / spy_hi - 1) * 100 if pd.notna(spy_hi) else np.nan, 1),
+        "summary": {
+            "rs_new_high": [r["ticker"] for r in rows if r["rs_new_high"]],
+            "rs_leads_price": [r["ticker"] for r in rows if r["leads_price"]],
+            "rs_near_high_5pct": [r["ticker"] for r in rows if r["rs_pct_from_52w_high"] is not None and r["rs_pct_from_52w_high"] >= -5],
+            "above_ema21": [r["ticker"] for r in ok if r["above_ema21"]],
+            "below_ema21": [r["ticker"] for r in ok if not r["above_ema21"]],
+            "above_ema21_count": f"{sum(r['above_ema21'] for r in ok)}/{len(ok)}",
+            "crossed_up": [r["ticker"] for r in rows if r["cross_ema21"] == "up"],
+            "crossed_down": [r["ticker"] for r in rows if r["cross_ema21"] == "down"],
+            "history_short": [r["ticker"] for r in rows if not r["history_ok"]],
+        },
+        "rows": sorted(rows, key=lambda r: (not r["rs_new_high"], -(r["rs_pct_from_52w_high"] if r["rs_pct_from_52w_high"] is not None else -999))),
+    }
+    return out, sig
 
 
 def side(a, b):
@@ -247,6 +364,11 @@ def main():
     sig = detect(now, prev, cfg, thr, tickers)
     macro = bs.macro_summary(a.out)
     sig += rates_signal(macro, thr)
+    try:
+        rsl, rs_sig = rs_lines(px, cfg, thr, us_asof)
+    except Exception as e:  # RS線の失敗で日次シグナル全体を止めない
+        rsl, rs_sig = {"status": "error", "note": f"{type(e).__name__}: {e}"}, []
+    sig += rs_sig
     order = {"high": 0, "medium": 1, "low": 2}
     sig = [x for x in sig if x["severity"] != "low" or x["type"] != "sma_cross" or x["ticker"] in ("KRW=X",)]  # 為替のSMAクロスはUSD/KRWだけ残す
     sig.sort(key=lambda s: (order.get(s["severity"], 9), s["type"], s["ticker"]))
@@ -267,6 +389,7 @@ def main():
         "breadth_prev": {k: v["above_sma50"].get("pct") for k, v in prev["breadth"].items()},
         "table": table_rows(now["snap"], cfg["groups"]["market"] + cfg["groups"]["rates_fx"] + cfg["groups"]["memory_us"] + cfg["groups"]["memory_asia"] + ["NVDA", "TSM", "AMD", "AVGO", "ASML", "AMAT", "LRCX", "KLAC"]),
         "watch_levels": watch_levels(now["snap"]),
+        "rs_lines": rsl,
         "adr": [{k: x.get(k) for k in ("ads", "date", "premium_pct", "premium_avg20", "ads_ret_1w", "local_ret_1w", "ratio_or_data_suspect")} for x in now["adr_sum"] if x.get("status") == "ok"],
         "macro": macro.get("latest", {}),
         "flags": now["flags"],
