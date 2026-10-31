@@ -9,6 +9,7 @@
 安全設計:
   - 書き込みは一時ファイルに出してから置き換える（途中で落ちても前回のファイルが残る）
   - 失敗銘柄が3割を超えたら何も書かずに終了コード2（前回のデータを残し、Actionsが失敗を知らせる）
+  - 前回のファイルとマージする（今回取れなかった日付の行は前回の値を残す）。基準日が前回より古くなる場合は書かない
 データ元: Yahoo Finance（yfinance経由の非公式な取得。仕様変更で止まることがある）
 """
 import argparse
@@ -82,7 +83,9 @@ def download(tickers, chunk=40, retries=3, pause=3.0):
         df = None
         for attempt in range(retries):
             try:
-                df = yf.download(part, period=PERIOD, interval="1d", auto_adjust=False, actions=False,
+                end = (datetime.now(timezone.utc) + timedelta(days=2)).strftime("%Y-%m-%d")
+                start = (datetime.now(timezone.utc) - timedelta(days=3 * 365 + 7)).strftime("%Y-%m-%d")
+                df = yf.download(part, start=start, end=end, interval="1d", auto_adjust=False, actions=False,
                                  group_by="ticker", threads=True, progress=False)
                 break
             except Exception as e:  # 通信エラーや一時的な制限
@@ -117,6 +120,22 @@ def main():
         print("failed:", failed, file=sys.stderr)
         sys.exit(2)
 
+    # 前回のファイルとマージする。Yahooが最新日の足を一時的に返さないことがあるため、
+    # 今回取れなかった日付の行は前回の値を残す（同じ日付は今回の値で上書き）
+    prev_path = os.path.join(a.out, "prices_daily.csv.gz")
+    merged_from_prev = 0
+    if os.path.exists(prev_path):
+        try:
+            old = pd.read_csv(prev_path, dtype={"date": str})
+            old = old[old["ticker"].isin(set(tickers))][COLUMNS]
+            key_new = set(zip(px["ticker"], px["date"]))
+            keep = old[[(t, d) not in key_new for t, d in zip(old["ticker"], old["date"])]]
+            cutoff = (datetime.now(timezone.utc) - timedelta(days=3 * 365 + 7)).strftime("%Y-%m-%d")
+            keep = keep[keep["date"] >= cutoff]
+            merged_from_prev = int(len(keep))
+            px = pd.concat([px, keep], ignore_index=True)
+        except Exception as e:  # 前回ファイルが壊れていても今回分で続行
+            print(f"前回ファイルとのマージをスキップ: {e}", file=sys.stderr)
     px = px.sort_values(["ticker", "date"]).reset_index(drop=True)
     last = px.groupby("ticker")["date"].max()
     us_asof = last.get("SPY", last.max())
@@ -149,6 +168,7 @@ def main():
         "tickers_ok": int(px["ticker"].nunique()),
         "tickers_failed": failed,
         "tickers_behind_us": stale,
+        "rows_kept_from_previous": merged_from_prev,
     }
     write_atomic(manifest, os.path.join(a.out, "prices_manifest.json"))
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
