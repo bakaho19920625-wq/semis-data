@@ -1,5 +1,5 @@
 {
-  "config_version": "1.2",
+  "config_version": "1.3",
   "groups": {
     "market": [
       "^GSPC",
@@ -306,5 +306,28 @@
       "D6": 10
     }
   },
-  "calibration_note": "S2〜S5の帯は2023-10〜2026-10のSOXX・40銘柄の分布で、各段階の出現比率が偏りすぎないよう設定。D1〜D6は実データ未検証（DRAM設定以降の履歴が短い）。3回のレポート後に見直す。"
+  "calibration_note": "S2〜S5の帯は2023-10〜2026-10のSOXX・40銘柄の分布で、各段階の出現比率が偏りすぎないよう設定。D1〜D6は実データ未検証（DRAM設定以降の履歴が短い）。3回のレポート後に見直す。",
+  "sector_rs": {
+    "bench": "SOXX",
+    "windows": [
+      20,
+      60
+    ],
+    "targets": [
+      "semis_broad",
+      "memory_us"
+    ]
+  },
+  "resilience": {
+    "bench": "SOXX",
+    "min_depth_pct": 5,
+    "shallow_pct": 8,
+    "min_bars": 5,
+    "held_max": 0.5,
+    "inline_max": 1.0,
+    "completed_keep_bars": 60,
+    "min_history_bars": 120,
+    "now_na_above_pct": 2,
+    "newhigh_upgrade_dd_pct": 15
+  }
 }

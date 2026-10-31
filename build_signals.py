@@ -17,6 +17,10 @@
   vix            VIXが25超、または1日で20%超上昇
   rates          10年実質金利の5営業日変化が±15bp以上
   fx             USD/KRW・USD/JPYの1日変化が±1.5%以上
+  v6.1 追加（resilience.json の前日比）
+  sector_rs_flip     セクター内区分（対SOXX）が leader⇄laggard に変わった
+  next_candidate_new／next_candidate_out 調整耐性の「次の候補」に入った／外れた。late_break_new 「後崩れ」に新しく入った
+  corr_state_change  SOXXの調整窓の状態（調整中・回復中・完了・なし）が変わった
 """
 import argparse
 import json
@@ -138,6 +142,31 @@ def detect(now, prev, cfg, thr, tickers):
         if abs(an["premium_pct"] - an["premium_avg20"]) > thr["adr_gap"]:
             add("adr_premium", an["ads"], f"プレミアムが20日平均から{an['premium_pct'] - an['premium_avg20']:+.1f}pt乖離（{an['premium_pct']:.1f}% vs {an['premium_avg20']:.1f}%）", "medium", round(an["premium_pct"] - an["premium_avg20"], 1))
 
+    # v6.1: セクター内区分・調整耐性の変化点（判断はしない）
+    rn, rp = now.get("resilience") or {}, prev.get("resilience") or {}
+    cn, cp = (rn.get("sector_rs") or {}).get("classes", {}), (rp.get("sector_rs") or {}).get("classes", {})
+    for t, c_now in cn.items():
+        c_prev = cp.get(t)
+        if c_now and c_prev and {c_now, c_prev} == {"leader", "laggard"}:
+            add("sector_rs_flip", t, f"セクター内区分（対SOXX）が {c_prev}→{c_now}", "medium", c_now)
+    rows_n = {x["ticker"]: x for x in rn.get("rows", [])}
+    rows_p = {x["ticker"]: x for x in rp.get("rows", [])}
+    for t, x in rows_n.items():
+        y = rows_p.get(t, {})
+        if x.get("tier") and not y.get("tier"):
+            add("next_candidate_new", t, f"調整耐性の次の候補に入った（{x['tier']}：{x.get('held_class')}×{x.get('rebound_class')}、R_held {x.get('r_held')}、R_now {x.get('r_now')}）",
+                "medium", x["tier"])
+        if y.get("tier") and not x.get("tier"):
+            add("next_candidate_out", t, f"調整耐性の次の候補から外れた（{y['tier']}→なし：{x.get('held_class')}×{x.get('rebound_class')}、R_now {x.get('r_now')}、高値から {x.get('own_dd_now_pct')}%）",
+                "medium", x.get("r_now"))
+        if x.get("late_break") and not y.get("late_break"):
+            add("late_break_new", t, f"後崩れ：下げには耐えた（R_held {x.get('r_held')}）が戻りで遅れ（R_now {x.get('r_now')}、高値から {x.get('own_dd_now_pct')}%）", "high", x.get("r_now"))
+    wn, wp = rn.get("window") or {}, rp.get("window") or {}
+    if wn and wp and wn.get("state") != wp.get("state"):
+        add("corr_state_change", wn.get("bench", "SOXX"),
+            f"調整窓の状態が {wp.get('state')}→{wn.get('state')}（高値 {wn.get('high_date')}、安値 {wn.get('low_date')}、dd_low {wn.get('dd_low_pct')}%、dd_now {wn.get('dd_now_pct')}%）",
+            "high", wn.get("state"))
+
     # VIX
     v, vp = row_of(S, "^VIX"), row_of(P, "^VIX")
     if v is not None:
@@ -242,6 +271,12 @@ def main():
         "macro": macro.get("latest", {}),
         "flags": now["flags"],
         "thresholds": thr,
+        # v6.1: セクター内の強弱と調整耐性（resilience.json の要約。判断はしない）
+        "sector_rs": {k: now["resilience"]["sector_rs"].get(k) for k in ("bench", "counts", "leaders", "laggards")}
+        | {"leaders_top5": now["resilience"]["sector_rs"]["leaders"][:5], "laggards_bottom5": now["resilience"]["sector_rs"]["laggards"][:5]},
+        "resilience": {"window": now["resilience"]["window"], "held_ratio": now["resilience"]["held_ratio"],
+                       "next_candidates": now["resilience"]["next_candidates"][:8], "late_breaks": now["resilience"]["late_breaks"],
+                       "note": now["resilience"]["note"]},
     }
     bs.write_atomic(out, os.path.join(a.out, "daily_signals.json"))
     print(json.dumps({"us_as_of": out["us_as_of"], "prev_as_of": out["prev_as_of"], "signal_count": out["signal_count"],

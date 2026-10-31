@@ -24,6 +24,11 @@
   相対強度    : 銘柄のN本騰落率−同じ暦日区間のベンチマーク騰落率（%pt、N=20・60）
   S/R候補     : 直近20本・60本の安値・高値
   段階の閾値  : config.json の levels（帯は「値 < 境界」で下の段階）
+  v6.1 追加（DEFINITIONS 1.2。採点には使わない。正本は market-data の 03_Addendum_v4.3_SectorRS_Resilience.txt）
+  セクター内区分 : rs_soxx_20>0 かつ rs_soxx_60>0 かつ dd_vs_soxx_pt>0 → leader、3つとも負 → laggard、他 neutral
+  調整窓      : SOXXの直近252本の終値最高値の日→以降の最安値の日。dd_low≦−5%かつ5本以上で成立
+  下げ耐性比  : 窓内で銘柄が自分の高値から下げた率 ÷ SOXXの dd_low（≦0.5 耐えた／≦1.0 同調／>1.0 崩れた）
+  戻り比      : 銘柄の高値からの下落率 ÷ SOXXの dd_now（≦0.5 先行／≦1.0 同調／>1.0 遅れ）。出力は resilience.json
 """
 import argparse
 import json
@@ -34,7 +39,7 @@ from datetime import datetime, timedelta, timezone
 import numpy as np
 import pandas as pd
 
-DEFINITIONS_VERSION = "1.1"
+DEFINITIONS_VERSION = "1.2"
 JST = timezone(timedelta(hours=9))
 RET = {"ret_1d": 1, "ret_1w": 5, "ret_1m": 21, "ret_3m": 63}
 JUMP = {"default": 0.35, "leveraged": 0.60, "fx_rates": 0.10}
@@ -395,6 +400,188 @@ def load_prices(path):
     return px.drop_duplicates(subset=["ticker", "date"], keep="last").sort_values(["ticker", "date"])
 
 
+# ---------- セクター内RS・調整耐性（v6.1。定義の正本は market-data の 03_Addendum_v4.3_SectorRS_Resilience.txt） ----------
+RES_DEFAULT = {"bench": "SOXX", "min_depth_pct": 5, "shallow_pct": 8, "min_bars": 5, "held_max": 0.5, "inline_max": 1.0,
+               "completed_keep_bars": 60, "min_history_bars": 120, "now_na_above_pct": 2, "newhigh_upgrade_dd_pct": 15}
+SRS_DEFAULT = {"bench": "SOXX", "windows": [20, 60], "targets": ["semis_broad", "memory_us"]}
+
+
+def sector_rs_columns(snap, cfg):
+    """銘柄ごとの対SOXX区分：rs_soxx_20>0 かつ rs_soxx_60>0 かつ dd_vs_soxx_pt>0 → leader、3つとも負 → laggard、他は neutral。
+    dd_vs_soxx_pt ＝ 銘柄の dd_from_high − SOXX の dd_from_high（%pt）。rs_soxx_line_60h ＝ P/SOXX が直近60本の高値以上。"""
+    sc = {**SRS_DEFAULT, **cfg.get("sector_rs", {})}
+    b = sc["bench"]
+    k20, k60 = f"rs_{b.lower()}_{sc['windows'][0]}", f"rs_{b.lower()}_{sc['windows'][1]}"
+    brow = snap[snap["ticker"] == b]
+    bdd = float(brow["dd_from_high"].iloc[0]) if not brow.empty and pd.notna(brow["dd_from_high"].iloc[0]) else np.nan
+    dd_diff = snap["dd_from_high"].astype(float) - bdd
+    cls = []
+    for r20, r60, dv in zip(snap[k20], snap[k60], dd_diff):
+        if any(pd.isna(x) for x in (r20, r60, dv)):
+            cls.append(None)
+        elif r20 > 0 and r60 > 0 and dv > 0:
+            cls.append("leader")
+        elif r20 < 0 and r60 < 0 and dv < 0:
+            cls.append("laggard")
+        else:
+            cls.append("neutral")
+    return dd_diff.round(4), cls
+
+
+def rs_line_high(c, b, n=60):
+    """P/B が直近 n 本（当日を除く）の最大値以上か。足が足りなければ None。"""
+    j = c.index.intersection(b.index)
+    line = (c.loc[j] / b.loc[j]).dropna()
+    if len(line) < n + 1:
+        return None
+    return bool(line.iloc[-1] >= line.iloc[-n - 1:-1].max())
+
+
+def _episode(c, ih, il, ii, state, rc):
+    dd_low = (c.iloc[il] / c.iloc[ih] - 1) * 100
+    dd_now = (c.iloc[ii] / c.iloc[ih] - 1) * 100
+    valid = dd_low <= -rc["min_depth_pct"] and (il - ih) >= rc["min_bars"]
+    note = "浅い調整（参考）" if valid and dd_low > -rc["shallow_pct"] else ""
+    return {"state": state, "high_date": str(c.index[ih].date()), "low_date": str(c.index[il].date()),
+            "dd_low_pct": round(float(dd_low), 1), "dd_now_pct": round(float(dd_now), 1), "bars_high_to_low": int(il - ih),
+            "bars_since_low": int(ii - il), "valid": bool(valid), "note": note, "_t_high": c.index[ih], "_t_low": c.index[il]}
+
+
+def correction_window(c, rc):
+    """基準ETFの調整窓。直近252本の終値最高値の日→以降の最安値の日。
+    状態：調整中（dd_now≦−5%）／回復中／完了（直前：現在の窓が未成立で、直近60本以内に新高値で回復した調整がある）／なし。"""
+    base = {"bench": rc["bench"], "state": "なし", "valid": False, "high_date": None, "low_date": None, "dd_low_pct": None,
+            "dd_now_pct": None, "bars_high_to_low": None, "bars_since_low": None, "note": ""}
+    if c is None or c.dropna().shape[0] < 130:
+        return {**base, "note": "基準ETFの履歴不足"}
+    c = c.dropna()
+    ii = len(c) - 1
+    seg = c.iloc[max(0, ii - 251):ii + 1]
+    ih = int(c.index.get_loc(seg.idxmax()))
+    il = int(c.index.get_loc(c.iloc[ih:ii + 1].idxmin()))
+    cur = _episode(c, ih, il, ii, "調整中" if (c.iloc[ii] / c.iloc[ih] - 1) * 100 <= -rc["min_depth_pct"] else "回復中", rc)
+    if cur["valid"]:
+        return {**base, **cur}
+    rm = c.rolling(252, min_periods=1).max().shift(1)
+    nh = (c >= rm).to_numpy()
+    runs = []
+    for k in range(max(1, ii - 300), ii + 1):
+        if nh[k]:
+            if runs and k == runs[-1][1] + 1:
+                runs[-1][1] = k
+            else:
+                runs.append([k, k])
+    for r in range(len(runs) - 1, 0, -1):
+        peak, rec = runs[r - 1][1], runs[r][0]
+        if ii - rec > rc["completed_keep_bars"]:
+            break
+        if rec - peak < 2:
+            continue
+        trough = int(c.index.get_loc(c.iloc[peak:rec].idxmin()))
+        ep = _episode(c, peak, trough, ii, "完了（直前）", rc)
+        if ep["valid"]:
+            ep["note"] = "、".join(x for x in (ep["note"], f"新高値回復 {str(c.index[rec].date())}") if x)
+            return {**base, **ep}
+    return {**base, "note": f"現在の高値から {cur['dd_low_pct']}%（{cur['high_date']}→{cur['low_date']}）で調整未成立"}
+
+
+def resilience_rows(closes, targets, w, rc):
+    """銘柄ごとの調整耐性。w は correction_window の戻り値。valid でなければ全列 None。"""
+    cols = ["own_dd_low_pct", "r_held", "held_class", "own_dd_now_pct", "r_now", "rebound_class",
+            "new_high_after_low", "below_50sma_days", "tier", "late_break"]
+    out = {}
+    for t in targets:
+        out[t] = {k: None for k in cols}
+        c = closes.get(t)
+        if not w.get("valid") or c is None:
+            continue
+        c = c.dropna()
+        if c.empty:
+            continue
+        t_high, t_low = w["_t_high"], w["_t_low"]
+        dd_low, dd_now = w["dd_low_pct"] / 100, w["dd_now_pct"] / 100
+        h252 = c.rolling(252, min_periods=rc["min_history_bars"]).max()
+        own_now = c.iloc[-1] / h252.iloc[-1] - 1 if pd.notna(h252.iloc[-1]) else np.nan
+        r_now = own_now / dd_now if (dd_now * 100 < -rc["now_na_above_pct"] and pd.notna(own_now)) else np.nan
+        after = c.loc[t_low:].iloc[1:]
+        newhi = bool((after >= h252.shift(1).loc[after.index]).any()) if len(after) else False
+        hist = int((c.index < t_high).sum())
+        win = c.loc[t_high:t_low]
+        if hist < rc["min_history_bars"] or win.empty or pd.isna(h252.loc[:t_high].iloc[-1] if len(h252.loc[:t_high]) else np.nan):
+            held, r_held, own_low, below = None, np.nan, np.nan, None
+        else:
+            h0 = max(float(h252.loc[:t_high].iloc[-1]), float(win.max()))
+            own_low = win.min() / h0 - 1
+            r_held = own_low / dd_low
+            held = "耐えた" if r_held <= rc["held_max"] else "同調" if r_held <= rc["inline_max"] else "崩れた"
+            s50 = c.rolling(50, min_periods=50).mean().loc[win.index]
+            below = int((win < s50).sum()) if s50.notna().all() else None
+        if pd.isna(own_now):
+            reb = None
+        elif pd.notna(r_now):
+            reb = "先行" if r_now <= rc["held_max"] else "同調" if r_now <= rc["inline_max"] else "遅れ"
+            if reb == "同調" and newhi and own_now >= -rc["newhigh_upgrade_dd_pct"] / 100:
+                reb = "先行"
+        else:
+            reb = "先行" if own_now >= -0.05 else "遅れ" if own_now <= -0.10 else "同調"
+        tier = "A" if (held == "耐えた" and reb in ("先行", "同調")) else "B" if (held == "同調" and reb == "先行") \
+            else "C" if (held == "崩れた" and reb == "先行") else None
+        out[t] = {"own_dd_low_pct": nz(own_low * 100, 1) if pd.notna(own_low) else None, "r_held": nz(r_held, 2) if pd.notna(r_held) else None,
+                  "held_class": held, "own_dd_now_pct": nz(own_now * 100, 1) if pd.notna(own_now) else None,
+                  "r_now": nz(r_now, 2) if pd.notna(r_now) else None, "rebound_class": reb, "new_high_after_low": newhi,
+                  "below_50sma_days": below, "tier": tier, "late_break": bool(held in ("耐えた", "同調") and reb == "遅れ")}
+    return out
+
+
+def sector_rs_and_resilience(snap, closes, cfg):
+    """snap に列を追加し、resilience.json 用の辞書を返す。対象＝config の sector_rs.targets（アジア株・ETF・指数は含めない）。"""
+    sc = {**SRS_DEFAULT, **cfg.get("sector_rs", {})}
+    rc = {**RES_DEFAULT, **cfg.get("resilience", {})}
+    targets = [t for t in dict.fromkeys(x for k in sc["targets"] for x in (cfg["breadth_sets"].get(k) or cfg["groups"].get(k) or []))
+               if t in set(snap["ticker"]) and not t.endswith(tuple(cfg.get("asia_suffixes", [])))]
+    in_t = snap["ticker"].isin(targets)
+    dd_diff, cls = sector_rs_columns(snap, cfg)
+    snap["dd_vs_soxx_pt"] = dd_diff.where(in_t)
+    snap["sector_rs_class"] = [c if ok else None for c, ok in zip(cls, in_t)]
+    b = closes.get(sc["bench"])
+    snap["rs_soxx_line_60h"] = [rs_line_high(closes[t], b, sc["windows"][1]) if (ok and b is not None and t in closes) else None
+                                for t, ok in zip(snap["ticker"], in_t)]
+
+    w = correction_window(closes.get(rc["bench"]), rc)
+    rows = resilience_rows(closes, targets, w, rc)
+    for col in ["own_dd_low_pct", "r_held", "held_class", "own_dd_now_pct", "r_now", "rebound_class",
+                "new_high_after_low", "below_50sma_days", "tier", "late_break"]:
+        snap[col] = [rows[t][col] if t in rows else None for t in snap["ticker"]]
+
+    tier_order = {"A": 0, "B": 1, "C": 2}
+    srow = snap.set_index("ticker")
+    def rec(t):
+        r = rows[t]
+        return {"ticker": t, "group": srow.loc[t, "group"], **r,
+                "rs_soxx_60": nz(srow.loc[t, f"rs_{sc['bench'].lower()}_{sc['windows'][1]}"], 1), "sector_rs_class": srow.loc[t, "sector_rs_class"]}
+    cands = sorted([rec(t) for t in targets if rows[t]["tier"]],
+                   key=lambda r: (tier_order[r["tier"]], r["r_held"] if r["r_held"] is not None else 9e9, -(r["rs_soxx_60"] or 0)))
+    late = sorted([rec(t) for t in targets if rows[t]["late_break"]], key=lambda r: -(r["r_now"] or 0))
+    hc = [rows[t]["held_class"] for t in targets if rows[t]["held_class"]]
+    public_w = {k: v for k, v in w.items() if not k.startswith("_")}
+    leaders = sorted([t for t in targets if srow.loc[t, "sector_rs_class"] == "leader"], key=lambda t: -float(srow.loc[t, f"rs_{sc['bench'].lower()}_{sc['windows'][1]}"] or 0))
+    laggards = sorted([t for t in targets if srow.loc[t, "sector_rs_class"] == "laggard"], key=lambda t: float(srow.loc[t, f"rs_{sc['bench'].lower()}_{sc['windows'][1]}"] or 0))
+    return {
+        "definition_version": "ST-1.3",
+        "sector_rs": {"bench": sc["bench"], "windows": sc["windows"], "targets": targets,
+                      "counts": {k: sum(1 for t in targets if srow.loc[t, "sector_rs_class"] == k) for k in ("leader", "neutral", "laggard")},
+                      "leaders": leaders, "laggards": laggards,
+                      "classes": {t: srow.loc[t, "sector_rs_class"] for t in targets}},
+        "window": public_w,
+        "rows": [rec(t) for t in targets],
+        "next_candidates": cands,
+        "late_breaks": late,
+        "held_ratio": {"held": sum(1 for x in hc if x == "耐えた"), "computed": len(hc),
+                       "ratio_pct": round(100 * sum(1 for x in hc if x == "耐えた") / len(hc), 1) if hc else None},
+        "note": "監視候補の順番であり買い判定ではない。R_held・R_nowは倍率なので dd_low・dd_now を併記して読む。採点（S/D）には使わない。",
+    }
+
+
 def compute_all(px, cfg):
     """日足から snapshot・flags・ADR・広がり・段階・スコアをまとめて計算する。"""
     no_volume, lev = set(cfg.get("no_volume", [])), cfg.get("leveraged", {})
@@ -434,8 +621,9 @@ def compute_all(px, cfg):
             flags.setdefault(s_["ads"], []).append("adr_ratio_or_data_suspect")
     breadth = {k: breadth_stats(snap, v) for k, v in cfg["breadth_sets"].items()}
     levels, scores = compute_levels(snap, cfg, adr_sum, breadth)
+    resilience = sector_rs_and_resilience(snap, closes, cfg)  # v6.1: snap に列を追加し、resilience.json 用の辞書を返す
     return {"snap": snap, "flags": flags, "missing": missing, "us_asof": us_asof,
-            "adr": adr, "adr_sum": adr_sum, "breadth": breadth, "levels": levels, "scores": scores}
+            "adr": adr, "adr_sum": adr_sum, "breadth": breadth, "levels": levels, "scores": scores, "resilience": resilience}
 
 
 # ---------- main ----------
@@ -458,15 +646,21 @@ def main():
     snap, flags, missing, us_asof = r["snap"], r["flags"], r["missing"], r["us_asof"]
     adr, adr_sum, breadth, levels, scores = r["adr"], r["adr_sum"], r["breadth"], r["levels"], r["scores"]
     write_atomic(snap, os.path.join(a.out, "semis_snapshot.csv"))
+    write_atomic({"us_as_of": us_asof.strftime("%Y-%m-%d"), **r["resilience"]}, os.path.join(a.out, "resilience.json"))
     if not adr.empty:
         write_atomic(adr.round(4), os.path.join(a.out, "adr_premium.csv"))
     asof_str = us_asof.strftime("%Y-%m-%d")
     write_atomic({"us_as_of": asof_str, "definitions_version": DEFINITIONS_VERSION, "config_version": cfg.get("config_version"),
                   "levels": levels, "scores": scores}, os.path.join(a.out, "levels.json"))
 
+    rw = r["resilience"]
     hist_levels = {"us_as_of": asof_str, **{k: v["level"] for k, v in levels.items()},
                    "S_score": scores["S"]["score"], "D_score": scores["D"]["score"], "TECHNICAL": scores["TECHNICAL"],
-                   "S_coverage": scores["S"]["coverage_pct"], "D_coverage": scores["D"]["coverage_pct"]}
+                   "S_coverage": scores["S"]["coverage_pct"], "D_coverage": scores["D"]["coverage_pct"],
+                   # v6.1（採点には使わない。履歴比較用）
+                   "corr_state": rw["window"]["state"], "corr_dd_now": rw["window"]["dd_now_pct"],
+                   "held_ratio_pct": rw["held_ratio"]["ratio_pct"], "next_candidates": len(rw["next_candidates"]),
+                   "sector_leaders": rw["sector_rs"]["counts"]["leader"], "sector_laggards": rw["sector_rs"]["counts"]["laggard"]}
     n_hl = append_history(os.path.join(a.out, "history_levels.csv"), [hist_levels], ["us_as_of"])
     keycols = ["close", "ret_1d", "ret_1w", "ret_1m", "sma20", "sma50", "sma200", "rsi14", "vol_ratio20", "updown_vol_ratio10",
                "dd_from_high", "rv20", "rs_spy_20", "rs_spy_60", "rs_soxx_20", "rs_soxx_60"]
@@ -492,7 +686,10 @@ def main():
         "adr": adr_sum,
         "macro": macro_summary(a.out),
         "history_rows": {"levels": n_hl, "key": n_kh},
-        "files": ["semis_snapshot.csv", "levels.json", "adr_premium.csv", "macro_daily.csv", "history_levels.csv", "history_key.csv"],
+        "files": ["semis_snapshot.csv", "levels.json", "resilience.json", "adr_premium.csv", "macro_daily.csv", "history_levels.csv", "history_key.csv"],
+        "resilience": {"state": rw["window"]["state"], "dd_low_pct": rw["window"]["dd_low_pct"], "dd_now_pct": rw["window"]["dd_now_pct"],
+                       "next_candidates": [x["ticker"] for x in rw["next_candidates"]], "late_breaks": [x["ticker"] for x in rw["late_breaks"]],
+                       "sector_leaders": rw["sector_rs"]["leaders"][:5], "sector_laggards": rw["sector_rs"]["laggards"][:5]},
         "price_basis": pman.get("price_basis", "split_adjusted_ex_dividends(yahoo_close)"),
         "source": "Yahoo Finance via yfinance (unofficial) / FRED",
     }
