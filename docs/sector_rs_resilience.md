@@ -4,7 +4,7 @@
 `https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/03_Addendum_v4.3_SectorRS_Resilience.txt`
 本ファイルは、この観測で使うパラメータ、データの出力先、プロンプトとの対応だけを書く。
 実装：build_snapshot.py（`sector_rs_and_resilience`）、build_signals.py。設定：config.json の `sector_rs`・`resilience`。
-作成 2026-10-31（DEFINITIONS 1.2、config 1.3、判定プロンプト v6.1、日次プロンプト v1.1）。
+作成 2026-10-31（当時：DEFINITIONS 1.2、config 1.3、判定プロンプト v6.1、日次プロンプト v1.1。プロンプトの版はその後上がっている）。
 
 ## 0. 位置づけ
 

@@ -18,7 +18,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
    - 前日が休場なら「新しい取引日はありません（休場）」と1行送って終了。
    - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` でワークフローを手動起動し、完了を最大10分待って data ブランチを取り直す。それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」と送って終了。手動起動した場合は10節に書く。
    - `run_status` の `signals` が failure なら、daily_signals.json は前回のもの。その旨を書き、表は semis_snapshot.csv から作る。
-   - （v1.3）market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。違えば6b節に「基準日が異なる（market-data ○○）」と書いて、そのまま転記する（待たない・起動しない）。取得できなければ6b節は「取得できず」の1行。`definition_version` が `ST-1.4` より前なら、テック内部とブレイクの伸びは「未対応（旧版）」。
+   - （v1.3）market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。違えば6b節に「基準日が異なる（market-data ○○）」と書いて、そのまま転記する（待たない・起動しない）。取得できなければ6b節は「取得できず」の1行。`definition_version` が `ST-1.4` より前なら、テック内部とブレイクの伸びは「未対応（旧版）」。`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
 2. Web確認は**最大6回**（検索＋取得の合計）。優先順：
    a. 前営業日に発表された監視企業の決算・ガイダンス・月次売上（該当があれば）
    b. 前営業日のメモリー価格・需給の報道（TrendForce等）、主要企業のHBM/DRAM/NANDに関する発表
@@ -91,7 +91,7 @@ RS線＝銘柄÷SPY。上向きなら市場より強い、下向きなら弱い�
 
 ### 9. 週次判定との整合
 直近の週次：VIEW、総合点、メモリー（M）、S/D。今日のS/Dの段階とスコア（前日比）。THESIS_INVALIDATION・TRIGGER への接触の有無。open の予測の状況。
-（v1.3）6b節のテック内部ラベルが前日から変わった、または指数の崩れガードが on になった日は、週次の REVERSAL_RISKS（テック内部・指数の崩れ）との関係を1行書く（スコアは変えない）。
+（v1.3）6b節のテック内部ラベルが前日から変わった、または指数の崩れガードが on になった日は、週次の反転リスク「テック内部の崩れ」（REVERSAL_RISKS）との関係を1行書く（スコアは変えない）。
 
 ### 10. データ監査（2〜3行）
 基準日、run_status、フラグ（stale/jump/adr）、Webで補った値、確認回数。market-data signals.json の基準日（as_of_market_date）と definition_version。

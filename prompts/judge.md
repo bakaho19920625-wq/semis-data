@@ -13,7 +13,7 @@
 取得経路：market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`（届かなければ `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data`）。シェルが使える環境では `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git md`（main は `--branch` なしで clone）。シェルがない通常のチャットでは raw URL で読む：市場データは `https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/<ファイル名>`、引継ぎ・予測台帳・証拠は `https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/handoff/latest.yaml`、`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/handoff/forecasts.csv`、`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/evidence/latest.yaml`。
 
 ## 手順
-1. データ監査：`run_status` に failure があればそのファイルは前回のもの。`us_as_of` が直近の米国取引日でない、またはファイルがなければ「GitHubデータ未更新」とし、証拠YAMLの MARKET_FILL だけで2節を作り、S/Dは判定基準1節の欠損ルールで扱う。`flags` の `adr_ratio_or_data_suspect` はSKHYのADS比率と価格を疑い、8節で明記する。`short_history` はSMA200・52週をN/Aのまま。market-data の signals.json は `as_of_market_date` が `us_as_of` と同じか確認し、違えば0節と4c節に明記してそのまま転記する。取得できなければ4c節は「取得できず」、反転リストのその項目は前回の状態を据え置く。`definition_version` が `ST-1.4` より前ならテック内部とブレイクの伸びは「未対応（旧版）」。
+1. データ監査：`run_status` に failure があればそのファイルは前回のもの。`us_as_of` が直近の米国取引日でない、またはファイルがなければ「GitHubデータ未更新」とし、証拠YAMLの MARKET_FILL だけで2節を作り、S/Dは判定基準1節の欠損ルールで扱う。`flags` の `adr_ratio_or_data_suspect` はSKHYのADS比率と価格を疑い、8節で明記する。`short_history` はSMA200・52週をN/Aのまま。market-data の signals.json は `as_of_market_date` が `us_as_of` と同じか確認し、違えば0節と4c節に明記してそのまま転記する。取得できなければ4c節は「取得できず」、反転リストのその項目は前回の状態を据え置く。`definition_version` が `ST-1.4` より前ならテック内部とブレイクの伸びは「未対応（旧版）」、`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
 2. 前回予測の判定（15節）。
 3. 採点：S1～S5・D1～D6は `levels.json` を転記。A・M・F・E・Xは3節のアンカーで判定し、1節の手順で点数にする。前回値は `history_key.csv`・`history_levels.csv`・前回YAMLから取る。
 4. 反転リスク、シナリオ、新しい予測（13～15節）。
@@ -28,7 +28,7 @@
 - 同じ事実を複数の節で繰り返さず、予測を変える情報を先に書く。
 - （v6.3）書き方：状態を表す語は `docs/plain_language.md`（半導体固有の語）と米国株側の `05_Plain_Language_Glossary.txt`（market-data main）の「言葉」で書き、数字と記号を括弧で後ろに付ける。例「半導体の値動きは弱い（S 23.8）」「SOXの向きは普通（S1＝0、前回+1）」。記号は消さない。記号だけ・英語だけの行を作らない。表には「言葉」の列を置くか数字の横に言葉を添える。引継ぎYAMLは記号のまま。巻末に「読み方」（使った記号だけ、1行ずつ）。
 - セクター内区分（銘柄の対SOXX。`semis_snapshot.csv` の `sector_rs_class`）とS4（SOXXの対SPY）を混同しない。セクターが市場に負けている局面では、区分リーダーは「弱いセクターの中で相対的に強い」と書く。区分と調整耐性（`resilience.json`）は監視候補の順番であり、買い判定・採点（S/D・A〜X）には使わない。定義は docs/sector_rs_resilience.md。
-- （v6.2）market-data 由来の値（Tapeレジーム、IX3、テック内部、FB1）は環境認識と反転リスク（判定基準5節）にだけ使い、採点（S/D・A〜X）には使わない。S2（半導体約40銘柄の広がり）・S4（SOXXの対SPY）とは母集団も定義も違うので、同じ現象として二重に数えず、食い違うときはそのまま両方書く。
+- （v6.2）market-data 由来の値（Tapeレジーム、IX3、テック内部、FB1、（v6.4）先導セクター、ヘッジ条件、長期SPY配分モデル）は環境認識と反転リスク（判定基準5節）にだけ使い、採点（S/D・A〜X）には使わない。反転リスクが発動・警戒のときに0〜3か月のシナリオ確率を動かすのは可（上限±5pt、判定基準5節）。ヘッジ条件と長期モデルは米国株側の条件の転記で、本レポートの行動の目安には使わない。S2（半導体約40銘柄の広がり）・S4（SOXXの対SPY）とは母集団も定義も違うので、同じ現象として二重に数えず、食い違うときはそのまま両方書く。
 
 ---
 
@@ -117,7 +117,7 @@
 - **R14 DRAM ETF。** 運用期間が短い間はSMA200・52週・長期ベータN/A。設定前データを合成せず他ETFで補わない。保有銘柄の基準日が古ければ構成分析は参考。純流入は確認元不明なら表示しない。NAV乖離・スプレッド急拡大時はテクニカル信頼度を下げる。アクティブ運用・swap・T-Billで構成銘柄の単純加重と差が出ることを明記
 
 ## 5. 反転リスク（未発動・警戒・発動）
-AI CapEx鈍化・AI収益化失望／製品別価格の悪化／在庫増・稼働率低下・commodity bit供給増／TSMC月次・先端ノード・装置受注の悪化／金利・VIX急騰、対中規制、台湾・地政学／電力・冷却・パッケージ・ネットワーク制約／AI効率化による総ビット需要の実際の下方修正／光・CXL・HBF・SRAM採用と同時のHBM搭載量・発注下方修正／DRAM ETFの相対強度低下・下落日出来高増・流動性悪化／SKHYプレミアム急縮小、韓国市場・ウォン急変／（v6.2）テック内部の崩れ・ブレイクが伸びない地合い（market-data）
+AI CapEx鈍化・AI収益化失望／製品別価格の悪化／在庫増・稼働率低下・commodity bit供給増／TSMC月次・先端ノード・装置受注の悪化／金利・VIX急騰、対中規制、台湾・地政学／電力・冷却・パッケージ・ネットワーク制約／AI効率化による総ビット需要の実際の下方修正／光・CXL・HBF・SRAM採用と同時のHBM搭載量・発注下方修正／DRAM ETFの相対強度低下・下落日出来高増・流動性悪化／SKHYプレミアム急縮小、韓国市場・ウォン急変／（v6.2）テック内部の崩れ・ブレイクが伸びない地合い（market-data。略称「テック内部の崩れ」）
 
 （v6.2）最後の項目だけは機械的に状態を決める（P。market-data の値を転記して判定し、裁量で変えない）：
 - 発動：テック内部のラベルが broad_decline、かつ IX3（指数の崩れガード）が成立
@@ -233,5 +233,5 @@ UNCONFIRMED_ITEMS: []
 PRIMARY_SOURCES: []
 ```
 
-## 出力前の自己点検（0節の末尾に「点検：R1～R14、C1～C9 確認」と書く）
+## 出力前の自己点検（0節の末尾に「点検：R1～R14、C1～C10 確認」と書く）
 C1 S/Dの段階とスコアは levels.json と一致している／C2 全小項目に段階があり、据え置きには回数が付いている／C3 総合点の式と内訳が一致し、帯が付いている／C4 シナリオ確率は各期間で合計100%／C5 新しい予測はすべて期限と数値条件を持ち、forecasts.csv の行がある／C6 本文とYAMLの数値が一致している／C7 4a・4bとYAMLの SECTOR_RS・CORRECTION は resilience.json・semis_snapshot.csv の値と一致している（再計算していない）／C8 4cとYAMLの MARKET_CONTEXT は market-data の signals.json と一致し、反転リストの「テック内部の崩れ」の状態が判定基準5節の機械的な規則どおり／C9 冒頭ブロック（ひとこと・行動の目安・なぜ）があり、本文の状態語が言葉→数字（記号）の形で、記号だけの行がない／C10 MARKET_CONTEXT の先導セクター・ヘッジ・長期モデルの項目が signals.json の leadership／hedge／spy_model と一致している

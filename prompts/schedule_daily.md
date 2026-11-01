@@ -6,7 +6,7 @@
 - /home/claude/semis-data がなければ add_repo（owner=bakaho19920625-wq、repo=semis-data、access=push）のあと
   `git clone --depth 1 https://github.com/bakaho19920625-wq/semis-data /home/claude/semis-data`。あれば `git -C /home/claude/semis-data pull -q`。
 - data ブランチ：`rm -rf /home/claude/sd-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git /home/claude/sd-data`
-- 米国株指標チェックの判定結果（市場全体・テック内部・ブレイクの伸び。daily.md 6b節で転記する）：
+- 米国株指標チェックの判定結果（市場全体・テック内部・ブレイクの伸び・先導セクター・ヘッジ条件・長期の目安。daily.md 6b節で転記する）：
   `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`
   届かなければ `rm -rf /home/claude/mkt-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data`
   （signals.json はその中）。取れなければ 6b節は「取得できず」。market-data 側を起動したり待ったりしない。

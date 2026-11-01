@@ -27,7 +27,7 @@ flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認
 - handoff/latest.yaml が読める。LEVELS.S/D が /home/claude/sd-data/levels.json と一致。SCENARIOS 各期間の合計が100。
 - FORECASTS.new が forecasts.csv にある。
 - MARKET_CONTEXT が /home/claude/mkt_signals.json の値と一致し（先導セクター・ヘッジ・長期モデルの項目を含む）、反転リスク「テック内部の崩れ」の状態が judge.md 判定基準5節の規則どおり。
-- 冒頭ブロック（今日のひとこと3行＋行動の目安＋なぜその判断か）がある。本文の状態語が言葉→数字（記号）の形になっている。
+- 冒頭ブロック（今日のひとこと3行＝半導体／メモリー／行動の目安、＋なぜその判断か）がある。本文の状態語が言葉→数字（記号）の形になっている。
 不一致は判定エージェントに差し戻す（最大2回）。
 
 ## 5. 保存
