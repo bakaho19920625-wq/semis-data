@@ -17,11 +17,11 @@
   vix            VIXが25超、または1日で20%超上昇
   rates          10年実質金利の5営業日変化が±15bp以上
   fx             USD/KRW・USD/JPYの1日変化が±1.5%以上
-  v6.1 追加（resilience.json の前日比）
+  2026-10-31 追加（resilience.json の前日比。判定プロンプト v6.1・日次プロンプト v1.1）
   sector_rs_flip     セクター内区分（対SOXX）が leader⇄laggard に変わった
   next_candidate_new／next_candidate_out 調整耐性の「次の候補」に入った／外れた。late_break_new 「後崩れ」に新しく入った
   corr_state_change  SOXXの調整窓の状態（調整中・回復中・完了・なし）が変わった
-  v6.2 追加（市場比のRS線）
+  2026-10-31 追加（市場比のRS線。日次プロンプト v1.2）
   rs_line        RS線（銘柄÷SPY）が52週高値を更新（株価より先なら high）、主要銘柄のRS線が21日EMAを上抜け・下抜け
 
 RS線（rs_lines。セクター内RS＝対SOXXとは別。こちらは市場全体＝SPY比）
