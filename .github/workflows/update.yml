@@ -4,11 +4,12 @@ name: update-semis-data
 
 on:
   schedule:
-    # 月〜金の 21:47 UTC と 22:47 UTC ＝ 日本時間 火〜土の朝 6:47 と 7:47（米国の取引終了後）。
-    # GitHubの定期実行は数時間遅れることがあるため2回にしている。2回目は同じ内容を上書きするだけ。
-    # それでも遅れた日は、日次レポートの実行時に手動で起動する（prompts/daily.md 手順1）。
-    - cron: "47 21 * * 1-5"
-    - cron: "47 22 * * 1-5"
+    # 実績（2026-10-27〜31）に合わせた時刻。Yahooは米国東部 20:30〜21:20 ごろ（日本時間 10:30〜11:20、夏時間は1時間早い）に
+    # 全銘柄の終値を一時的に空欄で返す。以前の予約（UTC 21:47・22:47）はGitHubの遅れでこの時間帯に動き、前日のままになっていた。
+    # (1) 引け直後（日本 6:35）、(2) 空欄の時間帯の後（日本 12:35）の2回にし、各回は「前営業日の足が入るまで10分おきに最大6回取り直す」。
+    # 日次レポート（火〜土 8:53 JST）はデータが古ければ自分で手動起動する（prompts/daily.md 手順1）。
+    - cron: "35 21 * * 1-5"
+    - cron: "35 3 * * 2-6"
   workflow_dispatch: # 「Run workflow」ボタンで手動実行もできる
 
 permissions:
@@ -21,7 +22,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 100
     steps:
       - uses: actions/checkout@v6
 
@@ -46,7 +47,35 @@ jobs:
       - id: prices
         name: Fetch prices (Yahoo)
         continue-on-error: true
-        run: python fetch_prices.py --out out
+        # 前営業日（東部16:20を過ぎた直近の平日）の足が入るまで、10分おきに最大6回取り直す（Yahooの終値空欄の時間帯への対策）。
+        run: |
+          python - <<'PY'
+          import json, os, subprocess, sys, time
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
+          def expected_session():
+              now = datetime.now(ZoneInfo("America/New_York"))
+              d = now.date()
+              if now.hour * 60 + now.minute < 16 * 60 + 20:
+                  d -= timedelta(days=1)
+              while d.weekday() >= 5:
+                  d -= timedelta(days=1)
+              return d.isoformat()
+          want = expected_session()
+          rc = 0
+          for attempt in range(1, 7):
+              rc = subprocess.run([sys.executable, "fetch_prices.py", "--out", "out"]).returncode
+              got = None
+              if os.path.exists("out/semis_manifest.json"):
+                  got = json.load(open("out/semis_manifest.json")).get("us_as_of")
+              print(f"attempt {attempt}: rc={rc} us_as_of={got} expected={want}", flush=True)
+              if (rc == 0 and got and got >= want) or attempt == 6:
+                  if not (got and got >= want):
+                      print("::warning::前営業日の足がまだ入っていません（Yahoo未確定か休場日）。前回までの足で進みます。")
+                  break
+              time.sleep(600)
+          sys.exit(rc)
+          PY
 
       - id: macro
         name: Fetch macro (FRED)
