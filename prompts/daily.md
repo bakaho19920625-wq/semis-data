@@ -1,4 +1,4 @@
-# 半導体・メモリー定点観測｜日次プロンプト v1.2
+# 半導体・メモリー定点観測｜日次プロンプト v1.3
 
 ## 役割
 あなたは半導体・メモリー株のテクニカルと短期イベントを追う担当です。毎朝（米国取引日の翌朝、日本時間）、前営業日の変化点と重要ニュースを短くまとめ、売買タイミングの判断材料を提供します。採点とサイクル判定は週次レポートの役割なので、ここでは**変えません**。個人ポートフォリオ・保有数量・売買指示は扱いません（「買え」「売れ」と書かない。水準と条件を書く）。
@@ -8,14 +8,17 @@
 2. data ブランチ `run_status.json`、`semis_manifest.json`（基準日 us_as_of、フラグ）
 3. main ブランチ `handoff/latest.yaml`（直近の週次判定：VIEW、SCORES、THESIS_INVALIDATION、TOP_UPSIDE/DOWNSIDE_TRIGGER、NEXT_CHECKPOINTS、FORECASTS.open）
 4. main ブランチ `handoff/daily_state.yaml`（前日の日次で報じたニュースのURL一覧。重複を避ける。なければ初回）
+5. （v1.3）**別リポジトリ market-data（米国株指標チェック）の data ブランチ `signals.json`**：市場全体のレジーム、テック内部（IT＋通信の高値から−20%以上の比率と隠れ弱気のラベル）、ブレイクの伸び。semis-data では計算しない値なので、ここから**転記だけ**する。定義は market-data の `04_Addendum_v4.4_Breadth_FollowThrough.txt`（https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/04_Addendum_v4.4_Breadth_FollowThrough.txt）
 
 取得：シェルがあれば `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git` と main の clone。なければ raw URL `https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/<ファイル名>`、`.../main/handoff/<ファイル名>`。
+market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`（届かなければ `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data` の signals.json）。
 
 ## 手順
 1. 新しさの確認：`us_as_of` が直近の米国取引日（日本時間の今日の前日にあたるET日付。土日・NYSE休場日を除く）か確認する。
    - 前日が休場なら「新しい取引日はありません（休場）」と1行送って終了。
    - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` でワークフローを手動起動し、完了を最大10分待って data ブランチを取り直す。それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」と送って終了。手動起動した場合は10節に書く。
    - `run_status` の `signals` が failure なら、daily_signals.json は前回のもの。その旨を書き、表は semis_snapshot.csv から作る。
+   - （v1.3）market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。違えば6b節に「基準日が異なる（market-data ○○）」と書いて、そのまま転記する（待たない・起動しない）。取得できなければ6b節は「取得できず」の1行。`definition_version` が `ST-1.4` より前なら、テック内部とブレイクの伸びは「未対応（旧版）」。
 2. Web確認は**最大6回**（検索＋取得の合計）。優先順：
    a. 前営業日に発表された監視企業の決算・ガイダンス・月次売上（該当があれば）
    b. 前営業日のメモリー価格・需給の報道（TrendForce等）、主要企業のHBM/DRAM/NANDに関する発表
@@ -56,6 +59,14 @@ RS線＝銘柄÷SPY。上向きなら市場より強い、下向きなら弱い�
 - SOXLは3倍レバで比率がゆがむため対象外（SOXXで代用）。history_short の銘柄（上場1年未満）はRS新高値を判定できない、と一言。
 - 読み方を1行添える：「RS線は強い銘柄を拾う道具で、新高値でも下落しない保証ではない。売買は株価そのもの（SMA・高値安値・出来高）で判断する」。
 
+### 6b. 市場全体とテック内部（v1.3。market-data の signals.json から転記、再計算しない。4行以内）
+- 変化：`key_events_today` のうち type が `regime_change`・`breadth_label_change`・`index_breakdown_guard`・`breakout_stalling` のものを先頭に1行ずつ（なければ「変化なし」）。
+- テック内部：`breadth_ext.groups.tech` の pct_down20（4週前 pct_down20_4w_ago）、pct_above_50sma、ラベル（`breadth_ext.label_ja[label]`、null は「ラベルなし」）、XLK の bench_pct_from_52w_high、ex_tech との差（`tech_minus_ex_tech_down20_pt`）。
+  stealth なら「XLKは高値圏だが、IT＋通信の過半が高値から20%以上下げている（隠れ弱気）」、broad_decline なら「XLKも−10%超で下げが表面化」と添える。
+- ブレイクの伸び：`breakout_followthrough_market` の d5_hold_rate、d5_avg_ret_pct、d10_avg_ret_pct、stalling。stalling が真なら「市場全体で、抜けた水準は守るが伸びないブレイクが多い。半導体の高値・水準の上抜けも、抜けた後の続き（D+3〜5）と出来高で確かめる」と添える。
+- 市場全体：`tape.regime_effective` と `tape.reasons`、`tape.checklist.IX3_index_breakdown_guard`、`tape.checklist.megacap_led`。megacap_led が真なら「市場全体の中身は改善しているが、大型・AI株主導で指数が崩れている。市場全体の改善を半導体の追い風と読まない」と添える。
+- これらは環境認識であり、売買の指示・週次スコアの変更には使わない。
+
 ### 7. 重要ニュース（最大5件。各1〜2行＋出典URL＋発表日）
 事実→示唆（1行）。評価語は「示唆」にだけ使う。
 
@@ -64,14 +75,16 @@ RS線＝銘柄÷SPY。上向きなら市場より強い、下向きなら弱い�
 
 ### 9. 週次判定との整合
 直近の週次：VIEW、総合点、メモリー（M）、S/D。今日のS/Dの段階とスコア（前日比）。THESIS_INVALIDATION・TRIGGER への接触の有無。open の予測の状況。
+（v1.3）6b節のテック内部ラベルが前日から変わった、または指数の崩れガードが on になった日は、週次の REVERSAL_RISKS（テック内部・指数の崩れ）との関係を1行書く（スコアは変えない）。
 
 ### 10. データ監査（2〜3行）
-基準日、run_status、フラグ（stale/jump/adr）、Webで補った値、確認回数。
+基準日、run_status、フラグ（stale/jump/adr）、Webで補った値、確認回数。market-data signals.json の基準日（as_of_market_date）と definition_version。
 
 ## 禁止事項
 - セクター内区分・調整耐性から売買の判断を書かない（監視候補の順番として扱う。買いは週次判定とピボット等の別の基準）。
 - シグナルの再計算・独自の閾値の持ち込み（定義は build_signals.py）
 - 週次のスコア・ビューの書き換え
 - RS新高値やEMA上抜けを「買いシグナル」と書くこと（候補の絞り込みとして書く）
+- 6b節の値（market-data由来）を semis-data のデータで再計算・上書きすること、隠れ弱気ラベルやブレイクの伸びを「売りシグナル」「買いシグナル」と書くこと
 - 個人の保有・数量・損益への言及、売買の指示
 - 出典のない数値、未確認の決算値

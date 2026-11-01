@@ -1,7 +1,10 @@
 # semis-data
 
 半導体・メモリー定点観測レポートのための、データ自動取得（GitHub Actions）と、2段階プロンプト（収集→判定）の置き場です。
-`market-data`（米国株指標チェック用）とは独立しています。
+データの取得・計算は `market-data`（米国株指標チェック用）とは独立しています。
+ただし日次・週次のレポートは、`market-data` の data ブランチの `signals.json` から、市場全体のTapeレジーム・指数の崩れガード、
+テック内部（IT＋通信で高値から−20%以上の銘柄比率と隠れ弱気のラベル）、ブレイクの伸びを転記します（daily.md v1.3 の6b節、judge.md v6.2 の4c節と反転リスク）。
+定義は market-data の `04_Addendum_v4.4_Breadth_FollowThrough.txt`。
 
 ## 全体の流れ
 
