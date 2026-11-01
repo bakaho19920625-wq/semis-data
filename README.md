@@ -39,6 +39,7 @@
 - `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
 - `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（send_later）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
 - `docs/sources.md` / `docs/universe_kpi.md` … 収集時に必要なときだけ読む参照資料
+- `docs/plain_language.md` … やさしい表記の対応表（段階・スコア・小項目・判定の語を日本語に。日次・週次の書き方の約束）
 - `handoff/` … レポート間の引継ぎ（latest.yaml、日付別の控え、予測台帳 forecasts.csv）
 - `evidence/` … 証拠YAMLの控え
 

@@ -27,13 +27,13 @@ flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認
 - handoff/latest.yaml が読める。LEVELS.S/D が /home/claude/sd-data/levels.json と一致。SCENARIOS 各期間の合計が100。
 - FORECASTS.new が forecasts.csv にある。
 - MARKET_CONTEXT が /home/claude/mkt_signals.json の値と一致し、反転リスク「テック内部の崩れ」の状態が judge.md 判定基準5節の規則どおり。
-- レポート冒頭2行がある。
+- 冒頭ブロック（今日のひとこと3行＋行動の目安＋なぜその判断か）がある。本文の状態語が言葉→数字（記号）の形になっている。
 不一致は判定エージェントに差し戻す（最大2回）。
 
 ## 5. 保存
 `git add -A` → commit「report <日付>」→ `git push origin main`。data ブランチには書かない。
 
 ## 6. 配信
-SendUserMessage で1〜2画面：結論2行、総合点（帯）と6カテゴリ内訳、S/D、前回比と drivers、予測の判定結果と累積の的中率、
+SendUserMessage で1〜2画面：冒頭ブロック（judge.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）、総合点（帯）と6カテゴリ内訳、S/D、前回比と drivers、予測の判定結果と累積の的中率、
 反転リスク（「テック内部の崩れ」の状態と根拠の数値を含む）、市場全体とテック内部（4c節の要点2行）、次回の監視項目3つ、データ監査の要点。
 reports/<日付>.md を SendUserFile で送る。

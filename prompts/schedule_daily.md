@@ -22,7 +22,7 @@
 - `git add -A` → commit「daily <us_as_of>」→ `git push origin main`。data ブランチには書かない。
 
 ## 4. 配信
-SendUserMessage で2〜3画面：冒頭1行の結論、本日のシグナル（high→medium、全件）、読み方、
+SendUserMessage で2〜3画面：冒頭ブロック（daily.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）、本日のシグナル（high→medium、全件）、読み方、
 意識される水準（SOXX・SOXL・DRAM・MU・SNDK・SKHY の終値と SMA50/200、直近20日高安）、
 RS線（daily.md 6節：対SPYのRS新高値と株価に先行した銘柄、21日EMAの上抜け・下抜け、EMA21の上にある銘柄数。なければ「なし」と1行）、
 市場全体とテック内部（daily.md 6b節：テック内部のラベルと高値から−20%以上の比率、ブレイクの伸び、市場Tapeレジームと指数の崩れガード。変化があれば先頭に）、
