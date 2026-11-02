@@ -1,8 +1,6 @@
 # 情報源マップ（docs/sources.md）
 
-収集プロンプトが最初に1回読む参照資料。数値は再利用せず、毎回最新ページで確認する。
-
-情報源の優先順位と参照先を固定するものです。ここに書いた数値は再利用せず、レポートのたびに最新のページで確認します。
+収集プロンプトが最初に1回読む参照資料。情報源の優先順位と参照先を固定するもので、ここに書いた数値は再利用せず、レポートのたびに最新のページで確認する。
 
 ## 1. 市場データ（GitHub：semis-data）
 - リポジトリ：https://github.com/bakaho19920625-wq/semis-data
@@ -22,6 +20,8 @@
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/history_key.csv
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/history_levels.csv
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/adr_premium.csv
+- https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/resilience.json
+- https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/daily_signals.json
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/macro_daily.csv
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/fundamentals_latest.json
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/fundamentals.csv
@@ -35,7 +35,9 @@
 | run_status.json | 直近の実行で各ステップが success か failure か。failure のファイルは前回のまま |
 | semis_manifest.json | 最初に読む。基準日（us_as_of）、欠損銘柄、品質フラグ、S/Dスコア、騰落の広がり、ADR要約、マクロ最新値 |
 | levels.json | S1～S5・D1～D6の段階と入力値、S/D/TECHNICALスコア、coverage |
-| semis_snapshot.csv | 銘柄ごとの最新指標（定義は判定基準0節） |
+| semis_snapshot.csv | 銘柄ごとの最新指標（定義は build_snapshot.py の冒頭） |
+| resilience.json | セクター内の強弱（sector_rs）と調整耐性（window、next_candidates、late_breaks）。定義は docs/sector_rs_resilience.md |
+| daily_signals.json | 日次シグナル（変化点、主要銘柄の表、意識される水準、RS線）。日次レポートが読む |
 | history_key.csv | 主要銘柄の終値・SMA・RSI等の日次履歴（前回比に使う） |
 | history_levels.csv | 段階とスコアの日次履歴 |
 | adr_premium.csv | SKHYの理論ADS価値とプレミアムの推移（直近60営業日） |
@@ -70,7 +72,7 @@
 - SK hynix IR：https://www.skhynix.com/ir/UI-FR-IR01/ ／Newsroom：https://news.skhynix.com/
 - SEC EDGAR（F-1、424B4、F-6、6-K等）：https://www.sec.gov/edgar/browse/?CIK=0002120882
 - Nasdaq SKHY：https://www.nasdaq.com/market-activity/stocks/skhy ／Korea Exchange：https://global.krx.co.kr/
-- ADS比率：1 ADS＝普通株0.1株（2026年7月の424B4。預託銀行はCitibank, N.A.）。`adr_ratio_or_data_suspect` が出たら6-K・F-6で変更を確認する。
+- ADS比率：1 ADS＝普通株0.1株（2026年7月の424B4。預託銀行はCitibank, N.A.。確認済み）。`adr_ratio_or_data_suspect` が出ても比率の再確認はせず、終値（ADSと原株）の整合だけ確認する（schedule_weekly 第2節）。比率の変更（6-K・F-6）を確認するのは年1回か、フラグが新たに立ったときだけ。
 - Samsung IR：https://www.samsung.com/global/ir/ （普通株と優先株を混同しない）
 - Bank of Korea：https://www.bok.or.kr/eng/main/main.do
 
@@ -80,7 +82,7 @@ FRED：https://fred.stlouisfed.org/ ／Federal Reserve：https://www.federalrese
 ## 6. 企業IR・規制資料
 - SEC EDGAR の公式API：XBRL https://data.sec.gov/api/xbrl/companyconcept/CIK##########/us-gaap/<タグ>.json（レポート側の WebFetch で読める。sec_check_urls はこの形）／提出一覧 https://data.sec.gov/submissions/CIK##########.json（大きすぎて WebFetch では途中で切れる）／提出書類の索引 https://www.sec.gov/Archives/edgar/data/<CIK>/<受理番号>/（読める。本文の .htm は読めないことがある）／全文検索 https://efts.sec.gov/LATEST/search-index?q=…（検索語だけ違うURLは1回の収集で1回しか正しく読めないので注意）。
   GitHub Actions（クラウドのIP）からは SEC 全体が 403「Undeclared Automated Tool」で拒否される（2026-11-02 確認）ため、機械取得は Yahoo で行い、SEC は確認に使う。CIK は config.json の fundamentals.cik
-- AI・ロジック：NVIDIA https://investor.nvidia.com/ ／NVIDIA Developer Blog https://developer.nvidia.com/blog/ ／AMD https://ir.amd.com/ ／Broadcom https://investors.broadcom.com/ ／TSMC https://investor.tsmc.com/ ／Intel https://www.intc.com/
+- AI・ロジック：NVIDIA https://investor.nvidia.com/ ／NVIDIA Developer Blog https://developer.nvidia.com/blog/ ／AMD https://ir.amd.com/ ／Broadcom https://investors.broadcom.com/ ／Marvell https://investor.marvell.com/ ／TSMC https://investor.tsmc.com/ ／Intel https://www.intc.com/
 - メモリー・ストレージ：Micron https://investors.micron.com/ ／Kioxia Holdings https://www.kioxia-holdings.com/en-jp/ir.html ／Kioxia XL-FLASH https://www.kioxia.com/ja-jp/business/memory/xlflash.html ／SanDisk https://investor.sandisk.com/ ／Solidigm https://www.solidigm.com/ ／Nanya https://www.nanya.com/en/IR ／Winbond https://www.winbond.com/hq/about-winbond/investor/investor-conference/?__locale=en
 - 装置・後工程：ASML https://www.asml.com/en/investors ／Applied Materials https://ir.appliedmaterials.com/ ／Lam Research https://investor.lamresearch.com/ ／KLA https://ir.kla.com/ ／ASE https://www.aseglobal.com/ ／Amkor https://ir.amkor.com/
 - ハイパースケーラー：Microsoft https://www.microsoft.com/en-us/Investor ／Alphabet https://abc.xyz/investor/ ／Amazon https://ir.aboutamazon.com/ ／Meta https://investor.atmeta.com/ ／Oracle https://investor.oracle.com/

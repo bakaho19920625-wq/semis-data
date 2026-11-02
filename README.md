@@ -8,7 +8,7 @@
 
 ## 全体の流れ
 
-1. **data ブランチ（自動）**：日本時間 火〜土の 6:35 と 12:35 に `update-semis-data` が走り、終値・テクニカル・モメンタム段階・ADRプレミアム・金利と、40社の四半期実績（売上・在庫・設備投資。Yahoo の四半期財務。SEC に届く環境なら XBRL）を更新する。前営業日の足が入るまで10分おきに最大6回取り直す（Yahooが米国東部 20:30〜21:20 ごろに終値を空欄で返す時間帯への対策）。日次レポート（8:53）はデータが古ければ手動起動する
+1. **data ブランチ（自動）**：日本時間 火〜土の 6:35 と 12:35 に `update-semis-data` が走り、終値・テクニカル・モメンタム段階・ADRプレミアム・金利と、40社の四半期実績（売上・在庫・設備投資。Yahoo の四半期財務。SEC に届く環境なら米国籍37社を XBRL で）を更新する。前営業日の足が入るまで10分おきに最大6回取り直す（Yahooが米国東部 20:30〜21:20 ごろに終値を空欄で返す時間帯への対策）。日次レポート（8:53）はデータが古ければ手動起動する
 2. **第1段階 収集**（`prompts/collector.md`）：機械取得の実績値（`fundamentals_latest.json`）を転記し、判断に効く数字は SEC の XBRL API で確認して格上げし、ガイダンス等を IR から取り、残りをWeb検索で集めて `# SEMI_EVIDENCE` のYAMLを出す → `evidence/`。一次資料が開けないときは主要報道2本以上の一致で「報道値」として採用し、翌週以降に突き合わせる
 3. **第2段階 判定**（`prompts/judge.md`）：証拠YAML＋dataブランチ＋前回引継ぎから採点・シナリオ・予測・レポートを書く → `handoff/`
 
@@ -23,6 +23,7 @@
 | `levels.json` | モメンタムの段階 S1〜S5・D1〜D6（−2〜+2）と入力値、S/D/TECHNICAL スコア |
 | `semis_snapshot.csv` | 銘柄ごとの最新テクニカル指標 |
 | `daily_signals.json` | 日次シグナル：前営業日との比較で検出した変化点（SMAクロス、RSI、高安更新、出来高、段階変更、ADR、VIX、金利、RS線）、主要銘柄の表、意識される水準、RS線の一覧（rs_lines：対SPY・対QQQ、52週新高値、株価に先行、21日EMA） |
+| `resilience.json` | セクター内の強弱（sector_rs）と調整耐性（window、next_candidates、late_breaks） |
 | `history_key.csv` / `history_levels.csv` | 主要銘柄の指標と段階の日次履歴（前回比の計算用） |
 | `adr_premium.csv` | SK hynix ADS（SKHY）の理論価値とプレミアム（直近60営業日） |
 | `macro_daily.csv` | FRED：DGS10、DFII10、DTWEXBGS |
@@ -40,7 +41,7 @@
 - `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト
 - `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
 - `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。火〜土 8:53、土 10:11 JST。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
-- `docs/sources.md` / `docs/universe_kpi.md` … 収集時に必要なときだけ読む参照資料
+- `docs/sources.md` … 収集プロンプトが最初に1回読む情報源マップ。`docs/universe_kpi.md` … 必要なときだけ読む参照資料。`docs/sector_rs_resilience.md` … セクター内の強弱と調整耐性の定義
 - `docs/plain_language.md` … やさしい表記の対応表（段階・スコア・小項目・判定の語を日本語に。日次・週次の書き方の約束）
 - `handoff/` … レポート間の引継ぎ（latest.yaml、日付別の控え、予測台帳 forecasts.csv）
 - `evidence/` … 証拠YAMLの控え

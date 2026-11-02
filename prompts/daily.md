@@ -16,7 +16,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 ## 手順
 1. 新しさの確認：`us_as_of` が直近の米国取引日（日本時間の今日の前日にあたるET日付。土日・NYSE休場日を除く）か確認する。
    - 前日が休場なら「新しい取引日はありません（休場）」と1行送って終了。
-   - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` でワークフローを手動起動し、完了を最大10分待って data ブランチを取り直す。それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」と送って終了。手動起動した場合は10節に書く。
+   - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` でワークフローを手動起動し、完了を最大10分待って data ブランチを取り直す（ワークフローは前営業日の足が入るまで10分おきに最大6回取り直すので、10分で終わらないことがある。その場合は次へ）。それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」と送って終了。手動起動した場合は10節に書く。
    - `run_status` の `signals` が failure なら、daily_signals.json は前回のもの。その旨を書き、表は semis_snapshot.csv から作る。
    - （v1.3）market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。違えば6b節に「基準日が異なる（market-data ○○）」と書いて、そのまま転記する（待たない・起動しない）。取得できなければ6b節は「取得できず」の1行。`definition_version` が `ST-1.4` より前なら、テック内部とブレイクの伸びは「未対応（旧版）」。`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
 2. Web確認は**最大6回**（検索＋取得の合計）。優先順：
@@ -27,7 +27,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
    `daily_state.yaml` にあるURLのニュースは再掲しない（同じ件の新展開だけ書く）。
 3. 週次判定との照合：直近の週次の THESIS_INVALIDATION と TOP_DOWNSIDE/UPSIDE_TRIGGER の条件に、今日のシグナルやニュースが触れていないか確認する。触れていれば「週次判定の見直し候補」として明記する（スコアは変えない）。open の予測に期限到来・条件確定があれば「判定待ち：次回週次で確定」と書く。
 4. レポートを書く（下の形式。2〜3画面、表は3つまで）。
-5. 保存：`reports/daily/<us_as_of>.md` と `handoff/daily_state.yaml`（us_as_of、報じたニュースのURL、「見直し候補」の有無）を main にコミット（メッセージ `daily <us_as_of>`）。書き込めない環境では本文だけ出力する。
+5. 保存：`reports/daily/<us_as_of>.md` と `handoff/daily_state.yaml`（last_us_as_of、reported_urls、review_candidates）を main にコミット（メッセージ `daily <us_as_of>`）。書き込めない環境では本文だけ出力する。
 
 ## 書き方（v1.4）
 状態を表す語は `docs/plain_language.md`（半導体固有の語）と、市場全体・個別銘柄の語は米国株側の `05_Plain_Language_Glossary.txt`
@@ -49,7 +49,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 ### 1. 本日のシグナル（daily_signals.json の signals をすべて列挙。空なら「検出なし」）
 severity high → medium の順。1行＝「銘柄：内容」。コードが出したものを削らない。解釈は次節で。
 
-### 2. 読み方（3〜6行）
+### 2. 解釈（3〜6行）
 シグナルを組み合わせた短い解釈。トレンド（SMA50/200の位置と傾き）、広がり、出来高の質（上昇/下落出来高比）、相対強度（RS線）、ボラの順。「現状の描写」であり予測ではないと分かる書き方にする。
 
 ### 3. 市場表
@@ -73,13 +73,13 @@ RS線＝銘柄÷SPY。上向きなら市場より強い、下向きなら弱い�
 - SOXLは3倍レバで比率がゆがむため対象外（SOXXで代用）。history_short の銘柄（上場1年未満）はRS新高値を判定できない、と一言。
 - 読み方を1行添える：「RS線は強い銘柄を拾う道具で、新高値でも下落しない保証ではない。売買は株価そのもの（SMA・高値安値・出来高）で判断する」。
 
-### 6b. 市場全体とテック内部（v1.3。market-data の signals.json から転記、再計算しない。4行以内）
+### 6b. 市場全体とテック内部（v1.3。market-data の signals.json から転記、再計算しない。6行以内）
 - 変化：`key_events_today` のうち type が `regime_change`・`breadth_label_change`・`index_breakdown_guard`・`breakout_stalling` のものを先頭に1行ずつ（なければ「変化なし」）。
 - テック内部：`breadth_ext.groups.tech` の pct_down20（4週前 pct_down20_4w_ago）、pct_above_50sma、ラベル（`breadth_ext.label_ja[label]`、null は「ラベルなし」）、XLK の bench_pct_from_52w_high、ex_tech との差（`tech_minus_ex_tech_down20_pt`）。
   stealth なら「XLKは高値圏だが、IT＋通信の過半が高値から20%以上下げている（隠れ弱気）」、broad_decline なら「XLKも−10%超で下げが表面化」と添える。
 - ブレイクの伸び：`breakout_followthrough_market` の d5_hold_rate、d5_avg_ret_pct、d10_avg_ret_pct、stalling。stalling が真なら「市場全体で、抜けた水準は守るが伸びないブレイクが多い。半導体の高値・水準の上抜けも、抜けた後の続き（D+3〜5）と出来高で確かめる」と添える。
 - 市場全体：`tape.regime_effective` と `tape.reasons`、`tape.checklist.IX3_index_breakdown_guard`、`tape.checklist.megacap_led`。megacap_led が真なら「市場全体の中身は改善しているが、大型・AI株主導で指数が崩れている。市場全体の改善を半導体の追い風と読まない」と添える。
-- （v1.5）先導セクター：`leadership.market.top_sectors_now`（上位3と `by_sector` の数、4週前）、`leadership.tech`（半導体・テクノロジーの先導株数 今／4週前。`halved_vs_4w` が真なら「4週前の半分以下」）、`leadership.tech.by_group` の半導体の数と銘柄。`key_events_today` に leadership_shift があれば先頭の「変化」に入れる。「指数より先に先導株の分布が変わる。半導体が引っ張られているか置いていかれているかを見る」と1行。
+- （v1.5）先導セクター：`leadership.market.top_sectors_now`（上位3と `leadership.by_sector` の数、4週前）、`leadership.tech`（半導体・テクノロジーの先導株数 今／4週前。`halved_vs_4w` が真なら「4週前の半分以下」）、`leadership.tech.by_group` の半導体の数と銘柄。`key_events_today` に leadership_shift があれば先頭の「変化」に入れる。「指数より先に先導株の分布が変わる。半導体が引っ張られているか置いていかれているかを見る」と1行。
 - （v1.5）ヘッジと長期の目安：`hedge.allowed`・`hedge.status`・`hedge.setups`（銘柄、水準、損切り）を1行（許可外なら「検討できる地合いではない」）。`spy_model.allocation_pct`・`signal`・`signal_since` を1行「長く持つ分の目安 ○%（buy／sell、○月○日から）」。どちらも米国株側の条件の転記で、半導体の売買指示ではない。
 - これらは環境認識であり、売買の指示・週次スコアの変更には使わない。
 

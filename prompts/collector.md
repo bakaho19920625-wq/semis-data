@@ -38,9 +38,11 @@ P2（P1の後、予算が残っていれば）
 8. 先端パッケージ：CoWoS等の能力・増強計画
 9. メモリー階層・新技術：HBF/SCM、CXL、光/CPO、SRAM中心設計、AI効率化（量子化・蒸留・MoE・KV圧縮等）の新しい発表。導入段階（0構想、1標準化、2試作、3顧客認定、4量産、5重要売上）を判断できる事実
 10. 分解・部品表の新情報（証拠の強さA〜D）
+11. 判定の E3 用：NVDA・TSM・MU・ASML の予想PER・EPS予想（1回の検索で取れる範囲。status: consensus、媒体名と基準日を付ける。前回値は FUNDAMENTAL_LEVELS の prev）
+12. 判定の A4・A5 用：データセンターの新規建設・延期・キャンセル、電力契約・冷却・ネットワークの制約に関する企業発表（事実だけ）
 
 月1回（月の最初の実行、または flags にDRAMの異常があるとき）
-11. DRAM ETF（Roundhill Memory ETF）の公式情報：NAV乖離、スプレッド、AUM、保有銘柄と基準日、上位集中、運用方針の変更
+13. DRAM ETF（Roundhill Memory ETF）の公式情報：NAV乖離、スプレッド、AUM、保有銘柄と基準日、上位集中、運用方針の変更
 
 GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1回の検索で補う。
 
@@ -59,13 +61,17 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
   ・XBRL にまだ当四半期が無ければ Yahoo の値のまま `pending_xbrl: true`。
   ・`url` の項目名で値が無ければ `alt_tags` の項目名で1回だけ取り直す（AMZN の設備投資は PaymentsToAcquireProductiveAssets＝純額）。
 - 転記先と書き方（`source_kind`・`tier`・`status` は上の結果どおり、source は Yahoo なら `https://finance.yahoo.com/quote/<ticker>/financials/`、SEC なら XBRL のURL）：
-  ・EARNINGS：前回AS_OF以降に決算があった会社の revenue（value、yoy、period_end）。ガイダンス欄は IR の決算資料から（source_kind: ir）
+  ・EARNINGS：前回AS_OF以降に決算があった会社の revenue（value→revenue、yoy、period_end→period）。ガイダンス欄は IR の決算資料から（source_kind: ir）
   ・CAPEX.companies：MSFT、GOOGL、AMZN、META、ORCL の capex（AMZN は純額。tag を note に）
   ・CAPEX.total_4_yoy：`hyperscalers_capex_4.latest` を使う。missing の会社があれば、その会社の値（当四半期と前年同期）を SEC 確認（`sec_check_urls` の capex）で埋めてから4社を足し、basis に「3社は機械取得、○○は SEC」と書く。
-    埋められなければ `latest_complete`（全社そろう四半期）の合計・前年比を使い、quarter_end が古いことを明記する。4社とも SEC で confirmed なら total も confirmed、そうでなければ reported_unverified
+    埋められなければ `latest_complete`（全社そろう四半期）の合計・前年比を使い、quarter_end が古いことを明記する。その前年比も null なら value は unconfirmed とし、SEC 確認で取れた会社だけの前年比を basis に書く。4社とも SEC で confirmed なら total も confirmed、そうでなければ reported_unverified
   ・SUPPLY_INVENTORY：MU、SNDK、WDC、STX、NVDA、AMD、AVGO、AMAT、LRCX、KLAC の inventory.days（前期 days_prev_q・前年 days_prev_y も）。item: inventory_days
   ・FUNDAMENTAL_LEVELS：「4社CapEx合計YoY」は機械取得の値（SEC 確認済みならその旨）。前回値（prev）と change はこれまでどおり
 - `status` が ok 以外の会社（no_data、failed）や、`errors`・`notes` に出ているものは DATA_NOTES.machine_issues に写す。値を推測で補わない。
+- 機械取得が使えないとき（run_status の fundamentals が failure、fundamentals_latest.json の status が failed、または generated が前回AS_OFより古い）：その旨を machine_issues に書き、
+  決算のあった会社の実績値は IR の決算リリースから取る（source_kind: ir、tier 1、confirmed。予算に数える）。SEC 確認（別枠）はそのまま行ってよい。
+- `semis_manifest.json` の us_as_of が直近の米国取引日より古い（GitHubデータ未更新）ときは、判定側の2節（市場スナップショット）に使う S&P 500・QQQ・SOX・SOXX・SMH・DRAM・SOXL・VIX・米10年・USD/JPY・USD/KRW の終値と前日比を
+  1〜2回の検索で MARKET_FILL に補う（出典と日付を付ける。予算に数える）。
 - 設備投資の定義は会社ごとに違う（純額、リース込み等）。会社が決算リリースで示す「CapEx」と機械取得の値が違うときは両方を書き、どちらの定義かを明記する。
 
 ## 3. ［v7］前回値の突き合わせ（RECONCILED）
@@ -76,7 +82,7 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 ## 4. 記録のルール
 - 1つの事実につき：値、対象期間、発表日、出典URL、情報源の階層（1＝企業IR・SEC・公式統計、2＝専門調査、3＝主要報道、4＝その他）、状態（confirmed／reported_unverified／estimate／consensus）、取り方（source_kind: sec_xbrl／sec_8k／ir／research／press／yahoo）
 - 企業のガイダンスと市場コンセンサスを分ける。速報・改定・確報を区別する
-- ［v7］報道値の採用ルール：一次資料（IR・SEC）が2回試しても開けないとき、主要報道（Reuters、Bloomberg、FT、WSJ、日経、CNBC、AP、聯合ニュース）の**2本以上が同じ数字**（同じ対象期間・同じ定義）を伝えていれば、`status: reported_unverified`、`tier: 3`、`sources` に両方のURL、として採用する。1本だけなら採用せず UNCONFIRMED に `seen_value` として控える。採用した報道値は翌週以降 SEC の値と突き合わせる（第3節）。
+- ［v7］報道値の採用ルール：一次資料（IR・SEC）が2回試しても開けないとき、主要報道（Reuters、Bloomberg、FT、WSJ、日経、CNBC、AP、聯合ニュース）の**2本以上が同じ数字**（同じ対象期間・同じ定義）を伝えていれば、`status: reported_unverified`、`tier: 3`、`source` に両方のURL（「；」区切り）、として採用する。1本だけなら採用せず UNCONFIRMED に `seen_value` として控える。採用した報道値は翌週以降 SEC の値と突き合わせる（第3節）。
 - 取れなかったものは `UNCONFIRMED`、企業が開示していないものは `undisclosed` と書く。推測で埋めない
 - 前回の FUNDAMENTAL_LEVELS と同じ項目は `prev` に前回値を転記し、`change` を計算する
 - 事実の横に「他領域への含意」を書いてよいが、`implication` 欄に限り、1行、評価語なし（例：「HBM搭載量の増加はM2とA2の両方に関係」）
@@ -88,7 +94,7 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 # SEMI_EVIDENCE
 EVIDENCE_VERSION: v7.1
 AS_OF: {market: YYYY-MM-DD, collected: "YYYY-MM-DD HH:MM JST", previous_report: YYYY-MM-DD}
-BUDGET: {searches_used: , fetches_used: , limit: 30, sec_checks_used: , stopped_early: false}
+BUDGET: {searches_used: , fetches_used: , limit: 30|40, sec_checks_used: , stopped_early: false}
 DATA_NOTES: {github_us_as_of: , missing_filled_from_web: [], flags_checked: [], machine_generated: , machine_source_kind: , machine_status: , machine_issues: []}
 MACHINE_FUNDAMENTALS:  # fundamentals_latest.json の要約（転記。再計算しない）
   companies_ok: 
@@ -112,7 +118,7 @@ TEARDOWN: []          # {device, claim, evidence_grade_A_D, source}
 POLICY_GEO: []        # {event, date, affected, source, tier, status}
 MACRO: []             # {item, value, as_of, source, status}
 DRAM_ETF: {checked: false, holdings_as_of: , nav_premium_pct: , spread_bps: , aum: , top5_pct: , policy_change: , source: }
-MARKET_FILL: []       # GitHubの欠損銘柄を補った終値 {ticker, close, date, source}
+MARKET_FILL: []       # GitHubの欠損銘柄（データ未更新のときは2節の11銘柄）を補った終値 {ticker, close, ret_1d_pct, date, source}
 FUNDAMENTAL_LEVELS: []  # {item, value, prev, change, as_of, source}  例：DDR5契約価格QoQ、TSMC 3M累計YoY、4社CapEx合計YoY、HBM価格前期比
 RECONCILED: []        # 前回の報道値・未反映値と今回の値の突き合わせ {item, company, period, prev_value, new_value, diff_pct, result: confirmed|matches_machine|mismatch|pending, source}
 EVENTS_NEXT_14D: []   # {date, event, why_it_matters}

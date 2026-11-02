@@ -13,16 +13,16 @@
 取得経路：market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`（届かなければ `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data`）。シェルが使える環境では `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git md`（main は `--branch` なしで clone）。シェルがない通常のチャットでは raw URL で読む：市場データは `https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/<ファイル名>`、引継ぎ・予測台帳・証拠は `https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/handoff/latest.yaml`、`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/handoff/forecasts.csv`、`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/evidence/latest.yaml`。
 
 ## 手順
-1. データ監査：`run_status` に failure があればそのファイルは前回のもの。`us_as_of` が直近の米国取引日でない、またはファイルがなければ「GitHubデータ未更新」とし、証拠YAMLの MARKET_FILL だけで2節を作り、S/Dは判定基準1節の欠損ルールで扱う。`flags` の `adr_ratio_or_data_suspect` はSKHYのADS比率と価格を疑い、8節で明記する。`short_history` はSMA200・52週をN/Aのまま。market-data の signals.json は `as_of_market_date` が `us_as_of` と同じか確認し、違えば0節と4c節に明記してそのまま転記する。取得できなければ4c節は「取得できず」、反転リストのその項目は前回の状態を据え置く。`definition_version` が `ST-1.4` より前ならテック内部とブレイクの伸びは「未対応（旧版）」、`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
-2. 前回予測の判定（15節）。
+1. データ監査：`run_status` に failure があればそのファイルは前回のもの。`us_as_of` が直近の米国取引日でない、またはファイルがなければ「GitHubデータ未更新」とし、証拠YAMLの MARKET_FILL だけで2節を作り、S/Dは判定基準1節の欠損ルールで扱う。`flags` の `adr_ratio_or_data_suspect` はSKHYのADS比率と価格を疑い、8節で明記する。`short_history` はSMA200・52週をN/Aのまま。market-data の signals.json は `as_of_market_date` が `us_as_of` と同じか確認し、違えば0節と4c節に明記してそのまま転記する。取得できなければ4c節は「取得できず」、反転リストのその項目は前回の状態を据え置く。前回YAML（handoff/latest.yaml）に SECTOR_RS・CORRECTION・MARKET_CONTEXT・反転リスク「テック内部の崩れ」などの項目が無い（旧版）ときは、その前回比・flip・据え置きは「前回なし（初回）」と書いて比較しない。`definition_version` が `ST-1.4` より前ならテック内部とブレイクの伸びは「未対応（旧版）」、`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
+2. 前回予測の判定（判定基準7節。出力は1節）。
 3. 採点：S1～S5・D1～D6は `levels.json` を転記。A・M・F・E・Xは3節のアンカーで判定し、1節の手順で点数にする。前回値は `history_key.csv`・`history_levels.csv`・前回YAMLから取る。
-4. 反転リスク、シナリオ、新しい予測（13～15節）。
+4. 反転リスク、シナリオ、新しい予測（判定基準5〜7節。出力は10〜11節と16節）。
 5. 出力（出力形式）。
-6. 保存：レポート本文を `reports/YYYY-MM-DD.md`、引継ぎを `handoff/latest.yaml` と `handoff/YYYY-MM-DD.yaml`、予測を `handoff/forecasts.csv`、証拠YAMLの控えを `evidence/latest.yaml` と `evidence/YYYY-MM-DD.yaml` に置き、main にコミット（メッセージ `report YYYY-MM-DD`）。書き込めない環境（通常のチャット）では、レポート末尾のYAMLと、forecasts.csv に追加・更新する行をCSV形式で出力し、私がGitHubで保存する。
+6. 保存：レポート本文を `reports/YYYY-MM-DD.md`、引継ぎを `handoff/latest.yaml` と `handoff/YYYY-MM-DD.yaml`、予測を `handoff/forecasts.csv`、証拠YAMLの控えを `evidence/latest.yaml` と `evidence/YYYY-MM-DD.yaml` に置き、main にコミット（メッセージ `report YYYY-MM-DD`）。定期実行（schedule_weekly）では保存とコミットは段取り側（親）が点検のあとに行うので、判定エージェントはファイルを書くだけでコミットしない。書き込めない環境（通常のチャット）では、forecasts.csv に追加・更新する行（CSV形式）を引継ぎYAMLの前に出力し、最後にYAMLを置く（YAMLの後には何も付けない）。私がGitHubで保存する。
 
 ## 共通ルール
 - 数値には対象日・発表日・出典を付ける（証拠YAMLの値はその出典を引き継ぐ）。確認済み／非開示／未確認／推定／市場予想を区別し、推測で埋めない。
-- （v6.5）証拠YAMLの `status: reported_unverified`（主要報道2本以上の値、または Yahoo の四半期財務の値で SEC 未確認のもの）と `pending_xbrl: true`（決算直後で機械取得・XBRL にまだ無い値）は採点に使ってよいが、本文ではその数字の直後に「要確認」を付け、引継ぎの UNCONFIRMED_ITEMS に「要確認：<項目>」として残す。`RECONCILED` や `MACHINE_FUNDAMENTALS.sec_checks` に mismatch があれば0節に両方の値と差を書き、SEC の値（source_kind: sec_xbrl）を優先する。出典の書き方：sec_xbrl は「SEC提出書類（10-Q/10-K）」、yahoo は「Yahoo Finance 四半期財務（未確認）」、ir は「会社IR」。
+- （v6.5）証拠YAMLの `status: reported_unverified`（主要報道2本以上の値、または Yahoo の四半期財務の値で SEC 未確認のもの）と `pending_xbrl: true`（決算直後で機械取得・XBRL にまだ無い値）は採点に使ってよいが、本文ではその数字の直後に「要確認」を付け、引継ぎの UNCONFIRMED_ITEMS に「要確認：<項目>」として残す。`RECONCILED` や `MACHINE_FUNDAMENTALS.sec_checks` に mismatch があれば0節に両方の値と差を書き、SEC の値（source_kind: sec_xbrl）を優先する。出典の書き方：sec_xbrl は「SEC提出書類（10-Q/10-K）」、sec_8k は「決算リリース（SEC 8-K）」、yahoo は「Yahoo Finance 四半期財務（未確認）」、ir は「会社IR」、research は「専門調査（社名）」、press は「報道（媒体名）」。
 - 主要な論点は「事実」「解釈」「反証・懸念」「予測への含意」に分ける。
 - SOX・SOXX・SMH・DRAM・SOXLを同一視しない。SOXLは日次3倍商品で、複数日の騰落率を3倍にしない。
 - 予測は断定せず、確率・確認指標・無効化条件を付ける。相反する証拠を併記する。
@@ -141,7 +141,7 @@ A＝複数の一次情報・数値整合・独立確認／B＝一次情報はあ
 
 # 出力形式
 
-分量：変化のない節は「変化なし（前回判定を維持）」の1行。数値の表は2節と3節に集約し再掲しない。各節で予測を変える情報を先に書く。
+分量：変化のない節は「変化なし（前回判定を維持）」の1行。数値の表は2節と3節に集約し再掲しない（4a〜4cの転記表は別）。各節で予測を変える情報を先に書く。
 
 冒頭ブロック（plain_language.md 0節の形。14節の総合判定より先に書く）
 ## 今日のひとこと
@@ -154,22 +154,22 @@ A＝複数の一次情報・数値整合・独立確認／B＝一次情報はあ
 - 反転リスクで「発動」「警戒」のものを1行
 - 最後の1行：見方が変わる条件を数値で（THESIS_INVALIDATION、TOP_UPSIDE／DOWNSIDE_TRIGGER）
 
-0. データ監査：基準日、run_status、品質フラグへの対応、Webで補った値、未確認、定義変更の有無、証拠YAMLの予算消化、機械取得の実績値（MACHINE_FUNDAMENTALS の生成日時・source_kind・companies_ok・SEC確認の結果）と RECONCILED の結果、market-data signals.json の基準日と definition_version
+0. データ監査：基準日、run_status、品質フラグへの対応、Webで補った値、未確認、定義変更の有無、証拠YAMLの予算消化、機械取得の実績値（DATA_NOTES.machine_generated／machine_source_kind／machine_status、MACHINE_FUNDAMENTALS の companies_ok と sec_checks の結果）と RECONCILED の結果、market-data signals.json の基準日と definition_version
 1. 前回予測の検証：hit／miss／void、missの理由、累積の的中率とBrier
 2. 市場スナップショット：S&P 500、QQQ、SOX、SOXX、SMH、DRAM、SOXL、VIX、米10年名目・実質、USD/JPY、USD/KRW。列＝終値、前日比、1週、1か月、SMA20/50/200乖離率、RSI14、出来高比、上昇/下落出来高比、高値からの下落率、S/R候補。DRAMは対SOXX・対SPY相対強度、実現ボラ、運用期間を追加。N/Aは理由を0節に
 3. 前回差分ダッシュボード：主要値とスコア内訳の前回比
 4. 市場構図：（既存の内容に加えて）
    4a. セクター内の強弱：`resilience.json` の `sector_rs`（`semis_snapshot.csv` の `sector_rs_class`）から、リーダー上位5・ラガード下位5（rs_soxx_60順）。列＝銘柄、rs_soxx_20、rs_soxx_60、dd_vs_soxx_pt、RSライン60本高値。前回からの flip（leader⇄laggard）を1行
    4b. 調整耐性：`resilience.json` の `window` を1行（state、high_date、low_date、dd_low、dd_now。「なし」「浅い調整」はその旨）。`next_candidates` をA→B→Cで最大8行（銘柄、下げ耐性区分、R_held、戻り区分、R_now、新高値）。`late_breaks`（後崩れ）を1行。MU・SNDK・SKHYがどこに位置するかを1文。値は転記し、再計算しない
-   4c. （v6.2）市場全体とテック内部（market-data の signals.json から転記、再計算しない。表1つ＋2行）：
+   4c. （v6.2）市場全体とテック内部（market-data の signals.json から転記、再計算しない。表1つ＋3行）：
    表の行＝テック内部（`breadth_ext.groups.tech`：pct_down20、4週前、pct_above_50sma、ラベル、XLK の bench_pct_from_52w_high）、
    それ以外（`groups.ex_tech`：pct_down20、4週前、pct_above_50sma）、S&P500全体（`groups.sp500`：pct_down20、ラベル、SPY の位置）、
    ブレイクの伸び（`breakout_followthrough_market`：d5_hold_rate、d5_avg_ret_pct、d10_avg_ret_pct、stalling、stalling_4w_ago）、
    市場Tape（`tape.regime_effective`、`tape.reasons`、`tape.checklist.IX3_index_breakdown_guard`、IX2、`megacap_led`）。ラベルは `breadth_ext.label_ja` の日本語で書く。
    1行目：今週の変化（key_events ではなく、前回YAMLの MARKET_CONTEXT との比較）。2行目：S2・S4との整合（例：「S4はSOXXの対SPYで−2、テック内部も broad_decline で整合」）。
    megacap_led が真なら「市場全体の中身の改善を半導体の追い風と読まない」と書く。
-   （v6.4）表に次の行を足す：先導セクター（`leadership.market.top_sectors_now` と `by_sector` の上位3の数、4週前）、半導体・テクノロジーの先導株数（`leadership.tech`：今／4週前、半分以下か。`by_group` の半導体の数と銘柄）、
-   半導体の新規・脱落（`new_leaders_vs_4w`／`dropped_leaders_vs_4w` のうち in_universe で半導体グループのもの）、ヘッジ条件（`hedge.allowed`・`status`・`setups` の銘柄と損切り）、長期SPY配分モデル（`spy_model.allocation_pct`・`signal`・`signal_since`）。
+   （v6.4）表に次の行を足す：先導セクター（`leadership.market.top_sectors_now` と `leadership.by_sector` の上位3の数、4週前）、半導体・テクノロジーの先導株数（`leadership.tech`：今／4週前、半分以下か。`by_group` の半導体の数と銘柄）、
+   半導体の新規・脱落（`new_leaders_vs_4w`／`dropped_leaders_vs_4w` のうち in_universe が真で、かつ semis-data の config.json `breadth_sets.semis_broad` に含まれる銘柄。要素に半導体の印は無いのでこの集合で判定する）、ヘッジ条件（`hedge.allowed`・`status`・`setups` の銘柄と損切り）、長期SPY配分モデル（`spy_model.allocation_pct`・`signal`・`signal_since`）。
    3行目：半導体が市場に引っ張られているか置いていかれているかを1行（先導株数の推移から）。ヘッジと長期の目安は米国株側の条件の転記であり、本レポートの売買指示ではない
 5. 業績・バリュエーション
 6. AI需要・ロジック・装置
@@ -181,8 +181,8 @@ A＝複数の一次情報・数値整合・独立確認／B＝一次情報はあ
 12. 重要イベント
 13. 次回までの監視項目
 14. 総合判定：総合点（帯つき）、6カテゴリ内訳、サブスコア、段階を変えた小項目、確信度
-15. 引継ぎ：YAMLのコードブロックを1つだけ置き、その後に文章を付けない
-16. 読み方：このレポートで使った記号だけを対応表から1行ずつ（15節のYAMLの前に置く。YAMLの後には何も付けない）
+15. 読み方：このレポートで使った記号だけを対応表から1行ずつ（16節のYAMLの前に置く）
+16. 引継ぎ：YAMLのコードブロックを1つだけ置き、その後に文章を付けない
 
 引継ぎテンプレート（空欄は埋め、なければ「未確認」「N/A」）
 ```yaml
@@ -195,7 +195,7 @@ VIEW: {semiconductor: , memory: }
 SCORES:
   total: {score: , band: "xx-xx", change_vs_prev: }
   category: {ai: /20, memory: /25, foundry_equipment: /20, earnings_valuation: /10, technical: /10, macro: /15}
-  sub: {ai_infra: , memory_cycle: , sox_momentum: , memory_equity_momentum: }
+  sub: {ai_infra: , memory_cycle: , foundry_equipment: , earnings_valuation: , macro: , sox_momentum: , memory_equity_momentum: , technical: }
   drivers: []
 LEVELS:
   A: {A1: , A2: , A3: , A4: , A5: , A6: }
