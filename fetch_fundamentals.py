@@ -32,7 +32,8 @@ import urllib.request
 from datetime import date, datetime, timedelta, timezone
 
 JST = timezone(timedelta(hours=9))
-UA = "semis-data/1.0 (+https://github.com/bakaho19920625-wq/semis-data)"
+# 名乗り（SEC の利用規約）。既定はリポジトリURL。拒否されるときは GitHub の Secrets/Variables に SEC_USER_AGENT（例 "name email@example.com"）を置く
+UA = os.environ.get("SEC_USER_AGENT") or "semis-data/1.0 (+https://github.com/bakaho19920625-wq/semis-data)"
 MIN_INTERVAL = 0.13  # 秒。SEC の上限（10回/秒）より十分遅く
 
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
@@ -62,6 +63,7 @@ _last_call = [0.0]
 
 def http_get(url, retries=3):
     """SEC へ GET（名乗り付き、間隔を空け、429/5xx は待って再試行）。404 は None。"""
+    last = None
     for attempt in range(retries):
         wait = MIN_INTERVAL - (time.time() - _last_call[0])
         if wait > 0:
@@ -78,15 +80,20 @@ def http_get(url, retries=3):
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 return None
+            body = ""
+            try:
+                body = e.read()[:200].decode("utf-8", "replace")
+            except Exception:
+                pass
+            last = f"HTTP {e.code} {body.strip()[:120]!r}"
             if e.code in (403, 429) or e.code >= 500:
                 time.sleep(2.0 * (attempt + 1) + (10 if e.code == 429 else 0))
                 continue
-            raise
-        except Exception:
-            if attempt == retries - 1:
-                raise
+            raise RuntimeError(f"{last}: {url}")
+        except Exception as e:
+            last = f"{type(e).__name__}: {str(e)[:120]}"
             time.sleep(2.0 * (attempt + 1))
-    raise RuntimeError(f"failed after retries: {url}")
+    raise RuntimeError(f"failed after retries ({last}): {url}")
 
 
 def get_json(url):
