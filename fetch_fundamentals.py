@@ -440,8 +440,9 @@ def sec_check_urls(ticker, cik, items, checks):
         it = items.get(item) or {}
         out.append({"ticker": ticker, "item": item, "url": CONCEPT_URL.format(cik=cik, tag=tags[0]), "alt_tags": tags[1:3],
                     "yahoo_value": it.get("value"), "yahoo_period_end": it.get("period_end"),
-                    "how": "units.USD の配列で end が最新のもの（form 10-Q/10-K）。売上は start〜end が約90日の値。設備投資・営業CFは年初来累計なので、"
-                           "同じ start の直前の累計を引いて四半期にする。在庫は時点値。1%以内で一致すれば confirmed（階層1）に格上げ"})
+                    "how": "units.USD の配列で end が最新のもの（form 10-Q/10-K。同じ期間が複数あれば filed が新しいもの）。期間項目は start〜end が約90日の値を使う"
+                           "（12か月の値も並ぶので注意）。90日の値が無い設備投資・営業CFは年初来累計なので、同じ start の直前の累計を引いて四半期にする。"
+                           "在庫は時点値（start なし）。機械取得の同じ四半期の値と1%以内で一致すれば confirmed（階層1）に格上げ"})
     return out
 
 

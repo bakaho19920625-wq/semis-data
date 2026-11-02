@@ -51,8 +51,9 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 - Yahoo の値の性質：決算資料からの転記で、期間末は月末に丸められる（Micron の 8/28 → 8/31）。設備投資の定義（純額・リース込み）が会社発表と違うことがある。TSM は TWD、ASML は EUR（`currency`）。
   決算発表直後は Yahoo にも当四半期が無いことがある（`latest_quarter.period_end` で確かめる）。
 - SEC の XBRL による確認（予算とは別枠、最大12回）：各社の `sec_check_urls` を順に開く（対象：4社の設備投資、MU・SNDK・WDC の在庫と売上、NVDA の売上。config.json の sec_check）。
-  JSON の `units.USD` は {start, end, val, form, filed, fy, fp} の配列。`end` が最新で form が 10-Q/10-K のものを読む。
-  ・売上：start〜end が約90日の値。・在庫：時点値（start なし）。・設備投資・営業CF：年初来累計なので、Q2＝6か月累計−Q1、Q3＝9か月累計−6か月累計（同じ start）、Q4＝通期−9か月。
+  JSON の `units.USD` は {start, end, val, form, filed, fy, fp} の配列。`end` が最新で form が 10-Q/10-K のものを読む（同じ期間が複数あれば filed が新しいもの。12か月の値も並ぶので期間の長さを必ず見る）。
+  ・売上：start〜end が約90日の値。・在庫：時点値（start なし）。・設備投資・営業CF：約90日の値があればそれ（AMZN は四半期の値がある）。無ければ年初来累計なので、Q2＝6か月累計−Q1、Q3＝9か月累計−6か月累計（同じ start）、Q4＝通期−9か月。
+  ・前年同期も同じ方法で読む（前年比のため）。
   ・Yahoo の同じ四半期（period_end が同じ月）の値と比べ、差が1%以内なら `status: confirmed`、`tier: 1`、`source_kind: sec_xbrl`、source は SEC のURL に格上げする。
   ・1%超なら両方の値と差%を `note` に書き、`status: reported_unverified` のまま（定義の違いが分かればそれも）。
   ・XBRL にまだ当四半期が無ければ Yahoo の値のまま `pending_xbrl: true`。
