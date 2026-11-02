@@ -40,11 +40,11 @@
 | history_levels.csv | 段階とスコアの日次履歴 |
 | adr_premium.csv | SKHYの理論ADS価値とプレミアムの推移（直近60営業日） |
 | macro_daily.csv | DGS10、DFII10、DTWEXBGS（FRED） |
-| fundamentals_latest.json | SEC EDGAR の XBRL から機械的に取った、米国籍37社の直近四半期の売上・売上原価・在庫（在庫日数）・設備投資・リース返済・営業CF と前年比・前期比、4社CapEx合計、最新の決算リリース（8-K Ex.99.1）・10-Q/10-K のURL、前回以降の新しい提出。収集プロンプト第2節 |
-| fundamentals.csv | 同じ項目の全期間（四半期ごと1行。derived=true は累計の差分で作った値） |
+| fundamentals_latest.json | 機械取得の四半期実績（40社：米国籍37社＋TSM・ASML・ARM）。売上・売上原価・在庫（在庫日数）・設備投資・営業CF と前年比・前期比、4社CapEx合計。通常は Yahoo の四半期財務（非公式・階層4）で、各社に SEC の XBRL で確認するためのURL `sec_check_urls` が付く。SEC に届く環境で動いた日は SEC の値（階層1）。収集プロンプト第2節 |
+| fundamentals.csv | 同じ項目の全期間（四半期ごと1行。source 列が yahoo か sec_xbrl。derived=true は累計の差分で作った値） |
 
 - 終値・テクニカルの第1ソースはこのデータとし、商品ごとにソースを変えません。
-- 米国籍企業の四半期実績（売上・在庫・設備投資）の第1ソースは fundamentals_latest.json（SEC の XBRL）。決算発表直後で XBRL に未反映のときだけ決算リリース（8-K Ex.99.1。URLは同じファイルの filings にある）を開く。ガイダンス・ASP・ビット出荷・HBM比率は XBRL に無いので決算リリースや説明会資料から。
+- 四半期実績（売上・在庫・設備投資）の第1ソースは fundamentals_latest.json。判断に効く数字（4社CapEx、メモリー3社の在庫・売上、NVDA売上）は同ファイルの sec_check_urls（SEC の XBRL API）で確認して階層1に格上げする。ガイダンス・ASP・ビット出荷・HBM比率は決算リリースや説明会資料（6節の IR）から。
 - 欠損・品質フラグがある値だけWebで補い、出典と確認日時を付けます。
 
 ## 2. Web情報源の優先順位
@@ -78,7 +78,8 @@
 FRED：https://fred.stlouisfed.org/ ／Federal Reserve：https://www.federalreserve.gov/ ／米財務省（金利）：https://home.treasury.gov/resource-center/data-chart-center/interest-rates ／BLS：https://www.bls.gov/ ／BEA：https://www.bea.gov/ 。CME FedWatchは市場予想の補助でありFRBの公式ではない。
 
 ## 6. 企業IR・規制資料
-- SEC EDGAR（機械取得。fetch_fundamentals.py が使う公式API）：提出一覧 https://data.sec.gov/submissions/CIK##########.json ／XBRL https://data.sec.gov/api/xbrl/companyconcept/CIK##########/us-gaap/<タグ>.json ／提出書類 https://www.sec.gov/Archives/edgar/data/<CIK>/<受理番号>/ 。人が読むときは EDGAR 全文検索 https://efts.sec.gov/LATEST/search-index?q= も可。GitHub Actions から www.sec.gov は 403 になることがある（data.sec.gov は可）
+- SEC EDGAR の公式API：XBRL https://data.sec.gov/api/xbrl/companyconcept/CIK##########/us-gaap/<タグ>.json（レポート側の WebFetch で読める。sec_check_urls はこの形）／提出一覧 https://data.sec.gov/submissions/CIK##########.json（大きすぎて WebFetch では途中で切れる）／提出書類の索引 https://www.sec.gov/Archives/edgar/data/<CIK>/<受理番号>/（読める。本文の .htm は読めないことがある）／全文検索 https://efts.sec.gov/LATEST/search-index?q=…（検索語だけ違うURLは1回の収集で1回しか正しく読めないので注意）。
+  GitHub Actions（クラウドのIP）からは SEC 全体が 403「Undeclared Automated Tool」で拒否される（2026-11-02 確認）ため、機械取得は Yahoo で行い、SEC は確認に使う。CIK は config.json の fundamentals.cik
 - AI・ロジック：NVIDIA https://investor.nvidia.com/ ／NVIDIA Developer Blog https://developer.nvidia.com/blog/ ／AMD https://ir.amd.com/ ／Broadcom https://investors.broadcom.com/ ／TSMC https://investor.tsmc.com/ ／Intel https://www.intc.com/
 - メモリー・ストレージ：Micron https://investors.micron.com/ ／Kioxia Holdings https://www.kioxia-holdings.com/en-jp/ir.html ／Kioxia XL-FLASH https://www.kioxia.com/ja-jp/business/memory/xlflash.html ／SanDisk https://investor.sandisk.com/ ／Solidigm https://www.solidigm.com/ ／Nanya https://www.nanya.com/en/IR ／Winbond https://www.winbond.com/hq/about-winbond/investor/investor-conference/?__locale=en
 - 装置・後工程：ASML https://www.asml.com/en/investors ／Applied Materials https://ir.appliedmaterials.com/ ／Lam Research https://investor.lamresearch.com/ ／KLA https://ir.kla.com/ ／ASE https://www.aseglobal.com/ ／Amkor https://ir.amkor.com/

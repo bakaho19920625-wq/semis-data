@@ -67,7 +67,7 @@
     ]
   },
   "fundamentals": {
-    "_note": "fetch_fundamentals.py（SEC EDGAR XBRL）の対象。10-Q/10-K を出す米国籍の監視銘柄だけ。cik は SEC の company_tickers.json（2026-11-02）から転記し、実行時に提出一覧の tickers と照合する（食い違えば errors に出る）。銘柄を足すときは cik も書く",
+    "_note": "fetch_fundamentals.py の対象。sec_filers＝SEC（10-Q/10-K）で取れる米国籍の会社（SEC に届く環境でだけ使う）。yahoo_tickers＝Yahoo の四半期財務で取る会社（海外含む）。cik は SEC の company_tickers.json（2026-11-02）から転記。sec_check＝レポート側が SEC の XBRL で確認する会社（項目ごと）。銘柄を足すときは cik も書く",
     "sec_filers": [
       "NVDA",
       "AMD",
@@ -107,12 +107,77 @@
       "META",
       "ORCL"
     ],
+    "yahoo_tickers": [
+      "NVDA",
+      "AMD",
+      "AVGO",
+      "MRVL",
+      "INTC",
+      "QCOM",
+      "TXN",
+      "ADI",
+      "NXPI",
+      "MCHP",
+      "ON",
+      "MPWR",
+      "RMBS",
+      "LSCC",
+      "SWKS",
+      "SNPS",
+      "CDNS",
+      "AMAT",
+      "LRCX",
+      "KLAC",
+      "TER",
+      "ONTO",
+      "MU",
+      "SNDK",
+      "WDC",
+      "STX",
+      "AMKR",
+      "ANET",
+      "LITE",
+      "COHR",
+      "CRDO",
+      "ALAB",
+      "MSFT",
+      "GOOGL",
+      "AMZN",
+      "META",
+      "ORCL",
+      "TSM",
+      "ASML",
+      "ARM"
+    ],
+    "yahoo_currency": {
+      "TSM": "TWD",
+      "ASML": "EUR"
+    },
     "hyperscalers_4": [
       "MSFT",
       "GOOGL",
       "AMZN",
       "META"
     ],
+    "sec_check": {
+      "capex": [
+        "MSFT",
+        "GOOGL",
+        "AMZN",
+        "META"
+      ],
+      "inventory": [
+        "MU",
+        "SNDK",
+        "WDC"
+      ],
+      "revenue": [
+        "MU",
+        "SNDK",
+        "WDC",
+        "NVDA"
+      ]
+    },
     "cik": {
       "NVDA": 1045810,
       "AMD": 2488,

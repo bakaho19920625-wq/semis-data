@@ -1,16 +1,26 @@
 """
-SEC EDGAR の公式API（XBRL companyconcept・提出一覧 submissions）から、米国で 10-Q/10-K を出す監視銘柄の
-四半期実績（売上・売上原価・在庫・設備投資・ファイナンスリース返済・営業CF）と、最新の決算リリース（8-K Ex.99.1）・10-Q/10-K の
-URLを取る（GitHub Actions で毎日実行。APIキー不要。SEC の利用規約により名乗り User-Agent を付け、毎秒10回未満で呼ぶ）。
+監視銘柄の四半期実績（売上・売上原価・在庫・設備投資・営業CF）を機械的に取る（GitHub Actions で毎日実行）。
+
+取得元は2系統（--source auto が既定）:
+  sec   : SEC EDGAR の公式API（XBRL companyconcept・提出一覧 submissions）。米国で 10-Q/10-K を出す会社。階層1・確認済み。
+          最新の決算リリース（8-K Ex.99.1）・10-Q/10-K のURLも取る。名乗り User-Agent を付け、毎秒10回未満で呼ぶ。
+          ※ GitHub Actions（クラウドのIP）からは 403「Undeclared Automated Tool」で拒否される（2026-11-02 確認。名乗りを変えても同じ）。
+            到達できる環境（自前のVM等）で動かすときに使う。
+  yahoo : Yahoo Finance の四半期財務諸表（yfinance 経由。非公式・階層4。直近5四半期ほど。海外企業も取れる）。
+          レポート側（収集プロンプト第2節）が、判断に効く数字だけ SEC の XBRL API（レポート側からは読める）で確認して格上げする。
+          そのための確認URL（sec_check_urls）をこのスクリプトが出す。
+  auto  : SEC に1回だけ到達確認し、届けば sec、届かなければ yahoo。
 
 出力（--out で指定したフォルダ。既定は out/）:
-  fundamentals.csv          : ticker, cik, item, period_start, period_end, fiscal_year, fiscal_period, value, unit, derived, form, filed, accn, tag
-  fundamentals_latest.json  : 会社ごとの直近四半期（値・前年比・前期比・在庫日数）、ハイパースケーラー4社の設備投資合計、
-                              最新提出のURL（8-K Ex.99.1、10-Q/10-K）、前回実行以降の新しい提出、エラー
+  fundamentals.csv          : ticker, cik, item, period_start, period_end, fiscal_year, fiscal_period, value, unit, derived, form, filed, accn, tag, source
+  fundamentals_latest.json  : 会社ごとの直近四半期（値・前年比・前期比・在庫日数、source_kind と tier）、ハイパースケーラー4社の設備投資合計、
+                              SEC 確認用URL（yahoo のとき）、最新提出のURL（sec のとき）、前回実行以降の新しい提出、エラー
 書き込みは一時ファイル経由（途中で落ちても前回のファイルが残る）。全社失敗なら終了コード2。
 
 注意（収集プロンプトはこの前提で使う）:
-  - 値は 10-Q/10-K の XBRL（次元なしのファクト）。決算発表（8-K）の数字は XBRL に含まれないため、10-Q/10-K の受理後に入る
+  - yahoo の値は Yahoo の提供元が決算資料から転記したもので、定義（設備投資の純額・総額、売上の区分）が SEC の XBRL と違うことがある。
+    期間末は月末に丸められる（Micron の 8/28 → 8/31 など）。通貨は会社の報告通貨（TSM は TWD、ASML は EUR。config の yahoo_currency）。
+  - sec の値は 10-Q/10-K の XBRL（次元なしのファクト）。決算発表（8-K）の数字は XBRL に含まれないため、10-Q/10-K の受理後に入る
     （MSFT・META・GOOGL・AMZN は発表当日〜数日、NVDA は1週間前後、MU は1〜2週間が目安）。
   - キャッシュフロー項目（設備投資・リース返済・営業CF）は年初来累計で開示されるため、累計の差分で四半期化する（derived=true）。
     損益計算書の第4四半期も「通期 − 9か月累計」で作る。
@@ -312,43 +322,12 @@ def process_company(ticker, cik, name, rows_out):
             for e, r in sorted(ser.items()):
                 rows_out.append([ticker, cik, item, r.get("start") or "", e.isoformat(), r.get("fy") or "", r.get("fp") or "",
                                  r["value"], "USD", "true" if r["derived"] else "false", r.get("form") or "", r.get("filed") or "",
-                                 r.get("accn") or "", tag])
+                                 r.get("accn") or "", tag, "sec_xbrl"])
         except Exception as e:
             comp["items"][item] = {"status": "error", "error": str(e)[:160]}
             comp["errors"].append(f"{item}: {str(e)[:120]}")
 
-    # 直近四半期のまとめ
-    for item, (tag, ser) in series.items():
-        if not ser:
-            continue
-        e = max(ser)
-        r = ser[e]
-        prev_q = nearest({k: v for k, v in ser.items() if k < e}, e - timedelta(days=91))
-        prev_y = nearest(ser, e - timedelta(days=365))
-        entry = {"value": r["value"], "period_end": e.isoformat(), "period_start": r.get("start"), "fiscal": fiscal_label(r),
-                 "qoq": ratio(r["value"], prev_q["value"] if prev_q else None),
-                 "yoy": ratio(r["value"], prev_y["value"] if prev_y else None),
-                 "prev_q": prev_q["value"] if prev_q else None, "prev_y": prev_y["value"] if prev_y else None,
-                 "tag": tag, "derived": r["derived"], "form": r.get("form"), "filed": r.get("filed"),
-                 "url": archive_url(cik, r["accn"]) if r.get("accn") else None, "unit": "USD", "status": "ok"}
-        comp["items"][item] = entry
-    # 在庫日数 = 在庫 ÷ 四半期の売上原価 × その四半期の日数
-    inv, cor = series.get("inventory"), series.get("cost_of_revenue")
-    if inv and cor and inv[1] and cor[1]:
-        def days_at(e):
-            c = nearest(cor[1], e)
-            i = inv[1].get(e)
-            if not c or not i or not c.get("start") or not c["value"]:
-                return None
-            qdays = (e - d(c["start"])).days
-            return round(i["value"] / c["value"] * qdays, 1)
-        e = max(inv[1])
-        comp["items"]["inventory"]["days"] = days_at(e)
-        kq = nearest_key({k: v for k, v in inv[1].items() if k < e}, e - timedelta(days=91))
-        ky = nearest_key(inv[1], e - timedelta(days=365))
-        comp["items"]["inventory"]["days_prev_q"] = days_at(kq) if kq else None
-        comp["items"]["inventory"]["days_prev_y"] = days_at(ky) if ky else None
-        comp["items"]["inventory"]["days_note"] = "在庫 ÷ 四半期の売上原価 × 四半期の日数（10-Q/10-K の値から計算）"
+    comp["items"].update(summarize_series(series, cik, "USD", "sec_xbrl"))
     rev = comp["items"].get("revenue") or {}
     if rev.get("period_end"):
         comp["latest_quarter"] = {"period_end": rev["period_end"], "fiscal": rev.get("fiscal"), "form": rev.get("form"),
@@ -358,6 +337,112 @@ def process_company(ticker, cik, name, rows_out):
     elif comp["errors"]:
         comp["status"] = "partial"
     return comp, series
+
+
+# Yahoo（yfinance）の行ラベル → 項目。設備投資は支出が負で入るので絶対値にする
+YF_ITEMS = {
+    "revenue": ("income", ["Total Revenue", "Operating Revenue"], 1),
+    "cost_of_revenue": ("income", ["Cost Of Revenue", "Reconciled Cost Of Revenue"], 1),
+    "inventory": ("balance", ["Inventory"], 1),
+    "capex": ("cashflow", ["Capital Expenditure", "Purchase Of PPE"], -1),
+    "operating_cash_flow": ("cashflow", ["Operating Cash Flow", "Cash Flow From Continuing Operating Activities"], 1),
+}
+
+
+def yahoo_company(ticker, currency, rows_out):
+    """Yahoo の四半期財務諸表から series（{item: (label, {date: row})}）を作る。"""
+    import math
+    import yfinance as yf
+    t = yf.Ticker(ticker)
+    frames = {}
+    errs = []
+    for kind, getter in (("income", "quarterly_income_stmt"), ("balance", "quarterly_balance_sheet"), ("cashflow", "quarterly_cashflow")):
+        try:
+            frames[kind] = getattr(t, getter)
+        except Exception as e:
+            errs.append(f"{kind}: {str(e)[:120]}")
+            frames[kind] = None
+    series = {}
+    for item, (kind, labels, sign) in YF_ITEMS.items():
+        df = frames.get(kind)
+        if df is None or df.empty:
+            continue
+        label = next((l for l in labels if l in df.index), None)
+        if label is None:
+            continue
+        ser = {}
+        for col, v in df.loc[label].items():
+            try:
+                fv = float(v)
+            except Exception:
+                continue
+            if math.isnan(fv):
+                continue
+            e = col.date() if hasattr(col, "date") else d(str(col)[:10])
+            start = None
+            if item != "inventory":
+                start = (e - timedelta(days=91)).isoformat()  # Yahoo は期間の開始を出さないので約3か月前とする
+            ser[e] = dict(start=start, value=fv * sign, derived=False, fy=None, fp=None, form="yahoo", filed=None, accn=None)
+        if ser:
+            series[item] = (label, ser)
+            for e, r in sorted(ser.items()):
+                rows_out.append([ticker, "", item, r.get("start") or "", e.isoformat(), "", "", r["value"], currency, "false",
+                                 "yahoo", "", "", label, "yahoo"])
+    return series, errs
+
+
+def summarize_series(series, cik, currency, source_kind):
+    """直近四半期のまとめ（sec／yahoo 共通）。"""
+    items = {}
+    for item, (tag, ser) in series.items():
+        if not ser:
+            continue
+        e = max(ser)
+        r = ser[e]
+        prev_q = nearest({k: v for k, v in ser.items() if k < e}, e - timedelta(days=91))
+        prev_y = nearest(ser, e - timedelta(days=365))
+        items[item] = {"value": r["value"], "period_end": e.isoformat(), "period_start": r.get("start"), "fiscal": fiscal_label(r),
+                       "qoq": ratio(r["value"], prev_q["value"] if prev_q else None),
+                       "yoy": ratio(r["value"], prev_y["value"] if prev_y else None),
+                       "prev_q": prev_q["value"] if prev_q else None, "prev_y": prev_y["value"] if prev_y else None,
+                       "tag": tag, "derived": r["derived"], "form": r.get("form"), "filed": r.get("filed"),
+                       "url": archive_url(cik, r["accn"]) if (cik and r.get("accn")) else None, "unit": currency,
+                       "source_kind": source_kind, "tier": 1 if source_kind == "sec_xbrl" else 4,
+                       "status": "confirmed" if source_kind == "sec_xbrl" else "reported_unverified"}
+    inv, cor = series.get("inventory"), series.get("cost_of_revenue")
+    if inv and cor and inv[1] and cor[1] and "inventory" in items:
+        def days_at(e):
+            c = nearest(cor[1], e)
+            i = inv[1].get(e)
+            if not c or not i or not c["value"]:
+                return None
+            qdays = (e - d(c["start"])).days if c.get("start") else 91
+            return round(i["value"] / c["value"] * qdays, 1)
+        e = max(inv[1])
+        items["inventory"]["days"] = days_at(e)
+        kq = nearest_key({k: v for k, v in inv[1].items() if k < e}, e - timedelta(days=91))
+        ky = nearest_key(inv[1], e - timedelta(days=365))
+        items["inventory"]["days_prev_q"] = days_at(kq) if kq else None
+        items["inventory"]["days_prev_y"] = days_at(ky) if ky else None
+        items["inventory"]["days_note"] = "在庫 ÷ 四半期の売上原価 × 四半期の日数"
+    return items
+
+
+def sec_check_urls(ticker, cik, items, checks):
+    """レポート側が SEC の XBRL API で確認するためのURL（会社ごと・項目ごと）。AMZN の設備投資は項目名が違う。"""
+    out = []
+    for item, tickers in (checks or {}).items():
+        if ticker not in tickers or cik is None:
+            continue
+        tags = list(ITEMS.get(item, {}).get("tags") or [])
+        if item == "capex" and ticker == "AMZN":
+            tags = ["PaymentsToAcquireProductiveAssets"] + [x for x in tags if x != "PaymentsToAcquireProductiveAssets"]
+        it = items.get(item) or {}
+        out.append({"ticker": ticker, "item": item, "url": CONCEPT_URL.format(cik=cik, tag=tags[0]), "alt_tags": tags[1:3],
+                    "yahoo_value": it.get("value"), "yahoo_period_end": it.get("period_end"),
+                    "how": "units.USD の配列で end が最新のもの（form 10-Q/10-K）。売上は start〜end が約90日の値。設備投資・営業CFは年初来累計なので、"
+                           "同じ start の直前の累計を引いて四半期にする。在庫は時点値。1%以内で一致すれば confirmed（階層1）に格上げ"})
+    return out
 
 
 def hyperscalers_capex(capex_series, members):
@@ -417,11 +502,12 @@ def main():
     ap.add_argument("--out", default="out")
     ap.add_argument("--config", default="config.json")
     ap.add_argument("--only", default="", help="カンマ区切りのティッカー（試験用）")
+    ap.add_argument("--source", default="auto", choices=["auto", "sec", "yahoo"])
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     cfg = json.load(open(a.config, encoding="utf-8")).get("fundamentals") or {}
-    tickers = [t for t in cfg.get("sec_filers", []) if not a.only or t in a.only.split(",")]
     hyper = cfg.get("hyperscalers_4") or HYPERSCALERS_4
+    cik_cfg = cfg.get("cik") or {}
 
     prev_path = os.path.join(a.out, "fundamentals_latest.json")
     prev = None
@@ -432,36 +518,73 @@ def main():
             prev = None
 
     errors, notes = [], []
-    # 到達確認：最初の1回で 403 等なら全社分の再試行で1時間近く浪費しないよう、ここで打ち切る
-    # （GitHub Actions からは data.sec.gov・www.sec.gov とも 403 で拒否される。2026-11-02 確認。名乗りを変えても同じ）
-    probe_cik = next(iter((cfg.get("cik") or {}).values()), 789019)
-    try:
-        get_json(SUBMISSIONS_URL.format(cik=int(probe_cik)))
-    except Exception as e:
-        msg = f"SEC に到達できない（{str(e)[:160]}）。この実行環境からの取得は打ち切り。前回の fundamentals_latest.json を残す"
-        print(msg, file=sys.stderr)
-        if prev is not None:
-            prev.setdefault("errors", []).append(f"{datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ')} {msg}")
-            tmp = prev_path + ".tmp"
-            with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(prev, f, ensure_ascii=False, indent=1, default=str)
-            os.replace(tmp, prev_path)
-        sys.exit(2)
-    cik_map = load_cik_map(cfg.get("cik"), notes)
+    source = a.source
+    sec_probe = None
+    if source in ("auto", "sec"):
+        # 到達確認：最初の1回で 403 等なら、全社分の再試行で1時間近く浪費しないようここで切り替える
+        # （GitHub Actions からは data.sec.gov・www.sec.gov とも 403 で拒否される。2026-11-02 確認。名乗りを変えても同じ）
+        probe_cik = next(iter(cik_cfg.values()), 789019)
+        try:
+            get_json(SUBMISSIONS_URL.format(cik=int(probe_cik)))
+            sec_probe = "ok"
+            source = "sec"
+        except Exception as e:
+            sec_probe = f"unreachable: {str(e)[:160]}"
+            if a.source == "sec":
+                print(f"SEC に到達できない（{sec_probe}）。--source sec のため打ち切り", file=sys.stderr)
+                sys.exit(2)
+            notes.append(f"SEC に到達できないため Yahoo に切り替え（{sec_probe}）")
+            source = "yahoo"
+    print(f"source={source} probe={sec_probe}", flush=True)
 
     rows, companies, capex_series = [], {}, {}
-    for t in tickers:
-        m = cik_map.get(t.upper())
-        if not m:
-            companies[t] = {"status": "no_cik", "errors": ["config.json の fundamentals.cik に CIK がない"]}
-            continue
-        try:
-            companies[t], ser = process_company(t, m["cik"], m["name"], rows)
-            if ser.get("capex"):
-                capex_series[t] = ser["capex"]
-        except Exception as e:
-            companies[t] = {"cik": m["cik"], "status": "failed", "errors": [str(e)[:200]]}
-        print(f"{t}: {companies[t].get('status')} {len(companies[t].get('errors') or [])} errors", flush=True)
+    if source == "sec":
+        tickers = [t for t in cfg.get("sec_filers", []) if not a.only or t in a.only.split(",")]
+        cik_map = load_cik_map(cik_cfg, notes)
+        for t in tickers:
+            m = cik_map.get(t.upper())
+            if not m:
+                companies[t] = {"status": "no_cik", "errors": ["config.json の fundamentals.cik に CIK がない"]}
+                continue
+            try:
+                companies[t], ser = process_company(t, m["cik"], m["name"], rows)
+                if ser.get("capex"):
+                    capex_series[t] = ser["capex"]
+            except Exception as e:
+                companies[t] = {"cik": m["cik"], "status": "failed", "errors": [str(e)[:200]]}
+            print(f"{t}: {companies[t].get('status')} {len(companies[t].get('errors') or [])} errors", flush=True)
+    else:
+        tickers = [t for t in (cfg.get("yahoo_tickers") or cfg.get("sec_filers", [])) if not a.only or t in a.only.split(",")]
+        currencies = cfg.get("yahoo_currency") or {}
+        checks = cfg.get("sec_check") or {}
+        for t in tickers:
+            cur = currencies.get(t, "USD")
+            cik = cik_cfg.get(t)
+            comp = {"cik": cik, "name": None, "status": "ok", "currency": cur, "items": {}, "filings": None, "errors": []}
+            try:
+                ser, errs = yahoo_company(t, cur, rows)
+                comp["errors"].extend(errs)
+                comp["items"] = summarize_series(ser, cik, cur, "yahoo")
+                for item in YF_ITEMS:
+                    comp["items"].setdefault(item, {"status": "no_data"})
+                if ser.get("capex"):
+                    capex_series[t] = ser["capex"]
+                comp["sec_check_urls"] = sec_check_urls(t, cik, comp["items"], checks)
+                if cik:
+                    comp["edgar_filings_index"] = f"https://www.sec.gov/Archives/edgar/data/{cik}/"
+                if not ser:
+                    comp["status"] = "failed" if errs else "no_data"
+                elif errs:
+                    comp["status"] = "partial"
+            except Exception as e:
+                comp["status"] = "failed"
+                comp["errors"].append(str(e)[:200])
+            companies[t] = comp
+            rev = comp["items"].get("revenue") or {}
+            if rev.get("period_end"):
+                comp["latest_quarter"] = {"period_end": rev["period_end"], "form": "yahoo"}
+            print(f"{t}: {comp['status']} {len(comp['errors'])} errors", flush=True)
+            time.sleep(0.5)
 
     ok = [t for t, c in companies.items() if c.get("status") in ("ok", "partial")]
     if rows:
@@ -469,7 +592,7 @@ def main():
         with open(tmp, "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
             w.writerow(["ticker", "cik", "item", "period_start", "period_end", "fiscal_year", "fiscal_period", "value", "unit",
-                        "derived", "form", "filed", "accn", "tag"])
+                        "derived", "form", "filed", "accn", "tag", "source"])
             w.writerows(sorted(rows, key=lambda r: (r[0], r[2], r[4])))
         os.replace(tmp, os.path.join(a.out, "fundamentals.csv"))
 
@@ -490,11 +613,18 @@ def main():
         "generated_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "generated_jst": now.astimezone(JST).strftime("%Y-%m-%d %H:%M JST"),
         "status": "ok" if ok and len(ok) == len(tickers) else ("partial" if ok else "failed"),
-        "source": "SEC EDGAR XBRL API（companyconcept）と提出一覧API（submissions）。非公式の加工は四半期化と比率計算のみ",
+        "source_kind": "sec_xbrl" if source == "sec" else "yahoo",
+        "tier": 1 if source == "sec" else 4,
+        "source": ("SEC EDGAR XBRL API（companyconcept）と提出一覧API（submissions）。非公式の加工は四半期化と比率計算のみ" if source == "sec"
+                   else "Yahoo Finance 四半期財務諸表（yfinance 経由、非公式・階層4）。判断に効く数字は sec_check_urls の SEC XBRL で確認して格上げする"),
+        "sec_probe": sec_probe,
         "user_agent": UA,
         "prev_generated_utc": (prev or {}).get("generated_utc"),
-        "note": "値は 10-Q/10-K の XBRL。決算発表（8-K）の数字は含まれず、10-Q/10-K 受理後に入る。キャッシュフロー項目と第4四半期は累計の差分（derived=true）。"
-                "ガイダンス・ASP・ビット出荷・HBM比率などは XBRL にないため、latest_8k_earnings.exhibit_99_url（決算リリース）を開いて読む",
+        "note": ("値は 10-Q/10-K の XBRL。決算発表（8-K）の数字は含まれず、10-Q/10-K 受理後に入る。キャッシュフロー項目と第4四半期は累計の差分（derived=true）。"
+                 "ガイダンス・ASP・ビット出荷・HBM比率などは XBRL にないため、latest_8k_earnings.exhibit_99_url（決算リリース）を開いて読む" if source == "sec"
+                 else "値は Yahoo の四半期財務諸表（決算資料からの転記、非公式）。期間末は月末に丸められ、設備投資などの定義が会社の発表と違うことがある。"
+                      "status は reported_unverified（階層4）。sec_check_urls の XBRL と1%以内で一致したものだけ confirmed（階層1）にする。"
+                      "ガイダンス・ASP・ビット出荷・HBM比率は IR の決算資料から"),
         "companies_ok": len(ok), "companies_total": len(tickers),
         "hyperscalers_capex_4": hyperscalers_capex(capex_series, hyper),
         "new_filings_since_prev": new_filings,

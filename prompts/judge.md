@@ -22,7 +22,7 @@
 
 ## 共通ルール
 - 数値には対象日・発表日・出典を付ける（証拠YAMLの値はその出典を引き継ぐ）。確認済み／非開示／未確認／推定／市場予想を区別し、推測で埋めない。
-- （v6.5）証拠YAMLの `status: reported_unverified`（主要報道2本以上の値）と `pending_xbrl: true`（決算リリースの値で、SEC の XBRL にまだ無い）は採点に使ってよいが、本文ではその数字の直後に「要確認」を付け、引継ぎの UNCONFIRMED_ITEMS に「要確認：<項目>」として残す。`RECONCILED` に mismatch があれば0節に前回値・SEC値・差を書き、SEC の値（source_kind: sec_xbrl）を優先する。source_kind が sec_xbrl の値は「SEC提出書類（10-Q/10-K）」と出典を書く。
+- （v6.5）証拠YAMLの `status: reported_unverified`（主要報道2本以上の値、または Yahoo の四半期財務の値で SEC 未確認のもの）と `pending_xbrl: true`（決算直後で機械取得・XBRL にまだ無い値）は採点に使ってよいが、本文ではその数字の直後に「要確認」を付け、引継ぎの UNCONFIRMED_ITEMS に「要確認：<項目>」として残す。`RECONCILED` や `MACHINE_FUNDAMENTALS.sec_checks` に mismatch があれば0節に両方の値と差を書き、SEC の値（source_kind: sec_xbrl）を優先する。出典の書き方：sec_xbrl は「SEC提出書類（10-Q/10-K）」、yahoo は「Yahoo Finance 四半期財務（未確認）」、ir は「会社IR」。
 - 主要な論点は「事実」「解釈」「反証・懸念」「予測への含意」に分ける。
 - SOX・SOXX・SMH・DRAM・SOXLを同一視しない。SOXLは日次3倍商品で、複数日の騰落率を3倍にしない。
 - 予測は断定せず、確率・確認指標・無効化条件を付ける。相反する証拠を併記する。
@@ -154,7 +154,7 @@ A＝複数の一次情報・数値整合・独立確認／B＝一次情報はあ
 - 反転リスクで「発動」「警戒」のものを1行
 - 最後の1行：見方が変わる条件を数値で（THESIS_INVALIDATION、TOP_UPSIDE／DOWNSIDE_TRIGGER）
 
-0. データ監査：基準日、run_status、品質フラグへの対応、Webで補った値、未確認、定義変更の有無、証拠YAMLの予算消化、SEC の実績値（SEC_XBRL の生成日時・companies_ok・新しい提出）と RECONCILED の結果、market-data signals.json の基準日と definition_version
+0. データ監査：基準日、run_status、品質フラグへの対応、Webで補った値、未確認、定義変更の有無、証拠YAMLの予算消化、機械取得の実績値（MACHINE_FUNDAMENTALS の生成日時・source_kind・companies_ok・SEC確認の結果）と RECONCILED の結果、market-data signals.json の基準日と definition_version
 1. 前回予測の検証：hit／miss／void、missの理由、累積の的中率とBrier
 2. 市場スナップショット：S&P 500、QQQ、SOX、SOXX、SMH、DRAM、SOXL、VIX、米10年名目・実質、USD/JPY、USD/KRW。列＝終値、前日比、1週、1か月、SMA20/50/200乖離率、RSI14、出来高比、上昇/下落出来高比、高値からの下落率、S/R候補。DRAMは対SOXX・対SPY相対強度、実現ボラ、運用期間を追加。N/Aは理由を0節に
 3. 前回差分ダッシュボード：主要値とスコア内訳の前回比

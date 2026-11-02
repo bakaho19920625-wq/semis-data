@@ -13,9 +13,9 @@
 
 ## 2. 収集（第1段階）
 Agent（general-purpose）に prompts/collector.md に完全に従わせる。参照は docs/sources.md、/home/claude/sd-data/semis_manifest.json、
-/home/claude/sd-data/fundamentals_latest.json（SEC の実績値。collector.md 第2節）、handoff/latest.yaml、前回の evidence/latest.yaml（突き合わせ用。上書きする前に読ませる）。
-run_status.json の fundamentals が failure、または fundamentals_latest.json の status が failed なら、その旨を収集エージェントに伝え（SEC の値は前回のまま）、実績値は従来どおりWebで探させる。
-出力は evidence/<日付>.yaml と evidence/latest.yaml（yaml.safe_load で読めることを確認。EVIDENCE_VERSION: v7、SEC_XBRL と RECONCILED がある）。
+/home/claude/sd-data/fundamentals_latest.json（機械取得の実績値と SEC 確認用URL。collector.md 第2節）、handoff/latest.yaml、前回の evidence/latest.yaml（突き合わせ用。上書きする前に読ませる）。
+run_status.json の fundamentals が failure、または fundamentals_latest.json の status が failed なら、その旨を収集エージェントに伝え（値は前回のまま）、実績値は従来どおりWebで探させる。
+出力は evidence/<日付>.yaml と evidence/latest.yaml（yaml.safe_load で読めることを確認。EVIDENCE_VERSION: v7.1、MACHINE_FUNDAMENTALS と RECONCILED がある）。
 flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認済み（0.1株、424B4）なので、終値の確認だけでよい。
 月の最初の実行なら DRAM ETF の公式情報も確認。
 
