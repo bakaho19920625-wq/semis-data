@@ -5,7 +5,7 @@
 
 ## 入力
 - 前回基準：`handoff/latest.yaml` の AS_OF と FUNDAMENTAL_LEVELS（前回の値）
-- 前回の証拠：`evidence/latest.yaml`（上書きする前に読む。前回 `reported_unverified` や `pending_xbrl: true` だった項目を今回 SEC の値と突き合わせる。第3節）
+- 前回の証拠：`evidence/latest.yaml`（上書きする前に読む。前回 `reported_unverified` や `pending_xbrl: true` だった項目を今回の値（SEC 確認、なければ機械取得）と突き合わせる。第3節）
 - 市場データ：`semis_manifest.json`（基準日 us_as_of、欠損 missing_tickers、品質フラグ flags、マクロ）。終値やテクニカルはここにあるので調べ直さない
 - ［v7］機械取得の実績値：`fundamentals_latest.json`（data ブランチ。GitHub Actions が毎日、Yahoo Finance の四半期財務諸表から取った四半期実績（非公式・階層4）と、
   判断に効く数字を SEC の XBRL で確認するためのURL `sec_check_urls`。SEC に届く環境で動いたときは SEC の値（階層1）が入る。第2節）
@@ -71,7 +71,7 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 ## 3. ［v7］前回値の突き合わせ（RECONCILED）
 - `evidence/latest.yaml` の EARNINGS・CAPEX・SUPPLY_INVENTORY のうち、`status: reported_unverified` または `pending_xbrl: true` の項目を、今回の SEC 確認の結果（第2節。対象外の会社は `fundamentals_latest.json` の値）と比べる。
 - 差が1%以内 → `result: confirmed`（SEC の値と出典を書く。比較相手が Yahoo の値なら `result: matches_machine` にとどめる）。1%超 → `result: mismatch`（前回値・今回値・差%を書く。定義の違いが分かればそれも）。まだ無い → `result: pending`。
-- 結果は RECONCILED に1行ずつ。mismatch の項目は FUNDAMENTAL_LEVELS で SEC の値を使い、prev に前回の報道値を残す。
+- 結果は RECONCILED に1行ずつ。mismatch の項目は FUNDAMENTAL_LEVELS で今回の値（SEC 確認済みならその値）を使い、prev に前回の値を残す。
 
 ## 4. 記録のルール
 - 1つの事実につき：値、対象期間、発表日、出典URL、情報源の階層（1＝企業IR・SEC・公式統計、2＝専門調査、3＝主要報道、4＝その他）、状態（confirmed／reported_unverified／estimate／consensus）、取り方（source_kind: sec_xbrl／sec_8k／ir／research／press／yahoo）
