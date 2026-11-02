@@ -8,8 +8,8 @@
 
 ## 全体の流れ
 
-1. **data ブランチ（自動）**：日本時間 火〜土の 6:35 と 12:35 に `update-semis-data` が走り、終値・テクニカル・モメンタム段階・ADRプレミアム・金利を更新する。前営業日の足が入るまで10分おきに最大6回取り直す（Yahooが米国東部 20:30〜21:20 ごろに終値を空欄で返す時間帯への対策）。日次レポート（8:53）はデータが古ければ手動起動する
-2. **第1段階 収集**（`prompts/collector.md`）：Web検索で一次情報を集め、`# SEMI_EVIDENCE` のYAMLを出す → `evidence/`
+1. **data ブランチ（自動）**：日本時間 火〜土の 6:35 と 12:35 に `update-semis-data` が走り、終値・テクニカル・モメンタム段階・ADRプレミアム・金利と、SEC EDGAR の XBRL から米国籍37社の四半期実績（売上・在庫・設備投資）を更新する。前営業日の足が入るまで10分おきに最大6回取り直す（Yahooが米国東部 20:30〜21:20 ごろに終値を空欄で返す時間帯への対策）。日次レポート（8:53）はデータが古ければ手動起動する
+2. **第1段階 収集**（`prompts/collector.md`）：SEC の実績値（`fundamentals_latest.json`）を転記し、決算リリースのURLを直接開いてガイダンスを取り、残りをWeb検索で集めて `# SEMI_EVIDENCE` のYAMLを出す → `evidence/`。一次資料が開けないときは主要報道2本以上の一致で「報道値」として採用し、翌週以降 SEC の値と突き合わせる
 3. **第2段階 判定**（`prompts/judge.md`）：証拠YAML＋dataブランチ＋前回引継ぎから採点・シナリオ・予測・レポートを書く → `handoff/`
 
 収集と判定を分けるのは、判定の文脈に検索結果を入れないため（ルールの読み飛ばしを防ぐ）と、事実の記録を残すためです。
@@ -26,6 +26,8 @@
 | `history_key.csv` / `history_levels.csv` | 主要銘柄の指標と段階の日次履歴（前回比の計算用） |
 | `adr_premium.csv` | SK hynix ADS（SKHY）の理論価値とプレミアム（直近60営業日） |
 | `macro_daily.csv` | FRED：DGS10、DFII10、DTWEXBGS |
+| `fundamentals_latest.json` | SEC EDGAR（XBRL）：米国籍37社の直近四半期の売上・売上原価・在庫（在庫日数）・設備投資・リース返済・営業CF と前年比・前期比、ハイパースケーラー4社の設備投資合計、最新の決算リリース（8-K Ex.99.1）・10-Q/10-K のURL、前回以降の新しい提出 |
+| `fundamentals.csv` | 同じ項目の全期間（四半期ごと1行。`derived=true` は年初来累計の差分で作った値） |
 | `prices_daily.csv.gz` | 全銘柄の日足（約3年） |
 
 生ファイルのURL：`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/<ファイル名>`
@@ -33,8 +35,8 @@
 ## main ブランチのファイル
 
 - `tickers.txt` … 取得する銘柄（編集するだけで追加・削除できる）
-- `config.json` … グループ、ベンチマーク、広がりの銘柄集合、ADR比率、段階の閾値、配点
-- `fetch_prices.py` / `fetch_macro.py` / `build_snapshot.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、シグナルの定義は build_signals.py の先頭）
+- `config.json` … グループ、ベンチマーク、広がりの銘柄集合、ADR比率、段階の閾値、配点、SEC で取る会社と CIK（`fundamentals`）
+- `fetch_prices.py` / `fetch_macro.py` / `fetch_fundamentals.py` / `build_snapshot.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、シグナルの定義は build_signals.py の先頭、SEC の取り方と注意は fetch_fundamentals.py の先頭）
 - `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト
 - `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
 - `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。火〜土 8:53、土 10:11 JST。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
@@ -52,4 +54,5 @@
 ## 注意
 
 - データ元は Yahoo の非公式な取得方法のため、まれに失敗する日がある
-- 公開リポジトリのため、個人の保有情報などは置かない
+- 公開リポジトリのため、個人の保有情報などは置かない。SEC への名乗り（User-Agent）は GitHub の noreply アドレスを既定にし、変えるときは Secret `SEC_USER_AGENT` に置く（ファイルには書かない）
+- SEC の XBRL には決算発表（8-K）の数字は入らず、10-Q/10-K の受理後（発表の当日〜2週間後）に反映される。海外企業（TSMC、ASML、ARM、SK hynix ADR、ASE）は四半期の XBRL がないので対象外

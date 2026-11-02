@@ -1,4 +1,4 @@
-# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.1）
+# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.2）
 # 定期実行（スケジュールタスク。土曜 10:11 JST に、会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
 # 収集は prompts/collector.md、判定は prompts/judge.md が正本。ここは「準備・2段階の回し方・点検・保存・配信」の段取りだけ。
 
@@ -12,8 +12,10 @@
 - semis_manifest.json の us_as_of を日付ラベル YYYY-MM-DD にする。直近の米国取引日より古ければ「GitHubデータ未更新」と明記して続行。
 
 ## 2. 収集（第1段階）
-Agent（general-purpose）に prompts/collector.md に完全に従わせる。参照は docs/sources.md、/home/claude/sd-data/semis_manifest.json、handoff/latest.yaml。
-出力は evidence/<日付>.yaml と evidence/latest.yaml（yaml.safe_load で読めることを確認）。
+Agent（general-purpose）に prompts/collector.md に完全に従わせる。参照は docs/sources.md、/home/claude/sd-data/semis_manifest.json、
+/home/claude/sd-data/fundamentals_latest.json（SEC の実績値。collector.md 第2節）、handoff/latest.yaml、前回の evidence/latest.yaml（突き合わせ用。上書きする前に読ませる）。
+run_status.json の fundamentals が failure、または fundamentals_latest.json の status が failed なら、その旨を収集エージェントに伝え（SEC の値は前回のまま）、実績値は従来どおりWebで探させる。
+出力は evidence/<日付>.yaml と evidence/latest.yaml（yaml.safe_load で読めることを確認。EVIDENCE_VERSION: v7、SEC_XBRL と RECONCILED がある）。
 flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認済み（0.1株、424B4）なので、終値の確認だけでよい。
 月の最初の実行なら DRAM ETF の公式情報も確認。
 
@@ -27,6 +29,7 @@ flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認
 - handoff/latest.yaml が読める。LEVELS.S/D が /home/claude/sd-data/levels.json と一致。SCENARIOS 各期間の合計が100。
 - FORECASTS.new が forecasts.csv にある。
 - MARKET_CONTEXT が /home/claude/mkt_signals.json の値と一致し（先導セクター・ヘッジ・長期モデルの項目を含む）、反転リスク「テック内部の崩れ」の状態が judge.md 判定基準5節の規則どおり。
+- 報道値（reported_unverified）と XBRL 未反映の値（pending_xbrl）に本文で「要確認」が付き、UNCONFIRMED_ITEMS に残っている。RECONCILED の mismatch が0節に書かれている。
 - 冒頭ブロック（今日のひとこと3行＝半導体／メモリー／行動の目安、＋なぜその判断か）がある。本文の状態語が言葉→数字（記号）の形になっている。
 不一致は判定エージェントに差し戻す（最大2回）。
 

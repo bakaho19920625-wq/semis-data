@@ -6,7 +6,7 @@
 
 ## 1. 市場データ（GitHub：semis-data）
 - リポジトリ：https://github.com/bakaho19920625-wq/semis-data
-- dataブランチ（自動更新。米国の営業日の翌朝7:27 JST、火～土）：土日と月曜早朝のレポートは直近金曜の終値になる
+- dataブランチ（自動更新。米国の営業日の翌朝 6:35 と 12:35 JST、火～土。前営業日の足が入るまで10分おきに取り直す）：土日と月曜早朝のレポートは直近金曜の終値になる
 - mainブランチの `handoff/`：レポート間の引継ぎ（手動またはClaudeのコミットで更新）
 - 元データ：Yahoo Finance（yfinance経由の非公式な取得）、FRED
 
@@ -23,6 +23,8 @@
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/history_levels.csv
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/adr_premium.csv
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/macro_daily.csv
+- https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/fundamentals_latest.json
+- https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/fundamentals.csv
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/handoff/latest.yaml
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/handoff/forecasts.csv
 - https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/main/evidence/latest.yaml
@@ -38,8 +40,11 @@
 | history_levels.csv | 段階とスコアの日次履歴 |
 | adr_premium.csv | SKHYの理論ADS価値とプレミアムの推移（直近60営業日） |
 | macro_daily.csv | DGS10、DFII10、DTWEXBGS（FRED） |
+| fundamentals_latest.json | SEC EDGAR の XBRL から機械的に取った、米国籍37社の直近四半期の売上・売上原価・在庫（在庫日数）・設備投資・リース返済・営業CF と前年比・前期比、4社CapEx合計、最新の決算リリース（8-K Ex.99.1）・10-Q/10-K のURL、前回以降の新しい提出。収集プロンプト第2節 |
+| fundamentals.csv | 同じ項目の全期間（四半期ごと1行。derived=true は累計の差分で作った値） |
 
 - 終値・テクニカルの第1ソースはこのデータとし、商品ごとにソースを変えません。
+- 米国籍企業の四半期実績（売上・在庫・設備投資）の第1ソースは fundamentals_latest.json（SEC の XBRL）。決算発表直後で XBRL に未反映のときだけ決算リリース（8-K Ex.99.1。URLは同じファイルの filings にある）を開く。ガイダンス・ASP・ビット出荷・HBM比率は XBRL に無いので決算リリースや説明会資料から。
 - 欠損・品質フラグがある値だけWebで補い、出典と確認日時を付けます。
 
 ## 2. Web情報源の優先順位
@@ -49,7 +54,7 @@
 4. その他の市場データ・集計
 5. SNS、X、YouTubeは発見用途のみ。原資料まで遡る
 
-有料資料は利用権限がある場合のみ使います。検索スニペットだけで結論を作りません。下のURLが開けない場合は、検索で同じ発行元の最新ページを探し、2回試して取れなければ「未確認」として先へ進みます。
+有料資料は利用権限がある場合のみ使います。検索スニペットだけで結論を作りません。下のURLが開けない場合は、検索で同じ発行元の最新ページを探し、2回試して取れなければ、3の主要報道が2本以上同じ数字を伝えているときに限り「報道値（reported_unverified）」として採用し、そうでなければ「未確認」として先へ進みます（収集プロンプト第4節）。
 
 ## 3. 指数・ETF公式
 - SOX（Nasdaq）：https://indexes.nasdaqomx.com/Index/Overview/SOX
@@ -73,6 +78,7 @@
 FRED：https://fred.stlouisfed.org/ ／Federal Reserve：https://www.federalreserve.gov/ ／米財務省（金利）：https://home.treasury.gov/resource-center/data-chart-center/interest-rates ／BLS：https://www.bls.gov/ ／BEA：https://www.bea.gov/ 。CME FedWatchは市場予想の補助でありFRBの公式ではない。
 
 ## 6. 企業IR・規制資料
+- SEC EDGAR（機械取得。fetch_fundamentals.py が使う公式API）：提出一覧 https://data.sec.gov/submissions/CIK##########.json ／XBRL https://data.sec.gov/api/xbrl/companyconcept/CIK##########/us-gaap/<タグ>.json ／提出書類 https://www.sec.gov/Archives/edgar/data/<CIK>/<受理番号>/ 。人が読むときは EDGAR 全文検索 https://efts.sec.gov/LATEST/search-index?q= も可。GitHub Actions から www.sec.gov は 403 になることがある（data.sec.gov は可）
 - AI・ロジック：NVIDIA https://investor.nvidia.com/ ／NVIDIA Developer Blog https://developer.nvidia.com/blog/ ／AMD https://ir.amd.com/ ／Broadcom https://investors.broadcom.com/ ／TSMC https://investor.tsmc.com/ ／Intel https://www.intc.com/
 - メモリー・ストレージ：Micron https://investors.micron.com/ ／Kioxia Holdings https://www.kioxia-holdings.com/en-jp/ir.html ／Kioxia XL-FLASH https://www.kioxia.com/ja-jp/business/memory/xlflash.html ／SanDisk https://investor.sandisk.com/ ／Solidigm https://www.solidigm.com/ ／Nanya https://www.nanya.com/en/IR ／Winbond https://www.winbond.com/hq/about-winbond/investor/investor-conference/?__locale=en
 - 装置・後工程：ASML https://www.asml.com/en/investors ／Applied Materials https://ir.appliedmaterials.com/ ／Lam Research https://investor.lamresearch.com/ ／KLA https://ir.kla.com/ ／ASE https://www.aseglobal.com/ ／Amkor https://ir.amkor.com/
