@@ -432,6 +432,21 @@ def main():
             prev = None
 
     errors, notes = [], []
+    # 到達確認：最初の1回で 403 等なら全社分の再試行で1時間近く浪費しないよう、ここで打ち切る
+    # （GitHub Actions からは data.sec.gov・www.sec.gov とも 403 で拒否される。2026-11-02 確認。名乗りを変えても同じ）
+    probe_cik = next(iter((cfg.get("cik") or {}).values()), 789019)
+    try:
+        get_json(SUBMISSIONS_URL.format(cik=int(probe_cik)))
+    except Exception as e:
+        msg = f"SEC に到達できない（{str(e)[:160]}）。この実行環境からの取得は打ち切り。前回の fundamentals_latest.json を残す"
+        print(msg, file=sys.stderr)
+        if prev is not None:
+            prev.setdefault("errors", []).append(f"{datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ')} {msg}")
+            tmp = prev_path + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(prev, f, ensure_ascii=False, indent=1, default=str)
+            os.replace(tmp, prev_path)
+        sys.exit(2)
     cik_map = load_cik_map(cfg.get("cik"), notes)
 
     rows, companies, capex_series = [], {}, {}
