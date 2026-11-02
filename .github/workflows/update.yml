@@ -82,6 +82,13 @@ jobs:
         continue-on-error: true
         run: python fetch_macro.py --out out
 
+      # SEC EDGAR の XBRL API から四半期実績（売上・在庫・設備投資など）と最新提出のURL。前回の fundamentals_latest.json は out/ に戻してあるので
+      # 「前回以降の新しい提出」が分かる。失敗しても他のステップは続け、前回のファイルが残る
+      - id: fundamentals
+        name: Fetch fundamentals (SEC EDGAR XBRL)
+        continue-on-error: true
+        run: python fetch_fundamentals.py --out out
+
       - id: snapshot
         name: Build snapshot and levels
         continue-on-error: true
@@ -96,6 +103,7 @@ jobs:
         env:
           PRICES: ${{ steps.prices.outcome }}
           MACRO: ${{ steps.macro.outcome }}
+          FUNDAMENTALS: ${{ steps.fundamentals.outcome }}
           SNAPSHOT: ${{ steps.snapshot.outcome }}
           SIGNALS: ${{ steps.signals.outcome }}
         run: |
@@ -104,7 +112,7 @@ jobs:
           from datetime import datetime, timezone
           s = {
             "run_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "steps": {"prices": os.environ["PRICES"], "macro": os.environ["MACRO"], "snapshot": os.environ["SNAPSHOT"], "signals": os.environ["SIGNALS"]},
+            "steps": {"prices": os.environ["PRICES"], "macro": os.environ["MACRO"], "fundamentals": os.environ["FUNDAMENTALS"], "snapshot": os.environ["SNAPSHOT"], "signals": os.environ["SIGNALS"]},
             "note": "failure のステップの出力ファイルは前回のまま。semis_manifest.json の us_as_of で日付を確認すること",
           }
           json.dump(s, open("out/run_status.json", "w"), ensure_ascii=False, indent=2)
