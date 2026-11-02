@@ -87,6 +87,8 @@ jobs:
       - id: fundamentals
         name: Fetch fundamentals (SEC EDGAR XBRL)
         continue-on-error: true
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}  # 未設定なら fetch_fundamentals.py の既定（GitHub noreply アドレス）
         run: python fetch_fundamentals.py --out out
 
       - id: snapshot

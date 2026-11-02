@@ -32,8 +32,10 @@ import urllib.request
 from datetime import date, datetime, timedelta, timezone
 
 JST = timezone(timedelta(hours=9))
-# 名乗り（SEC の利用規約）。既定はリポジトリURL。拒否されるときは GitHub の Secrets/Variables に SEC_USER_AGENT（例 "name email@example.com"）を置く
-UA = os.environ.get("SEC_USER_AGENT") or "semis-data/1.0 (+https://github.com/bakaho19920625-wq/semis-data)"
+# 名乗り（SEC の利用規約「名前 連絡先メール」の形）。リポジトリURLだけの名乗りは 403 で拒否された（2026-11-02 確認）。
+# 既定は GitHub の noreply アドレス（公開情報のユーザー名から作られる。個人のメールは公開リポジトリに書かない）。
+# 変えるときは GitHub の Settings → Secrets and variables → Actions に SEC_USER_AGENT（例 "semis-data you@example.com"）を置く（update.yml が env で渡す）
+UA = os.environ.get("SEC_USER_AGENT") or "semis-data bakaho19920625-wq@users.noreply.github.com"
 MIN_INTERVAL = 0.13  # 秒。SEC の上限（10回/秒）より十分遅く
 
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
