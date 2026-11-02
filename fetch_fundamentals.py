@@ -84,7 +84,11 @@ def http_get(url, retries=3):
                 return None
             body = ""
             try:
-                body = e.read()[:200].decode("utf-8", "replace")
+                raw = e.read()
+                if raw[:2] == b"\x1f\x8b":
+                    raw = gzip.decompress(raw)
+                body = re.sub(r"<[^>]+>", " ", raw.decode("utf-8", "replace"))
+                body = re.sub(r"\s+", " ", body)[:200]
             except Exception:
                 pass
             last = f"HTTP {e.code} {body.strip()[:120]!r}"
@@ -107,15 +111,19 @@ def d(s):
     return date.fromisoformat(s)
 
 
-def load_cik_map(overrides):
-    out = {}
-    j = get_json(TICKERS_URL) or {}
-    for v in j.values():
-        t = str(v.get("ticker", "")).upper()
-        if t and t not in out:
-            out[t] = {"cik": int(v["cik_str"]), "name": v.get("title", "")}
-    for t, c in (overrides or {}).items():
-        out[t.upper()] = {"cik": int(c), "name": out.get(t.upper(), {}).get("name", "")}
+def load_cik_map(cfg_cik, notes):
+    """config.json の cik を正とする。company_tickers.json（www.sec.gov）は取れれば名前の補完と照合に使う（取れなくても続行）。"""
+    out = {t.upper(): {"cik": int(c), "name": ""} for t, c in (cfg_cik or {}).items()}
+    try:
+        j = get_json(TICKERS_URL) or {}
+        for v in j.values():
+            t = str(v.get("ticker", "")).upper()
+            if t in out:
+                out[t]["name"] = v.get("title", "")
+                if int(v["cik_str"]) != out[t]["cik"]:
+                    notes.append(f"{t}: config の cik {out[t]['cik']} と company_tickers.json の {v['cik_str']} が違う（config を使用）")
+    except Exception as e:
+        notes.append(f"company_tickers.json は読めず（config の cik で続行）: {str(e)[:160]}")
     return out
 
 
@@ -282,6 +290,9 @@ def process_company(ticker, cik, name, rows_out):
         sub = get_json(SUBMISSIONS_URL.format(cik=cik)) or {}
         comp["fiscal_year_end"] = sub.get("fiscalYearEnd")
         comp["name"] = sub.get("name") or name
+        sub_tickers = [str(x).upper() for x in (sub.get("tickers") or [])]
+        if sub_tickers and ticker.upper() not in sub_tickers:
+            comp["errors"].append(f"CIK {cik} の提出一覧の tickers {sub_tickers} に {ticker} がない（config.json の cik を確認）")
         comp["filings"] = latest_filings(cik, sub)
         if comp["filings"]["latest_10q_10k"] is None:
             comp["status"] = "no_10q_10k"
@@ -420,18 +431,14 @@ def main():
         except Exception:
             prev = None
 
-    errors = []
-    try:
-        cik_map = load_cik_map(cfg.get("cik_overrides"))
-    except Exception as e:
-        cik_map = {t.upper(): {"cik": int(c), "name": ""} for t, c in (cfg.get("cik_overrides") or {}).items()}
-        errors.append(f"company_tickers.json: {str(e)[:160]}")
+    errors, notes = [], []
+    cik_map = load_cik_map(cfg.get("cik"), notes)
 
     rows, companies, capex_series = [], {}, {}
     for t in tickers:
         m = cik_map.get(t.upper())
         if not m:
-            companies[t] = {"status": "no_cik", "errors": ["company_tickers.json に見つからない。config.json の cik_overrides に CIK を書く"]}
+            companies[t] = {"status": "no_cik", "errors": ["config.json の fundamentals.cik に CIK がない"]}
             continue
         try:
             companies[t], ser = process_company(t, m["cik"], m["name"], rows)
@@ -467,7 +474,7 @@ def main():
     latest = {
         "generated_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "generated_jst": now.astimezone(JST).strftime("%Y-%m-%d %H:%M JST"),
-        "status": "ok" if ok and len(ok) == len(tickers) and not errors else ("partial" if ok else "failed"),
+        "status": "ok" if ok and len(ok) == len(tickers) else ("partial" if ok else "failed"),
         "source": "SEC EDGAR XBRL API（companyconcept）と提出一覧API（submissions）。非公式の加工は四半期化と比率計算のみ",
         "user_agent": UA,
         "prev_generated_utc": (prev or {}).get("generated_utc"),
@@ -478,12 +485,16 @@ def main():
         "new_filings_since_prev": new_filings,
         "companies": companies,
         "errors": errors,
+        "notes": notes,
     }
     tmp = os.path.join(a.out, "fundamentals_latest.json.tmp")
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(latest, f, ensure_ascii=False, indent=1, default=str)
     os.replace(tmp, prev_path)
-    print(json.dumps({k: latest[k] for k in ("generated_jst", "status", "companies_ok", "companies_total", "errors")}, ensure_ascii=False))
+    print(json.dumps({k: latest[k] for k in ("generated_jst", "status", "companies_ok", "companies_total", "errors", "notes")}, ensure_ascii=False))
+    for t, c in companies.items():
+        if c.get("errors"):
+            print(f"  {t}: {c['errors']}")
     print(json.dumps(latest["hyperscalers_capex_4"], ensure_ascii=False, indent=1))
     if not ok:
         print("SEC の取得にすべて失敗しました。", file=sys.stderr)

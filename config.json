@@ -67,7 +67,7 @@
     ]
   },
   "fundamentals": {
-    "_note": "fetch_fundamentals.py（SEC EDGAR XBRL）の対象。10-Q/10-K を出す米国籍の監視銘柄だけ。CIK は SEC の company_tickers.json から自動で引く。見つからなければ cik_overrides に {\"TICKER\": CIK} を書く",
+    "_note": "fetch_fundamentals.py（SEC EDGAR XBRL）の対象。10-Q/10-K を出す米国籍の監視銘柄だけ。cik は SEC の company_tickers.json（2026-11-02）から転記し、実行時に提出一覧の tickers と照合する（食い違えば errors に出る）。銘柄を足すときは cik も書く",
     "sec_filers": [
       "NVDA",
       "AMD",
@@ -113,7 +113,45 @@
       "AMZN",
       "META"
     ],
-    "cik_overrides": {}
+    "cik": {
+      "NVDA": 1045810,
+      "AMD": 2488,
+      "AVGO": 1730168,
+      "MRVL": 1835632,
+      "INTC": 50863,
+      "QCOM": 804328,
+      "TXN": 97476,
+      "ADI": 6281,
+      "NXPI": 1413447,
+      "MCHP": 827054,
+      "ON": 1097864,
+      "MPWR": 1280452,
+      "RMBS": 917273,
+      "LSCC": 855658,
+      "SWKS": 4127,
+      "SNPS": 883241,
+      "CDNS": 813672,
+      "AMAT": 6951,
+      "LRCX": 707549,
+      "KLAC": 319201,
+      "TER": 97210,
+      "ONTO": 704532,
+      "MU": 723125,
+      "SNDK": 2023554,
+      "WDC": 106040,
+      "STX": 1137789,
+      "AMKR": 1047127,
+      "ANET": 1596532,
+      "LITE": 1633978,
+      "COHR": 820318,
+      "CRDO": 1807794,
+      "ALAB": 1736297,
+      "MSFT": 789019,
+      "GOOGL": 1652044,
+      "AMZN": 1018724,
+      "META": 1326801,
+      "ORCL": 1341439
+    }
   },
   "benchmarks": [
     "SOXX",
