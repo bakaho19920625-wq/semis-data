@@ -445,26 +445,15 @@ def sec_check_urls(ticker, cik, items, checks):
     return out
 
 
-def hyperscalers_capex(capex_series, members):
-    """4社の設備投資（各社の capex 項目。Amazon は純額）を、全社そろう最新の四半期末で合計し前年比を出す。
-    capex_series: {ticker: (tag, {date: row})}"""
-    per = {t: capex_series[t] for t in members if capex_series.get(t) and capex_series[t][1]}
-    out = {"members": members, "available": sorted(per), "missing": [t for t in members if t not in per], "status": "ok",
-           "basis": "各社の 10-Q/10-K キャッシュフローの設備投資（四半期化）。AMZN は PaymentsToAcquireProductiveAssets（売却収入等を差し引いた純額）。"
-                    "MSFT・META のファイナンスリースは finance_lease_principal を別掲。発表直後は 10-Q 未受理の会社が欠ける"}
-    if not per:
-        out["status"] = "no_data"
-        return out
-    if out["missing"]:
-        out["status"] = "partial"
-    common = min(max(ser) for _, ser in per.values())  # 全社に共通する最新の四半期末
-    out["quarter_end"] = common.isoformat()
+def _capex_at(per, target):
+    """各社の target 四半期（±12日）の値と前年同期の値。"""
     detail, s_now, s_prev, complete_now, complete_prev = {}, 0.0, 0.0, True, True
     for t, (tag, ser) in per.items():
-        r = nearest(ser, common)
-        ry = nearest(ser, common - timedelta(days=365))
+        r = nearest(ser, target)
+        ry = nearest(ser, target - timedelta(days=365))
+        k = nearest_key(ser, target)
         detail[t] = {"value": r["value"] if r else None, "prev_y": ry["value"] if ry else None,
-                     "period_end": nearest_key(ser, common).isoformat() if r else None, "latest_period_end": max(ser).isoformat(), "tag": tag}
+                     "period_end": k.isoformat() if k else None, "latest_period_end": max(ser).isoformat(), "tag": tag}
         if r is None:
             complete_now = False
         else:
@@ -473,27 +462,49 @@ def hyperscalers_capex(capex_series, members):
             complete_prev = False
         else:
             s_prev += ry["value"]
-    out["per_company"] = detail
-    out["sum"] = round(s_now) if complete_now else None
-    out["sum_prev_year"] = round(s_prev) if complete_now and complete_prev else None
-    out["yoy"] = ratio(s_now, s_prev) if complete_now and complete_prev else None
-    if not complete_now:
-        out["status"] = "partial"
-    # 直近4四半期の合計（前年同期間比）も添える
-    if complete_now and complete_prev:
-        t4, t4p, okk = 0.0, 0.0, True
-        for k in range(4):
-            tgt = common - timedelta(days=91 * k)
-            for t, (tag, ser) in per.items():
-                r, ry = nearest(ser, tgt), nearest(ser, tgt - timedelta(days=365))
-                if r is None or ry is None:
-                    okk = False
-                    break
-                t4 += r["value"]; t4p += ry["value"]
-            if not okk:
+    return {"quarter_end": target.isoformat(), "per_company": detail,
+            "missing": [t for t, v in detail.items() if v["value"] is None],
+            "sum": round(s_now) if complete_now else None,
+            "partial_sum": round(s_now) if not complete_now and s_now else None,
+            "sum_prev_year": round(s_prev) if complete_now and complete_prev else None,
+            "yoy": ratio(s_now, s_prev) if complete_now and complete_prev else None,
+            "status": "ok" if complete_now else "partial"}
+
+
+def hyperscalers_capex(capex_series, members):
+    """4社の設備投資（各社の capex 項目。Amazon は純額）の合計。
+    latest＝最も新しい四半期（欠けている会社は missing。レポート側が SEC 確認で埋めて合計してよい）、
+    latest_complete＝全社そろう最新の四半期（機械だけで作れる合計）。capex_series: {ticker: (tag, {date: row})}"""
+    per = {t: capex_series[t] for t in members if capex_series.get(t) and capex_series[t][1]}
+    out = {"members": members, "available": sorted(per), "not_available": [t for t in members if t not in per],
+           "basis": "各社のキャッシュフローの設備投資（四半期）。AMZN は売却収入等を差し引いた純額（SEC の項目名は PaymentsToAcquireProductiveAssets）。"
+                    "MSFT・META の会社発表の『CapEx』にはファイナンスリースが含まれ、ここより大きい。決算直後は未反映の会社が欠ける"}
+    if not per:
+        out["status"] = "no_data"
+        return out
+    newest = max(max(ser) for _, ser in per.values())
+    common = min(max(ser) for _, ser in per.values())
+    out["latest"] = _capex_at(per, newest)
+    out["latest_complete"] = _capex_at(per, common) if common != newest else out["latest"]
+    out["status"] = out["latest"]["status"]
+    # 互換：従来の上位項目は latest_complete の値
+    lc = out["latest_complete"]
+    out.update({k: lc.get(k) for k in ("quarter_end", "sum", "sum_prev_year", "yoy", "per_company")})
+    out["missing"] = out["latest"]["missing"]
+    # 直近4四半期の合計（全社そろう四半期から遡れるときだけ）
+    t4, t4p, okk = 0.0, 0.0, True
+    for k in range(4):
+        tgt = common - timedelta(days=91 * k)
+        for t, (tag, ser) in per.items():
+            r, ry = nearest(ser, tgt), nearest(ser, tgt - timedelta(days=365))
+            if r is None or ry is None:
+                okk = False
                 break
-        if okk:
-            out["trailing_4q_sum"], out["trailing_4q_prev"], out["trailing_4q_yoy"] = round(t4), round(t4p), ratio(t4, t4p)
+            t4 += r["value"]; t4p += ry["value"]
+        if not okk:
+            break
+    if okk:
+        out["trailing_4q_sum"], out["trailing_4q_prev"], out["trailing_4q_yoy"] = round(t4), round(t4p), ratio(t4, t4p)
     return out
 
 

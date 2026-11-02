@@ -46,7 +46,7 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 
 ## 2. ［v7］機械取得の実績値の使い方（fundamentals_latest.json）
 - 中身：監視銘柄40社（米国籍37社＋TSM・ASML・ARM）の直近四半期の売上（revenue）・売上原価・在庫（inventory、在庫日数 days）・設備投資（capex）・営業CF と、前年比（yoy）・前期比（qoq）。
-  `hyperscalers_capex_4`（4社の設備投資の合計・前年比・全社そろう四半期末）。各社の `sec_check_urls`（SEC の XBRL API のURL。下記）。`fundamentals.csv` に全期間の値。
+  `hyperscalers_capex_4`（4社の設備投資。`latest`＝最も新しい四半期の各社の値と欠けている会社 missing、`latest_complete`＝全社そろう四半期の合計と前年比）。各社の `sec_check_urls`（SEC の XBRL API のURL。下記）。`fundamentals.csv` に全期間の値。
   先頭の `source_kind` が `yahoo` なら Yahoo Finance の四半期財務（非公式・階層4・`reported_unverified`）、`sec_xbrl` なら SEC の XBRL（階層1・`confirmed`。SEC に届く環境で動いた日だけ）。
 - Yahoo の値の性質：決算資料からの転記で、期間末は月末に丸められる（Micron の 8/28 → 8/31）。設備投資の定義（純額・リース込み）が会社発表と違うことがある。TSM は TWD、ASML は EUR（`currency`）。
   決算発表直後は Yahoo にも当四半期が無いことがある（`latest_quarter.period_end` で確かめる）。
@@ -60,7 +60,8 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 - 転記先と書き方（`source_kind`・`tier`・`status` は上の結果どおり、source は Yahoo なら `https://finance.yahoo.com/quote/<ticker>/financials/`、SEC なら XBRL のURL）：
   ・EARNINGS：前回AS_OF以降に決算があった会社の revenue（value、yoy、period_end）。ガイダンス欄は IR の決算資料から（source_kind: ir）
   ・CAPEX.companies：MSFT、GOOGL、AMZN、META、ORCL の capex（AMZN は純額。tag を note に）
-  ・CAPEX.total_4_yoy：`hyperscalers_capex_4` の yoy と quarter_end を転記（status が partial なら missing の会社名を書き、自分で合計しない）。4社とも SEC で confirmed なら total も confirmed、そうでなければ reported_unverified
+  ・CAPEX.total_4_yoy：`hyperscalers_capex_4.latest` を使う。missing の会社があれば、その会社の値（当四半期と前年同期）を SEC 確認（`sec_check_urls` の capex）で埋めてから4社を足し、basis に「3社は機械取得、○○は SEC」と書く。
+    埋められなければ `latest_complete`（全社そろう四半期）の合計・前年比を使い、quarter_end が古いことを明記する。4社とも SEC で confirmed なら total も confirmed、そうでなければ reported_unverified
   ・SUPPLY_INVENTORY：MU、SNDK、WDC、STX、NVDA、AMD、AVGO、AMAT、LRCX、KLAC の inventory.days（前期 days_prev_q・前年 days_prev_y も）。item: inventory_days
   ・FUNDAMENTAL_LEVELS：「4社CapEx合計YoY」は機械取得の値（SEC 確認済みならその旨）。前回値（prev）と change はこれまでどおり
 - `status` が ok 以外の会社（no_data、failed）や、`errors`・`notes` に出ているものは DATA_NOTES.machine_issues に写す。値を推測で補わない。
@@ -90,7 +91,7 @@ BUDGET: {searches_used: , fetches_used: , limit: 30, sec_checks_used: , stopped_
 DATA_NOTES: {github_us_as_of: , missing_filled_from_web: [], flags_checked: [], machine_generated: , machine_source_kind: , machine_status: , machine_issues: []}
 MACHINE_FUNDAMENTALS:  # fundamentals_latest.json の要約（転記。再計算しない）
   companies_ok: 
-  hyperscalers_capex_4: {quarter_end: , sum: , sum_prev_year: , yoy: , status: , missing: []}
+  hyperscalers_capex_4: {quarter_end: , sum: , sum_prev_year: , yoy: , status: , missing: [], filled_from_sec: [], complete_quarter_end: , complete_sum: , complete_yoy: }
   sec_checks: []       # {ticker, item, period_end, machine_value, sec_value, diff_pct, result: confirmed|mismatch|pending|no_data, url}
   new_filings_since_prev: []   # SEC経路で動いた日だけ {ticker, form, filed, url}
 EARNINGS: []          # {company, period, reported_on, revenue, yoy, segment_note, guidance, guidance_vs_prior, surprise, source, source_kind, tier, status, pending_xbrl}
