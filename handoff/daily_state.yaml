@@ -1,4 +1,4 @@
-last_us_as_of: '2026-11-02'
+last_us_as_of: '2026-11-03'
 reported_urls:
 - https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html
 - https://stockti.com/earnings-calendar/oct-26-30-2026
@@ -18,25 +18,32 @@ reported_urls:
 - https://en.sedaily.com/international/2026/10/31/nasdaq-falls-29-percent-on-ai-spending-fears-intel-plunges
 - https://247wallst.com/investing/2026/11/02/micron-falls-4-as-kioxias-cautious-outlook-hits-memory-stocks-western-digital-drops-5-sandisk-slides-3/
 - https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026
+- https://www.globenewswire.com/news-release/2026/11/03/3394824/0/en/amd-reports-third-quarter-2026-financial-results.html
+- https://newtalk.tw/news/view/2026-11-03/1069052
+- https://www.cnbc.com/2026/11/03/stocks-making-the-biggest-moves-after-hours-anet-amd-smci-swks.html
+- https://ca.investing.com/news/earnings/skyworks-earnings-beat-by-001-revenue-topped-estimates-4926851
 review_candidates:
-- 下方トリガーの価格条件が全部成立（SOX終値10,328.33＜7月安値10,447。SMA200割れは10/30）。ファンダ条件（KLA・ASML・AMATのWFE、TrendForce、CapEx引き下げ）は未成立。S 7.5・D 12.5・TECHNICAL 9.0に低下
-- Kioxia：12月期の営業利益見通し2兆円が予想未達（9月期1.99兆円とほぼ同水準、報道）。CFOは出荷時期の前倒し・後ずれが主因、来年の計画生産分は完売と説明（一次未確認）。東京で−15.8%、米メモリー株が連れ安。M2・M4・E1の採点と、決算日（週次では11月中旬としていた）の訂正
-- 反転リスク「AI CapEx鈍化・収益化失望」の内訳「資金調達・信用」：Oracleが100億ドルの新株発行＋約100億ドルの社債発行（424B2、ORCL −8.8%）
-- X4（地政学）：ブレント −7.63%の104.77ドル（米イラン協議の期待、報道）。10/30の117.64ドルから大きく低下。一次未確認
-- D5：SKHYプレミアム40.8%→33.0%（原株+3.8%、ADS −1.0%）。別枠の下方トリガー（30%割れ）まで3.0pt
-- MarvellがLumentumを全株式交換で買収（EV 1,150億ドル、LITE 1株＝MRVL 4.5株、2028年上半期完了見込み）。MRVL −12.7%・LITE −18.6%は個別要因
-- 決算日の確定：AMD 11/3、QCOM 11/4、ARM 11/4（market-data の earnings_within_5d）
+- 下方トリガーの価格条件：7月安値割れ（11/2成立）は11/3終値10,600.40で解消（+1.5%上）。SMA200割れ（10,807.22、−1.9%）は10/30から継続。ファンダ条件は未成立。S 17.5・D 21.2・TECHNICAL 18.6（前日7.5・12.5・9.0）
+- A2：AMD 3Q26（一次）データセンター売上US$8.5B（+97% YoY）、売上US$13.4B（+45%）、4Q見通し約US$17B±3%（約+27% QoQ）、粗利率約55%。CEO「InstinctとEPYCの需要は一段と強まり4Qは加速」
+- M1（legacy DRAM、週次で未確認）・M5：Nanya 10月売上NT$464.76億（+3.07% MoM、+487.73% YoY、12か月連続最高）。説明会（報道）：3Q粗利率85.7%、4Q ASPは上昇余地、顧客が契約期間の延長を希望、短期の供給不足は解消しにくい。一次未確認
+- D5：SKHYプレミアム33.0%→45.0%（原株−5.0%・ADS+2.1%）。前日の縮小は1日ずれの見かけ上。30%割れまで15.0pt
+- 前日からの持ち越し：Kioxia見通し未達（M2・M4・E1、一次未確認）、Oracle増資（資金調達・信用）、原油急落（X4）、Marvell/Lumentum買収
+- 台湾メモリー株（Nanya・Winbond）がストップ安・60日安値（11/3）。理由は見出しのみ（AI先行き懸念・中間選挙・外資売り）
 pending_forecast_resolution:
 - F2026-10-23-2：Alphabet・Microsoftの10-Qの一次確認待ち（期限11/7）。一次確定はMETA・AMZNの2社
-- F2026-10-23-5：SOX 10,328.33で条件内（9,500まで−8.0%）
-- F2026-10-30-4：12/31終値が10,688.80以上。現時点で3.5%下
+- F2026-10-23-5：SOX 10,600.40で条件内（9,500まで−10.4%）
+- F2026-10-30-4：12/31終値が10,688.80以上。現時点で0.8%下
 unconfirmed_next_daily:
+- AMD決算のデータセンター売上の前期比、MI450向けHBMの言及（決算説明会）
+- Skyworks・Arista・Super Micro・Astera Labs（11/3引け後）の数値（見出しのみ確認）
 - Kioxiaの決算の一次資料（12月期ガイダンス、9月期実績、出荷時期の説明）
-- AMD決算（11/3引け後）のデータセンターGPU売上・ガイダンス、Skyworks・Arista・Super Micro・Astera Labs
+- Nanya 10月売上・説明会の一次資料（会社リリース）、Winbond 10月売上
+- Qualcomm・Arm（11/4引け後）
 - Marvell・Lumentumの一次リリース、Oracleの424B2
 - ON Semiconductor・Lattice（11/2）の決算内容
-- Alphabet・Microsoftの2026年CapExの一次確認（10-Q）
-- 原油・米イラン協議の一次確認
+- Alphabet・Microsoftの2026年CapExの一次確認（10-Q、〜11/7）
+- 原油・米イラン協議の一次確認、台湾メモリー株急落の理由
+- market-data signals.json の11/3基準の値（6b節は11/2基準で転記）
 notes:
 - 2026-10-27・10-28・10-29 08:54 JST：朝の定期ワークフローが起動せず、手動で再実行。定期実行は10/27 01:32 UTCの1回のみ
 - 10/26のS3は出来高の確定値で再計算すると−1（当日報告は−2）
@@ -47,3 +54,6 @@ notes:
 - 2026-11-03：7:21の定期実行はデータ未更新で終了。データ生成は09:46 JST（run_utc 00:46Z）で、臨時の再試行として日次を作成（手動起動なし）。
   Web確認6回のうち取得1回は10/22の旧記事で不使用
 - 2026-11-03：SK hynix・Samsungの table の値は11/3のザラ場の足（ahead_of_us_close）。11/2終値は日足から 1,472,000・229,000
+- 2026-11-04 07:22 JST：朝6:35の定期ワークフローが起動していなかったため、日次（7:21定期実行）が手順1に従い手動起動。約1.5分で完了し07:24 JST生成のデータで作成。
+  market-data（米国株側）の朝の更新も未実行で、6b節は11/2基準を転記（起動はしていない）
+- 2026-11-03は東京休場（文化の日）。Kioxia（285A.T）の11/3シグナル（−15.78%、出来高1.58倍）は11/2の値動きの再検出
