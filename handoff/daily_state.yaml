@@ -1,4 +1,4 @@
-last_us_as_of: '2026-11-03'
+last_us_as_of: '2026-11-04'
 reported_urls:
 - https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html
 - https://stockti.com/earnings-calendar/oct-26-30-2026
@@ -22,28 +22,32 @@ reported_urls:
 - https://newtalk.tw/news/view/2026-11-03/1069052
 - https://www.cnbc.com/2026/11/03/stocks-making-the-biggest-moves-after-hours-anet-amd-smci-swks.html
 - https://ca.investing.com/news/earnings/skyworks-earnings-beat-by-001-revenue-topped-estimates-4926851
+- https://financefeeds.com/qualcomm-shares-drop-5-75-after-hours-as-q1-earnings-forecast-misses-estimates/
+- https://247wallst.com/investing/2026/11/04/sandisk-slides-5-micron-and-western-digital-fall-3-as-election-and-memory-price-worries-weigh/
+- https://invezz.com/news/2026/11/04/micron-sk-hynix-sandisk-stocks-fall-why-dems-texas-win-is-spooking-investors/
 review_candidates:
-- 下方トリガーの価格条件：7月安値割れ（11/2成立）は11/3終値10,600.40で解消（+1.5%上）。SMA200割れ（10,807.22、−1.9%）は10/30から継続。ファンダ条件は未成立。S 17.5・D 21.2・TECHNICAL 18.6（前日7.5・12.5・9.0）
-- A2：AMD 3Q26（一次）データセンター売上US$8.5B（+97% YoY）、売上US$13.4B（+45%）、4Q見通し約US$17B±3%（約+27% QoQ）、粗利率約55%。CEO「InstinctとEPYCの需要は一段と強まり4Qは加速」
-- M1（legacy DRAM、週次で未確認）・M5：Nanya 10月売上NT$464.76億（+3.07% MoM、+487.73% YoY、12か月連続最高）。説明会（報道）：3Q粗利率85.7%、4Q ASPは上昇余地、顧客が契約期間の延長を希望、短期の供給不足は解消しにくい。一次未確認
-- D5：SKHYプレミアム33.0%→45.0%（原株−5.0%・ADS+2.1%）。前日の縮小は1日ずれの見かけ上。30%割れまで15.0pt
-- 前日からの持ち越し：Kioxia見通し未達（M2・M4・E1、一次未確認）、Oracle増資（資金調達・信用）、原油急落（X4）、Marvell/Lumentum買収
-- 台湾メモリー株（Nanya・Winbond）がストップ安・60日安値（11/3）。理由は見出しのみ（AI先行き懸念・中間選挙・外資売り）
+- 下方トリガーの価格条件：7月安値割れ（10,447）が11/4終値10,268.65で再成立（−1.7%下。11/2成立→11/3解消→11/4再成立）。SMA200割れ（10,819.59、−5.1%）は10/30から継続。ファンダ条件は未成立。S 7.5・D 11.2・TECHNICAL 8.6（前日17.5・21.2・18.6）
+- M2・INVENTORY・E1：Qualcomm FQ4 2026（報道、一次未確認）。スマホ向け売上−26% YoY、投入コスト（ウエハー・組立・テスト・先端パッケージ・メモリー）上昇で利益率圧迫は2027年度下期まで、年次報告書「メモリー不足・値上がりがスマホメーカー需要を弱めるおそれ」。FQ1 2027 EPS見通し中央値2.25ドル（予想2.32）。時間外−5.75%
+- 反転リスク「AI CapEx鈍化・収益化失望」：AMD好決算（DC +97%）の翌日が+1.0%どまり（出来高2.30倍）。好決算に株価が反応しない
+- 前日からの持ち越し：AMD 3Q26のA2加点材料、Nanya 10月売上（+487.7% YoY）・Q4 ASP上昇見通し（M1・M5、一次未確認）、Kioxia見通し未達（M2・M4・E1、一次未確認）、Oracle増資（資金調達・信用）、原油（X4）
+- D5：SKHYプレミアム45.0%→37.4%（原株−0.1%・ADS−5.1%）。30%割れまで7.4pt。11/5に原株が米国の下げを映せば計算上は再び広がる（1日ずれ）
+- メモリー株急落（MU −7.0%、SNDK −7.9%、STX −8.1%、WDC −6.8%）の理由は見出しのみ（中間選挙の結果、メモリー価格懸念）。一次未確認
 pending_forecast_resolution:
 - F2026-10-23-2：Alphabet・Microsoftの10-Qの一次確認待ち（期限11/7）。一次確定はMETA・AMZNの2社
-- F2026-10-23-5：SOX 10,600.40で条件内（9,500まで−10.4%）
-- F2026-10-30-4：12/31終値が10,688.80以上。現時点で0.8%下
+- F2026-10-23-5：SOX 10,268.65で条件内（9,500まで−7.5%）
+- F2026-10-30-4：12/31終値が10,688.80以上。現時点で3.9%下
 unconfirmed_next_daily:
-- AMD決算のデータセンター売上の前期比、MI450向けHBMの言及（決算説明会）
-- Skyworks・Arista・Super Micro・Astera Labs（11/3引け後）の数値（見出しのみ確認）
+- Qualcommの一次リリース（決算説明会でのメモリーコスト・在庫の定量説明、データセンター売上の計上開始）
+- Arm・Coherent・Camtek・SiTime（11/4引け後）の決算内容
+- Microchip・MACOM・Nova（11/5引け後）
+- メモリー株急落（11/4）の本文の理由、TrendForce等の11/3〜11/4の価格報道
 - Kioxiaの決算の一次資料（12月期ガイダンス、9月期実績、出荷時期の説明）
 - Nanya 10月売上・説明会の一次資料（会社リリース）、Winbond 10月売上
-- Qualcomm・Arm（11/4引け後）
 - Marvell・Lumentumの一次リリース、Oracleの424B2
 - ON Semiconductor・Lattice（11/2）の決算内容
 - Alphabet・Microsoftの2026年CapExの一次確認（10-Q、〜11/7）
-- 原油・米イラン協議の一次確認、台湾メモリー株急落の理由
-- market-data signals.json の11/3基準の値（6b節は11/2基準で転記）
+- 原油・米イラン協議の一次確認
+- market-data signals.json の11/4基準の値（6b節は11/3基準で転記）
 notes:
 - 2026-10-27・10-28・10-29 08:54 JST：朝の定期ワークフローが起動せず、手動で再実行。定期実行は10/27 01:32 UTCの1回のみ
 - 10/26のS3は出来高の確定値で再計算すると−1（当日報告は−2）
@@ -57,3 +61,6 @@ notes:
 - 2026-11-04 07:22 JST：朝6:35の定期ワークフローが起動していなかったため、日次（7:21定期実行）が手順1に従い手動起動。約1.5分で完了し07:24 JST生成のデータで作成。
   market-data（米国株側）の朝の更新も未実行で、6b節は11/2基準を転記（起動はしていない）
 - 2026-11-03は東京休場（文化の日）。Kioxia（285A.T）の11/3シグナル（−15.78%、出来高1.58倍）は11/2の値動きの再検出
+- 2026-11-05 07:22 JST：朝6:35の定期ワークフロー（21:35Z・21:50Z）が起動していなかったため、日次（7:21定期実行）が手順1に従い手動起動。約1.5分で完了し07:23 JST生成のデータで作成。
+  market-data（米国株側）の朝の更新も未実行で、6b節は11/3基準を転記（起動はしていない）。Web確認6回のうち取得2回は失敗（alphastreet・benzinga・CNBC・investinglive は取得不可）
+- 2026-11-04：アジア株（SK hynix・Samsung・Kioxia・台湾2社）はすべて11/4の確定終値（ahead_of_us_close なし）。Kioxiaは11/3休場明けの初日
