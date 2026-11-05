@@ -81,3 +81,10 @@ GOOGL
 AMZN
 META
 ORCL
+
+# --- 川下：AIインフラの稼働タイミング（参考枠。config.json の downstream。採点・広がり（S2）・セクター内区分・日次シグナルには入れない） ---
+CRWV       # CoreWeave（ネオクラウド。テキサス Helios の借り手、GPU等の機器を自社調達）
+NBIS       # Nebius（ネオクラウド。米国複数州と欧州に拠点分散、短期契約枠あり）
+IREN       # IREN（テキサス Sweetwater 2GW。ERCOT Batch Zero は条件付き）
+GLXY       # Galaxy Digital（テキサス Helios の建物側。Helios 社債 35.07億ドル・年9.875%）
+VRT        # Vertiv（電源・冷却。A5 の制約の出荷側）
