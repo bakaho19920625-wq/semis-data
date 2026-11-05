@@ -1,4 +1,5 @@
-# 半導体・メモリー定点観測｜収集プロンプト v7.1（第1段階）
+# 半導体・メモリー定点観測｜収集プロンプト v7.2（第1段階）
+# v7.1→v7.2（2026-11-05）：P1 に 7「AIインフラの稼働タイミング」を追加（旧 P2-12 を昇格）、CapEx に内訳・支出時期の欄を追加、証拠YAMLに DC_TIMING を追加。取得先は docs/sources.md 12節
 
 ## 役割
 あなたは半導体・メモリー市況の調査担当です。判断や採点はしません。前回レポート以降の一次情報を集め、出典と日付を付けた「証拠YAML」だけを出力します。評価語（強気・弱気・良い・悪い）を使わず、数値と事実を書きます。
@@ -14,7 +15,7 @@
 - 通常のチャットでは出力したYAMLを私が判定のチャットに貼る。ファイル保存の指示がなければチャットに出力するだけでよい
 
 ## 1. 調査の順番と予算
-検索と取得は合計30回まで（初回、または前回AS_OFから3週間以上空いた場合は40回まで）。上限に達したら残りは `UNCONFIRMED` に列挙して終える。1つの情報源は2回試して取れなければ諦める。検索スニペットだけで数値を確定せず、必ず元ページを開く。
+検索と取得は合計30回まで（初回、または前回AS_OFから3週間以上空いた場合は40回まで。P1-7 の稼働タイミングはこの中の6回まで）。上限に達したら残りは `UNCONFIRMED` に列挙して終える。1つの情報源は2回試して取れなければ諦める。検索スニペットだけで数値を確定せず、必ず元ページを開く。
 機械取得の実績値の転記（第2節）と前回値の突き合わせ（第3節）は予算に数えない。SEC の XBRL による確認（第2節。`sec_check_urls` を開く）は最大12回まで別枠。
 注意：同じホスト・同じパスで検索語（?以降）だけが違うURLは、1回の収集で1回しか正しく読めない（2回目以降は最初の結果が返ることがある）。
 EDGAR 全文検索（efts.sec.gov/LATEST/search-index?q=…）や各社IRの検索ページはこの型なので、1回の収集で使うのは1回だけにし、結果の会社名が合っているか確かめる。
@@ -27,19 +28,26 @@ P1（毎回、この順）
    実績値（売上・前年比・設備投資・在庫）は P0 の転記で済んでいるので探さない。Webで取るのはガイダンス・セグメント・説明会でしか出ない数字（ASP、ビット出荷、HBM比率、中国比率、受注）。
    `docs/sources.md` の IR ページ（固定URL）から決算リリース・説明会資料を開く（検索は IR で見つからないときだけ）。`fundamentals_latest.json` の `filings.latest_8k_earnings.exhibit_99_url` があれば（SEC経路で動いた日）それを直接開く。
    海外企業（TSM、ASML、Samsung、SK hynix、Kioxia、Nanya、Winbond）も IR ページから。TSM・ASML・ARM の実績は Yahoo の値が入っている（報告通貨に注意：TSM は TWD、ASML は EUR）。
-2. ハイパースケーラー4社（MSFT、GOOGL、AMZN、META）のCapEx：実績と4社合計の前年比は P0 の転記（`hyperscalers_capex_4`）＋ SEC 確認。Webで探すのはガイダンス（翌四半期・年間・翌年）と、ファイナンスリースを含む会社独自の定義の値だけ。機械取得にまだ当四半期が無い会社（発表直後）は、決算リリースから実績を取り `pending_xbrl: true` を付ける
+2. ハイパースケーラー4社（MSFT、GOOGL、AMZN、META）のCapEx：実績と4社合計の前年比は P0 の転記（`hyperscalers_capex_4`）＋ SEC 確認。Webで探すのはガイダンス（翌四半期・年間・翌年）と、ファイナンスリースを含む会社独自の定義の値だけ。機械取得にまだ当四半期が無い会社（発表直後）は、決算リリースから実績を取り `pending_xbrl: true` を付ける。
+   ［v7.2］総額に加えて、会社が開示していれば「内訳」（建物・土地・電力設備 と サーバー・GPU等の機器。比率でも金額でもよい）、「支出時期」（当四半期・翌四半期・翌年への前倒し／後ろ倒しの発言）、「ファイナンスリース」の額を `CAPEX.companies` の `breakdown`・`timing_note`・`lease` に記録する（ORCL も同じ欄）。非開示なら undisclosed。総額が同じでも内訳と時期が変われば半導体の売上時期が変わるため、探すのは決算説明会の発言と 10-Q の設備投資の注記まで（追加の検索は会社ごとに1回まで）
 3. TSMCの月次売上（単月と3か月累計の前年比、先端ノード比率は四半期）。Nanya・Winbondの月次売上
 4. TrendForce等の製品別価格：HBM、server DRAM/DDR5、mobile LPDDR、DDR4、NAND（TLC/QLC、enterprise SSD、client）。契約かスポットか、期間、前期比
 5. 対中規制・関税・台湾/韓国の重大ニュース
 6. マクロ：manifest の macro が ok 以外のときだけ、実質金利・ドル指数を補う。インフレ指標とFRBの直近決定
+7. ［v7.2］AIインフラの稼働タイミング（判定の A4・A5 と反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」用。旧 P2-12 を昇格）。検索と取得は合計6回まで。a・b・e は毎回、c・d は変化があったときだけ。取得先は `docs/sources.md` 12節。出力先は `DC_TIMING`
+   a. 規制の状態（公式発表だけ）：テキサス州の停止措置（ERCOT 大口接続の監査、TCEQ 許認可停止）が「継続／条件付き再開／解除」のどれか、再開の条件が公表されているか。新知事（2027-01-19 就任予定）の行政措置が出たら、対象が「すでに得た許可」「建設中」「稼働済み敷地での増設」のどれを含むか。他州で新規DCの停止・新規制を出した州の数（州名）。連邦議会の DC・電気料金に関する公聴会・調査（対象企業名）。公約・報道は `status: reported_unverified` か `estimate` にし、行政措置・法案・命令と区別する
+   b. 案件の進捗：ORCL（監視企業）、CRWV、NBIS、IREN、GLXY の決算・IR・プレスリリースから、主要案件ごとの「受電（energization）」「顧客への引き渡し（delivery）」「課金開始（billing start）」の予定時期と、前回 `evidence/latest.yaml` の DC_TIMING.projects からのずれ（前倒し／変更なし／後ろ倒し、何か月）。計画容量（GW）・変電所の通電・DC本体の完成・GPU設置・引き渡しは別の段階なので同じ欄に混ぜない。縮小・中止・解約の発表があれば `status_change` に書く
+   c. 資金負担（変化があったときだけ）：上記5社とハイパースケーラー5社の新規社債・借入（金額・利率・年限・担保）、増資、ファイナンスリース、資産売却。前回より条件が厳しくなった（同程度の年限で利率が上がった）案件の数。減損（impairment）の計上
+   d. 計算能力の希少性（変化があったときだけ）：GPU レンタル価格は、ネオクラウド決算の平均単価（開示があれば）と、主要報道2本以上が一致するスポット価格（`reported_unverified`）だけ。単一ブローカー・SNS の提示価格は使わない。`DC_TIMING.gpu_rental`
+   e. 半導体への伝わり方：GPU・メモリー・光部品・電源冷却（NVDA、AMD、MU、SNDK、LITE、COHR、VRT 等）の決算説明で「設置場所・電力・許認可の不足で出荷や売上計上が後ろ倒し」「他地域・他顧客へ振り替えた」という発言の有無（会社名・引用・日付）。詰まりが1地域（テキサス）にとどまるか、2地域以上かを事実で。`DC_TIMING.semis_passthrough`
 
 P2（P1の後、予算が残っていれば）
-7. 装置：主要4社のbacklog、WFE見通し、中国比率
-8. 先端パッケージ：CoWoS等の能力・増強計画
-9. メモリー階層・新技術：HBF/SCM、CXL、光/CPO、SRAM中心設計、AI効率化（量子化・蒸留・MoE・KV圧縮等）の新しい発表。導入段階（0構想、1標準化、2試作、3顧客認定、4量産、5重要売上）を判断できる事実
-10. 分解・部品表の新情報（証拠の強さA〜D）
-11. 判定の E3 用：NVDA・TSM・MU・ASML の予想PER・EPS予想（1回の検索で取れる範囲。status: consensus、媒体名と基準日を付ける。前回値は FUNDAMENTAL_LEVELS の prev）
-12. 判定の A4・A5 用：データセンターの新規建設・延期・キャンセル、電力契約・冷却・ネットワークの制約に関する企業発表（事実だけ）
+8. 装置：主要4社のbacklog、WFE見通し、中国比率
+9. 先端パッケージ：CoWoS等の能力・増強計画
+10. メモリー階層・新技術：HBF/SCM、CXL、光/CPO、SRAM中心設計、AI効率化（量子化・蒸留・MoE・KV圧縮等）の新しい発表。導入段階（0構想、1標準化、2試作、3顧客認定、4量産、5重要売上）を判断できる事実
+11. 分解・部品表の新情報（証拠の強さA〜D）
+12. 判定の E3 用：NVDA・TSM・MU・ASML の予想PER・EPS予想（1回の検索で取れる範囲。status: consensus、媒体名と基準日を付ける。前回値は FUNDAMENTAL_LEVELS の prev）
+（旧12「判定の A4・A5 用」は P1-7 に統合）
 
 月1回（月の最初の実行、または flags にDRAMの異常があるとき）
 13. DRAM ETF（Roundhill Memory ETF）の公式情報：NAV乖離、スプレッド、AUM、保有銘柄と基準日、上位集中、運用方針の変更
@@ -92,7 +100,7 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 
 ```yaml
 # SEMI_EVIDENCE
-EVIDENCE_VERSION: v7.1
+EVIDENCE_VERSION: v7.2
 AS_OF: {market: YYYY-MM-DD, collected: "YYYY-MM-DD HH:MM JST", previous_report: YYYY-MM-DD}
 BUDGET: {searches_used: , fetches_used: , limit: 30|40, sec_checks_used: , stopped_early: false}
 DATA_NOTES: {github_us_as_of: , missing_filled_from_web: [], flags_checked: [], machine_generated: , machine_source_kind: , machine_status: , machine_issues: []}
@@ -103,8 +111,20 @@ MACHINE_FUNDAMENTALS:  # fundamentals_latest.json の要約（転記。再計算
   new_filings_since_prev: []   # SEC経路で動いた日だけ {ticker, form, filed, url}
 EARNINGS: []          # {company, period, reported_on, revenue, yoy, segment_note, guidance, guidance_vs_prior, surprise, source, source_kind, tier, status, pending_xbrl}
 CAPEX:
-  companies: []       # {company, period, actual, lease, guidance, change_vs_prior, note, source, source_kind, tier, status, pending_xbrl}
+  companies: []       # {company, period, actual, lease, guidance, change_vs_prior, breakdown, timing_note, note, source, source_kind, tier, status, pending_xbrl}
+                      #   breakdown＝建物・土地・電力設備 と 機器（サーバー・GPU等）の内訳（比率か金額。非開示なら undisclosed）、timing_note＝支出時期の前倒し／後ろ倒しの発言（v7.2）
   total_4_yoy: {value: , quarter_end: , basis: , source: , status: }
+DC_TIMING:            # ［v7.2］AIインフラの稼働タイミング（P1-7）。判定の A4・A5 と反転リスク2項目の材料。事実だけ、評価語なし
+  regulation:
+    texas_pause: {state: 継続|条件付き再開|解除|unconfirmed, scope: [], resume_conditions: , latest_action_date: , source: , tier: , status: }
+                      #   scope＝停止の対象（ERCOT大口接続、TCEQ許認可、その他）。resume_conditions＝公表された再開条件（監査完了、新法成立 等）
+    governor_actions: []   # 新知事の行政措置 {date, action, covers_existing_permits: yes|no|unclear, covers_under_construction: yes|no|unclear, covers_expansion_on_operating_site: yes|no|unclear, source, tier, status}
+    other_states: []       # 新規DCの停止・新規制を出した州 {state, action, date, source, tier, status}
+    federal: []            # 連邦の公聴会・調査・法案 {date, body, subject, companies, stage: 予定|開催|法案提出|可決, source, tier, status}
+  projects: []        # {company, project, location, planned_capacity_mw, stage: 計画|変電所通電|建設中|受電済|引き渡し済|課金中, energization_eta, delivery_eta, billing_eta, prev_eta, shift_months, status_change: none|縮小|中止|解約, source, tier, status}
+  financing: []       # {company, instrument: 社債|借入|増資|リース|資産売却|減損, amount, rate_pct, tenor, secured: yes|no|unknown, date, vs_prev_terms: 同水準|厳しい|緩い|unknown, source, tier, status}
+  gpu_rental: []      # {item: avg_price_disclosed|spot_press, gpu, value, unit, period, source, tier, status}
+  semis_passthrough: []   # {company, date, quote, direction: 後ろ倒し|振り替え|影響なし, regions_affected: 1|2以上|unclear, source, tier, status}
 FOUNDRY:
   tsmc_monthly: {month: , revenue: , yoy: , trailing3m_yoy: , advanced_node_share: , source: , status: }
   taiwan_memory_monthly: []   # {company, month, revenue, yoy, mom, source, status}
@@ -121,7 +141,7 @@ DRAM_ETF: {checked: false, holdings_as_of: , nav_premium_pct: , spread_bps: , au
 MARKET_FILL: []       # GitHubの欠損銘柄（データ未更新のときは2節の11銘柄）を補った終値 {ticker, close, ret_1d_pct, date, source}
 FUNDAMENTAL_LEVELS: []  # {item, value, prev, change, as_of, source}  例：DDR5契約価格QoQ、TSMC 3M累計YoY、4社CapEx合計YoY、HBM価格前期比
 RECONCILED: []        # 前回の報道値・未反映値と今回の値の突き合わせ {item, company, period, prev_value, new_value, diff_pct, result: confirmed|matches_machine|mismatch|pending, source}
-EVENTS_NEXT_14D: []   # {date, event, why_it_matters}
+EVENTS_NEXT_14D: []   # {date, event, why_it_matters}。政策の固定日程（ERCOT報告 12/10、PUCT会合 12/17、新議会 1/3、州議会開会 1/12、新知事就任 1/19）は judge.md 12節の表が持つので、ここには新しく分かった日程と、固定日程の変更だけ書く
 IMPLICATIONS: []      # 1行ずつ、評価語なし
 UNCONFIRMED: []       # {item, tried, reason, seen_value}
 SOURCES: []           # 使ったURL

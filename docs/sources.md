@@ -106,3 +106,18 @@ TrendForce/DRAMeXchange、WSTS、SEMI、SIA、Omdia、TechInsights。スポッ�
 - 企業のガイダンスと市場コンセンサスを分ける。現在値と過去値を混在させない。
 - 取得できないものは「未確認」、企業が開示していないものは「非開示」とする。
 - ADRと現地株の比較では、価格の時刻、ADS比率、為替の時刻を明記する。
+
+## 12. 米国内のデータセンター規制・許認可・稼働タイミング（収集プロンプト P1-7。判定の A4・A5、反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」）
+優先順位は2節と同じ（1 州・連邦の公式 → 2 法律事務所の解説・専門調査 → 3 主要報道2本以上 → 4 その他）。選挙公約・陣営サイトは「公約（estimate）」であり行政措置ではない。就任後の行政命令・州機関への指示・法案だけを「措置」として記録する。
+- テキサス州知事室（指示・命令のプレスリリース）：https://gov.texas.gov/news ／ 新知事の就任は 2027-01-19 予定（州憲法第4条。就任までの発言は公約扱い）
+- ERCOT（大口接続 Batch Zero の分類、監査、DC影響調査の報告 2026-12-10 予定）：https://www.ercot.com/ （News・Grid Information から。報告は PUCT と連携）
+- PUCT（州公益事業委員会。会合 2026-12-17 予定。議題・議事録）：https://www.puc.texas.gov/
+  ※ 12/10・12/17 の日程は 2026-11-05 時点で ERCOT の通知を引用した二次情報（note 記事）から転記したもの。v7.2 の初回の収集で ERCOT・PUCT の公式ページで確認し、違えば EVENTS_NEXT_14D で上書きする
+- TCEQ（州環境当局。許認可停止の運用、電子申請の変更）：https://www.tceq.texas.gov/
+- テキサス州議会（法案検索。通常会期は 2027-01-12 開会）：https://capitol.texas.gov/
+- 連邦議会（公聴会・法案。新議会は 2027-01-03 正午）：https://www.congress.gov/ ／ 上院のエネルギー・商業委員会等は各委員会サイトの Hearings
+- 他州の規制：各州の知事室・公益事業委員会・州議会の公式ページを検索で探す（州名＋ data center moratorium／utility commission）。報道だけなら reported_unverified
+- 法律事務所の解説（措置の範囲・対象の整理に使う。階層2相当。数値の確定には使わない）：DLA Piper、Greenberg Traurig、Foley、Troutman 等の Insights を検索で
+- 案件の進捗・資金（決算リリース・説明会資料・8-K/6-K を優先）：CoreWeave https://investors.coreweave.com/ ／ Nebius https://nebius.com/ （Investors）／ IREN https://iren.gcs-web.com/ ／ Galaxy Digital https://investor.galaxy.com/ ／ Vertiv https://investors.vertiv.com/ ／ Oracle は6節。社債の条件（金額・利率・年限・担保・償還開始）はプレスリリースか 8-K の Exhibit で確認する
+- 3つの日付の定義：受電（energization）＝変電所・系統から電力を受け始めた日、引き渡し（delivery）＝顧客が使える状態で引き渡した日、課金開始（billing start）＝賃料・利用料の計上が始まった日。計画容量（GW/MW）・変電所の通電・建屋の完成・GPU設置は別の段階として書き分ける
+- GPU レンタル価格：固定できる公式指標がないため、ネオクラウド決算の開示（平均単価・契約期間）と、主要報道2本以上が一致するスポット価格だけを使う。単一ブローカーの提示価格・SNS は使わない

@@ -1,5 +1,5 @@
 {
-  "config_version": "1.4",
+  "config_version": "1.5",
   "groups": {
     "market": [
       "^GSPC",
@@ -64,8 +64,16 @@
       "AMZN",
       "META",
       "ORCL"
+    ],
+    "downstream": [
+      "CRWV",
+      "NBIS",
+      "IREN",
+      "GLXY",
+      "VRT"
     ]
   },
+  "_downstream_note": "downstream＝AIインフラの稼働タイミングを見る川下（ネオクラウド・DC開発・電源冷却）の参考枠（config 1.5）。semis_snapshot.csv と daily_signals.json の downstream 表に出すだけで、breadth_sets（S2・D3）、sector_rs.targets、日次シグナルの検出、RS線、fundamentals の対象には入れない。採点に使わない",
   "fundamentals": {
     "_note": "fetch_fundamentals.py の対象。sec_filers＝SEC（10-Q/10-K）で取れる米国籍の会社（SEC に届く環境でだけ使う）。yahoo_tickers＝Yahoo の四半期財務で取る会社（海外含む）。cik は SEC の company_tickers.json（2026-11-02）から転記。sec_check＝レポート側が SEC の XBRL で確認する会社（項目ごと）。銘柄を足すときは cik も書く",
     "sec_filers": [

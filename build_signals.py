@@ -23,6 +23,8 @@
   corr_state_change  SOXXの調整窓の状態（調整中・回復中・完了・なし）が変わった
   2026-10-31 追加（市場比のRS線。日次プロンプト v1.2）
   rs_line        RS線（銘柄÷SPY）が52週高値を更新（株価より先なら high）、主要銘柄のRS線が21日EMAを上抜け・下抜け
+  2026-11-05 追加（config 1.5。日次プロンプト v1.6・判定プロンプト v6.6）
+  downstream     川下（CRWV・NBIS・IREN・GLXY・VRT）の表だけを出す（table と同じ列）。シグナル検出・RS線・広がりの対象にはしない
 
 RS線（rs_lines。セクター内RS＝対SOXXとは別。こちらは市場全体＝SPY比）
   RS線 = 終値 ÷ SPY終値（同じ日付どうし）。補助にQQQ比も出す。米国上場の銘柄・ETFだけ（アジア株・為替・指数は対象外）。
@@ -388,6 +390,8 @@ def main():
         "breadth_now": {k: v["above_sma50"].get("pct") for k, v in now["breadth"].items()},
         "breadth_prev": {k: v["above_sma50"].get("pct") for k, v in prev["breadth"].items()},
         "table": table_rows(now["snap"], cfg["groups"]["market"] + cfg["groups"]["rates_fx"] + cfg["groups"]["memory_us"] + cfg["groups"]["memory_asia"] + ["NVDA", "TSM", "AMD", "AVGO", "ASML", "AMAT", "LRCX", "KLAC"]),
+        # 川下（参考枠。config 1.5 の groups.downstream）。表に出すだけで、シグナル検出・RS線・広がりには入れない
+        "downstream": table_rows(now["snap"], cfg["groups"].get("downstream", [])),
         "watch_levels": watch_levels(now["snap"]),
         "rs_lines": rsl,
         "adr": [{k: x.get(k) for k in ("ads", "date", "premium_pct", "premium_avg20", "ads_ret_1w", "local_ret_1w", "ratio_or_data_suspect")} for x in now["adr_sum"] if x.get("status") == "ok"],
