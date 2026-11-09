@@ -88,3 +88,17 @@ NBIS       # Nebius（ネオクラウド。米国複数州と欧州に拠点分�
 IREN       # IREN（テキサス Sweetwater 2GW。ERCOT Batch Zero は条件付き）
 GLXY       # Galaxy Digital（テキサス Helios の建物側。Helios 社債 35.07億ドル・年9.875%）
 VRT        # Vertiv（電源・冷却。A5 の制約の出荷側）
+
+# --- セクターの状態（sector_health.json）の比較相手（config 1.6）。採点・広がり（S2）・セクター内区分・RS線・日次シグナルには入れない ---
+XLK        # テクノロジー・セレクト・セクター（テック全体）
+IGV        # iShares 拡張テック・ソフトウェア（ソフト）
+AAPL       # 以下、半導体以外のハード・ネット機器（均等加重で「ハード」の比較相手）
+CSCO
+DELL
+HPE
+SMCI
+CIEN
+GLW
+APH
+NTAP
+HPQ

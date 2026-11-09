@@ -25,6 +25,12 @@
   rs_line        RS線（銘柄÷SPY）が52週高値を更新（株価より先なら high）、主要銘柄のRS線が21日EMAを上抜け・下抜け
   2026-11-05 追加（config 1.5。日次プロンプト v1.6・判定プロンプト v6.6）
   downstream     川下（CRWV・NBIS・IREN・GLXY・VRT）の表だけを出す（table と同じ列）。シグナル検出・RS線・広がりの対象にはしない
+  2026-11-10 追加（config 1.6。sector_health.json＝build_health.py。日次プロンプト v1.7・判定プロンプト v6.7）
+  health_label_change   セクターの判定ラベル（健全／改善中／どちらとも／悪化中／弱い）が変わった
+  risk_count_change     大きく下げる危険の目安（3条件のそろい数）が変わった
+  washout_count_change  底の目安（売られ尽くし3条件のそろい数）が変わった。3になった日は high
+  rs_strip_state_change 相対力の帯（中期）のそろい状態（主役／主役ではない）が変わった。全部赤・全部緑が新しく成立した日も出す
+  （これらは描写であり、売買の合図ではない。定義と15年の検証は docs/sector_health.md）
 
 RS線（rs_lines。セクター内RS＝対SOXXとは別。こちらは市場全体＝SPY比）
   RS線 = 終値 ÷ SPY終値（同じ日付どうし）。補助にQQQ比も出す。米国上場の銘柄・ETFだけ（アジア株・為替・指数は対象外）。
@@ -42,6 +48,7 @@ import numpy as np
 import pandas as pd
 
 import build_snapshot as bs
+import build_health as bh
 
 JST = timezone(timedelta(hours=9))
 DEFAULT_THR = {
@@ -302,6 +309,37 @@ def detect(now, prev, cfg, thr, tickers):
     return sig
 
 
+def health_signals(hn, hp):
+    """sector_health の前日比（判断はしない）。hn/hp＝compute_health の結果（当日・前営業日）"""
+    out = []
+    if not hn or hn.get("status") != "ok" or not hp or hp.get("status") != "ok":
+        return out
+
+    def add(kind, ticker, detail, severity="medium", value=None):
+        out.append({"type": kind, "ticker": ticker, "detail": detail, "severity": severity, "value": value})
+    ln, lp = hn.get("label_ja"), hp.get("label_ja")
+    if ln and lp and ln != lp:
+        b = hn["breadth"]
+        add("health_label_change", "SEMIS", f"セクターの判定 {lp}→{ln}（上昇中 {b['stage2']}%、下落中 {b['stage4']}%、50日線上 {b['above50']}%）",
+            "high" if ln in ("弱い", "悪化中") or lp in ("弱い", "悪化中") else "medium", ln)
+    rn, rp = hn["risk"]["count"], hp["risk"]["count"]
+    if rn is not None and rp is not None and rn != rp:
+        hit = [v["ja"] for v in hn["risk"]["conditions"].values() if v["met"]]
+        add("risk_count_change", "SEMIS", f"大きく下げる危険の目安 {rp}→{rn}/3（成立：{'、'.join(hit) if hit else 'なし'}）", "high" if rn == 3 else "medium", rn)
+    wn, wp = hn["washout"]["count"], hp["washout"]["count"]
+    if wn is not None and wp is not None and wn != wp:
+        hit = [v["ja"] for v in hn["washout"]["conditions"].values() if v["met"]]
+        add("washout_count_change", "SEMIS", f"底の目安（売られ尽くし） {wp}→{wn}/3（成立：{'、'.join(hit) if hit else 'なし'}）", "high" if wn == 3 else "medium", wn)
+    for span in ("ema50", "ema21"):
+        sn, sp_ = hn["strip"]["summary"].get(span, {}), hp["strip"]["summary"].get(span, {})
+        if sn.get("state") and sp_.get("state") and sn["state"] != sp_["state"]:
+            add("rs_strip_state_change", "SOXX", f"相対力の帯（{'中期' if span=='ema50' else '短期'}）{sp_['state']}→{sn['state']}（緑 {sn['green_count']}/{sn['of']}）", "medium", sn["state"])
+        gn, gp = sn.get("green_count"), sp_.get("green_count")
+        if gn is not None and gp is not None and gn != gp and gn in (0, sn.get("of")):
+            add("rs_strip_state_change", "SOXX", f"相対力の帯（{'中期' if span=='ema50' else '短期'}）が{'全部赤' if gn == 0 else '全部緑'}に（緑 {gp}→{gn}/{sn['of']}）", "medium", gn)
+    return out
+
+
 def rates_signal(macro, thr):
     out = []
     d = macro.get("latest", {}).get("DFII10")
@@ -370,6 +408,11 @@ def main():
     tickers = list(dict.fromkeys(cfg["groups"]["market"] + cfg["groups"]["rates_fx"] + cfg["groups"]["memory_us"] + cfg["groups"]["memory_asia"]
                                  + cfg["groups"]["ai_logic"] + cfg["groups"]["equipment"] + cfg["groups"]["hyperscalers"]))
     sig = detect(now, prev, cfg, thr, tickers)
+    try:  # セクターの状態（config 1.6）。失敗しても日次シグナル全体を止めない
+        hn, hp = bh.compute_health(px, cfg, us_asof), bh.compute_health(px_prev, cfg, prev["us_asof"])
+        sig += health_signals(hn, hp)
+    except Exception as e:
+        hn, hp = {"status": "error", "note": f"{type(e).__name__}: {e}"}, None
     macro = bs.macro_summary(a.out)
     sig += rates_signal(macro, thr)
     try:
@@ -401,6 +444,12 @@ def main():
         "downstream": table_rows(now["snap"], cfg["groups"].get("downstream", [])),
         "watch_levels": watch_levels(now["snap"]),
         "rs_lines": rsl,
+        # config 1.6：セクターの状態の要約（本体は sector_health.json。判断はしない）
+        "sector_health": ({"label": hn.get("label_ja"), "label_prev": (hp or {}).get("label_ja"), "risk_count": hn["risk"]["count"], "washout_count": hn["washout"]["count"],
+                           "strip": {k: {kk: v.get(kk) for kk in ("green_count", "of", "state", "all_red_days", "all_green_days")} for k, v in hn["strip"]["summary"].items()},
+                           "benches_missing": hn["strip"]["benches_missing"], "breadth": hn["breadth"], "index": {k: hn["index"].get(k) for k in ("close", "pct_vs_ma150", "above_ma150", "rs_spy_13w_pct")},
+                           "subsectors": {k: {kk: v.get(kk) for kk in ("n", "stage2", "stage4", "net_2_minus_4", "above50")} for k, v in hn["subsectors"].items()}}
+                          if hn.get("status") == "ok" else hn),
         "adr": [{k: x.get(k) for k in ("ads", "date", "premium_pct", "premium_avg20", "ads_ret_1w", "local_ret_1w", "ratio_or_data_suspect")} for x in now["adr_sum"] if x.get("status") == "ok"],
         "macro": macro.get("latest", {}),
         "flags": now["flags"],
