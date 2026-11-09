@@ -101,6 +101,12 @@ jobs:
         continue-on-error: true
         run: python build_snapshot.py --out out
 
+      # セクターの状態（config 1.6。中身・危険の目安・底の目安・相対力の帯）。失敗しても signals は動く（daily_signals.json の sector_health は error になる）
+      - id: health
+        name: Build sector health
+        continue-on-error: true
+        run: python build_health.py --out out
+
       - id: signals
         name: Build daily signals
         continue-on-error: true
@@ -112,6 +118,7 @@ jobs:
           MACRO: ${{ steps.macro.outcome }}
           FUNDAMENTALS: ${{ steps.fundamentals.outcome }}
           SNAPSHOT: ${{ steps.snapshot.outcome }}
+          HEALTH: ${{ steps.health.outcome }}
           SIGNALS: ${{ steps.signals.outcome }}
         run: |
           python - <<'EOF'
@@ -119,7 +126,7 @@ jobs:
           from datetime import datetime, timezone
           s = {
             "run_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "steps": {"prices": os.environ["PRICES"], "macro": os.environ["MACRO"], "fundamentals": os.environ["FUNDAMENTALS"], "snapshot": os.environ["SNAPSHOT"], "signals": os.environ["SIGNALS"]},
+            "steps": {"prices": os.environ["PRICES"], "macro": os.environ["MACRO"], "fundamentals": os.environ["FUNDAMENTALS"], "snapshot": os.environ["SNAPSHOT"], "health": os.environ["HEALTH"], "signals": os.environ["SIGNALS"]},
             "note": "failure のステップの出力ファイルは前回のまま。semis_manifest.json の us_as_of で日付を確認すること",
           }
           json.dump(s, open("out/run_status.json", "w"), ensure_ascii=False, indent=2)

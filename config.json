@@ -1,5 +1,5 @@
 {
-  "config_version": "1.5",
+  "config_version": "1.6",
   "groups": {
     "market": [
       "^GSPC",
@@ -71,6 +71,23 @@
       "IREN",
       "GLXY",
       "VRT"
+    ],
+    "rs_benchmarks": [
+      "XLK",
+      "IGV"
+    ],
+    "hardware_basket": [
+      "AAPL",
+      "ANET",
+      "CSCO",
+      "DELL",
+      "HPE",
+      "SMCI",
+      "CIEN",
+      "GLW",
+      "APH",
+      "NTAP",
+      "HPQ"
     ]
   },
   "_downstream_note": "downstream＝AIインフラの稼働タイミングを見る川下（ネオクラウド・DC開発・電源冷却）の参考枠（config 1.5）。semis_snapshot.csv と daily_signals.json の downstream 表に出すだけで、breadth_sets（S2・D3）、sector_rs.targets、日次シグナルの検出、RS線、fundamentals の対象には入れない。採点に使わない",
@@ -489,5 +506,99 @@
     "min_history_bars": 120,
     "now_na_above_pct": 2,
     "newhigh_upgrade_dd_pct": 15
+  },
+  "_sector_health_note": "rs_benchmarks・hardware_basket＝セクターの状態（sector_health.json）の相対力の帯の比較相手（config 1.6）。semis_snapshot.csv に指標は出るが、breadth_sets（S2・D3）、sector_rs.targets、日次シグナルの検出、RS線、fundamentals の対象には入れない。採点に使わない。ANET は packaging_network と重複（group 列は先に現れる packaging_network）",
+  "sector_health": {
+    "_note": "build_health.py の設定。定義と15年の検証結果は docs/sector_health.md。閾値を変えたら HEALTH_VERSION も上げる",
+    "index": "SOXX",
+    "universe": "semis_broad",
+    "ma_bars": 150,
+    "slope_bars": 20,
+    "compare_bars": 20,
+    "label": {
+      "weak_stage4_pct": 40,
+      "deteriorate_pt": 10,
+      "healthy_stage2_pct": 50,
+      "healthy_stage4_max": 20,
+      "improve_pt": 10
+    },
+    "risk": {
+      "rs_bench": "SPY",
+      "rs_bars": 65
+    },
+    "washout": {
+      "above50_lt": 5,
+      "above150_lt": 15,
+      "index_vs_ma150_le": -20
+    },
+    "strip": {
+      "benches": {
+        "市場": "SPY",
+        "テック全体": "XLK",
+        "ソフト": "IGV",
+        "ハード": "hardware_basket"
+      },
+      "ema_spans": [
+        21,
+        50
+      ],
+      "confirm_days": 3
+    },
+    "subsectors": {
+      "AI計算・製造": [
+        "NVDA",
+        "AMD",
+        "AVGO",
+        "MRVL",
+        "TSM",
+        "ARM",
+        "ALAB",
+        "CRDO"
+      ],
+      "製造装置": [
+        "ASML",
+        "AMAT",
+        "LRCX",
+        "KLAC",
+        "TER",
+        "ENTG",
+        "ONTO",
+        "FORM",
+        "NVMI",
+        "CAMT"
+      ],
+      "メモリー": [
+        "MU",
+        "SNDK",
+        "SKHY",
+        "WDC",
+        "STX"
+      ],
+      "アナログ・汎用": [
+        "TXN",
+        "ADI",
+        "NXPI",
+        "MCHP",
+        "ON",
+        "MPWR",
+        "SWKS",
+        "LSCC",
+        "QCOM",
+        "INTC",
+        "RMBS",
+        "SITM",
+        "MTSI"
+      ],
+      "光・後工程": [
+        "COHR",
+        "LITE",
+        "AMKR",
+        "ASX"
+      ],
+      "設計ソフト": [
+        "SNPS",
+        "CDNS"
+      ]
+    }
   }
 }

@@ -1,4 +1,5 @@
-# 半導体・メモリー定点観測｜日次プロンプト v1.6
+# 半導体・メモリー定点観測｜日次プロンプト v1.7
+# v1.6→v1.7（2026-11-10）：0節「セクターの状態」（sector_health.json の転記：判定ラベル・危険の目安・底の目安・相対力の帯・分野別、公式ステージの転記）、1節に health_label_change 等の新シグナル、禁止事項に帯・目安を合図にしないことを追加
 # v1.5→v1.6（2026-11-05）：川下5銘柄（参考枠）の表（4c節）、米国内DC規制の公式発表の確認（手順2-e）、政策の固定日程（8節）、反転リスク2項目との関係（9節）を追加
 
 ## 役割
@@ -6,10 +7,11 @@
 
 ## 入力（GitHub semis-data）
 1. data ブランチ `daily_signals.json`：**これが本体**。コードが前営業日比で検出したシグナル、主要銘柄の表、意識される水準、S/Dの段階とスコアの前日比、ADR、マクロ。`sector_rs`（セクター内区分：対SOXXのリーダー／ラガード）と `resilience`（SOXXの調整窓、次の候補、後崩れ）も含む（v1.1。定義は docs/sector_rs_resilience.md）。`rs_lines`（市場比のRS線：対SPY・対QQQ、52週新高値、株価に先行、21日EMA）も含む（v1.2。定義は build_signals.py 冒頭）。（v1.6）`downstream`（川下5銘柄の表。config 1.5 以降。古いデータなら無い）も含む
+1b. （v1.7）data ブランチ `sector_health.json`：セクターの状態（判定ラベル、中身、危険の目安、底の目安、相対力の帯、分野別）。`daily_signals.json` の `sector_health` にも要約がある。定義と15年の検証は `docs/sector_health.md`。`run_status` の `health` が failure なら前回のもの（その旨を0節に書く）
 2. data ブランチ `run_status.json`、`semis_manifest.json`（基準日 us_as_of、フラグ）
 3. main ブランチ `handoff/latest.yaml`（直近の週次判定：VIEW、SCORES、THESIS_INVALIDATION、TOP_UPSIDE/DOWNSIDE_TRIGGER、NEXT_CHECKPOINTS、FORECASTS.open）
 4. main ブランチ `handoff/daily_state.yaml`（前日の日次で報じたニュースのURL一覧。重複を避ける。なければ初回）
-5. （v1.3）**別リポジトリ market-data（米国株指標チェック）の data ブランチ `signals.json`**：市場全体のレジーム、テック内部（IT＋通信の高値から−20%以上の比率と隠れ弱気のラベル）、ブレイクの伸び、（v1.5）先導セクターの推移・ヘッジ条件・長期SPY配分モデル。semis-data では計算しない値なので、ここから**転記だけ**する。定義は market-data の `04_Addendum_v4.4_Breadth_FollowThrough.txt` と `06_Addendum_v4.5_Leadership_Hedge_SPYModel.txt`（https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/<ファイル名>）
+5. （v1.3）**別リポジトリ market-data（米国株指標チェック）の data ブランチ `signals.json`**：（v1.7）`stages.etfs`（SOXX・SMH の公式ステージ細区分）と `stages.breadth["監視：半導体"]`（公式のステージ分布とラベル）を0節に転記する。市場全体のレジーム、テック内部（IT＋通信の高値から−20%以上の比率と隠れ弱気のラベル）、ブレイクの伸び、（v1.5）先導セクターの推移・ヘッジ条件・長期SPY配分モデル。semis-data では計算しない値なので、ここから**転記だけ**する。定義は market-data の `04_Addendum_v4.4_Breadth_FollowThrough.txt` と `06_Addendum_v4.5_Leadership_Hedge_SPYModel.txt`（https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/<ファイル名>）
 
 取得：シェルがあれば `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git` と main の clone。なければ raw URL `https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/<ファイル名>`、`.../main/handoff/<ファイル名>`。
 market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`（届かなければ `git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data` の signals.json）。
@@ -29,7 +31,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
    `daily_state.yaml` にあるURLのニュースは再掲しない（同じ件の新展開だけ書く）。
    メモリー株・半導体株の急落の理由が「選挙」「規制」と報じられた日は、見出しの理由をそのまま解釈にせず、(1) 公式の措置が出たか、(2) 追跡案件の予定が動いたか、(3) 出来高を伴う値動きか、を分けて書く（11/4 の反省：見出しは「民主党のテキサス勝利」だったが、停止措置は8〜9月から続いており、選挙で変わったのは解除の時期と条件）。
 3. 週次判定との照合：直近の週次の THESIS_INVALIDATION と TOP_DOWNSIDE/UPSIDE_TRIGGER の条件に、今日のシグナルやニュースが触れていないか確認する。触れていれば「週次判定の見直し候補」として明記する（スコアは変えない）。open の予測に期限到来・条件確定があれば「判定待ち：次回週次で確定」と書く。
-4. レポートを書く（下の形式。2〜3画面、表は4つまで（市場表・メモリー株・川下・RS線））。
+4. レポートを書く（下の形式。2〜3画面、表は5つまで（セクターの状態の帯・市場表・メモリー株・川下・RS線））。
 5. 保存：`reports/daily/<us_as_of>.md` と `handoff/daily_state.yaml`（last_us_as_of、reported_urls、review_candidates）を main にコミット（メッセージ `daily <us_as_of>`）。書き込めない環境では本文だけ出力する。
 
 ## 書き方（v1.4）
@@ -41,7 +43,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 ## 出力形式
 冒頭ブロック（plain_language.md 0節の形）：
 ## 今日のひとこと
-- 半導体：値動きの状態を言葉で（例「下落中。SOXは長期の平均線を割り、7月の安値まであと1.4%（S1＝0、SMA200割れ）」）
+- 半導体：値動きの状態を言葉で（例「下落中。SOXは長期の平均線を割り、7月の安値まであと1.4%（S1＝0、SMA200割れ）」）。（v1.7）続けてセクターの状態を一言（例「中身は悪化中、大きく下げる危険の目安は3/3、底の目安は2/3」）
 - メモリー：同じく（例「全面安。メモリー株で上向きなのは0銘柄（D3＝−2）」）
 - 行動の目安：直近の週次の「行動の目安」を転記し、今日のシグナルで変わった水準だけ更新する（plain_language.md 5節。「買え」「売れ」とは書かず、水準と条件で）
 ## なぜその判断か（3〜5行）
@@ -49,8 +51,18 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 - 週次判定（VIEW・スコア）との関係を1行（スコアは変えない。週次の見直し候補があればその旨）
 - 最後の1行：見方が変わる条件を数値で（直近の週次の THESIS_INVALIDATION・TRIGGER から転記し、今日の終値との距離を添える）
 
+### 0. セクターの状態（v1.7。`sector_health.json` から転記、再計算しない。6〜10行＋小さな表1つ。言葉は plain_language.md 6節）
+- 1行目：判定ラベルを言葉で（例「半導体の中身は悪化中（上昇中 5%、下落中 12%、50日線の上 10%、30週線の上 5%）」）。`label` が null なら「判定できず（履歴不足）」。
+- 公式ステージ（market-data `stages`。基準日が違えばその旨）：SOXX・SMH の細区分と言葉（`label`・`label_ja`、since）、監視：半導体 のステージ分布（`pct_stage`、4週前）とラベル（`label_ja`）。簡易版と食い違うときは公式を先に書き、「簡易版は150日線の向きを条件にするため急落直後は下落中が少なく出る」と添える。
+- 危険の目安：`risk.count`/3 と成立した条件名、`risk.reading`（過去の発生率）を括弧で。前日から変わった日はその旨（1節の `risk_count_change` と重複してよい）。
+- 底の目安：`washout.count`/3 と成立した条件、`washout.reading`。3つそろった日は「過去5回で外れなし（結果待ち1回）。底の確定ではなく買い下がる局面の目印」と書く。`dates_all3_in_history` の直近の日付を1つ添える。
+- 相対力の帯（表1つ）：行＝短期（EMA21）・中期（EMA50）、列＝市場・テック全体・ソフト・ハード（緑／赤と EMAとの差%）、右端に 緑の数、そろってからの日数（`all_red_days`／`all_green_days`）、状態（`state`、`state_since`）。`benches_missing` があれば「未取得：○○（次回の自動更新で入る）」。帯は描写であり、乗り換えの合図ではない（15年で乗り換えは持ちっぱなしに負けた）と、状態が変わった日だけ1行添える。
+- 分野別：`subsectors` の net_2_minus_4 と above50 を1行で（例「分野別では光・後工程と製造装置が最も弱く（net −50／−20）、設計ソフトだけ底固め（+50）」）。
+- `sector_health.json` が無い（旧データ）または status が ok でない日は「セクターの状態：未取得（理由）」の1行だけ。
+
 ### 1. 本日のシグナル（daily_signals.json の signals をすべて列挙。空なら「検出なし」）
 severity high → medium の順。1行＝「銘柄：内容」。コードが出したものを削らない。解釈は次節で。
+（v1.7）`health_label_change`・`risk_count_change`・`washout_count_change`・`rs_strip_state_change`（ticker は SEMIS／SOXX）もここに含める。0節と重なってよい。
 
 ### 2. 解釈（3〜6行）
 シグナルを組み合わせた短い解釈。トレンド（SMA50/200の位置と傾き）、広がり、出来高の質（上昇/下落出来高比）、相対強度（RS線）、ボラの順。「現状の描写」であり予測ではないと分かる書き方にする。
@@ -115,13 +127,14 @@ PUCT 会合の日程は ERCOT の公式カレンダー（https://www.ercot.com/c
 （v1.6）手順2-e で公式の措置・追跡案件の予定変更・新規調達の条件悪化を確認した日は、週次の反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」（judge.md 判定基準5節の目安）のどの段階に当たり得るかを1行書き、「週次判定の見直し候補」に入れる（状態の確定は週次）。直近の週次の DC_TIMING.scenario_lean（楽観・基本・悲観）を転記し、今日の材料がそれを動かし得るかを一言。
 
 ### 10. データ監査（2〜3行）
-基準日、run_status、フラグ（stale/jump/adr）、Webで補った値、確認回数。market-data signals.json の基準日（as_of_market_date）と definition_version。
+基準日、run_status（v1.7：`health` を含む）、フラグ（stale/jump/adr）、Webで補った値、確認回数。market-data signals.json の基準日（as_of_market_date）と definition_version。
 
 ### 読み方
 このレポートで使った記号だけを、対応表から1行ずつ（例「S1＝SOXの向き（−2弱い〜+2強い）」「SMA200＝約1年の平均線」）。
 
 ## 禁止事項
 - セクター内区分・調整耐性から売買の判断を書かない（監視候補の順番として扱う。買いは週次判定とピボット等の別の基準）。
+- （v1.7）相対力の帯・危険の目安・底の目安を売買の合図と書かない。帯の「主役ではない」を「売り」、底の目安の「3/3」を「底の確定」「買い」と書かない（それぞれ「描写」「過去の発生率」「買い下がる局面の目印」の言い方にとどめる）。sector_health.json の値を再計算・上書きしない。
 - シグナルの再計算・独自の閾値の持ち込み（定義は build_signals.py）
 - 週次のスコア・ビューの書き換え
 - RS新高値やEMA上抜けを「買いシグナル」と書くこと（候補の絞り込みとして書く）

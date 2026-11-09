@@ -8,7 +8,7 @@
 
 ## 全体の流れ
 
-1. **data ブランチ（自動）**：日本時間 火〜土の 6:35 と 12:35 に `update-semis-data` が走り、終値・テクニカル・モメンタム段階・ADRプレミアム・金利と、40社の四半期実績（売上・在庫・設備投資。Yahoo の四半期財務。SEC に届く環境なら米国籍37社を XBRL で）を更新する。前営業日の足が入るまで10分おきに最大6回取り直す（Yahooが米国東部 20:30〜21:20 ごろに終値を空欄で返す時間帯への対策）。日次レポート（8:53）はデータが古ければ手動起動する
+1. **data ブランチ（自動）**：日本時間 火〜土の 6:35 と 12:35 に `update-semis-data` が走り、終値・テクニカル・モメンタム段階・セクターの状態・ADRプレミアム・金利と、40社の四半期実績（売上・在庫・設備投資。Yahoo の四半期財務。SEC に届く環境なら米国籍37社を XBRL で）を更新する。前営業日の足が入るまで10分おきに最大6回取り直す（Yahooが米国東部 20:30〜21:20 ごろに終値を空欄で返す時間帯への対策）。日次レポート（8:53）はデータが古ければ手動起動する
 2. **第1段階 収集**（`prompts/collector.md`）：機械取得の実績値（`fundamentals_latest.json`）を転記し、判断に効く数字は SEC の XBRL API で確認して格上げし、ガイダンス等を IR から取り、残りをWeb検索で集めて `# SEMI_EVIDENCE` のYAMLを出す → `evidence/`。一次資料が開けないときは主要報道2本以上の一致で「報道値」として採用し、翌週以降に突き合わせる
 3. **第2段階 判定**（`prompts/judge.md`）：証拠YAML＋dataブランチ＋前回引継ぎから採点・シナリオ・予測・レポートを書く → `handoff/`
 
@@ -24,6 +24,8 @@
 | `semis_snapshot.csv` | 銘柄ごとの最新テクニカル指標 |
 | `daily_signals.json` | 日次シグナル：前営業日との比較で検出した変化点（SMAクロス、RSI、高安更新、出来高、段階変更、ADR、VIX、金利、RS線）、主要銘柄の表、意識される水準、RS線の一覧（rs_lines：対SPY・対QQQ、52週新高値、株価に先行、21日EMA） |
 | `resilience.json` | セクター内の強弱（sector_rs）と調整耐性（window、next_candidates、late_breaks） |
+| `sector_health.json` | セクターの状態（config 1.6）：半導体約40銘柄の中身（簡易ステージの分布・平均線の上の割合）と判定ラベル、大きく下げる危険の目安（3条件のそろい数）、底の目安（売られ尽くし3条件のそろい数）、相対力の帯（SOXX 対 市場・テック全体・ソフト・ハード、短期・中期）、分野別。定義と15年の検証は `docs/sector_health.md`。採点には使わない |
+| `history_health.csv` | セクターの状態の日次履歴（ラベル、割合、そろい数、帯の緑の数） |
 | `history_key.csv` / `history_levels.csv` | 主要銘柄の指標と段階の日次履歴（前回比の計算用） |
 | `adr_premium.csv` | SK hynix ADS（SKHY）の理論価値とプレミアム（直近60営業日） |
 | `macro_daily.csv` | FRED：DGS10、DFII10、DTWEXBGS |
@@ -35,14 +37,15 @@
 
 ## main ブランチのファイル
 
-- `tickers.txt` … 取得する銘柄（編集するだけで追加・削除できる）。2026-11-05 に川下5銘柄（CRWV・NBIS・IREN・GLXY・VRT）を参考枠として追加
+- `tickers.txt` … 取得する銘柄（編集するだけで追加・削除できる）。2026-11-05 に川下5銘柄（CRWV・NBIS・IREN・GLXY・VRT）を参考枠として追加。2026-11-10 に相対力の帯の比較相手（XLK・IGV とハード10銘柄）を追加（config 1.6 の `rs_benchmarks`・`hardware_basket`。採点・広がり・区分・RS線・日次シグナルには入らない）
 - `config.json` … グループ、ベンチマーク、広がりの銘柄集合、ADR比率、段階の閾値、配点、SEC で取る会社と CIK（`fundamentals`）。`groups.downstream`（config 1.5）は川下の参考枠で、採点・広がり・セクター内区分・日次シグナルには入らない（daily_signals.json の `downstream` 表だけ）
-- `fetch_prices.py` / `fetch_macro.py` / `fetch_fundamentals.py` / `build_snapshot.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、シグナルの定義は build_signals.py の先頭、SEC の取り方と注意は fetch_fundamentals.py の先頭）
+- `fetch_prices.py` / `fetch_macro.py` / `fetch_fundamentals.py` / `build_snapshot.py` / `build_health.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、セクターの状態は build_health.py、シグナルの定義は build_signals.py の先頭、SEC の取り方と注意は fetch_fundamentals.py の先頭）
+- `history/` と `.github/workflows/fetch_history.yml` … 長期検証用。手動実行（`gh workflow run fetch_history.yml`）で 106銘柄の最長の日足を取り、`history` ブランチに置く（毎日の更新とは別。閾値を見直すときの再検証に使う）
 - `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト。2026-11-05（収集 v7.2・判定 v6.6）から「AIインフラの稼働タイミング」（米国内の DC 規制・許認可の状態、追跡案件 ORCL・CRWV・NBIS・IREN・GLXY の受電・引き渡し・課金開始の予定、資金調達の条件、半導体への伝わり方）を証拠YAMLの `DC_TIMING` に集め、A4・A5 の採点と反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」、6a節、12節の政策日程表に使う
 - `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
 - `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。火〜土 7:21（データ未更新なら 9:21 に再試行）、土 10:11 JST。米国株側の日次 7:07 の後。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
 - `docs/sources.md` … 収集プロンプトが最初に1回読む情報源マップ。`docs/universe_kpi.md` … 必要なときだけ読む参照資料。`docs/sector_rs_resilience.md` … セクター内の強弱と調整耐性の定義
-- `docs/plain_language.md` … やさしい表記の対応表（段階・スコア・小項目・判定の語を日本語に。日次・週次の書き方の約束）
+- `docs/plain_language.md` … やさしい表記の対応表（段階・スコア・小項目・判定の語を日本語に。日次・週次の書き方の約束）。`docs/sector_health.md` … セクターの状態の定義と15年の検証結果（乗り換え戦略が負けた記録を含む）
 - `handoff/` … レポート間の引継ぎ（latest.yaml、日付別の控え、予測台帳 forecasts.csv）
 - `evidence/` … 証拠YAMLの控え
 
