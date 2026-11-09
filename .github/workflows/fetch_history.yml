@@ -2,6 +2,9 @@
 name: fetch-history
 on:
   workflow_dispatch:
+  push:
+    branches: [history-fetch]
+    paths: ["history/**", ".github/workflows/fetch_history.yml"]
 permissions:
   contents: write
 jobs:
