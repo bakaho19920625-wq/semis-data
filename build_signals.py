@@ -345,6 +345,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="out")
     ap.add_argument("--config", default="config.json")
+    ap.add_argument("--as-of", default=None, help="（補完用）この日付（YYYY-MM-DD）までの足だけで計算する。配信できなかった日の日次を後日作るとき。出力先は data ブランチ以外にする")
     a = ap.parse_args()
     with open(a.config, encoding="utf-8") as f:
         cfg = json.load(f)
@@ -355,8 +356,13 @@ def main():
         print("prices_daily.csv.gz がありません。", file=sys.stderr)
         sys.exit(1)
     px = bs.load_prices(ppath)
+    if a.as_of:                                                     # 補完：as_of より後の足を捨てる（全銘柄。アジア株・為替も同じ日付まで）
+        px = px[px["date"] <= pd.Timestamp(a.as_of)]
     now = bs.compute_all(px, cfg)
     us_asof = now["us_asof"]
+    if a.as_of and us_asof.strftime("%Y-%m-%d") != a.as_of:
+        print(json.dumps({"error": "as_of_not_trading_day", "as_of": a.as_of, "last_available": us_asof.strftime("%Y-%m-%d")}, ensure_ascii=False))
+        sys.exit(2)
     # 前営業日：us_asof の足を全銘柄から外して再計算（アジア株・為替は us_asof 以降の足を外す）
     px_prev = px[px["date"] < us_asof]
     prev = bs.compute_all(px_prev, cfg)
@@ -381,6 +387,7 @@ def main():
         "generated_jst": nowt.astimezone(JST).strftime("%Y-%m-%d %H:%M JST"),
         "us_as_of": us_asof.strftime("%Y-%m-%d"),
         "prev_as_of": prev["us_asof"].strftime("%Y-%m-%d"),
+        "backfill": ({"as_of_requested": a.as_of, "note": "後日の補完。macro は実行時点の最新値（as_of 以降を含むことがある）"} if a.as_of else None),
         "signal_count": {"high": sum(s["severity"] == "high" for s in sig), "medium": sum(s["severity"] == "medium" for s in sig)},
         "signals": sig,
         "levels_now": {k: v["level"] for k, v in now["levels"].items()},

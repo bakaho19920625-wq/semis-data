@@ -631,6 +631,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="out")
     ap.add_argument("--config", default="config.json")
+    ap.add_argument("--as-of", default=None, help="（補完用）この日付（YYYY-MM-DD）までの足だけで計算する。出力先は data ブランチ以外にする（履歴ファイルにも追記される）")
     a = ap.parse_args()
     with open(a.config, encoding="utf-8") as f:
         cfg = json.load(f)
@@ -640,9 +641,14 @@ def main():
         print("prices_daily.csv.gz がありません。", file=sys.stderr)
         sys.exit(1)
     px = load_prices(ppath)
+    if a.as_of:                                                     # 補完：as_of より後の足を捨てる
+        px = px[px["date"] <= pd.Timestamp(a.as_of)]
     pman = read_json(os.path.join(a.out, "prices_manifest.json")) or {}
 
     r = compute_all(px, cfg)
+    if a.as_of and r["us_asof"].strftime("%Y-%m-%d") != a.as_of:
+        print(json.dumps({"error": "as_of_not_trading_day", "as_of": a.as_of, "last_available": r["us_asof"].strftime("%Y-%m-%d")}, ensure_ascii=False))
+        sys.exit(2)
     snap, flags, missing, us_asof = r["snap"], r["flags"], r["missing"], r["us_asof"]
     adr, adr_sum, breadth, levels, scores = r["adr"], r["adr_sum"], r["breadth"], r["levels"], r["scores"]
     write_atomic(snap, os.path.join(a.out, "semis_snapshot.csv"))
@@ -675,6 +681,7 @@ def main():
         "definitions_version": DEFINITIONS_VERSION,
         "config_version": cfg.get("config_version"),
         "us_as_of": asof_str,
+        "backfill": ({"as_of_requested": a.as_of} if a.as_of else None),
         "prices_generated_utc": pman.get("generated_utc"),
         "prices_failed": pman.get("tickers_failed"),
         "rows": int(len(snap)),

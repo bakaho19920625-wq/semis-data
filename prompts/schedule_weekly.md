@@ -1,5 +1,5 @@
-# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.3。v1.3＝証拠 v7.2（DC_TIMING）・判定 v6.6（A4・A5、反転リスク2項目、6a節）対応）
-# 定期実行（スケジュールタスク。土曜 10:11 JST に、会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
+# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.4。v1.3＝証拠 v7.2（DC_TIMING）・判定 v6.6（A4・A5、反転リスク2項目、6a節）対応。v1.4＝14:11 の再試行の重複防止、欠けた週の補完（第7節））
+# 定期実行（スケジュールタスク。土曜 10:11 JST、利用上限などで動けなかったときの再試行 14:11。会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
 # 収集は prompts/collector.md、判定は prompts/judge.md が正本。ここは「準備・2段階の回し方・点検・保存・配信」の段取りだけ。
 
 ## 1. 準備
@@ -10,6 +10,7 @@
   `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`
   届かなければ `rm -rf /home/claude/mkt-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data`。
 - semis_manifest.json の us_as_of を日付ラベル YYYY-MM-DD にする。直近の米国取引日より古ければ「GitHubデータ未更新」と明記して続行。
+- ［v1.4］同じ日付の週次がすでにある（reports/<日付>.md があり、handoff/latest.yaml の REPORT_DATE が同じ）なら、何も送らず終了する（14:11 の再試行が 10:11 の成功日に二重に作らないため）。
 
 ## 2. 収集（第1段階）
 Agent（general-purpose）に prompts/collector.md に完全に従わせる。参照は docs/sources.md、/home/claude/sd-data/semis_manifest.json、
@@ -41,3 +42,14 @@ flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認
 SendUserMessage で1〜2画面：冒頭ブロック（judge.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）、総合点（帯）と6カテゴリ内訳、S/D、前回比と drivers、予測の判定結果と累積の的中率、
 反転リスク（「テック内部の崩れ」「米国内のDC規制・許認可」「AI投資の資金調達・信用」の状態と根拠を含む）、AIインフラの稼働タイミング（6a節の要点：規制の状態、後ろ倒しの件数、scenario_lean の1行）、市場全体とテック内部（4c節の要点2行。先導セクターと半導体の先導株数、ヘッジ条件、長く持つ分の目安を含む）、次回の監視項目3つ、データ監査の要点。
 reports/<日付>.md を SendUserFile で送る。
+
+## 7. 欠けた週の補完（v1.4。土曜の定期実行が動かなかった週の週次を後日作る）
+- きっかけ：日次の冒頭の警告（先週の週次が未作成）か、ユーザーの「半導体の週次を補完して」。自動では作らない。
+- 基準日 D：欠けた週の金曜（休場なら最後の取引日）。/home/claude/sd-data を D 時点に戻す：`cp` で作業用ディレクトリに複製し、
+  `python3 build_snapshot.py --out <dir> --as-of D && python3 build_signals.py --out <dir> --as-of D`（levels.json・semis_manifest.json・daily_signals.json・resilience.json が D 時点の値になる）。
+  米国株側の signals.json は market-data の `analyze.py --as-of D --replay-ledger 130`（daily_runbook 第8節）で D 時点の値を作る。
+- 収集（第2節）と判定（第3節）は通常どおり2段階で行う。収集エージェントには「市場基準日は D。D より後に公表された決算・統計・報道は使わない（D 時点で分かっていたことだけ）」と伝える。
+  判定エージェントには「D 時点の levels.json（複製側）に LEVELS を一致させる」「予測の期限は D 基準」と伝える。
+- タイトルに「（補完版）」、0節に「この週の週次は配信できなかったため、後日 D 時点のデータで作り直したもの」と書く。
+- 保存は第5節と同じ（commit「report D (backfill)」）。handoff/latest.yaml は、補完した週より新しい週次がすでにあるなら上書きしない（handoff/D.yaml だけ置く）。forecasts.csv には追記する。
+
