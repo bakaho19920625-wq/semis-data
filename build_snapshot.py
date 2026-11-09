@@ -693,7 +693,8 @@ def main():
         "adr": adr_sum,
         "macro": macro_summary(a.out),
         "history_rows": {"levels": n_hl, "key": n_kh},
-        "files": ["semis_snapshot.csv", "levels.json", "resilience.json", "adr_premium.csv", "macro_daily.csv", "history_levels.csv", "history_key.csv"],
+        "files": ["semis_snapshot.csv", "levels.json", "resilience.json", "adr_premium.csv", "macro_daily.csv", "history_levels.csv", "history_key.csv",
+                  "sector_health.json", "history_health.csv", "daily_signals.json"],  # 後ろ3つは build_health.py・build_signals.py が後で書く
         "resilience": {"state": rw["window"]["state"], "dd_low_pct": rw["window"]["dd_low_pct"], "dd_now_pct": rw["window"]["dd_now_pct"],
                        "next_candidates": [x["ticker"] for x in rw["next_candidates"]], "late_breaks": [x["ticker"] for x in rw["late_breaks"]],
                        "sector_leaders": rw["sector_rs"]["leaders"][:5], "sector_laggards": rw["sector_rs"]["laggards"][:5]},
