@@ -280,6 +280,9 @@ def compute_health(px, cfg, us_asof):
         "label": label, "label_ja": LABEL_JA.get(label),
         "label_rule": "弱い＝下落中40%以上／悪化中＝4週前より下落中が10pt以上増、または上昇中が10pt以上減って下落中が減っていない／健全＝上昇中50%以上かつ下落中20%未満／改善中＝上昇中が10pt以上増かつ下落中が増えていない／それ以外どちらとも（market-data E6.3 と同じ順番。ステージは簡易版）",
         "breadth": now, "breadth_4w_ago": prev4,
+        "breadth_meaning": (f"割合の分母は監視する半導体{len(universe)}銘柄（上昇中・下落中は150日線のある{now['stage_tickers']}銘柄）。"
+                            "上昇中＝株価が30週線（150日線）の上で、その線も4週前より上向き。下落中＝株価が線の下で、線も下向き。残りは中間（線を割ったが線はまだ上向き、など）。"
+                            "長い上昇の直後の急落では線がまだ上向きなので『下落中』が公式のステージ分布より少なく出る。公式（market-data）が取れる日はそちらを先に書く"),
         "index": index_block,
         "risk": risk, "washout": washout, "strip": strip, "subsectors": subs,
     }

@@ -189,7 +189,7 @@ A＝複数の一次情報・数値整合・独立確認／B＝一次情報はあ
    半導体の新規・脱落（`new_leaders_vs_4w`／`dropped_leaders_vs_4w` のうち in_universe が真で、かつ semis-data の config.json `breadth_sets.semis_broad` に含まれる銘柄。要素に半導体の印は無いのでこの集合で判定する）、ヘッジ条件（`hedge.allowed`・`status`・`setups` の銘柄と損切り）、長期SPY配分モデル（`spy_model.allocation_pct`・`signal`・`signal_since`）。
    3行目：半導体が市場に引っ張られているか置いていかれているかを1行（先導株数の推移から）。ヘッジと長期の目安は米国株側の条件の転記であり、本レポートの売買指示ではない
    4d. （v6.7）セクターの状態（`sector_health.json` から転記、再計算しない。表1つ＋5行。言葉は docs/plain_language.md 6節、定義と検証は docs/sector_health.md）：
-   1行目：判定ラベルを言葉で（上昇中・下落中・50日線上・30週線上の割合を括弧）と、前回YAMLの SECTOR_HEALTH.label との比較。公式ステージ（market-data `stages.breadth["監視：半導体"]` のラベルと分布、SOXX・SMH の細区分）を同じ行に転記し、簡易版と食い違えば公式を先に書く。
+   1行目：判定ラベルを言葉で（分母「半導体42銘柄」を書き、上昇中・下落中・50日線上・30週線上の割合を括弧。上昇中＝30週線の上で線も上向き、下落中＝線の下で線も下向き。`breadth_meaning` を使う）と、前回YAMLの SECTOR_HEALTH.label との比較。公式ステージ（market-data `stages.breadth["監視：半導体"]` のラベルと分布、SOXX・SMH の細区分）を同じ行に転記し、簡易版と食い違えば公式を先に書く。
    2行目：大きく下げる危険の目安（`risk.count`/3、成立した条件、`risk.reading` の過去の発生率）。S1・S4 との整合を一言（例「S1＝−2、S4＝−2 と整合」）。
    3行目：底の目安（`washout.count`/3、成立した条件、`risk` 同様に `reading`）。3つそろった週は「過去5回で外れなし（結果待ち1回）。底の確定ではない」と書き、`dates_all3_in_history` の直近日を添える。3つそろった最初の週は FORECASTS.new に「26週後の SOXX がそろった日の終値を上回る」を期限付きで登録する（予測台帳で追跡。確率は過去の実績 5/5 をそのまま使わず、80%を上限にする）。
    表：相対力の帯（行＝短期 EMA21・中期 EMA50、列＝市場・テック全体・ソフト・ハード の緑／赤と EMAとの差%、緑の数、そろってからの日数、状態と state_since）。`benches_missing` は「未取得」。
