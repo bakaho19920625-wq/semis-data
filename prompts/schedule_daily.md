@@ -1,12 +1,14 @@
-# 半導体・メモリー定点観測｜日次の定期実行 手順（schedule_daily v1.6。v1.6＝配信に底の局面（daily.md v1.8）。v1.3＝配信に川下・政策日程・反転リスク2項目を追加。v1.4＝欠けた日の補完（第5節、build_*.py --as-of）、12:21 の再試行、週次未作成の警告。v1.5＝daily.md v1.7 対応：入力・配信・補完に sector_health.json（セクターの状態）を追加、12:21 の再試行の扱いを明記）
+# 半導体・メモリー定点観測｜日次の定期実行 手順（schedule_daily v1.7。v1.7＝GitHub への書き込みを git の push に一本化（add_repo と gh の確認を外す。add_repo は push が断られたときだけ。データ更新の起動は refresh/request.txt の push＝daily.md v1.9）。v1.6＝配信に底の局面（daily.md v1.8）。v1.3＝配信に川下・政策日程・反転リスク2項目を追加。v1.4＝欠けた日の補完（第5節、build_*.py --as-of）、12:21 の再試行、週次未作成の警告。v1.5＝daily.md v1.7 対応：入力・配信・補完に sector_health.json（セクターの状態）を追加、12:21 の再試行の扱いを明記）
 # 定期実行（スケジュールタスク。火〜土 07:21 JST の1回目と、データ未更新や利用上限で動けなかったときの 09:21・12:21 の再試行。会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
 # 米国株側の日次（7:07）の後に置く：6b節で米国株側の signals.json を転記するため。
 # 2026-11-02 まで「半導体チャットへの予約（send_later）」方式だったが、実行済みの予約が毎日増えるため、米国株側と同じ定期実行に変更した。
 # レポートの中身・形式は prompts/daily.md が正本。ここは「準備・新しさの判定・保存・配信」の段取りだけ。
 
 ## 1. 準備
-- /home/claude/semis-data がなければ add_repo（owner=bakaho19920625-wq、repo=semis-data、access=push）のあと
-  `git clone --depth 1 https://github.com/bakaho19920625-wq/semis-data /home/claude/semis-data`。あれば `git -C /home/claude/semis-data pull -q`。
+- /home/claude/semis-data がなければ `git clone --depth 1 https://github.com/bakaho19920625-wq/semis-data /home/claude/semis-data`
+  （公開リポジトリなので事前の準備は要らない）。あれば `git -C /home/claude/semis-data pull -q`。
+- ［v1.7］GitHub への書き込みは git の push だけで行う（daily.md 手順1 のデータ更新の起動と、第3節の保存）。add_repo と gh は、第3節の「push が断られたとき」以外では使わない。
+  `gh auth status` も実行しない（gh が使えるときでも「The token in GH_TOKEN is invalid.」と出るので、判断材料にならない。2026-11-10 に確認）。
 - data ブランチ：`rm -rf /home/claude/sd-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git /home/claude/sd-data`
 - 米国株指標チェックの判定結果（市場全体・テック内部・ブレイクの伸び・先導セクター・ヘッジ条件・長期の目安。daily.md 6b節で転記する）：
   `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`
@@ -26,6 +28,12 @@
 ## 3. 保存
 - レポートを /home/claude/semis-data/reports/daily/<us_as_of>.md に書き、handoff/daily_state.yaml を更新（last_us_as_of、reported_urls、review_candidates）。
 - `git add -A` → commit「daily <us_as_of>」→ `git push origin main`。data ブランチには書かない。
+- ［v1.7］push が断られたとき（データ更新の起動の push も同じ）：
+  ・「fetch first」「non-fast-forward」と出た（ほかの更新が先に入っただけで、権限の問題ではない）→ `git pull -q --rebase origin main` のあと、もう一度 push する。
+  ・それ以外（403 など、書き込みが許可されていない）→ このときだけ ToolSearch（query: "add_repo"）で名前が add_repo で終わるツールを探し、見つかれば
+    add_repo（owner: "bakaho19920625-wq", repo: "semis-data", access: "push"）を呼んでから、同じ push をもう1回だけ試す。
+    それでも断られたら、エラー文をそのまま控え、配信の最後に「GitHub に保存できませんでした：（エラー文）」と1行で書く（推測で原因を書かない）。レポートの配信は続ける。
+  ・push が実際に断られたとき以外は、add_repo・gh・書き込みの道具の状態を、レポートにも配信にも書かない（何も送らず終了する回でも同じ）。
 
 ## 4. 配信
 SendUserMessage で2〜3画面：冒頭ブロック（daily.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）、［v1.5］セクターの状態（daily.md 0節：判定ラベルと分母、危険の目安 n/3、底の目安 n/3 と底の局面（局面が none 以外なら、起点比・二番底の線・底割れの線と、過去の二番底の時期の範囲を1行）、帯の緑の数と状態。売買の合図ではない言い方で）、本日のシグナル（high→medium、全件）、解釈（daily.md 2節）、

@@ -1,10 +1,12 @@
-# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.6。v1.6＝点検・配信に底の局面（judge v6.8）。v1.3＝証拠 v7.2（DC_TIMING）・判定 v6.6（A4・A5、反転リスク2項目、6a節）対応。v1.4＝14:11 の再試行の重複防止、欠けた週の補完（第7節）。v1.5＝判定 v6.7 対応：点検・配信・補完に sector_health.json（セクターの状態、4d節・SECTOR_HEALTH）を追加）
+# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.7。v1.7＝GitHub への書き込みを git の push に一本化（add_repo と gh の確認を外す。add_repo は push が断られたときだけ）。v1.6＝点検・配信に底の局面（judge v6.8）。v1.3＝証拠 v7.2（DC_TIMING）・判定 v6.6（A4・A5、反転リスク2項目、6a節）対応。v1.4＝14:11 の再試行の重複防止、欠けた週の補完（第7節）。v1.5＝判定 v6.7 対応：点検・配信・補完に sector_health.json（セクターの状態、4d節・SECTOR_HEALTH）を追加）
 # 定期実行（スケジュールタスク。土曜 10:11 JST、利用上限などで動けなかったときの再試行 14:11。会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
 # 収集は prompts/collector.md、判定は prompts/judge.md が正本。ここは「準備・2段階の回し方・点検・保存・配信」の段取りだけ。
 
 ## 1. 準備
-- /home/claude/semis-data がなければ add_repo（owner=bakaho19920625-wq、repo=semis-data、access=push）のあと
-  `git clone --depth 1 https://github.com/bakaho19920625-wq/semis-data /home/claude/semis-data`。あれば `git -C /home/claude/semis-data pull -q`。
+- /home/claude/semis-data がなければ `git clone --depth 1 https://github.com/bakaho19920625-wq/semis-data /home/claude/semis-data`
+  （公開リポジトリなので事前の準備は要らない）。あれば `git -C /home/claude/semis-data pull -q`。
+- ［v1.7］GitHub への書き込みは git の push だけで行う（第5節の保存）。add_repo と gh は、第5節の「push が断られたとき」以外では使わない。
+  `gh auth status` も実行しない（gh が使えるときでも「The token in GH_TOKEN is invalid.」と出るので、判断材料にならない。2026-11-10 に確認）。
 - data ブランチ：`rm -rf /home/claude/sd-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git /home/claude/sd-data`
 - 米国株指標チェックの判定結果（judge.md 4c節・MARKET_CONTEXT・反転リスク「テック内部の崩れ」に転記するだけで、採点には使わない）：
   `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`
@@ -38,6 +40,12 @@ flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認
 
 ## 5. 保存
 `git add -A` → commit「report <日付>」→ `git push origin main`。data ブランチには書かない。
+［v1.7］push が断られたとき：
+  ・「fetch first」「non-fast-forward」と出た（ほかの更新が先に入っただけで、権限の問題ではない）→ `git pull -q --rebase origin main` のあと、もう一度 push する。
+  ・それ以外（403 など、書き込みが許可されていない）→ このときだけ ToolSearch（query: "add_repo"）で名前が add_repo で終わるツールを探し、見つかれば
+    add_repo（owner: "bakaho19920625-wq", repo: "semis-data", access: "push"）を呼んでから、同じ push をもう1回だけ試す。
+    それでも断られたら、エラー文をそのまま控え、配信の最後に「GitHub に保存できませんでした：（エラー文）」と1行で書く（推測で原因を書かない）。レポートの配信は続ける。
+  ・push が実際に断られたとき以外は、add_repo・gh・書き込みの道具の状態を、レポートにも配信にも書かない（何も送らず終了する回でも同じ）。
 
 ## 6. 配信
 SendUserMessage で1〜2画面：冒頭ブロック（judge.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）、総合点（帯）と6カテゴリ内訳、S/D、前回比と drivers、予測の判定結果と累積の的中率、
