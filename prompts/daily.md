@@ -1,4 +1,5 @@
-# 半導体・メモリー定点観測｜日次プロンプト v1.8
+# 半導体・メモリー定点観測｜日次プロンプト v1.9
+# v1.8→v1.9（2026-11-10）：手順1のデータ更新の起動を git の push（refresh/request.txt）に変更（gh に頼らない）。market-data の更新待ちも gh を使わず data ブランチの変化を見る。レポートの中身は変えていない
 # v1.7→v1.8（2026-11-10）：0節の「底の目安」に「底の局面」（washout.phase：売られ尽くし中／反発中・二番底待ち／二番底を試し中／底割れ／回復を確認）と、3条件がそろった後の過去の経過（二番底は3〜13営業日後・平均8）を追加。「過去5回で外れなし」の言い方をやめる
 # v1.6→v1.7（2026-11-10）：0節「セクターの状態」（sector_health.json の転記：判定ラベル・危険の目安・底の目安・相対力の帯・分野別、公式ステージの転記）、1節に health_label_change 等の新シグナル、禁止事項に帯・目安を合図にしないことを追加
 # v1.5→v1.6（2026-11-05）：川下5銘柄（参考枠）の表（4c節）、米国内DC規制の公式発表の確認（手順2-e）、政策の固定日程（8節）、反転リスク2項目との関係（9節）を追加
@@ -20,9 +21,9 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 ## 手順
 1. 新しさの確認：`us_as_of` が直近の米国取引日（日本時間の今日の前日にあたるET日付。土日・NYSE休場日を除く）か確認する。
    - 前日が休場なら「新しい取引日はありません（休場）」と1行送って終了。
-   - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` でワークフローを手動起動し、完了を最大10分待って data ブランチを取り直す（ワークフローは前営業日の足が入るまで10分おきに最大6回取り直すので、10分で終わらないことがある。その場合は次へ）。それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」として終了（送るかどうかは schedule_daily 第2節：1回目は送らず、再試行で送る）。手動起動した場合は10節に書く。
+   - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では自分でデータ更新を起動する（v1.9：git の push で起動する）。/home/claude/semis-data（main のクローン）で `mkdir -p refresh && date -u +%Y-%m-%dT%H:%M:%SZ > refresh/request.txt && git add refresh/request.txt && git commit -q -m "refresh request" && git push origin main`（この push で .github/workflows/update.yml が動く。push が断られたら schedule_daily 第3節の「push が断られたとき」に従い、それでも駄目なときだけ従来の `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` を1回試す。エラーなら起動できなかったものとして扱う）。完了は git で確かめる：30秒おきに `git -C /home/claude/semis-data fetch -q origin data && git -C /home/claude/semis-data show FETCH_HEAD:semis_manifest.json` の generated_utc を見て、push した時刻より新しくなるまで最大10分待ち、data ブランチを取り直す（ワークフローは前営業日の足が入るまで10分おきに最大6回取り直すので、10分で終わらないことがある。その場合は次へ）。それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」として終了（送るかどうかは schedule_daily 第2節：1回目は送らず、再試行で送る）。起動した場合は10節に書く。
    - `run_status` の `signals` が failure なら、daily_signals.json は前回のもの。その旨を書き、表は semis_snapshot.csv から作る。
-   - （v1.3）market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。違うときは、market-data 側のデータ更新が実行中なら（`gh run list -R bakaho19920625-wq/market-data --workflow update.yml -L 1 --json status,conclusion`）最大5分待って取り直す（起動はしない。米国株側の日次 7:07 が起動しているはず）。それでも違えば6b節に「基準日が異なる（market-data ○○）」と書いて、そのまま転記する。取得できなければ6b節は「取得できず」の1行。`definition_version` が `ST-1.4` より前なら、テック内部とブレイクの伸びは「未対応（旧版）」。`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
+   - （v1.3）market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。違うときは、market-data 側のデータ更新が動いている途中のことがあるので、30秒おきに `git ls-remote https://github.com/bakaho19920625-wq/market-data.git refs/heads/data` の値を見て、変わったら `git clone -q --depth 1 --branch data` で取り直す（最大5分。v1.9：gh は使わない。raw の URL は数分古い値を返すことがあるので取り直しには使わない。起動はしない。米国株側の日次 7:07 が起動しているはず）。それでも違えば6b節に「基準日が異なる（market-data ○○）」と書いて、そのまま転記する。取得できなければ6b節は「取得できず」の1行。`definition_version` が `ST-1.4` より前なら、テック内部とブレイクの伸びは「未対応（旧版）」。`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
 2. Web確認は**最大6回**（検索＋取得の合計）。優先順：
    a. 前営業日に発表された監視企業の決算・ガイダンス・月次売上（該当があれば）
    b. 前営業日のメモリー価格・需給の報道（TrendForce等）、主要企業のHBM/DRAM/NANDに関する発表
