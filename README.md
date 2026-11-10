@@ -45,7 +45,7 @@
 - `history/` と `.github/workflows/fetch_history.yml` … 長期検証用。手動実行（`gh workflow run fetch_history.yml`）で 106銘柄の最長の日足を取り、`history` ブランチに置く（毎日の更新とは別。閾値を見直すときの再検証に使う）
 - `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト（2026-11-10 時点で収集 v7.3・判定 v6.9。日次は `prompts/daily.md` v2.0）。2026-11-05（収集 v7.2・判定 v6.6）から「AIインフラの稼働タイミング」（米国内の DC 規制・許認可の状態、追跡案件 ORCL・CRWV・NBIS・IREN・GLXY の受電・引き渡し・課金開始の予定、資金調達の条件、半導体への伝わり方）を証拠YAMLの `DC_TIMING` に集め、A4・A5 の採点と反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」、6a節、12節の政策日程表に使う
 - `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
-- `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。日次は火〜土 7:21（データ未更新や利用上限なら 9:21・12:21 に再試行）、週次は土 10:11（利用上限などで動けなければ 14:11 に再試行）。日本時間。米国株側の日次 7:07 の後。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
+- `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。日次は火〜土 7:21（データ未更新や利用上限なら 9:21・12:21 に再試行）、週次は土 10:11（利用上限などで動けなければ 14:11・19:11 に再試行）。日本時間。米国株側の日次 7:07 の後。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
 - `docs/sources.md` … 収集プロンプトが最初に1回読む情報源マップ。`docs/universe_kpi.md` … 必要なときだけ読む参照資料。`docs/sector_rs_resilience.md` … セクター内の強弱と調整耐性の定義
 - `docs/plain_language.md` … やさしい表記の対応表（段階・スコア・小項目・判定の語を日本語に。日次・週次の書き方の約束）。`docs/sector_health.md` … セクターの状態の定義と15年の検証結果（乗り換え戦略が負けた記録を含む）
 - `handoff/` … レポート間の引継ぎ（latest.yaml、日付別の控え、予測台帳 forecasts.csv）
