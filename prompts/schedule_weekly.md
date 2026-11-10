@@ -1,5 +1,5 @@
 # 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.8。v1.8＝収集 v7.3・判定 v6.9 対応：点検に10a節（需給と信用の市場の値）と冒頭ブロックの形（市況／株価）を追加、配信を1画面に。v1.7＝GitHub への書き込みを git の push に一本化（add_repo と gh の確認を外す。add_repo は push が断られたときだけ）。v1.6＝点検・配信に底の局面（judge v6.8）。v1.3＝証拠 v7.2（DC_TIMING）・判定 v6.6（A4・A5、反転リスク2項目、6a節）対応。v1.4＝14:11 の再試行の重複防止、欠けた週の補完（第7節）。v1.5＝判定 v6.7 対応：点検・配信・補完に sector_health.json（セクターの状態、4d節・SECTOR_HEALTH）を追加）
-# 定期実行（スケジュールタスク。土曜 10:11 JST、利用上限などで動けなかったときの再試行 14:11。会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
+# 定期実行（スケジュールタスク。土曜 10:11 JST、利用上限などで動けなかったときの再試行 14:11・19:11。19:11 は v1.8 で追加：11/7 は 10:11 が利用上限で失敗し、4時間後では上限が戻らないことがあるため。会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
 # 収集は prompts/collector.md、判定は prompts/judge.md が正本。ここは「準備・2段階の回し方・点検・保存・配信」の段取りだけ。
 
 ## 1. 準備
@@ -12,7 +12,7 @@
   `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`
   届かなければ `rm -rf /home/claude/mkt-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data`。
 - semis_manifest.json の us_as_of を日付ラベル YYYY-MM-DD にする。直近の米国取引日より古ければ「GitHubデータ未更新」と明記して続行。
-- ［v1.4］同じ日付の週次がすでにある（reports/<日付>.md があり、handoff/latest.yaml の REPORT_DATE が同じ）なら、何も送らず終了する（14:11 の再試行が 10:11 の成功日に二重に作らないため）。
+- ［v1.4］同じ日付の週次がすでにある（reports/<日付>.md があり、handoff/latest.yaml の REPORT_DATE が同じ）なら、何も送らず終了する（14:11・19:11 の再試行が、前の回が成功した日に二重に作らないため）。
 
 ## 2. 収集（第1段階）
 Agent（general-purpose）に prompts/collector.md に完全に従わせる。参照は docs/sources.md、/home/claude/sd-data/semis_manifest.json、
