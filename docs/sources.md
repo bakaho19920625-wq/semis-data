@@ -41,7 +41,7 @@
 | history_key.csv | 主要銘柄の終値・SMA・RSI等の日次履歴（前回比に使う） |
 | history_levels.csv | 段階とスコアの日次履歴 |
 | adr_premium.csv | SKHYの理論ADS価値とプレミアムの推移（直近60営業日） |
-| macro_daily.csv | DGS10、DFII10、DTWEXBGS（FRED） |
+| macro_daily.csv | DGS10、DFII10、DTWEXBGS（FRED）。参考の系列として BAMLH0A0HYM2（HYスプレッド）、BAMLH0A3HYC（CCC格）、DGS2（2年金利。米国株指標チェックの日次が読む）。参考の系列は取れなくても status は変わらない |
 | fundamentals_latest.json | 機械取得の四半期実績（40社：米国籍37社＋TSM・ASML・ARM）。売上・売上原価・在庫（在庫日数）・設備投資・営業CF と前年比・前期比、4社CapEx合計。通常は Yahoo の四半期財務（非公式・階層4）で、各社に SEC の XBRL で確認するためのURL `sec_check_urls` が付く。SEC に届く環境で動いた日は SEC の値（階層1）。収集プロンプト第2節 |
 | fundamentals.csv | 同じ項目の全期間（四半期ごと1行。source 列が yahoo か sec_xbrl。derived=true は累計の差分で作った値） |
 

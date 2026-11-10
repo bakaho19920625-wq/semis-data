@@ -12,6 +12,7 @@ FREDから金利などの日次データを取得する（GitHub Actionsで毎�
   DTWEXBGS : 名目ドル指数（Broad）
   BAMLH0A0HYM2 : 米ハイイールド債のスプレッド（ICE BofA US High Yield OAS、%）。週次の反転リスク「AI投資の資金調達・信用」の参考値
   BAMLH0A3HYC  : 同 CCC格以下のスプレッド（%）。信用の弱い発行体ほど先に広がる
+  DGS2     : 米2年国債利回り（%）。米国株指標チェックの日次（Broad）が Web 検索の代わりに読む参考値（2026-11-10 追加）
   （ICE BofA の系列は FRED 上の履歴が直近約3年に限られる。取れない日は optional_failed に入り、ほかの系列はそのまま出る。status は上の3系列だけで決める）
 """
 import argparse
@@ -27,7 +28,7 @@ import pandas as pd
 
 SERIES = ["DGS10", "DFII10", "DTWEXBGS"]
 # 参考の系列（追補 2026-11-10）。取れなくても status は変えない（optional_failed に書くだけ。採点に使う上の3系列と分ける）
-OPTIONAL_SERIES = ["BAMLH0A0HYM2", "BAMLH0A3HYC"]
+OPTIONAL_SERIES = ["BAMLH0A0HYM2", "BAMLH0A3HYC", "DGS2"]
 URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}&cosd={start}"
 JST = timezone(timedelta(hours=9))
 

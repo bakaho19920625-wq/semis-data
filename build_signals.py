@@ -321,7 +321,7 @@ def health_signals(hn, hp):
     ln, lp = hn.get("label_ja"), hp.get("label_ja")
     if ln and lp and ln != lp:
         b = hn["breadth"]
-        add("health_label_change", "SEMIS", f"セクターの判定 {lp}→{ln}（上昇中 {b['stage2']}%、下落中 {b['stage4']}%、50日線上 {b['above50']}%）",
+        add("health_label_change", "SEMIS", f"セクターの判定 {lp}→{ln}（線の上で上向き {b['stage2']}%、線の下で下向き {b['stage4']}%、50日線上 {b['above50']}%）",
             "high" if ln in ("弱い", "悪化中") or lp in ("弱い", "悪化中") else "medium", ln)
     rn, rp = hn["risk"]["count"], hp["risk"]["count"]
     if rn is not None and rp is not None and rn != rp:

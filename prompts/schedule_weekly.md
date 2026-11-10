@@ -1,4 +1,4 @@
-# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.7。v1.7＝GitHub への書き込みを git の push に一本化（add_repo と gh の確認を外す。add_repo は push が断られたときだけ）。v1.6＝点検・配信に底の局面（judge v6.8）。v1.3＝証拠 v7.2（DC_TIMING）・判定 v6.6（A4・A5、反転リスク2項目、6a節）対応。v1.4＝14:11 の再試行の重複防止、欠けた週の補完（第7節）。v1.5＝判定 v6.7 対応：点検・配信・補完に sector_health.json（セクターの状態、4d節・SECTOR_HEALTH）を追加）
+# 半導体・メモリー定点観測｜週次の定期実行 手順（schedule_weekly v1.8。v1.8＝収集 v7.3・判定 v6.9 対応：点検に10a節（需給と信用の市場の値）と冒頭ブロックの形（市況／株価）を追加、配信を1画面に。v1.7＝GitHub への書き込みを git の push に一本化（add_repo と gh の確認を外す。add_repo は push が断られたときだけ）。v1.6＝点検・配信に底の局面（judge v6.8）。v1.3＝証拠 v7.2（DC_TIMING）・判定 v6.6（A4・A5、反転リスク2項目、6a節）対応。v1.4＝14:11 の再試行の重複防止、欠けた週の補完（第7節）。v1.5＝判定 v6.7 対応：点検・配信・補完に sector_health.json（セクターの状態、4d節・SECTOR_HEALTH）を追加）
 # 定期実行（スケジュールタスク。土曜 10:11 JST、利用上限などで動けなかったときの再試行 14:11。会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
 # 収集は prompts/collector.md、判定は prompts/judge.md が正本。ここは「準備・2段階の回し方・点検・保存・配信」の段取りだけ。
 
@@ -18,7 +18,7 @@
 Agent（general-purpose）に prompts/collector.md に完全に従わせる。参照は docs/sources.md、/home/claude/sd-data/semis_manifest.json、
 /home/claude/sd-data/fundamentals_latest.json（機械取得の実績値と SEC 確認用URL。collector.md 第2節）、handoff/latest.yaml、前回の evidence/latest.yaml（突き合わせ用。上書きする前に読ませる）。
 run_status.json の fundamentals が failure、または fundamentals_latest.json の status が failed なら、その旨を収集エージェントに伝え（値は前回のまま）、実績値は従来どおりWebで探させる。
-出力は evidence/<日付>.yaml と evidence/latest.yaml（yaml.safe_load で読めることを確認。EVIDENCE_VERSION: v7.2、MACHINE_FUNDAMENTALS・RECONCILED・DC_TIMING がある。DC_TIMING.regulation.texas_pause.state と projects が埋まっているか見る。空なら収集エージェントに P1-7 の a・b を確認させる（1回まで））。
+出力は evidence/<日付>.yaml と evidence/latest.yaml（yaml.safe_load で読めることを確認。EVIDENCE_VERSION: v7.3、MACHINE_FUNDAMENTALS・RECONCILED・DC_TIMING がある（DC_TIMING の中に market_credit と construction_actuals の欄がある。値が取れなかった週は空でよい）。DC_TIMING.regulation.texas_pause.state と projects が埋まっているか見る。空なら収集エージェントに P1-7 の a・b を確認させる（1回まで））。
 flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認済み（0.1株、424B4）なので、終値の確認だけでよい。
 月の最初の実行なら DRAM ETF の公式情報も確認。
 
@@ -36,6 +36,9 @@ flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認
 - 冒頭ブロック（今日のひとこと3行＝半導体／メモリー／行動の目安、＋なぜその判断か）がある。本文の状態語が言葉→数字（記号）の形になっている。
 - （v1.3）LEVELS.A の A4・A5 が数値（−2〜+2）になっている（除外なら0節に「DC_TIMING なし」の理由がある）。6a節に5つの見出しと scenario_lean がある。YAML に DC_TIMING と DOWNSTREAM_RS があり、反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」の状態が本文10節に書かれている。12節に政策の固定日程の表がある。
 - （v1.5）4d節とYAMLの SECTOR_HEALTH が /home/claude/sd-data/sector_health.json の値と一致している（label、risk.count、washout.count、washout.phase の code・anchor_date・close_vs_anchor_pct、strip の緑の数と state。再計算していない）。そろい数が3未満で局面が none 以外のとき「まだ売られ尽くしていない」と書いていない。「過去5回で外れなし」「だまし0%」と書いていない。帯・危険の目安・底の目安が採点（LEVELS）・VIEW・行動の目安の「買え」「売れ」に使われていない。底の目安が3つそろった最初の週（初回は 2026-11-05 の分）は FORECASTS.new に26週の予測がある。sector_health.json が無い・古いときは4d節が「未取得」になっている。
+- （v1.8）冒頭ブロックの「半導体」「メモリー」の行が、株価の状態と市況の見方を分けて書いている（judge.md v6.9。「やや強気」などのラベルだけで行を始めていない。値動きの点数が30未満、または反転リスクの発動が2つ以上の週は、株価の状態が先）。
+- （v1.8）10a節（需給と信用の市場の値）があり、YAML に FLOWS_CREDIT がある。①買い戻しの燃料は market-data の reports/flows/fuel_latest.yaml の値と一致（再計算していない。読めない週は「未取得」）、②の HY・CCC は /home/claude/sd-data/semis_manifest.json の macro.latest の値。10a節の値が採点（LEVELS）・反転リスクの段階・シナリオ確率に使われていない。
+- （v1.8）倍率に基準（20日平均・50日平均）が書かれ、4d節で簡易版の割合を「上昇中」「下落中」と書いていない。
 不一致は判定エージェントに差し戻す（最大2回）。
 
 ## 5. 保存
@@ -48,8 +51,12 @@ flags に adr_ratio_or_data_suspect があっても SKHY の ADS 比率は確認
   ・push が実際に断られたとき以外は、add_repo・gh・書き込みの道具の状態を、レポートにも配信にも書かない（何も送らず終了する回でも同じ）。
 
 ## 6. 配信
-SendUserMessage で1〜2画面：冒頭ブロック（judge.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）、総合点（帯）と6カテゴリ内訳、S/D、前回比と drivers、予測の判定結果と累積の的中率、
-反転リスク（「テック内部の崩れ」「米国内のDC規制・許認可」「AI投資の資金調達・信用」の状態と根拠を含む）、AIインフラの稼働タイミング（6a節の要点：規制の状態、後ろ倒しの件数、scenario_lean の1行）、［v1.5］セクターの状態（4d節の要点1〜2行：判定ラベルと前回比、危険の目安 n/3、底の目安 n/3 と底の局面、帯の状態。売買の合図ではない言い方で）、市場全体とテック内部（4c節の要点2行。先導セクターと半導体の先導株数、ヘッジ条件、長く持つ分の目安を含む）、次回の監視項目3つ、データ監査の要点。
+［v1.8］SendUserMessage は**1画面**（日本語でおよそ800〜1,200字）。全文は添付の本文で読めるので、配信には判断に要るものだけを書く：
+1. 冒頭ブロック（judge.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）
+2. 前回から変わった点：総合点（帯）と前回比、段階が変わった小項目（drivers）の上位3、反転リスクで状態が変わったものと発動中のもの（「テック内部の崩れ」「米国内のDC規制・許認可」「AI投資の資金調達・信用」は状態を必ず1語で）、予測の判定結果と累積の的中率
+3. 1行ずつ：セクターの状態（4d節：公式ステージの分布と判定、危険の目安 n/3、底の目安 n/3 と底の局面。売買の合図ではない言い方で）／需給と信用（10a節：燃料の棒と残り約○割、信用の1行、まとめ）／AIインフラの稼働タイミング（6a節の scenario_lean。状態が変わった週は規制の状態と後ろ倒しの件数も）
+4. 次回の監視項目3つと、データ監査で伝えるべきこと（未更新・取得失敗・要確認の多い項目。なければ書かない）
+6カテゴリの内訳、S/D の小項目、市場全体とテック内部（4c節）の詳細、シナリオ確率の表は配信に書かない（本文にある。前回から変わった週だけ2の中で1行）。最後に「全文は添付のファイル」と1行。
 reports/<日付>.md を SendUserFile で送る。
 
 ## 7. 欠けた週の補完（v1.4。土曜の定期実行が動かなかった週の週次を後日作る）

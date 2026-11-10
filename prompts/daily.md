@@ -1,4 +1,5 @@
-# 半導体・メモリー定点観測｜日次プロンプト v1.9
+# 半導体・メモリー定点観測｜日次プロンプト v2.0
+# v1.9→v2.0（2026-11-10、総点検）：(1) 手順1に「データの生成時刻が米国の引けより後か」の確認を追加（取引時間中に作られたデータは、基準日が合っていても古いものとして扱う。取得側の fetch_prices.py も未確定の足を捨てるようにした）、(2)「分量の決まり」を新設（冒頭ブロックの直後に「前日から変わった点」、変化のない節は短縮形、1節は種類ごとにまとめる。配信は1画面＝schedule_daily v1.8）、(3) 0節は公式ステージを先に書き、簡易版の言葉を「線の上で上向き／線の下で下向き」に変更（「上昇中・下落中」とは書かない）、(4) 倍率には必ず基準（20日平均・50日平均）を書く、騰落率と出来高は data ブランチの値だけを書く、(5) 10節に run_status の rebound と価格の生成時刻。追補 R1（2b節 戻りの質、6b節 買い戻しの燃料・不安の指数の期間構造）は v1.8〜v1.9 の間に版を上げずに入っていたので、ここに記録する。採点・シグナルの定義は変えていない
 # v1.8→v1.9（2026-11-10）：手順1のデータ更新の起動を git の push（refresh/request.txt）に変更（gh に頼らない）。market-data の更新待ちも gh を使わず data ブランチの変化を見る。レポートの中身は変えていない
 # v1.7→v1.8（2026-11-10）：0節の「底の目安」に「底の局面」（washout.phase：売られ尽くし中／反発中・二番底待ち／二番底を試し中／底割れ／回復を確認）と、3条件がそろった後の過去の経過（二番底は3〜13営業日後・平均8）を追加。「過去5回で外れなし」の言い方をやめる
 # v1.6→v1.7（2026-11-10）：0節「セクターの状態」（sector_health.json の転記：判定ラベル・危険の目安・底の目安・相対力の帯・分野別、公式ステージの転記）、1節に health_label_change 等の新シグナル、禁止事項に帯・目安を合図にしないことを追加
@@ -10,7 +11,7 @@
 ## 入力（GitHub semis-data）
 1. data ブランチ `daily_signals.json`：**これが本体**。コードが前営業日比で検出したシグナル、主要銘柄の表、意識される水準、S/Dの段階とスコアの前日比、ADR、マクロ。`sector_rs`（セクター内区分：対SOXXのリーダー／ラガード）と `resilience`（SOXXの調整窓、次の候補、後崩れ）も含む（v1.1。定義は docs/sector_rs_resilience.md）。`rs_lines`（市場比のRS線：対SPY・対QQQ、52週新高値、株価に先行、21日EMA）も含む（v1.2。定義は build_signals.py 冒頭）。（v1.6）`downstream`（川下5銘柄の表。config 1.5 以降。古いデータなら無い）も含む
 1b. （v1.7）data ブランチ `sector_health.json`：セクターの状態（判定ラベル、中身、危険の目安、底の目安、相対力の帯、分野別）。`daily_signals.json` の `sector_health` にも要約がある。定義と15年の検証は `docs/sector_health.md`。`run_status` の `health` が failure なら前回のもの（その旨を0節に書く）
-2. data ブランチ `run_status.json`、`semis_manifest.json`（基準日 us_as_of、フラグ）
+2. data ブランチ `run_status.json`、`semis_manifest.json`（基準日 us_as_of、フラグ）、（v2.0）`prices_manifest.json`（価格を取得した時刻 generated_utc と、取引時間中に捨てた未確定の足 unclosed_dropped）、`rebound_quality.json`（2b節）
 3. main ブランチ `handoff/latest.yaml`（直近の週次判定：VIEW、SCORES、THESIS_INVALIDATION、TOP_UPSIDE/DOWNSIDE_TRIGGER、NEXT_CHECKPOINTS、FORECASTS.open）
 4. main ブランチ `handoff/daily_state.yaml`（前日の日次で報じたニュースのURL一覧。重複を避ける。なければ初回）
 5. （v1.3）**別リポジトリ market-data（米国株指標チェック）の data ブランチ `signals.json`**：（v1.7）`stages.etfs`（SOXX・SMH の公式ステージ細区分）と `stages.breadth["監視：半導体"]`（公式のステージ分布とラベル）を0節に転記する。市場全体のレジーム、テック内部（IT＋通信の高値から−20%以上の比率と隠れ弱気のラベル）、ブレイクの伸び、（v1.5）先導セクターの推移・ヘッジ条件・長期SPY配分モデル。semis-data では計算しない値なので、ここから**転記だけ**する。定義は market-data の `04_Addendum_v4.4_Breadth_FollowThrough.txt` と `06_Addendum_v4.5_Leadership_Hedge_SPYModel.txt`（https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/<ファイル名>）
@@ -21,6 +22,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 ## 手順
 1. 新しさの確認：`us_as_of` が直近の米国取引日（日本時間の今日の前日にあたるET日付。土日・NYSE休場日を除く）か確認する。
    - 前日が休場なら「新しい取引日はありません（休場）」と1行送って終了。
+   - （v2.0）生成時刻の確認：`prices_manifest.json` の `generated_utc` が「`us_as_of` の日付の 21:20 UTC」より前なら、そのデータは米国の取引時間中（引け前）に作られたもので、基準日が合っていても終値ではない（2026-11-09 に、取引時間中の手動実行で実際に起きた）。日付が古いときと同じ扱いにして、下の手順でデータ更新を起動する。夏時間の引けは 20:20 UTC だが、判定は一年じゅう 21:20 UTC でよい（夏の 20:20〜21:20 UTC に作られたデータを取り直すだけで害はない）。取り直しても生成時刻が引けより前のままなら「GitHubデータ未更新」と同じ扱いにする。
    - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では自分でデータ更新を起動する（v1.9：git の push で起動する）。/home/claude/semis-data（main のクローン）で `mkdir -p refresh && date -u +%Y-%m-%dT%H:%M:%SZ > refresh/request.txt && git add refresh/request.txt && git commit -q -m "refresh request" && git push origin main`（この push で .github/workflows/update.yml が動く。push が断られたら schedule_daily 第3節の「push が断られたとき」に従い、それでも駄目なときだけ従来の `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` を1回試す。エラーなら起動できなかったものとして扱う）。完了は git で確かめる：30秒おきに `git -C /home/claude/semis-data fetch -q origin data && git -C /home/claude/semis-data show FETCH_HEAD:semis_manifest.json` の generated_utc を見て、push した時刻より新しくなるまで最大10分待ち、data ブランチを取り直す（ワークフローは前営業日の足が入るまで10分おきに最大6回取り直すので、10分で終わらないことがある。その場合は次へ）。それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」として終了（送るかどうかは schedule_daily 第2節：1回目は送らず、再試行で送る）。起動した場合は10節に書く。
    - `run_status` の `signals` が failure なら、daily_signals.json は前回のもの。その旨を書き、表は semis_snapshot.csv から作る。
    - （v1.3）market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。違うときは、market-data 側のデータ更新が動いている途中のことがあるので、30秒おきに `git ls-remote https://github.com/bakaho19920625-wq/market-data.git refs/heads/data` の値を見て、変わったら `git clone -q --depth 1 --branch data` で取り直す（最大5分。v1.9：gh は使わない。raw の URL は数分古い値を返すことがあるので取り直しには使わない。起動はしない。米国株側の日次 7:07 が起動しているはず）。それでも違えば6b節に「基準日が異なる（market-data ○○）」と書いて、そのまま転記する。取得できなければ6b節は「取得できず」の1行。`definition_version` が `ST-1.4` より前なら、テック内部とブレイクの伸びは「未対応（旧版）」。`engine 1.3` より前なら先導セクター・ヘッジ・長期モデルは「未対応（旧版）」。
@@ -33,7 +35,7 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
    `daily_state.yaml` にあるURLのニュースは再掲しない（同じ件の新展開だけ書く）。
    メモリー株・半導体株の急落の理由が「選挙」「規制」と報じられた日は、見出しの理由をそのまま解釈にせず、(1) 公式の措置が出たか、(2) 追跡案件の予定が動いたか、(3) 出来高を伴う値動きか、を分けて書く（11/4 の反省：見出しは「民主党のテキサス勝利」だったが、停止措置は8〜9月から続いており、選挙で変わったのは解除の時期と条件）。
 3. 週次判定との照合：直近の週次の THESIS_INVALIDATION と TOP_DOWNSIDE/UPSIDE_TRIGGER の条件に、今日のシグナルやニュースが触れていないか確認する。触れていれば「週次判定の見直し候補」として明記する（スコアは変えない）。open の予測に期限到来・条件確定があれば「判定待ち：次回週次で確定」と書く。
-4. レポートを書く（下の形式。2〜3画面、表は5つまで（セクターの状態の帯・市場表・メモリー株・川下・RS線））。
+4. レポートを書く（下の形式。分量は「分量の決まり」に従う。表は5つまで（セクターの状態の帯・市場表・メモリー株・川下・RS線））。
 5. 保存：`reports/daily/<us_as_of>.md` と `handoff/daily_state.yaml`（last_us_as_of、reported_urls、review_candidates）を main にコミット（メッセージ `daily <us_as_of>`）。書き込めない環境では本文だけ出力する。
 
 ## 書き方（v1.4）
@@ -41,6 +43,21 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 （https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/05_Plain_Language_Glossary.txt）の「言葉」で書き、数字と記号を括弧で後ろに付ける。
 例：「半導体の値動きは弱い（Sスコア 23.8、前日43.8）」「SOXは長期の平均線を割った（SMA200 10,781）」。記号は消さない。記号だけ・英語だけの行を作らない。
 表には「言葉」の列を置くか、数字の横に言葉を添える。巻末に「読み方」（使った記号だけ、1行ずつ）。
+（v2.0）倍率には必ず基準を書く：出来高比（`table` とシグナルの「出来高が20日平均の○倍」）は「20日平均の○倍」、2b節の売買代金は「50日平均の○倍」。「普段の○倍」とだけ書かない（基準の違う数字が同じ言葉で並ぶため。11/9 の SOXX は、出来高が20日平均の1.07倍、売買代金が50日平均の1.28倍だった）。
+（v2.0）銘柄・ETF・指数の騰落率と出来高は、data ブランチの値（daily_signals.json・semis_snapshot.csv・rebound_quality.json）だけを書く。記事に載っている騰落率は取引時間中の値のことがあるので書かない（記事は値動きの理由の説明にだけ使う）。
+（v2.0）高値からの下落率は `table`・`watch_levels` の値（終値でみた最高値が基準）を使い、同じ銘柄に2通りの数字を書かない。巻末の「読み方」に「高値比＝終値でみた最高値からの下落率。米国株側の日次は取引時間中の高値が基準なので、同じ銘柄でも0.1〜0.5ポイントほど違う」と1行入れる。
+
+## 分量の決まり（v2.0）
+機能を足すたびに本文が長くなり、「2〜3画面」を大きく超えていた（10/30 は約7,700字、11/9 は約16,600字）。最初の1画面で判断でき、残りは必要なときに読む形にする。本文の目安は表を含めて約9,000字（重要な変化が多い日は超えてよい。削る順番は下の短縮形から）。
+- 順番：冒頭ブロック → 「前日から変わった点」 → 各節。変わった点を先に、変わっていない点は短く書く。
+- 「前日から変わった点」（冒頭ブロックの直後に置く見出し。3〜6行）：1節のシグナルのうち状態の変化（`health_label_change`・`risk_count_change`・`washout_count_change`・`washout_phase_change`・`rs_strip_state_change`・`level_change`・`breadth`・`sector_rs_flip`・`next_candidate_new`／`next_candidate_out`・`late_break_new`・`corr_state_change`・`sma_cross` のうち指数とETF・`adr_premium`）、6b節の「変化」、週次判定の条件に触れたものを、言葉→数字（記号）で1行ずつ。何もなければ「前日から状態の変化なし」の1行。
+- 短縮形で書く節（その節に関わる変化が「前日から変わった点」に無い日）：
+  ・0節：3行（公式ステージと判定ラベル／危険の目安と底の目安／底の局面）。帯の表と分野別は省く。判定ラベル・目安のそろい数・底の局面・帯の状態のどれかが変わった日と、火曜の配信（週の最初の日次）は全部書く。
+  ・4b節：1行（リーダー上位3、ラガード下位3、次の候補の上位3）。
+  ・6b節：3行（市場全体とテック内部／先導セクター・ヘッジ・長く持つ分の目安／買い戻しの燃料と不安の指数の期間構造）。
+  ・9節：2行（直近の週次の見方と今日のS/D／条件への接触の有無と予測の状況）。見直し候補がある日はその行を足す。
+- 短縮しない節：冒頭ブロック、1節（下のまとめ方で）、2節・2b節、3〜5節の表、7節、8節、10節。5節は表か、1銘柄1行にする（文で長く書かない）。
+- 同じ数字を2つの節に書かない。冒頭ブロックに書いた数字は、該当の節で理由や内訳を足すときだけ再掲する。
 
 ## 出力形式
 冒頭ブロック（plain_language.md 0節の形）：
@@ -54,8 +71,9 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 - 最後の1行：見方が変わる条件を数値で（直近の週次の THESIS_INVALIDATION・TRIGGER から転記し、今日の終値との距離を添える）
 
 ### 0. セクターの状態（v1.7。`sector_health.json` から転記、再計算しない。6〜10行＋小さな表1つ。言葉は plain_language.md 6節）
-- 1行目：判定ラベルを言葉で。割合の**分母（監視する半導体42銘柄）を必ず書き**、判定の理由を4週前との比較で添える（例「半導体42銘柄の中身は悪化中：上昇中（30週線の上で線も上向き）10%、下落中（線の下で線も下向き）15%、50日線の上 14%。4週前は上昇中が42%だった」）。上昇中・下落中の意味は `breadth_meaning` のとおり（初回と、ラベルが変わった日は本文に、それ以外の日は巻末の「読み方」に1行）。`label` が null なら「判定できず（履歴不足）」。
-- 公式ステージ（market-data `stages`。基準日が違えばその旨）：SOXX・SMH の細区分と言葉（`label`・`label_ja`、since）、監視：半導体 のステージ分布（`pct_stage`、4週前）とラベル（`label_ja`）。簡易版と食い違うときは公式を先に書き、「簡易版は30週線の向きも条件にするため、長い上昇の直後の急落では下落中が少なく出る（残りの多くは『線を割ったが線はまだ上向き』の中間）」と添える。
+- 1行目（公式。取れる日は必ずこちらを先に書く）：公式ステージ（market-data `stages`。基準日が違えばその旨）。SOXX・SMH の細区分と言葉（`label`・`label_ja`、since）、監視：半導体 のステージ分布（`pct_stage`、4週前）とラベル（`label_ja`）。「上昇」「下落」の割合として読む人に示す数字は公式だけにする（例「半導体38銘柄の74%が下落（ステージ4）、4週前は8%。業種の調子は弱い」）。取れない日は「公式ステージ：取得できず」と書いて2行目だけにする。
+- 2行目（機械判定。簡易版）：判定ラベルを言葉で。割合の**分母（監視する半導体42銘柄）を必ず書き**、判定の理由を4週前との比較で添える（例「機械判定は悪化中：半導体42銘柄のうち、線の上で上向き 10%、線の下で下向き 15%、50日線の上 14%（30週線とその向きで見た簡易版）。4週前は線の上で上向きが42%だった」）。意味は `breadth_meaning` のとおり（初回と、ラベルが変わった日は本文に、それ以外の日は巻末の「読み方」に1行）。`label` が null なら「判定できず（履歴不足）」。
+  （v2.0）簡易版の割合（`stage2`・`stage4`）を「上昇中」「下落中」と書かない。公式の「上昇（ステージ2）」「下落（ステージ4）」と同じ言葉になり、同じ日に 74% と 15% が並んで読み違えるため（数え方が違う：公式は週足の細区分、簡易版は30週線の上下と線の向き）。公式と大きく離れている日は「簡易版は30週線の向きも条件にするため、長い上昇の直後の急落では『線の下で下向き』が少なく出る（残りの多くは『線を割ったが線はまだ上向き』の中間）」と1回だけ添える。
 - 危険の目安：`risk.count`/3 と成立した条件名、`risk.reading`（過去の発生率）を括弧で。前日から変わった日はその旨（1節の `risk_count_change` と重複してよい）。
 - 底の目安：`washout.count`/3 と成立した条件、`washout.reading`。そろい数は「いま売られ尽くしているか」だけを見るので、反発すると減る。**数が減った日・3未満の日は、必ず次の「底の局面」で理由を書き分ける**（まだ売られ尽くしていないのか、売られ尽くした後に反発したのか）。
 - （v1.8）底の局面：`washout.phase` を転記する（言葉は `ja`）。`code` が none 以外なら次を1〜2行で：起点（`anchor_date`、SOXX終値 `anchor_close`）から何営業日目か、いまの終値は起点比何%か（`close_vs_anchor_pct`）、二番底の線（`lines.retest_close`＝起点の終値）と底割れの線（`lines.breakdown_close`＝起点の−10%）までの距離、起点以降の最安値（`low_since_anchor`）、3条件の再点灯の日（`relit_dates`）、回復の確認（`recovery_confirmed_date`。なければ「未確認：50日線の上がいま○%、50%超で確認」）。
@@ -68,24 +86,29 @@ market-data の signals.json は `curl -sSf https://raw.githubusercontent.com/ba
 
 ### 1. 本日のシグナル（daily_signals.json の signals をすべて列挙。空なら「検出なし」）
 severity high → medium の順。1行＝「銘柄：内容」。コードが出したものを削らない。解釈は次節で。
+（v2.0）まとめ方（削らずに、並べ方だけ変える。見出しに件数「high○件、medium○件」を書く）：
+- 1日の騰落（`big_move`）が同じ向きに6件以上ある日は、向きごとに1行にまとめる。例「1日で大きく上げた：23（SOX +6.9%、SOXX +7.5%、SMH +5.1%、SOXL +22.3%、DRAM +6.3%｜AMD +13.3%、TER +12.7%、ONTO +12.0%、…）」。指数・ETFを先に、個別は騰落率の大きい順に、全銘柄を括弧の中に並べる。
+- 逆向きの銘柄（全面高の日に下げた銘柄、全面安の日に上げた銘柄）と、出来高を伴う上昇・下落（`volume`）は、1銘柄ずつ別の行に書く（例「NVDA：出来高が20日平均の3.88倍で下落（−4.27%）」）。
+- `rsi`・`sma_cross`・`new_high_low`・`drawdown` は種類ごとに1行（銘柄と数字を並べる）。
+- 状態の変化（`health_label_change`・`risk_count_change`・`washout_count_change`・`washout_phase_change`・`rs_strip_state_change`・`level_change`・`adr_premium`・`sector_rs_flip` など）は1件ずつ。
 （v1.7）`health_label_change`・`risk_count_change`・`washout_count_change`・`rs_strip_state_change`、（v1.8）`washout_phase_change`（ticker は SEMIS／SOXX）もここに含める。0節と重なってよい。
 
 ### 2. 解釈（3〜6行）
 シグナルを組み合わせた短い解釈。トレンド（SMA50/200の位置と傾き）、広がり、出来高の質（上昇/下落出来高比）、相対強度（RS線）、ボラの順。「現状の描写」であり予測ではないと分かる書き方にする。
 
 #### 2b. 戻りの質（追補 R1、2026-11-10。data ブランチ `rebound_quality.json` から転記、再計算しない。定義・言葉・検証は docs/rebound_quality.md）
-大きく下げた後の上げが「売りすぎた人の買い戻し中心」か「新しい買いが入っている」かを、値動きと売買代金で描写する。2節（解釈）の一部として書き、配信（schedule_daily 第4節の「解釈」）でも省かない。この節の表は手順4の「表は5つまで」に数えない。
+大きく下げた後の上げが「売りすぎた人の買い戻し中心」か「新しい買いが入っている」かを、値動きと売買代金で描写する。2節（解釈）の一部として書く。配信（schedule_daily 第4節）には、この節の最後の1行を入れる。この節の表は手順4の「表は5つまで」に数えない。
 - 出す日：`context.in_correction` が真（SOXX が高値から−10%以下）の日は、上げた日も下げた日も出す。偽の日は「戻りの質：調整局面ではないため省略（SOXX は高値から○%）」の1行。
   ファイルが無い、`status` が ok でない、`us_as_of` が今日の基準日と違う日は「戻りの質：未取得」の1行（data ブランチのクローン /home/claude/sd-data に入っている。無ければ raw URL）。
-- 表1つ。行＝**S&P500、QQQ（ナスダック100）、SOX**、半導体（`semis.n` 銘柄）、メモリー（米国5銘柄）。列＝前日比、売買代金は普段の何倍か（50日平均比と言葉）、5日平均の何倍か、投げ売りの日の何倍か、下げ幅のうち戻した割合（高値からの位置）。
+- 表1つ。行＝**S&P500、QQQ（ナスダック100）、SOX**、半導体（`semis.n` 銘柄）、メモリー（米国5銘柄）。列＝前日比、売買代金は50日平均の何倍か（と言葉：少ない／平均並み／多い）、5日平均の何倍か、投げ売りの日の何倍か、下げ幅のうち戻した割合（高値からの位置）。
   指数3行は `indexes` から（`ret_1d_pct`、`dv_vs_50d`＋`volume_word`、`dv_vs_5d`、`dv_vs_selloff_day`、`retrace_pct`＋`dd_now_pct`）。半導体は `semis`（`avg_ret_pct`、`agg_dv_vs_50d`、`agg_dv_vs_5d`、`agg_dv_vs_selloff_day`）、メモリーは `memory_us`（同じ項目。無い項目は「−」）。戻した割合は指数だけ。
   表の下に注を1行：「売買代金＝終値×出来高。S&P500 と SOX は指数に出来高がないので SPY・SOXX で代用。投げ売りの日＝○/○（`context.selloff_day`。無ければその列は省く）」。
 - 表の後に3〜5行（`summary_ja` を土台に、数字は変えず言葉だけ整える）：
-  ①幅：上げ・下げの数。上げた銘柄のうち、普段より少ない売買代金の数（`up_on_thin`）と1.5倍以上の数（`up_on_heavy`）。下げが多い日は下げ側（`down_on_heavy`・`down_on_thin`）
+  ①幅：上げ・下げの数。上げた銘柄のうち、売買代金が50日平均より少ない数（`up_on_thin`）と1.5倍以上の数（`up_on_heavy`）。下げが多い日は下げ側（`down_on_heavy`・`down_on_thin`）
   ②売買代金の偏り：最大の1銘柄（`top_dv_ticker`、`top_dv_share_pct`）と、それを除いた合計の5日平均比（`agg_ex_top_dv_vs_5d`）
   ③主役：`laggard_lead.word` と、直前20日の騰落率が下位・上位3分の1の銘柄の今日の平均、順位相関
   ④メモリー：`memory_us.rows` の銘柄ごとの前日比と売買代金の比
-  ⑤レバレッジETF：`leveraged` の SOXL・SOXS（売買代金、普段の何倍か、手元の期間で何番目か）と、（SOXL＋SOXS）÷SOXX（`combined_vs_base`）。SOXS が missing の間は SOXL だけ書く
+  ⑤レバレッジETF：`leveraged` の SOXL・SOXS（売買代金、50日平均の何倍か、手元の期間で何番目か）と、（SOXL＋SOXS）÷SOXX（`combined_vs_base`）。SOXS が missing の間は SOXL だけ書く
 - 最後に1行：0節の底の局面（`washout.phase`）と並べた描写。例「売られ尽くした後の反発2日目。今日の上げは投げ売りの日より売買代金がずっと少なく、売られた銘柄ほど上げた（買い戻しが中心の日に出やすい形）」。
   予測は書かない（docs/rebound_quality.md 4節：約3年の18回では、この指標だけでその後の上げ下げは分けられなかった）。
 - 「出来高を伴って全面高」と書いてよいのは、`semis.up_on_heavy` が `semis.up` の半分を超え、かつ `semis.agg_ex_top_dv_vs_5d` が1を超える日だけ。それ以外の日は「全面高だが売買代金は○○」と数字で書く（冒頭の「なぜその判断か」も同じ）。
@@ -158,7 +181,7 @@ PUCT 会合の日程は ERCOT の公式カレンダー（https://www.ercot.com/c
 （v1.6）手順2-e で公式の措置・追跡案件の予定変更・新規調達の条件悪化を確認した日は、週次の反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」（judge.md 判定基準5節の目安）のどの段階に当たり得るかを1行書き、「週次判定の見直し候補」に入れる（状態の確定は週次）。直近の週次の DC_TIMING.scenario_lean（楽観・基本・悲観）を転記し、今日の材料がそれを動かし得るかを一言。
 
 ### 10. データ監査（2〜3行）
-基準日、run_status（v1.7：`health` を含む）、フラグ（stale/jump/adr）、Webで補った値、確認回数。market-data signals.json の基準日（as_of_market_date）と definition_version。
+基準日、価格を取得した時刻（`prices_manifest.json` の generated_utc。v2.0）、run_status（v1.7：`health`、v2.0：`rebound` を含む）、フラグ（stale/jump/adr）、取引時間中に捨てた足（`unclosed_dropped` の rows が0でない日だけ）、Webで補った値、確認回数。問題のない項目は「問題なし」とまとめ、対応が要るものだけ個別に書く。market-data signals.json の基準日（as_of_market_date）と definition_version。
 
 ### 読み方
 このレポートで使った記号だけを、対応表から1行ずつ（例「S1＝SOXの向き（−2弱い〜+2強い）」「SMA200＝約1年の平均線」）。
@@ -174,4 +197,5 @@ PUCT 会合の日程は ERCOT の公式カレンダー（https://www.ercot.com/c
 - 記号だけで状態を言うこと（「S1が0」「D2が−1」→ 言葉を先に、記号は括弧）
 - 川下5銘柄（4c節）を半導体の広がり・セクター内区分・RS線に数えること、川下の値動きを A4・A5 の判定に使うこと（週次の材料は公式発表と決算）
 - 出典のない数値、未確認の決算値
+- （v2.0）記事に載っている騰落率・出来高を、data ブランチの値の代わりに書くこと。簡易版の割合を「上昇中」「下落中」と書くこと。倍率を「普段の○倍」とだけ書くこと
 - （追補 R1）戻りの質（2b節）・買い戻しの燃料・不安の指数の期間構造（6b節）を売買の合図と書かない（「買い戻し中心だから下がる」「燃料が多いから上がる」「戻り売り」とは書かない。描写と、検証で分かっている範囲だけ）。rebound_quality.json・fuel_latest.yaml・vol_term の値を再計算・上書きしない

@@ -10,6 +10,9 @@
   - 書き込みは一時ファイルに出してから置き換える（途中で落ちても前回のファイルが残る）
   - 失敗銘柄が3割を超えたら何も書かずに終了コード2（前回のデータを残し、Actionsが失敗を知らせる）
   - 前回のファイルとマージする（今回取れなかった日付の行は前回の値を残す）。基準日が前回より古くなる場合は書かない
+  - 米国の取引時間中・引け直後（東部16:20より前）に動いたときは、米国銘柄の当日分の足（未確定）を捨てる。
+    market-data の fetch_data.py と同じ扱い。アジア株（.KS・.T・.TW）はその時刻には当日の取引が終わっているので残す。
+    為替（=X）は従来どおり（24時間取引で「確定」の区切りが違うため対象外）
 データ元: Yahoo Finance（yfinance経由の非公式な取得。仕様変更で止まることがある）
 """
 import argparse
@@ -105,6 +108,42 @@ def download(tickers, chunk=40, retries=3, pause=3.0):
     return data, failed
 
 
+def load_asia_suffixes(path="config.json"):
+    """config.json の asia_suffixes（アジア株の接尾辞）。読めなければ既定値。"""
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), path), encoding="utf-8") as f:
+            v = json.load(f).get("asia_suffixes")
+        return tuple(v) if v else (".KS", ".T", ".TW")
+    except (OSError, ValueError):
+        return (".KS", ".T", ".TW")
+
+
+def unclosed_us_session_date():
+    """米国東部時間で今日の16:20より前なら、今日の日付（YYYY-MM-DD）を返す。それ以外は None。
+    この日付の米国銘柄の足は取引中（または引け直後で未確定）なので使わない。"""
+    from zoneinfo import ZoneInfo
+    now_et = datetime.now(ZoneInfo("America/New_York"))
+    if now_et.hour * 60 + now_et.minute < 16 * 60 + 20:
+        return now_et.strftime("%Y-%m-%d")
+    return None
+
+
+def is_us_session_ticker(ticker, asia_suffixes=(".KS", ".T", ".TW")):
+    """米国の取引時間で値が付く銘柄か（米国株・ETF・米国の指数）。アジア株と為替は False。"""
+    t = str(ticker)
+    if t.endswith("=X"):
+        return False
+    return not any(t.endswith(sfx) for sfx in asia_suffixes)
+
+
+def drop_unclosed_us_rows(px, unclosed, asia_suffixes=(".KS", ".T", ".TW")):
+    """unclosed（YYYY-MM-DD）の日付を持つ米国銘柄の行を捨てる。返り値は（捨てた後の表, 捨てた行数）。"""
+    if not unclosed or px.empty:
+        return px, 0
+    mask = (px["date"] == unclosed) & px["ticker"].map(lambda t: is_us_session_ticker(t, asia_suffixes))
+    return px[~mask], int(mask.sum())
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="out")
@@ -136,6 +175,12 @@ def main():
             px = pd.concat([px, keep], ignore_index=True)
         except Exception as e:  # 前回ファイルが壊れていても今回分で続行
             print(f"前回ファイルとのマージをスキップ: {e}", file=sys.stderr)
+    # 取引中・引け直後の未確定の足を除く（前回のファイルから引き継いだ行も含めて除く）。
+    # 2026-11-09 に取引時間中の手動実行で「基準日は当日、中身は引け前」のデータができたための対策
+    unclosed = unclosed_us_session_date()
+    px, dropped_unclosed = drop_unclosed_us_rows(px, unclosed, load_asia_suffixes())
+    if dropped_unclosed:
+        print(f"未確定の足を除外: {unclosed} の米国銘柄 {dropped_unclosed} 行", file=sys.stderr)
     px = px.sort_values(["ticker", "date"]).reset_index(drop=True)
     last = px.groupby("ticker")["date"].max()
     us_asof = last.get("SPY", last.max())
@@ -169,6 +214,8 @@ def main():
         "tickers_failed": failed,
         "tickers_behind_us": stale,
         "rows_kept_from_previous": merged_from_prev,
+        # 取引時間中に動いた回で捨てた当日分（未確定）の行。通常の朝の回は date が null・rows が 0
+        "unclosed_dropped": {"date": unclosed if dropped_unclosed else None, "rows": dropped_unclosed},
     }
     write_atomic(manifest, os.path.join(a.out, "prices_manifest.json"))
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
