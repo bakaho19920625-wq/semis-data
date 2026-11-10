@@ -72,6 +72,23 @@ severity high → medium の順。1行＝「銘柄：内容」。コードが出
 ### 2. 解釈（3〜6行）
 シグナルを組み合わせた短い解釈。トレンド（SMA50/200の位置と傾き）、広がり、出来高の質（上昇/下落出来高比）、相対強度（RS線）、ボラの順。「現状の描写」であり予測ではないと分かる書き方にする。
 
+#### 2b. 戻りの質（追補 R1、2026-11-10。data ブランチ `rebound_quality.json` から転記、再計算しない。定義・言葉・検証は docs/rebound_quality.md）
+大きく下げた後の上げが「売りすぎた人の買い戻し中心」か「新しい買いが入っている」かを、値動きと売買代金で描写する。2節（解釈）の一部として書き、配信（schedule_daily 第4節の「解釈」）でも省かない。この節の表は手順4の「表は5つまで」に数えない。
+- 出す日：`context.in_correction` が真（SOXX が高値から−10%以下）の日は、上げた日も下げた日も出す。偽の日は「戻りの質：調整局面ではないため省略（SOXX は高値から○%）」の1行。
+  ファイルが無い、`status` が ok でない、`us_as_of` が今日の基準日と違う日は「戻りの質：未取得」の1行（data ブランチのクローン /home/claude/sd-data に入っている。無ければ raw URL）。
+- 表1つ。行＝**S&P500、QQQ（ナスダック100）、SOX**、半導体（`semis.n` 銘柄）、メモリー（米国5銘柄）。列＝前日比、売買代金は普段の何倍か（50日平均比と言葉）、5日平均の何倍か、投げ売りの日の何倍か、下げ幅のうち戻した割合（高値からの位置）。
+  指数3行は `indexes` から（`ret_1d_pct`、`dv_vs_50d`＋`volume_word`、`dv_vs_5d`、`dv_vs_selloff_day`、`retrace_pct`＋`dd_now_pct`）。半導体は `semis`（`avg_ret_pct`、`agg_dv_vs_50d`、`agg_dv_vs_5d`、`agg_dv_vs_selloff_day`）、メモリーは `memory_us`（同じ項目。無い項目は「−」）。戻した割合は指数だけ。
+  表の下に注を1行：「売買代金＝終値×出来高。S&P500 と SOX は指数に出来高がないので SPY・SOXX で代用。投げ売りの日＝○/○（`context.selloff_day`。無ければその列は省く）」。
+- 表の後に3〜5行（`summary_ja` を土台に、数字は変えず言葉だけ整える）：
+  ①幅：上げ・下げの数。上げた銘柄のうち、普段より少ない売買代金の数（`up_on_thin`）と1.5倍以上の数（`up_on_heavy`）。下げが多い日は下げ側（`down_on_heavy`・`down_on_thin`）
+  ②売買代金の偏り：最大の1銘柄（`top_dv_ticker`、`top_dv_share_pct`）と、それを除いた合計の5日平均比（`agg_ex_top_dv_vs_5d`）
+  ③主役：`laggard_lead.word` と、直前20日の騰落率が下位・上位3分の1の銘柄の今日の平均、順位相関
+  ④メモリー：`memory_us.rows` の銘柄ごとの前日比と売買代金の比
+  ⑤レバレッジETF：`leveraged` の SOXL・SOXS（売買代金、普段の何倍か、手元の期間で何番目か）と、（SOXL＋SOXS）÷SOXX（`combined_vs_base`）。SOXS が missing の間は SOXL だけ書く
+- 最後に1行：0節の底の局面（`washout.phase`）と並べた描写。例「売られ尽くした後の反発2日目。今日の上げは投げ売りの日より売買代金がずっと少なく、売られた銘柄ほど上げた（買い戻しが中心の日に出やすい形）」。
+  予測は書かない（docs/rebound_quality.md 4節：約3年の18回では、この指標だけでその後の上げ下げは分けられなかった）。
+- 「出来高を伴って全面高」と書いてよいのは、`semis.up_on_heavy` が `semis.up` の半分を超え、かつ `semis.agg_ex_top_dv_vs_5d` が1を超える日だけ。それ以外の日は「全面高だが売買代金は○○」と数字で書く（冒頭の「なぜその判断か」も同じ）。
+
 ### 3. 市場表
 S&P 500、QQQ、SOX、SOXX、SMH、DRAM、SOXL、VIX、US10Y（^TNX）、USD/JPY、USD/KRW：終値、前日比、1週、SMA50乖離、SMA200乖離、RSI14、出来高比、高値からの下落率。値は daily_signals.json の table から転記（再計算しない）。
 
@@ -105,6 +122,14 @@ RS線＝銘柄÷SPY。上向きなら市場より強い、下向きなら弱い�
 - 市場全体：`tape.regime_effective` と `tape.reasons`、`tape.checklist.IX3_index_breakdown_guard`、`tape.checklist.megacap_led`。megacap_led が真なら「市場全体の中身は改善しているが、大型・AI株主導で指数が崩れている。市場全体の改善を半導体の追い風と読まない」と添える。
 - （v1.5）先導セクター：`leadership.market.top_sectors_now`（上位3と `leadership.by_sector` の数、4週前）、`leadership.tech`（半導体・テクノロジーの先導株数 今／4週前。`halved_vs_4w` が真なら「4週前の半分以下」）、`leadership.tech.by_group` の半導体の数と銘柄。`key_events_today` に leadership_shift があれば先頭の「変化」に入れる。「指数より先に先導株の分布が変わる。半導体が引っ張られているか置いていかれているかを見る」と1行。
 - （v1.5）ヘッジと長期の目安：`hedge.allowed`・`hedge.status`・`hedge.setups`（銘柄、水準、損切り）を1行（許可外なら「検討できる地合いではない」）。`spy_model.allocation_pct`・`signal`・`signal_since` を1行「長く持つ分の目安 ○%（buy／sell、○月○日から）」。どちらも米国株側の条件の転記で、半導体の売買指示ではない。
+- （追補 R1、2026-11-10）買い戻しの燃料：market-data の main ブランチ `reports/flows/fuel_latest.yaml` を読む
+  （`curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/reports/flows/fuel_latest.yaml -o /home/claude/mkt_fuel.yaml`。届かなければ「買い戻しの燃料：未取得」）。
+  `fuel.bar` と `line_ja` を1〜2行でそのまま転記する（例「■■■■■■■■□□ 買い戻しの燃料：残り約8割（多い。11/6 週のデータ）。プロの買い持ちは過去5年でいちばん軽い…」）。
+  `sector_note`（テック・半導体の持ち高についての発表元の言葉）があれば続けて1句。`updated_jst` が21日より古ければ「（古いデータ）」を付ける。
+  水準の読み方（多い＝売る物が少なく買い戻しで上がりやすい位置だが上がる保証ではない／半分ほど＝買い戻しの途中／少ない＝買い戻しはほぼ一巡、ここから先は新しい買い材料が要る）を、水準が変わった日だけ1行添える。
+  半導体側では集めず、再計算もしない（数字を1か所にそろえる。定義は market-data の `08_Addendum_v4.7_Flows_Fuel_VolTerm.txt`）。配信でも省かない。
+- （追補 R1）不安の指数の期間構造：signals.json の `vol_term`（`vix_over_vix3m`、`state_ja`、`last_inverted_date`、`unwinding`）を1句
+  （例「VIX÷VIX3M 0.97。11/6 まで逆転、いまは解けてヘッジ外しが進んだ形」）。`vol_term` が無い・`vix3m` が null の日は書かない。
 - これらは環境認識であり、売買の指示・週次スコアの変更には使わない。
 
 ### 7. 重要ニュース（最大5件。各1〜2行＋出典URL＋発表日）
@@ -148,3 +173,4 @@ PUCT 会合の日程は ERCOT の公式カレンダー（https://www.ercot.com/c
 - 記号だけで状態を言うこと（「S1が0」「D2が−1」→ 言葉を先に、記号は括弧）
 - 川下5銘柄（4c節）を半導体の広がり・セクター内区分・RS線に数えること、川下の値動きを A4・A5 の判定に使うこと（週次の材料は公式発表と決算）
 - 出典のない数値、未確認の決算値
+- （追補 R1）戻りの質（2b節）・買い戻しの燃料・不安の指数の期間構造（6b節）を売買の合図と書かない（「買い戻し中心だから下がる」「燃料が多いから上がる」「戻り売り」とは書かない。描写と、検証で分かっている範囲だけ）。rebound_quality.json・fuel_latest.yaml・vol_term の値を再計算・上書きしない

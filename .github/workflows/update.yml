@@ -107,6 +107,13 @@ jobs:
         continue-on-error: true
         run: python build_health.py --out out
 
+      # 戻りの質（追補 2026-11-10。指数と半導体の売買代金の比、売られた銘柄ほど上げたか、レバレッジETFの過熱）。他のステップから独立。
+      # 失敗しても他は動く（rebound_quality.json は前回のまま。日次は us_as_of が一致しない日は「未取得」と書く）
+      - id: rebound
+        name: Build rebound quality
+        continue-on-error: true
+        run: python build_rebound.py --out out
+
       - id: signals
         name: Build daily signals
         continue-on-error: true
