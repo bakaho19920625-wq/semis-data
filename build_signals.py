@@ -30,6 +30,7 @@
   risk_count_change     大きく下げる危険の目安（3条件のそろい数）が変わった
   washout_count_change  底の目安（売られ尽くし3条件のそろい数）が変わった。3になった日は high
   rs_strip_state_change 相対力の帯（中期）のそろい状態（主役／主役ではない）が変わった。全部赤・全部緑が新しく成立した日も出す
+  washout_phase_change  底の局面（health 1.1。売られ尽くし中／反発中・二番底待ち／二番底を試し中／同（3条件が再点灯）／底割れ／回復を確認）が変わった
   （これらは描写であり、売買の合図ではない。定義と15年の検証は docs/sector_health.md）
 
 RS線（rs_lines。セクター内RS＝対SOXXとは別。こちらは市場全体＝SPY比）
@@ -330,6 +331,12 @@ def health_signals(hn, hp):
     if wn is not None and wp is not None and wn != wp:
         hit = [v["ja"] for v in hn["washout"]["conditions"].values() if v["met"]]
         add("washout_count_change", "SEMIS", f"底の目安（売られ尽くし） {wp}→{wn}/3（成立：{'、'.join(hit) if hit else 'なし'}）", "high" if wn == 3 else "medium", wn)
+    fn, fp = hn["washout"].get("phase") or {}, hp["washout"].get("phase") or {}
+    if fn.get("code") and fp.get("code") and fn["code"] != fp["code"]:
+        det = f"底の局面 {fp['ja']}→{fn['ja']}"
+        if fn.get("anchor_date"):
+            det += f"（起点 {fn['anchor_date']} の終値 {fn['anchor_close']} に対して {fn['close_vs_anchor_pct']:+.1f}%、{fn['days_since_anchor']}営業日目。二番底の線 {fn['lines']['retest_close']}、底割れの線 {fn['lines']['breakdown_close']}）"
+        add("washout_phase_change", "SEMIS", det, "high" if fn["code"] in ("washout", "retest_relit", "breakdown", "recovered") else "medium", fn["code"])
     for span in ("ema50", "ema21"):
         sn, sp_ = hn["strip"]["summary"].get(span, {}), hp["strip"]["summary"].get(span, {})
         if sn.get("state") and sp_.get("state") and sn["state"] != sp_["state"]:
@@ -445,7 +452,7 @@ def main():
         "watch_levels": watch_levels(now["snap"]),
         "rs_lines": rsl,
         # config 1.6：セクターの状態の要約（本体は sector_health.json。判断はしない）
-        "sector_health": ({"label": hn.get("label_ja"), "label_prev": (hp or {}).get("label_ja"), "risk_count": hn["risk"]["count"], "washout_count": hn["washout"]["count"],
+        "sector_health": ({"label": hn.get("label_ja"), "label_prev": (hp or {}).get("label_ja"), "risk_count": hn["risk"]["count"], "washout_count": hn["washout"]["count"], "washout_phase": hn["washout"].get("phase"),
                            "strip": {k: {kk: v.get(kk) for kk in ("green_count", "of", "state", "all_red_days", "all_green_days")} for k, v in hn["strip"]["summary"].items()},
                            "benches_missing": hn["strip"]["benches_missing"], "breadth": hn["breadth"], "index": {k: hn["index"].get(k) for k in ("close", "pct_vs_ma150", "above_ma150", "rs_spy_13w_pct")},
                            "subsectors": {k: {kk: v.get(kk) for kk in ("n", "stage2", "stage4", "net_2_minus_4", "above50")} for k, v in hn["subsectors"].items()}}
