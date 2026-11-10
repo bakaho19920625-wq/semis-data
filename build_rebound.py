@@ -8,14 +8,14 @@
   context     基準の指数（SOXX）が高値から何%下か、調整局面か（−10%以下）、直近の投げ売りの日（直近10営業日で最も下げた日。−4%以下のときだけ）
   indexes     S&P500・QQQ（ナスダック100）・SOX：前日比、売買代金の比（5日平均・50日平均・投げ売りの日）、高値からの下げ幅のうち何%戻したか
               S&P500 と SOX は指数に出来高がないので、売買代金は SPY・SOXX で代用する（volume_ticker に明記）
-  semis       半導体約40銘柄：上げ・下げの数、普段より少ない売買代金で上げた数、1.5倍以上で上げた数、合計の売買代金の比、
+  semis       半導体約40銘柄：上げ・下げの数、50日平均より少ない売買代金で上げた数、1.5倍以上で上げた数、合計の売買代金の比、
               売買代金が最大の1銘柄を除いた比、売られた銘柄ほど上げたか（直前20日の騰落率と今日の騰落率の順位相関、下位・上位3分の1の平均）
   memory_us   米国のメモリー5銘柄：同じ項目（銘柄ごとの値つき）
   names       主要銘柄ごとの前日比と売買代金の比
   leveraged   レバレッジETFの過熱：SOXL・SOXS の売買代金と手元の期間での順位、（SOXL＋SOXS）÷SOXX
   summary_ja  レポートにそのまま転記できる文（描写だけ。予測の言葉は入れない）
 
-売買代金＝終値×出来高（close は分割調整済み・配当非調整。build_snapshot.py と同じ）。「普段」は直前50営業日の平均（当日を含めない）。
+売買代金＝終値×出来高（close は分割調整済み・配当非調整。build_snapshot.py と同じ）。基準は直前50営業日の平均（当日を含めない）。文には必ず「50日平均の○倍」と基準を書く（「普段の○倍」とだけ書くと、日次の出来高比＝20日平均と区別できないため。2026-11-10）。
 """
 import argparse
 import json
@@ -28,15 +28,15 @@ import pandas as pd
 
 import build_snapshot as bs
 
-REBOUND_VERSION = "1.0"
+REBOUND_VERSION = "1.1"   # 1.1（2026-11-10）：文の基準を「50日平均の○倍」に統一（値・定義は 1.0 と同じ）
 JST = timezone(timedelta(hours=9))
 DEFAULT = {
     "index": "SOXX", "universe": "semis_broad", "memory_group": "memory_us",
     "high_bars": 252, "correction_pct": -10,                       # 高値は直近252営業日の終値、調整局面は高値から−10%以下
     "selloff": {"lookback": 10, "min_drop_pct": -4},               # 投げ売りの日：直近10営業日（当日を除く）で基準の指数が最も下げた日。−4%以下のときだけ
     "avg_short": 5, "avg_long": 50, "prior_bars": 20,
-    "thin_lt": 1.0, "heavy_ge": 1.5,                               # 普段（50日平均）より少ない／1.5倍以上
-    "volume_words": {"low_lt": 0.8, "high_gt": 1.2},               # 50日平均比の言葉：少ない／普段並み／多い
+    "thin_lt": 1.0, "heavy_ge": 1.5,                               # 50日平均より少ない／1.5倍以上
+    "volume_words": {"low_lt": 0.8, "high_gt": 1.2},               # 50日平均比の言葉：少ない／平均並み／多い
     "lead_corr": 0.3,                                              # 順位相関がこれ以下（マイナス）なら「売られた銘柄ほど上げた」
     "indexes": [{"name": "S&P500", "price": "^GSPC", "volume": "SPY"},
                 {"name": "QQQ（ナスダック100）", "price": "QQQ", "volume": "QQQ"},
@@ -97,7 +97,7 @@ def retrace(c, bars):
 def volume_word(x, p):
     if x is None:
         return None
-    return "少ない" if x < p["low_lt"] else ("多い" if x > p["high_gt"] else "普段並み")
+    return "少ない" if x < p["low_lt"] else ("多い" if x > p["high_gt"] else "平均並み")
 
 
 def group_stats(C, DV, names, p, with_rows=False):
@@ -242,7 +242,7 @@ def compute(px, cfg, us_asof):
     lines = []
     if ok_idx:
         lines.append("指数：" + "、".join(
-            f"{x['name']} {x['ret_1d_pct']:+.2f}%（売買代金は普段の{f(x['dv_vs_50d'])}＝{x['volume_word'] or 'N/A'}、5日平均の{f(x['dv_vs_5d'])}）" for x in ok_idx)
+            f"{x['name']} {x['ret_1d_pct']:+.2f}%（売買代金は50日平均の{f(x['dv_vs_50d'])}＝{x['volume_word'] or 'N/A'}、5日平均の{f(x['dv_vs_5d'])}）" for x in ok_idx)
             + "。S&P500とSOXの売買代金はSPY・SOXXで代用")
         if selloff:
             lines.append(f"投げ売りの日（{md}、{idx_t} {selloff['index_ret_pct']:+.1f}%）と比べた売買代金：" + "、".join(f"{x['name']} {f(x['dv_vs_selloff_day'])}" for x in ok_idx)
@@ -251,8 +251,8 @@ def compute(px, cfg, us_asof):
             f"{x['name']} {'N/A' if x['retrace_pct'] is None else str(x['retrace_pct']) + '%'}（高値から{x['dd_now_pct']:+.1f}%）" for x in ok_idx if x.get("dd_now_pct") is not None))
     if semis.get("status") == "ok":
         s = semis
-        side = (f"上げた銘柄のうち、普段より少ない売買代金は{s['up_on_thin']}、1.5倍以上は{s['up_on_heavy']}" if s["up"] >= s["down"] else
-                f"下げた銘柄のうち、売買代金が1.5倍以上は{s['down_on_heavy']}、普段より少ないのは{s['down_on_thin']}")
+        side = (f"上げた銘柄のうち、売買代金が50日平均より少ないのは{s['up_on_thin']}、1.5倍以上は{s['up_on_heavy']}" if s["up"] >= s["down"] else
+                f"下げた銘柄のうち、売買代金が50日平均の1.5倍以上は{s['down_on_heavy']}、50日平均より少ないのは{s['down_on_thin']}")
         lines.append(f"半導体{s['n']}銘柄：上げ{s['up']}・下げ{s['down']}（平均{s['avg_ret_pct']:+.1f}%）。{side}。"
                      f"合計の売買代金は5日平均の{f(s['agg_dv_vs_5d'])}"
                      + (f"、うち{s['top_dv_ticker']}が{s['top_dv_share_pct']}%を占め、除くと{f(s['agg_ex_top_dv_vs_5d'])}" if s.get("top_dv_ticker") else ""))
@@ -261,8 +261,8 @@ def compute(px, cfg, us_asof):
             tail = "（買い戻しが中心の日に出やすい形。これだけで先の上げ下げは分からない）" if ll["word"] == "売られた銘柄ほど上げた" else ""
             lines.append(f"主役：{ll['word']}（直前{ll['prior_bars']}日の騰落率が下位3分の1の銘柄は今日平均{ll['worst_third_avg_ret_pct']:+.1f}%、上位3分の1は{ll['best_third_avg_ret_pct']:+.1f}%、順位相関{ll['rank_corr']:+.2f}）{tail}")
     if mem.get("status") == "ok":
-        lines.append("メモリー（米国5銘柄）：" + "、".join(f"{r['ticker']} {r['ret_1d_pct']:+.1f}%（普段の{f(r['dv_vs_50d'])}）" for r in mem["rows"]))
-    lb = [f"{t} 売買代金 約{v['dv_usd_bn'] * 10:.0f}億ドル（普段の{f(v['dv_vs_50d'])}、手元の{v['history_days']}日で{v['rank_in_history']}番目）"
+        lines.append("メモリー（米国5銘柄）：" + "、".join(f"{r['ticker']} {r['ret_1d_pct']:+.1f}%（売買代金は50日平均の{f(r['dv_vs_50d'])}）" for r in mem["rows"]))
+    lb = [f"{t} 売買代金 約{v['dv_usd_bn'] * 10:.0f}億ドル（50日平均の{f(v['dv_vs_50d'])}、手元の{v['history_days']}日で{v['rank_in_history']}番目）"
           for t, v in lev.items() if isinstance(v, dict) and v.get("dv_usd_bn") is not None]
     if lb:
         lines.append("レバレッジETF：" + "、".join(lb) + (f"。（{lv['bull']}＋{lv['bear']}）÷{lv['base']} は{comb['ratio']}（50日平均{comb['avg_50d']}、手元の期間で下から{comb['percentile_in_history']:.0f}%の位置）" if comb else ""))
@@ -274,10 +274,10 @@ def compute(px, cfg, us_asof):
                     "in_correction": bool(in_corr), "correction_rule": f"{idx_t}が直近{p['high_bars']}営業日の高値（終値）から{p['correction_pct']}%以下", "selloff_day": selloff},
         "indexes": indexes, "semis": semis, "memory_us": mem, "names": names, "leveraged": lev,
         "summary_ja": lines, "reading": READING,
-        "definitions": {"dv": "売買代金＝終値×出来高", "dv_vs_50d": "当日の売買代金÷直前50営業日の平均（普段の何倍か）", "dv_vs_5d": "同÷直前5営業日の平均",
+        "definitions": {"dv": "売買代金＝終値×出来高", "dv_vs_50d": "当日の売買代金÷直前50営業日の平均（50日平均の何倍か。日次の表の出来高比＝20日平均とは基準が違う）", "dv_vs_5d": "同÷直前5営業日の平均",
                         "dv_vs_selloff_day": "同÷投げ売りの日の売買代金", "retrace_pct": "高値→その後の安値の下げ幅のうち、いままでに戻した割合（終値）",
-                        "thin": f"普段の{p['thin_lt']}倍未満", "heavy": f"普段の{p['heavy_ge']}倍以上",
-                        "volume_word": f"50日平均比 {p['volume_words']['low_lt']}未満＝少ない、{p['volume_words']['high_gt']}超＝多い、その間＝普段並み"},
+                        "thin": f"50日平均の{p['thin_lt']}倍未満", "heavy": f"50日平均の{p['heavy_ge']}倍以上",
+                        "volume_word": f"50日平均比 {p['volume_words']['low_lt']}未満＝少ない、{p['volume_words']['high_gt']}超＝多い、その間＝平均並み"},
     }
 
 

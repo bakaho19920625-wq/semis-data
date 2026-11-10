@@ -18,7 +18,8 @@
 
 | ファイル | 中身 |
 |---|---|
-| `run_status.json` | 直近の実行で各ステップが成功したか。failure のファイルは前回のまま |
+| `run_status.json` | 直近の実行で各ステップ（prices・macro・fundamentals・snapshot・health・rebound・signals）が成功したか。failure のファイルは前回のまま |
+| `prices_manifest.json` | 価格を取得した時刻（`generated_utc`）、基準日、取得できなかった銘柄。米国の取引時間中に動いた回は、当日分の未確定の足を捨て、その行数を `unclosed_dropped` に書く（基準日は前の取引日になる。2026-11-10） |
 | `semis_manifest.json` | 最初に読む。基準日 `us_as_of`、欠損、品質フラグ、S/Dスコア、騰落の広がり、ADR要約、マクロ最新値 |
 | `levels.json` | モメンタムの段階 S1〜S5・D1〜D6（−2〜+2）と入力値、S/D/TECHNICAL スコア |
 | `semis_snapshot.csv` | 銘柄ごとの最新テクニカル指標 |
@@ -32,7 +33,7 @@
 | `fundamentals_latest.json` | 40社（米国籍37社＋TSM・ASML・ARM）の直近四半期の売上・売上原価・在庫（在庫日数）・設備投資・営業CF と前年比・前期比、ハイパースケーラー4社の設備投資合計。通常は Yahoo の四半期財務（非公式）＋ SEC の XBRL で確認するためのURL。SEC に届く環境で動いた日は SEC の値と決算リリースのURL |
 | `fundamentals.csv` | 同じ項目の全期間（四半期ごと1行。`source` 列が yahoo か sec_xbrl。`derived=true` は年初来累計の差分で作った値） |
 | `prices_daily.csv.gz` | 全銘柄の日足（約3年） |
-| `rebound_quality.json` / `history_rebound.csv` | 戻りの質（追補 R1、2026-11-10）：S&P500・QQQ・SOX と半導体約40銘柄・メモリーの前日比と売買代金の比（普段／5日平均／投げ売りの日）、下げ幅のうち戻した割合、売られた銘柄ほど上げたか、レバレッジETF（SOXL・SOXS）の過熱。描写専用で採点・シグナルには使わない。定義と検証は `docs/rebound_quality.md`。失敗した日は前回のまま（`us_as_of` で確認） |
+| `rebound_quality.json` / `history_rebound.csv` | 戻りの質（追補 R1、2026-11-10）：S&P500・QQQ・SOX と半導体約40銘柄・メモリーの前日比と売買代金の比（50日平均／5日平均／投げ売りの日）、下げ幅のうち戻した割合、売られた銘柄ほど上げたか、レバレッジETF（SOXL・SOXS）の過熱。描写専用で採点・シグナルには使わない。定義と検証は `docs/rebound_quality.md`。失敗した日は前回のまま（`us_as_of` で確認） |
 
 生ファイルのURL：`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/<ファイル名>`
 
@@ -40,11 +41,11 @@
 
 - `tickers.txt` … 取得する銘柄（編集するだけで追加・削除できる）。2026-11-05 に川下5銘柄（CRWV・NBIS・IREN・GLXY・VRT）を参考枠として追加。2026-11-10 に相対力の帯の比較相手（XLK・IGV とハード10銘柄）を追加（config 1.6 の `rs_benchmarks`・`hardware_basket`。採点・広がり・区分・RS線・日次シグナルには入らない）
 - `config.json` … グループ、ベンチマーク、広がりの銘柄集合、ADR比率、段階の閾値、配点、SEC で取る会社と CIK（`fundamentals`）。`groups.downstream`（config 1.5）は川下の参考枠で、採点・広がり・セクター内区分・日次シグナルには入らない（daily_signals.json の `downstream` 表だけ）
-- `fetch_prices.py` / `fetch_macro.py` / `fetch_fundamentals.py` / `build_snapshot.py` / `build_health.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、セクターの状態は build_health.py、シグナルの定義は build_signals.py の先頭、SEC の取り方と注意は fetch_fundamentals.py の先頭）
+- `fetch_prices.py` / `fetch_macro.py` / `fetch_fundamentals.py` / `build_snapshot.py` / `build_health.py` / `build_rebound.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、セクターの状態は build_health.py、シグナルの定義は build_signals.py の先頭、SEC の取り方と注意は fetch_fundamentals.py の先頭）
 - `history/` と `.github/workflows/fetch_history.yml` … 長期検証用。手動実行（`gh workflow run fetch_history.yml`）で 106銘柄の最長の日足を取り、`history` ブランチに置く（毎日の更新とは別。閾値を見直すときの再検証に使う）
-- `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト。2026-11-05（収集 v7.2・判定 v6.6）から「AIインフラの稼働タイミング」（米国内の DC 規制・許認可の状態、追跡案件 ORCL・CRWV・NBIS・IREN・GLXY の受電・引き渡し・課金開始の予定、資金調達の条件、半導体への伝わり方）を証拠YAMLの `DC_TIMING` に集め、A4・A5 の採点と反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」、6a節、12節の政策日程表に使う
+- `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト（2026-11-10 時点で収集 v7.3・判定 v6.9。日次は `prompts/daily.md` v2.0）。2026-11-05（収集 v7.2・判定 v6.6）から「AIインフラの稼働タイミング」（米国内の DC 規制・許認可の状態、追跡案件 ORCL・CRWV・NBIS・IREN・GLXY の受電・引き渡し・課金開始の予定、資金調達の条件、半導体への伝わり方）を証拠YAMLの `DC_TIMING` に集め、A4・A5 の採点と反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」、6a節、12節の政策日程表に使う
 - `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
-- `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。火〜土 7:21（データ未更新なら 9:21 に再試行）、土 10:11 JST。米国株側の日次 7:07 の後。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
+- `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。日次は火〜土 7:21（データ未更新や利用上限なら 9:21・12:21 に再試行）、週次は土 10:11（利用上限などで動けなければ 14:11 に再試行）。日本時間。米国株側の日次 7:07 の後。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
 - `docs/sources.md` … 収集プロンプトが最初に1回読む情報源マップ。`docs/universe_kpi.md` … 必要なときだけ読む参照資料。`docs/sector_rs_resilience.md` … セクター内の強弱と調整耐性の定義
 - `docs/plain_language.md` … やさしい表記の対応表（段階・スコア・小項目・判定の語を日本語に。日次・週次の書き方の約束）。`docs/sector_health.md` … セクターの状態の定義と15年の検証結果（乗り換え戦略が負けた記録を含む）
 - `handoff/` … レポート間の引継ぎ（latest.yaml、日付別の控え、予測台帳 forecasts.csv）

@@ -1,4 +1,5 @@
-# 半導体・メモリー定点観測｜収集プロンプト v7.2（第1段階）
+# 半導体・メモリー定点観測｜収集プロンプト v7.3（第1段階）
+# v7.2→v7.3（2026-11-10）：追補 R1 で入っていた P1-7 の f（信用の市場の値）・g（DC建設の実績）と、証拠YAMLの DC_TIMING.market_credit・construction_actuals を版に反映（中身は R1 のまま。版番号だけ v7.2 に残っていた）。EVIDENCE_VERSION を v7.3 に
 # v7.1→v7.2（2026-11-05）：P1 に 7「AIインフラの稼働タイミング」を追加（旧 P2-12 を昇格）、CapEx に内訳・支出時期の欄を追加、証拠YAMLに DC_TIMING を追加。取得先は docs/sources.md 12節
 
 ## 役割
@@ -106,7 +107,7 @@ GitHubの `missing_tickers` にある銘柄があれば、終値と前日比を1
 
 ```yaml
 # SEMI_EVIDENCE
-EVIDENCE_VERSION: v7.2
+EVIDENCE_VERSION: v7.3
 AS_OF: {market: YYYY-MM-DD, collected: "YYYY-MM-DD HH:MM JST", previous_report: YYYY-MM-DD}
 BUDGET: {searches_used: , fetches_used: , limit: 30|40, sec_checks_used: , stopped_early: false}
 DATA_NOTES: {github_us_as_of: , missing_filled_from_web: [], flags_checked: [], machine_generated: , machine_source_kind: , machine_status: , machine_issues: []}
