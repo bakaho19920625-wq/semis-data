@@ -143,6 +143,8 @@ AI CapEx鈍化・AI収益化失望／製品別価格の悪化／在庫増・稼�
 - 警戒：次のいずれか：新規社債・借入の利率が同程度の年限・担保で前回より明確に上昇した（目安 +100bp 超）／増資による希薄化、または資産売却で資金を手当てした会社が1社以上／ファイナンスリースの急増や FCF の大幅なマイナスが継続（Amazon の直近12か月 FCF がマイナスのまま等）／記事の悲観サイン4つ（顧客の解約、機器の発注削減、設備の減損、調達金利の上昇）のうち1つが決算で確認された
 - 発動：悲観サイン4つのうち2つ以上が同じ四半期に確認された、または追跡案件のいずれかが追加調達なしで次の受電・引き渡しまで資金が持たないと開示した
 - 注：HY スプレッドの水準はプライベートクレジット監視レポートと同じ出典・同じ目安を使う（数値はこちらに書き写すだけ）。利率の上昇だけで「発動」にしない（警戒どまり）
+- （追補 R1、2026-11-10）市場の値（証拠YAMLの DC_TIMING.market_credit＝CRWV・ORCL 等の5年CDSと社債利回り、`semis_manifest.json` の macro.latest の BAMLH0A0HYM2＝HYスプレッド・BAMLH0A3HYC＝CCC格）は、新規発行の条件より先に動く。毎回10a節に前回比つきで書く。HYスプレッドは manifest に値があればそれを使う（「未転記」と書かない）。
+  ただし市場の値だけで段階は上げない：未発動・警戒・発動は上の目安（新規調達の条件、増資、FCF、悲観サイン）のまま判定し、市場の値は「警戒の裏付け」「緩和の兆し」として文で添える（判定の目安・採点定義は変えない）
 
 ## 6. シナリオ確率
 0～3か月、3～12か月、1～3年ごとに強気・基本・弱気を5%刻み合計100%。各シナリオに前提、先行指標、確率、SOXの方向、製品別メモリー価格・利益、DRAM ETF・個別株の方向、無効化条件。確率変更は前回からの幅と理由を書く。
@@ -210,6 +212,16 @@ A＝複数の一次情報・数値整合・独立確認／B＝一次情報はあ
 8. DRAM ETF・メモリー株・市場構造：ADR、為替、重複、価格形成
 9. メモリー階層・AI効率化：光/CPO、CXL、HBF/SCM、SRAM
 10. 反転リスク
+   10a. （追補 R1、2026-11-10。表示のみ。採点・反転リスクの段階・シナリオ確率の計算には入れない）需給と信用の市場の値。配信（schedule_weekly 第6節の「反転リスク」）でも、①の棒と残り約○割、②の1行、④のまとめを省かない：
+   ①買い戻しの燃料：market-data の main ブランチ `reports/flows/fuel_latest.yaml`（https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/reports/flows/fuel_latest.yaml）から転記する。
+     棒（`fuel.bar`）と「残り約○割（水準）」、入力3つを言葉で（プロの買い持ち／自分の判断で売買する投資家／機械的に売買するファンド。百分位・発表元・基準日を括弧）、
+     これから出る売り・買い（`flows`：機械的な売りの見込み、自社株買いの解禁割合）、`sector_note`。前回YAMLの FLOWS_CREDIT.fuel と並べる（前回なしは「初回」）。3〜5行。
+     読み方は market-data の 05 の7節（多い＝売る物が少なく買い戻しで上がりやすい位置だが上がる保証ではない／半分ほど／少ない＝買い戻しはほぼ一巡）。半導体側では集めない。届かなければ「未取得」
+   ②信用の市場の値（表1つ）：行＝CRWV 5年CDS、CRWV 社債（銘柄と利回り）、ORCL 5年CDS、証拠YAMLにあるそのほかの発行体、HYスプレッド（BAMLH0A0HYM2）、CCC格（BAMLH0A3HYC）。
+     列＝今回、前回、変化、基準日、出典と状態。CDS・社債利回りは報道値（reported_unverified）、HY・CCC は FRED の機械取得（manifest の macro.latest。chg_5obs・chg_21obs も使う）。
+     1行：広がっている／横ばい／縮んでいる、と、反転リスク「AI投資の資金調達・信用」の状態との関係（裏付けか、食い違いか）。出典の違う数字で前回比を作らない
+   ③DC建設の実績（証拠YAMLの DC_TIMING.construction_actuals に値がある週だけ）：米国勢調査局のデータセンター建設支出（年率、前月比、前年比）。6a節②の案件の進捗と同じ向きか。建物の建設費で GPU 等の機器は含まない、と一言
+   ④まとめ1〜2行：下げの要因を「期待（持ち高）・規制・信用」の3つに分けたとき、どれが解けて、どれが残っているか（①＝期待の解消度、6a節①＝規制、②＝信用）。売買の合図としては書かない
 11. シナリオ予測
 12. 重要イベント：決算・月次・指標に加え、（v6.6）政策の固定日程を表で持つ。過ぎた日程は結果を1行書いて次回から消し、変更があれば証拠YAMLの EVENTS_NEXT_14D で上書きする
    | 日付（現地） | 事項 | 何を見るか |
@@ -274,6 +286,12 @@ DC_TIMING:             # （v6.6）6a節の要約。A4・A5 と反転リスク2�
   gpu_rental_signal:   # 上昇|横ばい|下落|未確認（貸す側の追い風。採点には使わない）
   passthrough_signal:  # 後ろ倒し発言の社数と影響地域数
   scenario_lean:       # 楽観|基本|悲観
+FLOWS_CREDIT:          # （追補 R1）10a節の転記。表示のみ（採点には入れない）
+  fuel: {week_ending: , remaining_pct: , level: , hf_net_pctile: , discretionary_pctile: , systematic_pctile: , cta_next_week_usd_bn: , buyback_open_pct: , source_updated: }
+  market_credit: []    # {issuer, instrument, value, unit, as_of, status}
+  hy_oas: {value_pct: , date: , chg_21obs: }
+  ccc_oas: {value_pct: , date: , chg_21obs: }
+  construction: {month: , saar_usd_bn: , yoy_pct: }
 DOWNSTREAM_RS: []      # 川下5銘柄 {ticker, close, ret_1w, rs_soxx_20, rs_soxx_60, dd_from_high}（semis_snapshot.csv の downstream。参考枠）
 SECTOR_HEALTH:         # （v6.7）4d節の転記。sector_health.json の値そのまま（再計算しない）。採点には入れない
   {as_of: , health_version: , label: , label_prev: , official_label: , official_pct_stage: {}, soxx_stage: , smh_stage: ,

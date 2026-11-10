@@ -28,10 +28,11 @@
 | `history_health.csv` | セクターの状態の日次履歴（ラベル、割合、そろい数、帯の緑の数） |
 | `history_key.csv` / `history_levels.csv` | 主要銘柄の指標と段階の日次履歴（前回比の計算用） |
 | `adr_premium.csv` | SK hynix ADS（SKHY）の理論価値とプレミアム（直近60営業日） |
-| `macro_daily.csv` | FRED：DGS10、DFII10、DTWEXBGS |
+| `macro_daily.csv` | FRED：DGS10、DFII10、DTWEXBGS。参考として BAMLH0A0HYM2（HYスプレッド）・BAMLH0A3HYC（CCC格）も取る（取れなくても status は変えず `macro_manifest.json` の optional_failed に書く） |
 | `fundamentals_latest.json` | 40社（米国籍37社＋TSM・ASML・ARM）の直近四半期の売上・売上原価・在庫（在庫日数）・設備投資・営業CF と前年比・前期比、ハイパースケーラー4社の設備投資合計。通常は Yahoo の四半期財務（非公式）＋ SEC の XBRL で確認するためのURL。SEC に届く環境で動いた日は SEC の値と決算リリースのURL |
 | `fundamentals.csv` | 同じ項目の全期間（四半期ごと1行。`source` 列が yahoo か sec_xbrl。`derived=true` は年初来累計の差分で作った値） |
 | `prices_daily.csv.gz` | 全銘柄の日足（約3年） |
+| `rebound_quality.json` / `history_rebound.csv` | 戻りの質（追補 R1、2026-11-10）：S&P500・QQQ・SOX と半導体約40銘柄・メモリーの前日比と売買代金の比（普段／5日平均／投げ売りの日）、下げ幅のうち戻した割合、売られた銘柄ほど上げたか、レバレッジETF（SOXL・SOXS）の過熱。描写専用で採点・シグナルには使わない。定義と検証は `docs/rebound_quality.md`。失敗した日は前回のまま（`us_as_of` で確認） |
 
 生ファイルのURL：`https://raw.githubusercontent.com/bakaho19920625-wq/semis-data/data/<ファイル名>`
 

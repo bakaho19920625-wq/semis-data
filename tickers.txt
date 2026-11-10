@@ -10,6 +10,7 @@ SOXX
 SMH
 DRAM       # Roundhill Memory ETF（運用期間が短い）
 SOXL       # 日次3倍レバレッジ
+SOXS       # 日次3倍インバース（レバレッジETFの過熱を見る参考。rebound_quality.json だけが使う。採点・広がり・シグナルには入れない）
 ^VIX
 
 # --- 金利・為替 ---

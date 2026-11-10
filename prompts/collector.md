@@ -40,6 +40,12 @@ P1（毎回、この順）
    c. 資金負担（変化があったときだけ）：上記5社とハイパースケーラー5社の新規社債・借入（金額・利率・年限・担保）、増資、ファイナンスリース、資産売却。前回より条件が厳しくなった（同程度の年限で利率が上がった）案件の数。減損（impairment）の計上
    d. 計算能力の希少性（変化があったときだけ）：GPU レンタル価格は、ネオクラウド決算の平均単価（開示があれば）と、主要報道2本以上が一致するスポット価格（`reported_unverified`）だけ。単一ブローカー・SNS の提示価格は使わない。`DC_TIMING.gpu_rental`
    e. 半導体への伝わり方：GPU・メモリー・光部品・電源冷却（NVDA、AMD、MU、SNDK、LITE、COHR、VRT 等）の決算説明で「設置場所・電力・許認可の不足で出荷や売上計上が後ろ倒し」「他地域・他顧客へ振り替えた」という発言の有無（会社名・引用・日付）。詰まりが1地域（テキサス）にとどまるか、2地域以上かを事実で。`DC_TIMING.semis_passthrough`
+   f. （追補 R1、2026-11-10）信用の市場の値（毎回。検索1回＋取得1回まで。上の6回とは別枠）：CRWV と ORCL の5年CDS（bp）、CRWV の代表的な社債（例：2032年債）の利回りか価格。
+      報道に出ていれば NVDA・ハイパースケーラー・SoftBank のCDSも。主要報道（Reuters、Bloomberg、CNBC、FT、Yahoo Finance 等）の数字を、データの出どころ（S&P Global、LSEG、ICE 等。記事に無ければ unknown）・基準日つきで `reported_unverified` として記録する。
+      出典の違う数字を混ぜて前回比を作らない（同じ出どころ・同じ年限で比べる）。SNS・単一ブログの数字は使わない。HYスプレッド（BAMLH0A0HYM2）・CCC格（BAMLH0A3HYC）は `semis_manifest.json` の macro.latest に機械取得の値があるので探さない
+      （macro_manifest.json の optional_failed に入っているときだけ、FRED の値を1回で補い MACRO に書く）。`DC_TIMING.market_credit`
+   g. （追補 R1）DC建設の実績（月1回。月の最初の実行か、新しい月次が出た週）：米国勢調査局「Value of Construction Put in Place」のデータセンター（private、季節調整済み年率、10億ドル）の最新月・前月比・前年比。
+      一次資料（census.gov の C30）が開けなければ主要報道の値を `reported_unverified` で。建物の建設費で、GPU 等の機器は含まない。`DC_TIMING.construction_actuals`
 
 P2（P1の後、予算が残っていれば）
 8. 装置：主要4社のbacklog、WFE見通し、中国比率
@@ -125,6 +131,8 @@ DC_TIMING:            # ［v7.2］AIインフラの稼働タイミング（P1-7�
   financing: []       # {company, instrument: 社債|借入|増資|リース|資産売却|減損, amount, rate_pct, tenor, secured: yes|no|unknown, date, vs_prev_terms: 同水準|厳しい|緩い|unknown, source, tier, status}
   gpu_rental: []      # {item: avg_price_disclosed|spot_press, gpu, value, unit, period, source, tier, status}
   semis_passthrough: []   # {company, date, quote, direction: 後ろ倒し|振り替え|影響なし, regions_affected: 1|2以上|unclear, source, tier, status}
+  market_credit: []   # （追補 R1）{issuer, instrument: 5y_cds|bond_yield|bond_price, detail, value, unit: bp|%|price, as_of, data_vendor, source, tier, status}
+  construction_actuals: {month: , saar_usd_bn: , mom_pct: , yoy_pct: , source: , tier: , status: }   # （追補 R1）月1回。国勢調査局のデータセンター建設支出
 FOUNDRY:
   tsmc_monthly: {month: , revenue: , yoy: , trailing3m_yoy: , advanced_node_share: , source: , status: }
   taiwan_memory_monthly: []   # {company, month, revenue, yoy, mom, source, status}

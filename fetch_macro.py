@@ -10,6 +10,9 @@ FREDから金利などの日次データを取得する（GitHub Actionsで毎�
   DGS10    : 米10年国債利回り（名目、%）
   DFII10   : 米10年TIPS利回り（実質金利、%）
   DTWEXBGS : 名目ドル指数（Broad）
+  BAMLH0A0HYM2 : 米ハイイールド債のスプレッド（ICE BofA US High Yield OAS、%）。週次の反転リスク「AI投資の資金調達・信用」の参考値
+  BAMLH0A3HYC  : 同 CCC格以下のスプレッド（%）。信用の弱い発行体ほど先に広がる
+  （ICE BofA の系列は FRED 上の履歴が直近約3年に限られる。取れない日は optional_failed に入り、ほかの系列はそのまま出る。status は上の3系列だけで決める）
 """
 import argparse
 import io
@@ -23,6 +26,8 @@ from datetime import datetime, timedelta, timezone
 import pandas as pd
 
 SERIES = ["DGS10", "DFII10", "DTWEXBGS"]
+# 参考の系列（追補 2026-11-10）。取れなくても status は変えない（optional_failed に書くだけ。採点に使う上の3系列と分ける）
+OPTIONAL_SERIES = ["BAMLH0A0HYM2", "BAMLH0A3HYC"]
 URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}&cosd={start}"
 JST = timezone(timedelta(hours=9))
 
@@ -63,16 +68,19 @@ def main():
     os.makedirs(a.out, exist_ok=True)
     start = (datetime.now(timezone.utc) - timedelta(days=3 * 365)).strftime("%Y-%m-%d")
 
-    frames, failed, latest = [], [], {}
-    for sid in SERIES:
+    frames, failed, optional_failed, latest, core_ok = [], [], [], {}, 0
+    for sid in SERIES + OPTIONAL_SERIES:
         try:
             df = fetch(sid, start)
+            if sid in OPTIONAL_SERIES and df.empty:
+                raise ValueError("empty")
             frames.append(df)
+            core_ok += sid in SERIES
             latest[sid] = df["date"].iloc[-1] if not df.empty else None
         except Exception as e:
-            failed.append({"series": sid, "error": str(e)[:200]})
+            (optional_failed if sid in OPTIONAL_SERIES else failed).append({"series": sid, "error": str(e)[:200]})
 
-    if frames:
+    if core_ok:  # 上の3系列が1つも取れなかった回は書かない（前回のファイルを残す。参考系列だけで上書きしない）
         tmp = os.path.join(a.out, "macro_daily.csv.tmp")
         pd.concat(frames, ignore_index=True).to_csv(tmp, index=False)
         os.replace(tmp, os.path.join(a.out, "macro_daily.csv"))
@@ -80,9 +88,10 @@ def main():
     manifest = {
         "generated_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "generated_jst": now.astimezone(JST).strftime("%Y-%m-%d %H:%M JST"),
-        "status": "ok" if not failed else ("partial" if frames else "failed"),
+        "status": "ok" if not failed else ("partial" if core_ok else "failed"),
         "series_latest_date": latest,
         "failed": failed,
+        "optional_failed": optional_failed,
         "source": "FRED (fredgraph.csv, no API key)",
     }
     tmp = os.path.join(a.out, "macro_manifest.json.tmp")
@@ -90,7 +99,7 @@ def main():
         json.dump(manifest, f, ensure_ascii=False, indent=2)
     os.replace(tmp, os.path.join(a.out, "macro_manifest.json"))
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
-    if failed and not frames:
+    if failed and not core_ok:
         print("FREDの取得にすべて失敗しました。", file=sys.stderr)
         sys.exit(2)
 

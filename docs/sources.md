@@ -121,3 +121,15 @@ TrendForce/DRAMeXchange、WSTS、SEMI、SIA、Omdia、TechInsights。スポッ�
 - 案件の進捗・資金（決算リリース・説明会資料・8-K/6-K を優先）：CoreWeave https://investors.coreweave.com/ ／ Nebius https://nebius.com/ （Investors）／ IREN https://iren.gcs-web.com/ ／ Galaxy Digital https://investor.galaxy.com/ ／ Vertiv https://investors.vertiv.com/ ／ Oracle は6節。社債の条件（金額・利率・年限・担保・償還開始）はプレスリリースか 8-K の Exhibit で確認する
 - 3つの日付の定義：受電（energization）＝変電所・系統から電力を受け始めた日、引き渡し（delivery）＝顧客が使える状態で引き渡した日、課金開始（billing start）＝賃料・利用料の計上が始まった日。計画容量（GW/MW）・変電所の通電・建屋の完成・GPU設置は別の段階として書き分ける
 - GPU レンタル価格：固定できる公式指標がないため、ネオクラウド決算の開示（平均単価・契約期間）と、主要報道2本以上が一致するスポット価格だけを使う。単一ブローカーの提示価格・SNS は使わない
+
+## 13. 需給・信用の市場の値・DC建設の実績（追補 R1、2026-11-10。収集プロンプト P1-7 の f・g、判定の10a節、日次の2b・6b節）
+- 買い戻しの燃料計（プロの持ち高の百分位、機械的な売りの見込み、自社株買いの解禁割合）：**半導体側では集めない**。米国株側（market-data）が週次と火曜の日次で更新する
+  控え https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/reports/flows/fuel_latest.yaml を転記する。定義は market-data の `08_Addendum_v4.7_Flows_Fuel_VolTerm.txt`。
+  元の掲載先（参考。2026-11-10 に実在を確認）：TheStreet Pro「The Week Ahead」（Goldman のプライムブック・CTA、Deutsche Bank の持ち高、Citadel の自社株買いをまとめる）、
+  Tickmill ブログ「Institutional Insights」（Deutsche Bank／Goldman の週次の要約）、Investing.com の Deutsche Bank positioning の記事
+- 信用の市場の値：CRWV・ORCL などの5年CDS、CRWV 2032年債（US$12.5億、表面利率9.625%）の利回りは、主要報道（CNBC、Yahoo Finance、Reuters、Bloomberg）の数字を使う。データの出どころは S&P Global Market Intelligence・LSEG など（記事に書かれたとおりに）。
+  公式の無料の配信元はないので `reported_unverified`。確認済みの例：2026-10-15 ORCL 288bp（S&P Global・LSEG、Yahoo Finance）、CRWV 1,000bp超（LSEG）、2026-11-05 CRWV 1,289bp→11-06 約1,155bp・ORCL 約298bp・NVDA 約139bp・CRWV 2032年債 利回り16%超（24/7 Wall St.、出どころの記載なし）
+- HYスプレッド・CCC格：FRED の BAMLH0A0HYM2・BAMLH0A3HYC（ICE BofA。`fetch_macro.py` が毎日取得し `macro_daily.csv` と manifest の macro.latest に入る。FRED 上の履歴は直近約3年）
+- DC建設の実績：米国勢調査局 Construction Spending（C30）の民間・季節調整済み年率の表 https://www.census.gov/construction/c30/pdf/privsa.pdf の「Data center」の行（発表文は https://www.census.gov/construction/c30/pdf/release.pdf）。毎月第1営業日ごろに2か月前の月次。
+  確認済みの例：2026年8月 年率849.5億ドル、前年比+73%（報道経由）。建物の建設費で、GPU 等の機器は含まない
+- 戻りの質：Web は使わない。data ブランチ `rebound_quality.json`（`build_rebound.py`。定義と検証は docs/rebound_quality.md）
