@@ -43,10 +43,11 @@
 - `config.json` … グループ、ベンチマーク、広がりの銘柄集合、ADR比率、段階の閾値、配点、SEC で取る会社と CIK（`fundamentals`）。`groups.downstream`（config 1.5）は川下の参考枠で、採点・広がり・セクター内区分・日次シグナルには入らない（daily_signals.json の `downstream` 表だけ）
 - `fetch_prices.py` / `fetch_macro.py` / `fetch_fundamentals.py` / `build_snapshot.py` / `build_health.py` / `build_rebound.py` / `build_signals.py` … 取得と計算（指標の定義は build_snapshot.py、セクターの状態は build_health.py、シグナルの定義は build_signals.py の先頭、SEC の取り方と注意は fetch_fundamentals.py の先頭）
 - `history/` と `.github/workflows/fetch_history.yml` … 長期検証用。手動実行（`gh workflow run fetch_history.yml`）で 106銘柄の最長の日足を取り、`history` ブランチに置く（毎日の更新とは別。閾値を見直すときの再検証に使う）
-- `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト（2026-11-10 時点で収集 v7.3・判定 v6.9。日次は `prompts/daily.md` v2.0）。2026-11-05（収集 v7.2・判定 v6.6）から「AIインフラの稼働タイミング」（米国内の DC 規制・許認可の状態、追跡案件 ORCL・CRWV・NBIS・IREN・GLXY の受電・引き渡し・課金開始の予定、資金調達の条件、半導体への伝わり方）を証拠YAMLの `DC_TIMING` に集め、A4・A5 の採点と反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」、6a節、12節の政策日程表に使う
-- `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）
+- `prompts/collector.md` / `prompts/judge.md` … 週次の2段階プロンプト（2026-11-10 時点で収集 v7.3・判定 v6.9。日次は `prompts/daily.md` v2.1）。判定は、共通部分とひな形が `prompts/judge.md`、判定基準が `prompts/judge/criteria.md`、節ごとの書き方が `prompts/judge/` のファイル。2026-11-05（収集 v7.2・判定 v6.6）から「AIインフラの稼働タイミング」（米国内の DC 規制・許認可の状態、追跡案件 ORCL・CRWV・NBIS・IREN・GLXY の受電・引き渡し・課金開始の予定、資金調達の条件、半導体への伝わり方）を証拠YAMLの `DC_TIMING` に集め、A4・A5 の採点と反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」、6a節、12節の政策日程表に使う
+- `prompts/daily.md` … 日次レポートのプロンプト（daily_signals.json を読み、重要ニュースを少数確認して短く書く）。共通部分とひな形がこのファイル、節ごとの書き方が `prompts/daily/` のファイル。欠けた日・週の補完は `prompts/daily_backfill.md`・`prompts/weekly_backfill.md`、読む用の保管ページへの保存は `prompts/archive_page.md`、変更の履歴は `prompts/CHANGELOG.md`（本文には履歴を書かない）
+- `tools/check_report.py` … 書き上がったレポートを保存・配信の前に機械で点検する（見出しがひな形の順にそろっているか、表の行、全件並べる決まり、主な数字、書かない言い方、配信の長さ。見出しの一覧はプロンプトの「ひな形」の表から読む）。market-data と同じファイル
 - `tools/archive_doc.py` … 読む用の保管ページ（レポートだけが基準日の新しい順に並ぶ、ユーザー専用の Artifact。日次と週次に1つずつ）に入れる文書を `reports/` から作る。ページへの書き込みは定期実行が段取りファイルのとおり行う（2026-11-10）
-- `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。日次は火〜土 7:21（データ未更新や利用上限なら 9:21・12:21 に再試行）、週次は土 10:11（利用上限などで動けなければ 14:11・19:11 に再試行）。日本時間。米国株側の日次 7:07 の後。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す
+- `prompts/schedule_daily.md` / `prompts/schedule_weekly.md` … 定期実行（スケジュールタスク。日次は火〜土 7:21（データ未更新や利用上限なら 9:21・12:21 に再試行）、週次は土 10:11（利用上限などで動けなければ 14:11・19:11 に再試行）。日本時間。米国株側の日次 7:07 の後。新しいセッションで動く）の段取り。定期実行の本文はこれを読む指示だけにし、手順はここで直す。レポートを書く作業は Agent に任せ、深さ（effort）は各ファイルの「0. 設定」の1行で決める（2026-11-10 から xhigh。モデルは定期実行の設定で claude-opus-5-5）
 - `docs/sources.md` … 収集プロンプトが最初に1回読む情報源マップ。`docs/universe_kpi.md` … 必要なときだけ読む参照資料。`docs/sector_rs_resilience.md` … セクター内の強弱と調整耐性の定義
 - `docs/plain_language.md` … やさしい表記の対応表（段階・スコア・小項目・判定の語を日本語に。日次・週次の書き方の約束）。`docs/sector_health.md` … セクターの状態の定義と15年の検証結果（乗り換え戦略が負けた記録を含む）
 - `handoff/` … レポート間の引継ぎ（latest.yaml、日付別の控え、予測台帳 forecasts.csv）
