@@ -11,6 +11,8 @@
               signals.json の stages.breadth["監視：半導体"] を転記する（日次プロンプト 0節）
   risk        大きく下げる危険の目安：3条件（判定が悪化中か弱い／SOXXが30週線の下／市場と比べた13週がマイナス）のそろい数 0〜3
   washout     底の目安（売られ尽くし）：3条件（50日線上<5%／30週線上<15%／SOXXが30週線から−20%以下）のそろい数 0〜3
+              phase＝底の局面（v1.1）。そろい数は「いま売られ尽くしているか」だけを見るので、反発すると数が減る。直近60営業日に3条件がそろった日（起点）が
+              あれば、その日の終値と比べて 売られ尽くし中／反発中・二番底待ち／二番底を試し中（3条件の再点灯を区別）／底割れ／回復を確認 を出す
   strip       相対力の帯：SOXX÷比較相手（市場 SPY・テック全体 XLK・ソフト IGV・ハード均等加重）が、短期（21日EMA）・中期（50日EMA）の上なら緑
   subsectors  分野別（AI計算・製造／製造装置／メモリー／アナログ・汎用／光・後工程／設計ソフト）の上昇中−下落中と50日線上の割合
 
@@ -32,7 +34,7 @@ import pandas as pd
 
 import build_snapshot as bs
 
-HEALTH_VERSION = "1.0"
+HEALTH_VERSION = "1.1"   # 1.1（2026-11-10）：底の局面（washout.phase）と、3条件がそろった後の経過の参考値を追加
 JST = timezone(timedelta(hours=9))
 DEFAULT = {
     "index": "SOXX",
@@ -40,7 +42,8 @@ DEFAULT = {
     "ma_bars": 150, "slope_bars": 20, "compare_bars": 20,                      # 簡易ステージ、4週前との比較
     "label": {"weak_stage4_pct": 40, "deteriorate_pt": 10, "healthy_stage2_pct": 50, "healthy_stage4_max": 20, "improve_pt": 10},
     "risk": {"rs_bench": "SPY", "rs_bars": 65},
-    "washout": {"above50_lt": 5, "above150_lt": 15, "index_vs_ma150_le": -20},
+    "washout": {"above50_lt": 5, "above150_lt": 15, "index_vs_ma150_le": -20,
+                "phase_window": 60, "episode_gap": 40, "breakdown_pct": -10, "recovery_above50": 50},
     "strip": {"benches": {"市場": "SPY", "テック全体": "XLK", "ソフト": "IGV", "ハード": "hardware_basket"}, "ema_spans": [21, 50], "confirm_days": 3},
     "subsectors": {
         "AI計算・製造": ["NVDA", "AMD", "AVGO", "MRVL", "TSM", "ARM", "ALAB", "CRDO"],
@@ -55,7 +58,19 @@ LABEL_JA = {"healthy": "健全", "improving": "改善中", "neutral": "どちら
 # 15年（2011〜2026-11）の検証値。docs/sector_health.md の表と同じ。読み方の目安として JSON に添える（再計算しない）
 RISK_REF = {0: "翌13週に−15%超の下落が来た割合 9%", 1: "同 10%", 2: "同 17%", 3: "同 24%（基準は13%）"}
 WASHOUT_REF = {0: "", 1: "過去15回：26週後 平均+18%、だまし（60営業日内にさらに−10%）40%", 2: "過去12回：26週後 平均+21%、だまし 42%",
-               3: "過去6回：26週後 平均+40%、だまし 0%、60営業日内の最大下落は最悪−9%（2011/8、2020/3、2022/6・9、2025/4、2026/11）"}
+               3: "過去5回（2011/8、2020/3、2022/6・9、2025/4）：26週後 平均+40%。ただし5回とも反発の後にそろった日の終値を一度割った（二番底。−0.5〜−9.1%）。2022/6は約4か月後に−18%の安値"}
+PHASE_JA = {"none": "該当なし（直近60営業日に3条件そろいなし）", "washout": "売られ尽くし中", "rebound": "反発中・二番底待ち", "retest": "二番底を試し中",
+            "retest_relit": "二番底を試し中（3条件が再点灯）", "breakdown": "底割れ（過去の型より深い）", "recovered": "回復を確認"}
+# 3条件がそろった後の経過（15年の検証、過去5回。docs/sector_health.md 2.4b）。営業日数は起点（最初にそろった日）から
+AFTER_ALL3_REF = {
+    "n": 5,
+    "all3_off_days": "1〜4営業日で3条件は外れた（反発のため。数が減るのは通常の動き）",
+    "retest_low_days": {"min": 3, "avg": 8, "median": 9, "max": 13, "each": {"2011-08-08": 9, "2020-03-16": 4, "2022-06-13": 13, "2022-09-30": 10, "2025-04-03": 3}},
+    "retest_low_depth_pct": {"min": -0.5, "median": -6.3, "max": -9.1},
+    "relit_at_retest_low": "5回中4回は二番底の日に3条件が再点灯（残る2022/6は2営業日後に再点灯）。再点灯せずに回復した例はない",
+    "recovery_days": {"min": 20, "median": 24, "max": 27, "note": "回復の確認＝50日線の上が50%超。その時点で起点の終値から+5〜+30%"},
+    "exception": "2022-06-13 は約4か月後（120営業日内）に起点の終値から−18%の安値（悪材料が続いた局面）",
+}
 
 
 def _pct(mask, denom):
@@ -136,6 +151,61 @@ def breadth_at(C, universe, i, p):
     return out
 
 
+def washout_phase(all3, a50, S, w):
+    """底の局面（末尾の日について）。all3＝3条件そろいの日（bool Series）、a50＝50日線の上の割合（%）、S＝指数の終値。
+    起点＝いまのエピソードで最初に3条件がそろった日（3条件そろいの間隔が episode_gap 営業日未満なら同じエピソード）。
+    最後の3条件そろいから phase_window 営業日を過ぎたら「該当なし」。判定の順：底割れ→（当日そろい）売られ尽くし中／再点灯→二番底を試し中→回復を確認→反発中。"""
+    a3 = all3.fillna(False).values.astype(bool)
+    i = len(S) - 1
+    idx3 = np.flatnonzero(a3)
+    base = {"code": "none", "ja": PHASE_JA["none"], "anchor_date": None}
+    if len(idx3) == 0 or i - idx3[-1] > w["phase_window"]:
+        return base
+    k = len(idx3) - 1
+    while k > 0 and idx3[k] - idx3[k - 1] < w["episode_gap"]:
+        k -= 1
+    a = int(idx3[k])
+    ac = float(S.iloc[a])
+    c = float(S.iloc[i])
+    pct = (c / ac - 1) * 100
+    off = next((j for j in range(a + 1, i + 1) if not a3[j]), None)           # 3条件が最初に外れた日
+    relit = [int(j) for j in idx3 if off is not None and j > off]              # 外れた後に再点灯した日
+    rec = next((j for j in range(a + 1, i + 1) if pd.notna(a50.iloc[j]) and a50.iloc[j] > w["recovery_above50"]), None)
+    seg = S.iloc[a:i + 1]
+    lo = seg.idxmin()
+    lo_pct = (float(seg.min()) / ac - 1) * 100
+    if pct <= w["breakdown_pct"]:
+        code = "breakdown"
+    elif a3[i]:
+        code = "washout" if off is None else "retest_relit"
+    elif c < ac:
+        code = "retest"
+    elif rec is not None:
+        code = "recovered"
+    else:
+        code = "rebound"
+    d = lambda j: S.index[j].strftime("%Y-%m-%d")
+    bday = lambda n: (S.index[a] + pd.tseries.offsets.BDay(n)).strftime("%Y-%m-%d")
+    r = AFTER_ALL3_REF
+    return {
+        "code": code, "ja": PHASE_JA[code],
+        "anchor_date": d(a), "anchor_close": round(ac, 2), "days_since_anchor": i - a,
+        "close_vs_anchor_pct": round(pct, 2),
+        "low_since_anchor": {"date": lo.strftime("%Y-%m-%d"), "pct_vs_anchor": round(lo_pct, 2), "days_after_anchor": int(S.index.get_loc(lo)) - a},
+        "all3_first_off_date": None if off is None else d(off),
+        "relit_dates": [d(j) for j in relit],
+        "recovery_confirmed_date": None if rec is None else d(rec),
+        "breakdown_seen": bool(lo_pct <= w["breakdown_pct"]),
+        "lines": {"retest_close": round(ac, 2), "breakdown_close": round(ac * (1 + w["breakdown_pct"] / 100), 2),
+                  "recovery": f"50日線の上が{w['recovery_above50']}%超"},
+        # 過去5回の経過を起点に当てはめた目安（平日で数えた日付。米国の休場日は考慮していない）
+        "expected_from_past": {"retest_low_window": [bday(r["retest_low_days"]["min"]), bday(r["retest_low_days"]["max"])],
+                               "retest_low_avg": bday(r["retest_low_days"]["avg"]),
+                               "recovery_window": [bday(r["recovery_days"]["min"]), bday(r["recovery_days"]["max"])],
+                               "note": "過去5回の営業日数（二番底 3〜13・平均8、回復の確認 20〜27）を起点に足した日付。予測ではなく過去の範囲"},
+    }
+
+
 def compute_health(px, cfg, us_asof):
     p = {**DEFAULT, **cfg.get("sector_health", {})}
     for k in ("label", "risk", "washout", "strip"):
@@ -195,8 +265,8 @@ def compute_health(px, cfg, us_asof):
     met = [v["met"] for v in wash_conds.values()]
     wash_count = None if any(m is None for m in met) else int(sum(met))
     # 履歴内で3条件そろった日（読み込んだ約3年分だけ）
-    ab50_hist = pd.Series([np.nan] * len(C), index=C.index)
     hist3 = []
+    phase = {"code": None, "ja": None, "anchor_date": None}
     if len(C) > p["ma_bars"] + 1:
         X = C[universe]
         s50 = X.rolling(50, min_periods=50).mean(); s150 = X.rolling(p["ma_bars"], min_periods=p["ma_bars"]).mean()
@@ -210,10 +280,14 @@ def compute_health(px, cfg, us_asof):
             if last_i is None or j - last_i >= 40:
                 hist3.append(d.strftime("%Y-%m-%d"))
             last_i = j
+        phase = washout_phase(all3, a50, S, w)
     washout = {"count": wash_count, "of": 3, "conditions": wash_conds,
                "reading": None if wash_count is None else WASHOUT_REF[wash_count],
                "dates_all3_in_history": hist3,
-               "note": "『売られ尽くし』の目安。1〜2条件は底探しの入口（だまし約4割）、3条件は過去6回で外れなし（うち1回は2026/11で結果待ち）。底の確定ではなく、買い下がる局面の目印。確認の工夫（20日線上の急増・21日EMA回復など）はだましを減らさなかった（docs/sector_health.md）"}
+               "phase": phase, "after_all3_reference": AFTER_ALL3_REF,
+               "note": "『売られ尽くし』の目安。そろい数は『いま売られ尽くしているか』だけを見るので、反発すると減る。数が減った理由（まだ売られ尽くしていない／売られ尽くした後に反発した）は phase で区別する。"
+                       "1〜2条件は底探しの入口（だまし約4割）。3条件は過去5回とも26週後に上昇したが、5回とも二番底を試し（3〜13営業日後、−0.5〜−9.1%）、うち1回は約4か月後に−18%。"
+                       "底の確定ではなく、買い下がる局面の目印。確認の工夫（20日線上の急増・21日EMA回復など）はだましを減らさなかった（docs/sector_health.md）"}
 
     # ---- 相対力の帯 ----
     sp = p["strip"]
@@ -322,10 +396,10 @@ def main():
     if h.get("status") == "ok":
         b, s = h["breadth"], h["strip"]["summary"]
         row = {"us_as_of": h["us_as_of"], "label": h["label"], "stage2": b["stage2"], "stage4": b["stage4"], "above50": b["above50"], "above150": b["above150"],
-               "index_pct_vs_ma150": h["index"]["pct_vs_ma150"], "risk_count": h["risk"]["count"], "washout_count": h["washout"]["count"],
+               "index_pct_vs_ma150": h["index"]["pct_vs_ma150"], "risk_count": h["risk"]["count"], "washout_count": h["washout"]["count"], "washout_phase": h["washout"]["phase"].get("code"),
                "strip_green_ema21": s.get("ema21", {}).get("green_count"), "strip_green_ema50": s.get("ema50", {}).get("green_count")}
         bs.append_history(os.path.join(a.out, "history_health.csv"), [row], ["us_as_of"])
-        print(json.dumps({"us_as_of": h["us_as_of"], "label": h["label_ja"], "risk": h["risk"]["count"], "washout": h["washout"]["count"],
+        print(json.dumps({"us_as_of": h["us_as_of"], "label": h["label_ja"], "risk": h["risk"]["count"], "washout": h["washout"]["count"], "phase": h["washout"]["phase"].get("ja"),
                           "strip": {k: v.get("green_count") for k, v in s.items()}, "missing_benches": h["strip"]["benches_missing"]}, ensure_ascii=False))
     else:
         print(json.dumps(h, ensure_ascii=False))

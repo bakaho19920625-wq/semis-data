@@ -529,7 +529,11 @@
     "washout": {
       "above50_lt": 5,
       "above150_lt": 15,
-      "index_vs_ma150_le": -20
+      "index_vs_ma150_le": -20,
+      "phase_window": 60,
+      "episode_gap": 40,
+      "breakdown_pct": -10,
+      "recovery_above50": 50
     },
     "strip": {
       "benches": {
@@ -599,6 +603,7 @@
         "SNPS",
         "CDNS"
       ]
-    }
+    },
+    "_phase_note": "washout.phase（底の局面、health 1.1）：phase_window＝最後に3条件がそろってから何営業日まで追うか、episode_gap＝この営業日数未満の再成立は同じエピソード、breakdown_pct＝起点の終値からこの%以下で『底割れ』（過去5回の最悪−9.1%を超える水準）、recovery_above50＝50日線の上がこの%超で『回復を確認』"
   }
 }
