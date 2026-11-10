@@ -1,76 +1,113 @@
-# 半導体・メモリー定点観測｜日次の定期実行 手順（schedule_daily v1.9。v1.9＝読む用の保管ページ「半導体・メモリー 日次レポート」への保存（第3節。日次だけが基準日順に並ぶページ）、配信の最後と「配信済みで終了する回」の最後にそのページのリンク（第2節、第4節、第5節）。v1.8＝daily.md v2.0 対応：配信を1画面に（冒頭ブロックと前日から変わった点が中心。ほかは添付の本文）、入力に prices_manifest.json・rebound_quality.json、補完に build_rebound.py、休場日の 12:21 の扱い、週次未作成の警告を出す日を明記。v1.7＝GitHub への書き込みを git の push に一本化（add_repo と gh の確認を外す。add_repo は push が断られたときだけ。データ更新の起動は refresh/request.txt の push＝daily.md v1.9）。v1.6＝配信に底の局面（daily.md v1.8）。v1.3＝配信に川下・政策日程・反転リスク2項目を追加。v1.4＝欠けた日の補完（第5節、build_*.py --as-of）、12:21 の再試行、週次未作成の警告。v1.5＝daily.md v1.7 対応：入力・配信・補完に sector_health.json（セクターの状態）を追加、12:21 の再試行の扱いを明記）
-# 定期実行（スケジュールタスク。火〜土 07:21 JST の1回目と、データ未更新や利用上限で動けなかったときの 09:21・12:21 の再試行。会話の記憶がない新しいセッションで動く）の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
-# 米国株側の日次（7:07）の後に置く：6b節で米国株側の signals.json を転記するため。
-# 2026-11-02 まで「半導体チャットへの予約（send_later）」方式だったが、実行済みの予約が毎日増えるため、米国株側と同じ定期実行に変更した。
-# レポートの中身・形式は prompts/daily.md が正本。ここは「準備・新しさの判定・保存・配信」の段取りだけ。
+# 半導体・メモリー定点観測｜日次の定期実行（流れ） schedule_daily v2.0
+# 定期実行（スケジュールタスク）の入口。上から順に進める。定期実行の本文は、このファイルを読む指示だけ。手順を変えるときはこのファイルを直す。
+# レポートの書き方は prompts/daily.md と prompts/daily/（節ごと）。欠けた日の補完は prompts/daily_backfill.md。読む用の保管ページへの保存は prompts/archive_page.md。変更の履歴は prompts/CHANGELOG.md（本文には履歴を書かない）。
+
+## 0. 設定
+- 深さ（effort）：high
+  第6節で書き手（Agent）に渡す深さ。変えるときはこの1行だけ直す（low／medium／high／xhigh／max）。
+- 動く時刻（日本時間）：火〜土 07:21 が1回目。09:21・12:21 は再試行（データ未更新や利用上限で前の回が動けなかった日のため）。
+- 米国株側の日次（7:07）の後に動く。レポートの6b節で米国株側の signals.json を転記するため。
+- この実行は、会話の記憶がない新しいセッションで動く。
 
 ## 1. 準備
 - /home/claude/semis-data がなければ `git clone --depth 1 https://github.com/bakaho19920625-wq/semis-data /home/claude/semis-data`
-  （公開リポジトリなので事前の準備は要らない）。あれば `git -C /home/claude/semis-data pull -q`。
-- ［v1.7］GitHub への書き込みは git の push だけで行う（daily.md 手順1 のデータ更新の起動と、第3節の保存）。add_repo と gh は、第3節の「push が断られたとき」以外では使わない。
-  `gh auth status` も実行しない（gh が使えるときでも「The token in GH_TOKEN is invalid.」と出るので、判断材料にならない。2026-11-10 に確認）。
+  （公開リポジトリなので事前の準備は要らない）。
+  あれば `git -C /home/claude/semis-data pull -q`。
 - data ブランチ：`rm -rf /home/claude/sd-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/semis-data.git /home/claude/sd-data`
-- 米国株指標チェックの判定結果（市場全体・テック内部・ブレイクの伸び・先導セクター・ヘッジ条件・長期の目安。daily.md 6b節で転記する）：
+
+## 2. データの新しさ
+/home/claude/sd-data の `semis_manifest.json`（基準日 us_as_of）と `prices_manifest.json` を読み、次の順に確かめる。
+1. 新しさの確認：`us_as_of` が直近の米国取引日（日本時間の今日の前日にあたるET日付。土日・NYSE休場日を除く）か確認する。
+   - 前日が休場なら「新しい取引日はありません（休場）」と1行送って終了。
+   - 生成時刻の確認：`prices_manifest.json` の `generated_utc` が「`us_as_of` の日付の 21:20 UTC」より前なら、そのデータは米国の取引時間中（引け前）に作られたもので、基準日が合っていても終値ではない（2026-11-09 に、取引時間中の手動実行で実際に起きた）。
+     日付が古いときと同じ扱いにして、下の手順でデータ更新を起動する。
+     夏時間の引けは 20:20 UTC だが、判定は一年じゅう 21:20 UTC でよい（夏の 20:20〜21:20 UTC に作られたデータを取り直すだけで害はない）。
+     取り直しても生成時刻が引けより前のままなら「GitHubデータ未更新」と同じ扱いにする。
+   - 取引日なのに古ければ、まず朝の自動実行が起動していない可能性があるので、シェルが使える環境では自分でデータ更新を起動する（git の push で起動する）。
+     /home/claude/semis-data（main のクローン）で `mkdir -p refresh && date -u +%Y-%m-%dT%H:%M:%SZ > refresh/request.txt && git add refresh/request.txt && git commit -q -m "refresh request" && git push origin main`（この push で .github/workflows/update.yml が動く。push が断られたら第8節の「push が断られたとき」に従い、それでも駄目なときだけ従来の `gh api -X POST repos/bakaho19920625-wq/semis-data/actions/workflows/update.yml/dispatches -f ref=main` を1回試す。エラーなら起動できなかったものとして扱う）。
+     完了は git で確かめる：30秒おきに `git -C /home/claude/semis-data fetch -q origin data && git -C /home/claude/semis-data show FETCH_HEAD:semis_manifest.json` の generated_utc を見て、push した時刻より新しくなるまで最大10分待ち、data ブランチを取り直す（ワークフローは前営業日の足が入るまで10分おきに最大6回取り直すので、10分で終わらないことがある。その場合は次へ）。
+     それでも古い、または起動できない環境なら「GitHubデータ未更新（基準日○○、生成○○）」として終了（送るかどうかは下の「送る・送らない」）。
+     起動した場合は、第6節で書き手に伝える（レポートの10節に書かせる）。
+- 送る・送らない：
+  - 「休場」なら、7:21 の1回目だけその1行を SendUserMessage で送って終了（9:21・12:21 の再試行では何も送らずに終了）。
+    「GitHubデータ未更新」なら、7:21 の1回目は何も送らず終了（9:21 の再試行に任せる）、9:21・12:21 の再試行ならその1行を送って終了（12:21 は 9:21 が利用上限で動けなかった日のため。重複して届くことがあるが、沈黙より良い）。
+    いずれも保存しない。
+
+## 3. 配信済みの確認
+- 同じ us_as_of の日次をすでに配信済み（handoff/daily_state.yaml の last_us_as_of が今回の us_as_of と同じ、または reports/daily/<us_as_of>.md がある）なら、何も送らず終了（9:21・12:21 の再試行で前の回が成功していたとき）。
+  この回は SendUserMessage を使わない（通知を出さない）。
+  prompts/archive_page.md の手順 1〜3（種類 semis_daily）だけを行い（ページに入っていない日次があれば入れる）、
+  最後の返答を次の1行だけにする：「<us_as_of> の日次レポートは配信済みです。レポートはここに並んでいます：https://claude.ai/artifact/RsGNScaBqUn628DmNiUcvX」
+  配信済みなら、ここで終わる。第4節から先と prompts/daily.md は読まなくてよい。
+
+## 4. 米国株側のデータ
+- 米国株指標チェックの判定結果（市場全体・テック内部・ブレイクの伸び・先導セクター・ヘッジ条件・長期の目安。レポートの6b節で転記する）：
   `curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/data/signals.json -o /home/claude/mkt_signals.json`
   届かなければ `rm -rf /home/claude/mkt-data && git clone -q --depth 1 --branch data https://github.com/bakaho19920625-wq/market-data.git /home/claude/mkt-data`
-  （signals.json はその中）。取れなければ 6b節は「取得できず」。market-data 側は起動しない（更新が実行中なら daily.md 手順1 のとおり最大5分待つ）。
+  （signals.json はその中）。
+  取れなければ 6b節は「取得できず」。
+  market-data 側は起動しない（更新が実行中なら下のとおり最大5分待つ）。
+- 基準日の確認：market-data の signals.json：`as_of_market_date` が `us_as_of` と同じか確認する。
+  違うときは、market-data 側のデータ更新が動いている途中のことがあるので、30秒おきに `git ls-remote https://github.com/bakaho19920625-wq/market-data.git refs/heads/data` の値を見て、変わったら `git clone -q --depth 1 --branch data` で取り直す（最大5分。gh は使わない。raw の URL は数分古い値を返すことがあるので取り直しには使わない。起動はしない。米国株側の日次 7:07 が起動しているはず）。
+  それでも違う、または取得できないときは、そのまま第6節へ進み、書き手に伝える（6b節での書き方は prompts/daily/s06b_market.md にある）。
+- 買い戻しの燃料：`curl -sSf https://raw.githubusercontent.com/bakaho19920625-wq/market-data/main/reports/flows/fuel_latest.yaml -o /home/claude/mkt_fuel.yaml`（届かなければ、無いまま進む）。
 
-## 2. 実行
-- /home/claude/semis-data/prompts/daily.md を読み、その手順・出力形式・禁止事項に完全に従う。
-- 入力：/home/claude/sd-data/daily_signals.json、run_status.json、semis_manifest.json、［v1.8］prices_manifest.json（価格を取得した時刻。daily.md 手順1 の生成時刻の確認）、rebound_quality.json（2b節）、semis_snapshot.csv、［v1.5］sector_health.json（daily.md 0節。無い・status が ok でない日は「未取得」の1行）、
-  /home/claude/semis-data/handoff/latest.yaml、handoff/daily_state.yaml、/home/claude/mkt_signals.json（6b節と、［v1.5］0節の公式ステージ stages.etfs・stages.breadth）。Web確認は最大6回。
-- ［v1.2］同じ us_as_of の日次をすでに配信済み（handoff/daily_state.yaml の last_us_as_of が今回の us_as_of と同じ、または reports/daily/<us_as_of>.md がある）なら、何も送らず終了（9:21・12:21 の再試行で前の回が成功していたとき）。
-  ［v1.9］この回は SendUserMessage を使わない（通知を出さない）。第3節の「読む用の保管ページ」の手順 1〜3 だけを行い（ページに入っていない日次があれば入れる）、
-  最後の返答を次の1行だけにする：「<us_as_of> の日次レポートは配信済みです。レポートはここに並んでいます：https://claude.ai/artifact/RsGNScaBqUn628DmNiUcvX」
-- ［v1.4］欠けた日の確認：reports/daily/ に無い米国取引日（/home/claude/sd-data/history_levels.csv の us_as_of の列が取引日の一覧）が直近にあれば、今日の日次の前に第5節の補完版を作る（最大3日分。古い順）。
-- ［v1.4］直近の金曜の週次 reports/<金曜の日付>.md が無いとき、火・水・木の配信（基準日が月〜水の日次。v1.8 で曜日を明記）では、配信の冒頭に「先週の週次定点観測は未作成です。「半導体の週次を補完して」で作れます」と1行出す（日次の中で週次は作らない）。
-- daily.md 手順1 の新しさの判定で「休場」なら、7:21 の1回目だけその1行を SendUserMessage で送って終了（9:21・12:21 の再試行では何も送らずに終了。v1.8 で 12:21 を明記）。
-  「GitHubデータ未更新」なら、7:21 の1回目は何も送らず終了（9:21 の再試行に任せる）、9:21・12:21 の再試行ならその1行を送って終了（12:21 は 9:21 が利用上限で動けなかった日のため。重複して届くことがあるが、沈黙より良い）。いずれも保存しない。
+## 5. 欠けた日と、先週の週次の確認
+- 欠けた日の確認：reports/daily/ に無い米国取引日（/home/claude/sd-data/history_levels.csv の us_as_of の列が取引日の一覧）が直近にあれば、今日の日次の前に prompts/daily_backfill.md を読んで補完版を作る（最大3日分。古い順）。
+- 直近の金曜の週次 reports/<金曜の日付>.md が無いとき、火・水・木の配信（基準日が月〜水の日次）では、配信の冒頭に「先週の週次定点観測は未作成です。「半導体の週次を補完して」で作れます」と1行出す（日次の中で週次は作らない）。
 
-## 3. 保存
-- レポートを /home/claude/semis-data/reports/daily/<us_as_of>.md に書き、handoff/daily_state.yaml を更新（last_us_as_of、reported_urls、review_candidates）。
-- `git add -A` → commit「daily <us_as_of>」→ `git push origin main`。data ブランチには書かない。
-- ［v1.7］push が断られたとき（データ更新の起動の push も同じ）：
+## 6. 作成（書き手に任せる）
+- レポートを書く作業は、Agent 1つに任せる（subagent_type: "general-purpose"、effort: 第0節の深さ、run_in_background: false）。
+  深さを指定できるのは Agent だけなので、ここでは自分で書かない。
+  ほかの作業（準備・点検・保存・配信）は下請けに出さない（出しても速くならず、費用が増えるだけのため）。
+- 渡す文（そのまま使い、〔 〕だけ埋める）：
+  「半導体・メモリー定点観測の日次レポート（基準日 〔us_as_of〕）を書いてください。
+  /home/claude/semis-data/prompts/daily.md を読み、その進め方どおりに進めてください（各節は prompts/daily/ の節ごとのファイルを、その節を書く直前に読みます）。
+  入力は /home/claude/sd-data/（data ブランチ）、/home/claude/semis-data/handoff/latest.yaml と handoff/daily_state.yaml、/home/claude/mkt_signals.json、/home/claude/mkt_fuel.yaml です。
+  出力は /home/claude/semis-data/reports/daily/〔us_as_of〕.md と、handoff/daily_state.yaml の更新です。git の操作と配信は、こちらで行うのでしないでください。
+  伝えておくこと：〔第2節・第4節で分かったこと。例：データ更新を起動した（10節に書く）／run_status の signals が failure／market-data の基準日が違う（○○）／mkt_signals.json・mkt_fuel.yaml が取得できなかった／なし〕
+  書き終えたら daily.md の「書き終えたら」のとおり点検し、最後に、レポートのパス・点検の結果・Web確認の回数・週次判定の見直し候補（あれば）を返してください。」
+- Agent が道具の一覧に無い環境では、自分で prompts/daily.md に従って書く（このときは深さを指定できない）。
+
+## 7. 点検
+- 自分でも点検プログラムを実行する（書き手の報告だけで済ませない。数秒で終わる）：
+  `python3 /home/claude/semis-data/tools/check_report.py semis_daily /home/claude/semis-data/reports/daily/<us_as_of>.md --data /home/claude/sd-data --mkt /home/claude/mkt_signals.json`
+- 「不合格」の行があれば、その出力をそのまま同じ書き手に戻して直させる（SendMessage。最大2回）。
+- 2回直しても残った不合格は、配信の5（データ監査で伝えるべきこと）に「点検で残った項目：○○」と1行で書く。配信は止めない。
+- 「注意」の行は不合格ではない。読んで、直す必要があるものだけ直させる。
+
+## 8. 保存
+- 書き手が書いた reports/daily/<us_as_of>.md と handoff/daily_state.yaml（last_us_as_of、reported_urls、review_candidates）を確かめる。
+- `git add -A` → commit「daily <us_as_of>」→ `git push origin main`。
+  data ブランチには書かない。
+- push が断られたとき（データ更新の起動の push も同じ）：
   ・「fetch first」「non-fast-forward」と出た（ほかの更新が先に入っただけで、権限の問題ではない）→ `git pull -q --rebase origin main` のあと、もう一度 push する。
   ・それ以外（403 など、書き込みが許可されていない）→ このときだけ ToolSearch（query: "add_repo"）で名前が add_repo で終わるツールを探し、見つかれば
     add_repo（owner: "bakaho19920625-wq", repo: "semis-data", access: "push"）を呼んでから、同じ push をもう1回だけ試す。
-    それでも断られたら、エラー文をそのまま控え、配信の最後に「GitHub に保存できませんでした：（エラー文）」と1行で書く（推測で原因を書かない）。レポートの配信は続ける。
+    それでも断られたら、エラー文をそのまま控え、配信の最後に「GitHub に保存できませんでした：（エラー文）」と1行で書く（推測で原因を書かない）。
+    レポートの配信は続ける。
   ・push が実際に断られたとき以外は、add_repo・gh・書き込みの道具の状態を、レポートにも配信にも書かない（何も送らず終了する回でも同じ）。
-- ［v1.9］読む用の保管ページ「半導体・メモリー 日次レポート」（https://claude.ai/artifact/RsGNScaBqUn628DmNiUcvX）への保存。日次レポートだけが基準日の新しい順に並ぶ、読むためのページ（ユーザー専用・非公開の Artifact）。GitHub への push のあとに行う：
-  1. `python3 /home/claude/semis-data/tools/archive_doc.py semis_daily --recent 7`
-     （reports/daily/ の新しい7本について、/home/claude/archive_docs/semis_daily/ に <id>.meta.json と <id>.body.json を作り、id とファイルの場所の一覧を表示する。id はレポートの日付 YYYY-MM-DD。本文は変えない。どこにも送らない。リポジトリの外に作るので git add -A には入らない）。
-  2. ArtifactData（道具の一覧に無ければ ToolSearch の query: "select:ArtifactData" で読み込む）の query（url は上のURL、collection: "reports"、query: {"order_by": {"field": "as_of", "direction": "desc"}, "limit": 30}）で、ページにすでにある id を読む。
-  3. 1 の一覧のうちページに無い id だけを、ArtifactData の batch（url は上のURL）で書く。1本につき2つ：
-     {"op": "set", "collection": "reports", "doc_id": "<id>", "file_path": "<meta_file>"} と {"op": "set", "collection": "bodies", "doc_id": "<id>", "file_path": "<body_file>"}。
-     今回の分と、過去に入れ損ねた分が一緒に入る。無いものが0本なら何も書かない。新しく作る文書なので if_version は要らない。
-     すでにある id を書き直すとき（同じ日付の訂正版、補完の作り直し）だけ、その2つを get して version を読み、if_version を付けて set する。
-  4. 書けなかったとき（ArtifactData が見つからない場合を含む）は通知を増やさず、最後の返答に「読む用の保管ページに保存できませんでした」と1行書くだけでよい（次の回の 3 で自動的に入る。レポートの配信と GitHub への保存は続ける）。
-     口座・保有・数量はこのページにも書かない（本文に無いので、本文をそのまま入れるかぎり入らない）。
+- 読む用の保管ページ「半導体・メモリー 日次レポート」への保存：GitHub への push のあとに、prompts/archive_page.md の手順を種類 semis_daily で行う。
 
-## 4. 配信
-［v1.8］SendUserMessage は**1画面**（日本語でおよそ600〜900字。重要な変化が多い日でも1,200字まで）。全文は添付の本文で読めるので、配信には判断に要るものだけを書く：
-1. 冒頭ブロック（daily.md の「今日のひとこと」3行＋「なぜその判断か」をそのまま）
-2. 前日から変わった点（daily.md「分量の決まり」の同じ名前の節をそのまま。なければ「前日から状態の変化なし」）
-3. 1行ずつ：底の局面（daily.md 0節。局面が none 以外の日だけ。起点比と、二番底の線・底割れの線。売買の合図ではない言い方で）／戻りの質（2b節の最後の1行。調整局面の日だけ）／買い戻しの燃料（6b節の1行）
+## 9. 配信
+SendUserMessage は**1画面**（日本語でおよそ600〜900字。重要な変化が多い日でも1,200字まで）。
+全文は添付の本文で読めるので、配信には判断に要るものだけを書く：
+1. 冒頭ブロック（レポートの「今日のひとこと」3行＋「なぜその判断か」をそのまま）
+2. 前日から変わった点（レポートの同じ名前の節をそのまま。なければ「前日から状態の変化なし」）
+3. 1行ずつ：底の局面（レポートの0節。局面が none 以外の日だけ。起点比と、二番底の線・底割れの線。売買の合図ではない言い方で）／戻りの質（2b節の最後の1行。調整局面の日だけ）／買い戻しの燃料（6b節の1行）
 4. 今日・明日のイベント（当日と翌日のものだけ。政策の固定日程は7営業日以内なら1行）
 5. 週次判定の見直し候補（ある日だけ。反転リスク「米国内のDC規制・許認可」「AI投資の資金調達・信用」に触れる材料があった日はその1行も）と、データ監査で伝えるべきこと（データ未更新・取得失敗・補完・週次未作成。なければ書かない）
-シグナルの全件、市場表、メモリー株、意識される水準、RS線、川下、市場全体とテック内部の詳細、ニュースの本文は配信に書かない（本文にある）。最後に「全文は添付のファイルと、保管ページ（これまでの日次が並ぶ）：https://claude.ai/artifact/RsGNScaBqUn628DmNiUcvX」と1行（［v1.9］このリンクは毎回出す）。
+シグナルの全件、市場表、メモリー株、意識される水準、RS線、川下、市場全体とテック内部の詳細、ニュースの本文は配信に書かない（本文にある）。
+最後に「全文は添付のファイルと、保管ページ（これまでの日次が並ぶ）：https://claude.ai/artifact/RsGNScaBqUn628DmNiUcvX」と1行（このリンクは毎回出す）。
 reports/daily/<us_as_of>.md を SendUserFile で送る。
+送る前に、配信の文を /home/claude/delivery.txt に書き、`python3 /home/claude/semis-data/tools/check_report.py delivery /home/claude/delivery.txt --max 1200 --link https://claude.ai/artifact/RsGNScaBqUn628DmNiUcvX` で長さと最後の行を確かめる。
 
-## 5. 欠けた日の補完（v1.4。利用上限などで日次が配信できなかった日を後日作る）
-- 判定の履歴（history_levels.csv、history_key.csv）は GitHub Actions が毎朝作るので欠けない。欠けるのはレポートと、その日の daily_signals.json（上書きされる）。
-  build_snapshot.py と build_signals.py の `--as-of YYYY-MM-DD` で、その日までの足だけから levels・daily_signals を作り直せる（11/5 で検証済み：history_levels.csv の同じ日の段階と完全一致）。
-- 作り方（1日分 D ごと）：
-  1. `rm -rf /home/claude/sbf_D && mkdir /home/claude/sbf_D && cp /home/claude/sd-data/* /home/claude/sbf_D/`
-  2. `cd /home/claude/semis-data && python3 build_snapshot.py --out /home/claude/sbf_D --as-of D && python3 build_health.py --out /home/claude/sbf_D --as-of D && python3 build_rebound.py --out /home/claude/sbf_D --as-of D && python3 build_signals.py --out /home/claude/sbf_D --as-of D`
-     （数秒。daily_signals.json に backfill が入る。［v1.5］sector_health.json も D 時点の値になる（build_signals より前に実行する）。［v1.8］rebound_quality.json（戻りの質）も D 時点の値になる。macro は実行時点の最新値のまま。data ブランチには書かない）
-  3. daily.md の形式で補完版を書く：入力は /home/claude/sbf_D/daily_signals.json・semis_manifest.json・semis_snapshot.csv・sector_health.json・rebound_quality.json。タイトルに「（補完版）」、冒頭に
-     「この日の日次は配信できなかったため、後日 D までのデータで作り直したもの。シグナル・段階・水準・RS線はエンジンの再計算で当時と同じ。ニュース（7節）と Web確認は含まない。
-     6b節は米国株側の history_signals.csv の D の行（regime_effective、IX3_guard、BR5_tech・ラベル、FB1_stalling、top_sectors、tech_leaders、semi_leaders、hedge_status、spy_model）から転記」と書く。
-     Web確認はしない。7節は「補完のため省略」。9節（週次判定との整合）は当時の直近の週次に対して書く。
-  4. 保存：reports/daily/D.md（commit「daily D (backfill)」）。handoff/daily_state.yaml の last_us_as_of は、補完した日より新しい日次があるなら変えない（notes に補完した旨を1行）。
-     ［v1.9］読む用の保管ページにも入れる（第3節の手順 1〜3。補完した日が新しい7本に入らないときは、手順1を `--id D` に替えてその1本を作る）。
-  5. 配信：SendUserMessage で冒頭ブロックと本日のシグナル（high だけ）を短く（「補完版」と明記。最後に第4節と同じ保管ページの1行）。SendUserFile で本文。
-- 補完は今日の日次より先に、古い日から順に。1日分に5分超かかるときは今日の日次を先に出し、補完は件数だけ知らせる。
-- 週次が欠けたとき（土曜の定期実行が動かなかった）はここでは作らない。ユーザーの依頼で schedule_weekly.md の第7節（補完）に従う。
-
+## 10. この実行での注意（無人で動くため）
+- 最後まで進める：配信と保存が終わるまで止まらない。途中で確認を求めて待たない（答える人がいないため）。
+- やり直してよい作業（確認なしで、書いてある回数まで）：git の clone・pull・fetch、`git pull --rebase` のあとの push、data ブランチの取り直し、
+  Web の検索・取得のやり直し（別の語・別の出典で。合計は daily.md の「Web確認」の上限まで）、点検で不合格だった節の書き直し（2回まで）、ArtifactData の読み取り。
+- よくある障害（エラー、タイムアウト、空の結果、取得の失敗）は、原因を見て別の方法を試す。代わりの手順が決まっているものは、その節に書いてあるとおりにする。
+- 変えないもの（障害ではなく決まり）：data ブランチ、prompts/ とプログラム、market-data リポジトリ。個人の保有・数量・売買指示は扱わない。
+- GitHub への書き込みは git の push だけで行う（第2節のデータ更新の起動と、第8節の保存）。
+  add_repo と gh は、第8節の「push が断られたとき」以外では使わない。
+  `gh auth status` も実行しない（gh が使えるときでも「The token in GH_TOKEN is invalid.」と出るので、判断材料にならない。2026-11-10 に確認）。
