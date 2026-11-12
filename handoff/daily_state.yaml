@@ -1,4 +1,4 @@
-last_us_as_of: '2026-11-11'
+last_us_as_of: '2026-11-12'
 reported_urls:
 - https://www.intel.com/content/www/us/en/newsroom/news/corporate/intel-reports-third-quarter-2026-financial-results.html
 - https://stockti.com/earnings-calendar/oct-26-30-2026
@@ -34,26 +34,33 @@ reported_urls:
 - https://www.sec.gov/Archives/edgar/data/0000704532/000119312526453582/onto-ex99_1.htm
 - https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm
 - https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-nov-11-2026
+- https://eurasiabusinessnews.com/2026/11/12/stock-market-today-november-12-2026-nvidia-stock-tumbles-after-jensen-huang-exit-ai-shares-face-leadership-shock/
+- https://www.stocktitan.net/news/AMAT/applied-materials-announces-fourth-quarter-and-fiscal-year-2026-7z5nei8eafpd.html
+- https://fourweekmba.com/ai-applied-materials-posts-10-4b-guides-11-1b-in-14-weeks/
+- https://www.fxleaders.com/news/2026/11/12/nbis-stock-faces-100-on-weak-outlook-and-45b-capex-worries-despite-nebius-group-reports-third-quarter-revenue-of-980-8-million-dollars/
+- https://www.thestreet.com/investing/nebius-nbis-stock-sinks-18-despite-record-quarter
 review_candidates:
-- SOXが終値で7月安値10,447を上回った（11/11終値10,564.11、+1.1%上、+5.66%）。上げの引き金の価格の第一段階（5営業日維持）の1日目。下方トリガーの価格条件「10,447割れ」は11/4〜11/10の5日連続の後に途切れた。SMA200 10,864.08まで+2.8%、半導体SMA50上比率 14.3%→23.8%（30%超が条件）。S 11.2→16.2、D 15.0→17.5、TECHNICAL 12.3→16.6
-- CoreWeave 3Q26（11/10引け後、TheStreet報道・一次未確認）：売上37億ドル（+168%）、純損失7.09億ドル、2026年通期ガイダンス 売上130〜133億ドル・調整後営業利益12.75〜13.75億ドル（予想128.6億・10.7億ドルを上回る）、一部社債の利回り16%超。受電・引き渡し・課金開始の日付は未確認 → DC_TIMING・F2026-11-06-1・反転リスク「AI投資の資金調達・信用」の材料。CRWV +24.71%（出来高20日平均の2.16倍）
-- 米10月CPI（11/10）は予想より強いと報道、12月の0.25pt利上げはほぼ織り込み（TheStreet、数値未確認）→ X2
-- NVDAの2日続落の理由（報道）：CEOをめぐる報道を受けた外部法律事務所の調査と取締役会の独立調査、Bairdの中立への格下げ・目標株価引き下げ、Morgan Stanleyのトップピック除外（強気は維持）。11/11は+2.87%（出来高1.75倍）、20日安値165.89まで−4.5% → A2（決算11/17）の前の個別要因
-- SOXXが取得失敗（11/11の値が欠け、11/10の146.59のまま）。危険の目安・底の目安・帯は判定できず、D2 −2→−1と次の候補へのAMD・TSM・ENTGの追加は見かけの可能性（米国株側のSOXXで計算した次の候補はADI・TXN・MPWR・SWKS・SNPS）。週次でSOXXが入った後の値を確かめる
-- 米国株側：半導体の先導株 0→3（ADI・AMD・SWKS、4週前3）、テック4（4週前15）。ナスダック総合にFTD（11/11）、レジームはCのまま。テック内部 −20%以上 67.3%→62.2%（broad_decline・IX3 on は不変）
+- NVIDIAのCEO退任（報道、一次未確認）：ジェンスン・フアンCEOが辞任、CFOのコレット・クレス氏が後任探しの間の暫定CEO（ロイター経由、eurasiabusinessnews）。会社の発表文・8-Kは未確認。NVDA 11/12は寄り付き150.99（前日終値173.73）から終値166.19（−4.34%、出来高20日平均の4.47倍）、後崩れに入った（R_held 0.61、R_now 1.05、高値から−30.5%）。AMD +5.86%・AVGO +5.54%は「競合の機会」との市場の見方（報道）→ A2（決算11/17）の前の経営の論点
+- AMAT FQ4 FY2026（11/12 16:01 ET、決算リリース）：売上104.09億ドル（+53% YoY）、non-GAAP粗利率50.6%、EPS 4.16ドル、半導体装置79.96億ドル（DRAM向け33%）、中国25%、通期344.46億ドル（+21%）。FQ1 FY2027ガイダンス 売上111億ドル±5億ドル（14週と報道）、EPS 4.35±0.20 → 予測F2026-10-30-2の条件（111億≧104.09億）確定、F2。下げの引き金のファンダ条件にAMATは当たらない（引き下げの記載なし。2027年WFEの数字は未確認）
+- Nebius 3Q（見出しのみ、fxleaders・TheStreet）：売上9.808億ドルで過去最高、見通しの弱さと設備投資450億ドル規模への懸念。NBIS −16.84%（出来高20日平均の2.64倍）、CRWV −6.86%。受電・引き渡し・課金開始の日付は未確認 → DC_TIMING・F2026-11-06-1・反転リスク「AI投資の資金調達・信用」の材料
+- SOXが終値で7月安値10,447の上を2日保った（11/11 10,564.11、11/12 10,506.67。11/12は取引時間中に一時下回った）→ 上げの引き金の価格の第一段階（5営業日維持）の2日目。SMA200 10,875.08まで+3.5%、半導体SMA50上比率 26.2%（30%超が条件）
+- SOXXの11/11の値（155.40）が入り、11/11の段階とスコアが入れ直された：S 16.2→20.0、D 17.5→10.0、TECHNICAL 16.6→17.0、S3 0→+1、D2 −1→−2。11/11の危険の目安3/3・底の目安0/3。11/11のUSD/KRW改訂（1,338.09→1,341.91）でD5 0→−1。週次の前回比は history_levels.csv の値を使う
+- 11/12のS/D：S 21.2・D 12.5・TECHNICAL 18.6（S3 +1→0、S4 −2→−1、D5 −1→0）
 pending_forecast_resolution:
-- F2026-10-23-3：TSMC 10月売上YoY +59.7%（6-K 11/10）で条件（+35%以上）を満たした → 次回週次で判定
-- F2026-11-06-1：CoreWeave 3Q26は出たが、受電・引き渡し・課金開始の日付は未確認
-- F2026-10-30-4：12/31終値が10,688.80以上。11/11終値10,564.11で1.2%下
-- F2026-11-06-3：11/5終値9,011.14を割らない。11/11終値10,564.11（+17.2%上）で維持
+- F2026-10-23-3：TSMC 10月売上YoY +59.7%（6-K 11/10）で条件（+35%以上）を満たした（期限11/12）→ 次回週次で判定
+- F2026-10-30-2：AMAT FQ1 FY2027ガイダンス中央値111億ドル ≧ FQ4実績104.09億ドル（決算リリース 11/12）→ 次回週次で判定
+- F2026-11-06-1：CoreWeave・Nebiusの3Qは出たが、受電・引き渡し・課金開始の日付は未確認
+- F2026-10-30-4：12/31終値が10,688.80以上。11/12終値10,506.67で1.7%下
+- F2026-11-06-3：11/5終値9,011.14を割らない。11/12終値10,506.67（+16.6%上）で維持
+- F2026-10-30-1：NVIDIA FQ3（11/17予定。CEO退任報道の後で日程変更の有無は未確認）
 unconfirmed_next_daily:
-- CoreWeave（CRWV）3Q26の一次リリース・説明会：受電・引き渡し・課金開始の日付、通期CapEx、新規調達の条件（F2026-11-06-1、DC_TIMING）
-- 米10月CPIの数値（総合・コア、前月比・前年比）
-- SOXXの11/11の値（次回の取得で埋まるか。S3・S4・D2・セクター内区分・調整耐性・帯・危険の目安・底の目安の再確認）
-- メモリー株・ARMの11/11の大幅高の固有の理由（CoreWeave決算以外の材料の有無）
-- NVDAの調査の続報、決算（11/17）
-- AMAT（11/12引け後）の決算（2027年WFE見通し、F2026-10-30-2）
+- NVIDIAのCEO退任の一次資料（会社発表・8-K）、暫定体制、決算日（11/17）の変更の有無
+- AMATの説明会：2027年WFE見通し、DRAM・中国の見方、11/13の装置株の反応
+- Nebius 3Qの一次リリース：見通し・設備投資・受電（MW）・引き渡しの時期、資金調達
+- CoreWeave（CRWV）3Q26の一次リリース・説明会：受電・引き渡し・課金開始の日付、新規調達の条件
+- 米10月PPI（11/13）、米10月CPIの数値
 - TrendForce等の11月の契約価格・スポット価格の報道、HBM/DRAM/NANDの新しい発表
+- Winbond −6.59%・Kioxia −2.83%（出来高1.73倍）・Nanya −3.68%（11/12）の固有の理由
 - 追跡案件5社（ORCL・CRWV・NBIS・IREN・GLXY）の受電・引き渡し・課金開始の予定変更、新規調達の条件
 - Microchip（MCHP）・MACOM（MTSI）・Nova（NVMI）の11/5引け後の決算の一次リリース
 - 11/5の「全国データセンター・モラトリアム」発言の本文（CNBC・CNNは取得不可）
@@ -81,3 +88,5 @@ notes:
 - 2026-11-10：11/9のUSD/KRW終値がデータ上で1,340.65→1,362.70に改訂され、11/9のSKHYプレミアムは58.6%（11/9の日次で報告）→61.2%。11/10のプレミアムの変化（−17.5pt）とUSD/KRWの前日比（−1.44%）は改訂後の値が基準
 - 2026-11-12 07:35 JST：7:21定期実行の時点で data は前日（基準日 11-10）のままで、流れの側が 22:21Z にデータ更新を起動（refresh/request.txt の push）。22:23Z 生成（基準日 11-11、終値）のデータで11/11分を作成。SOXXが取得失敗（prices_failed・tickers_behind_us、stale:1d）で、SOXXの値は11/10のまま。run_status はすべて success。market-data signals.json も基準日 11-11。Web確認6回（検索4〔うち拡張1〕・取得2〔qz.com 1回失敗〕）
 - 2026-11-11：11/10のUSD/KRW終値がデータ上で1,343.09→1,343.84に改訂され、11/10のSKHYプレミアムは43.7%（11/10の日次で報告）→43.8%。11/11のプレミアムの変化（43.8%→49.1%）は改訂後の値が基準
+- 2026-11-13 07:35 JST：7:21定期実行の時点で朝の自動更新が未完了で、流れの側が 07:22 JST（22:22Z）にデータ更新を起動（refresh/request.txt の push）。prices 22:22:50Z、run_status 22:24Z（全ステップ success）の終値のデータで11/12分を作成。SOXXの11/11の値が入り（155.40）、11/11の段階・スコア・セクターの目安が入れ直された。market-data signals.json も基準日 11-12（生成 22:12Z）。Web確認6回（検索3〔うち拡張2〕・取得3〔invezz 1回失敗〕）
+- 2026-11-12：11/11のUSD/KRW終値がデータ上で1,338.09→1,341.91に改訂され、11/11のSKHYプレミアムは49.1%（11/11の日次で報告）→49.5%、11/11のD5は0→−1。11/12のプレミアムの変化（49.5%→46.5%）とD5 −1→0は改訂後の値が基準
