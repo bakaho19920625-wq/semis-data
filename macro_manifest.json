@@ -1,0 +1,16 @@
+{
+  "generated_utc": "2026-11-14T10:59:56Z",
+  "generated_jst": "2026-11-14 19:59 JST",
+  "status": "ok",
+  "series_latest_date": {
+    "DGS10": "2026-11-12",
+    "DFII10": "2026-11-12",
+    "DTWEXBGS": "2026-11-06",
+    "BAMLH0A0HYM2": "2026-11-12",
+    "BAMLH0A3HYC": "2026-11-12",
+    "DGS2": "2026-11-12"
+  },
+  "failed": [],
+  "optional_failed": [],
+  "source": "FRED (fredgraph.csv, no API key)"
+}

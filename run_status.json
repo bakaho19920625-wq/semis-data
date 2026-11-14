@@ -1,0 +1,13 @@
+{
+  "run_utc": "2026-11-14T11:00:49Z",
+  "steps": {
+    "prices": "success",
+    "macro": "success",
+    "fundamentals": "success",
+    "snapshot": "success",
+    "health": "success",
+    "rebound": "success",
+    "signals": "success"
+  },
+  "note": "failure のステップの出力ファイルは前回のまま。semis_manifest.json の us_as_of で日付を確認すること"
+}

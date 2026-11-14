@@ -1,0 +1,983 @@
+ticker,cik,item,period_start,period_end,fiscal_year,fiscal_period,value,unit,derived,form,filed,accn,tag,source
+ADI,,capex,2025-05-01,2025-07-31,,,79153000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ADI,,capex,2025-08-01,2025-10-31,,,215153000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ADI,,capex,2025-11-01,2026-01-31,,,109313000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ADI,,capex,2026-01-29,2026-04-30,,,137702000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ADI,,capex,2026-05-01,2026-07-31,,,145662000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ADI,,cost_of_revenue,2025-05-01,2025-07-31,,,1090600000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ADI,,cost_of_revenue,2025-08-01,2025-10-31,,,1134300000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ADI,,cost_of_revenue,2025-11-01,2026-01-31,,,1115287000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ADI,,cost_of_revenue,2026-01-29,2026-04-30,,,1183667000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ADI,,cost_of_revenue,2026-05-01,2026-07-31,,,1314355000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ADI,,inventory,,2025-07-31,,,1596853000.0,USD,false,yahoo,,,Inventory,yahoo
+ADI,,inventory,,2025-10-31,,,1656323000.0,USD,false,yahoo,,,Inventory,yahoo
+ADI,,inventory,,2026-01-31,,,1767104000.0,USD,false,yahoo,,,Inventory,yahoo
+ADI,,inventory,,2026-04-30,,,1848405000.0,USD,false,yahoo,,,Inventory,yahoo
+ADI,,inventory,,2026-07-31,,,1931496000.0,USD,false,yahoo,,,Inventory,yahoo
+ADI,,operating_cash_flow,2025-05-01,2025-07-31,,,1165105000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ADI,,operating_cash_flow,2025-08-01,2025-10-31,,,1700810000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ADI,,operating_cash_flow,2025-11-01,2026-01-31,,,1368515000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ADI,,operating_cash_flow,2026-01-29,2026-04-30,,,872041000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ADI,,operating_cash_flow,2026-05-01,2026-07-31,,,1603959000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ADI,,revenue,2025-05-01,2025-07-31,,,2880348000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ADI,,revenue,2025-08-01,2025-10-31,,,3076117000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ADI,,revenue,2025-11-01,2026-01-31,,,3160263000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ADI,,revenue,2026-01-29,2026-04-30,,,3623465000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ADI,,revenue,2026-05-01,2026-07-31,,,4021899000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ALAB,,capex,2025-07-01,2025-09-30,,,12293000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ALAB,,capex,2025-10-01,2025-12-31,,,18689000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ALAB,,capex,2025-12-30,2026-03-31,,,7586000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ALAB,,capex,2026-03-31,2026-06-30,,,20468000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ALAB,,capex,2026-07-01,2026-09-30,,,45309000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ALAB,,cost_of_revenue,2025-07-01,2025-09-30,,,54763000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ALAB,,cost_of_revenue,2025-10-01,2025-12-31,,,66108000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ALAB,,cost_of_revenue,2025-12-30,2026-03-31,,,73220000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ALAB,,cost_of_revenue,2026-03-31,2026-06-30,,,104833000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ALAB,,cost_of_revenue,2026-07-01,2026-09-30,,,162147000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ALAB,,inventory,,2025-09-30,,,51663000.0,USD,false,yahoo,,,Inventory,yahoo
+ALAB,,inventory,,2025-12-31,,,58979000.0,USD,false,yahoo,,,Inventory,yahoo
+ALAB,,inventory,,2026-03-31,,,60156000.0,USD,false,yahoo,,,Inventory,yahoo
+ALAB,,inventory,,2026-06-30,,,113781000.0,USD,false,yahoo,,,Inventory,yahoo
+ALAB,,inventory,,2026-09-30,,,200893000.0,USD,false,yahoo,,,Inventory,yahoo
+ALAB,,operating_cash_flow,2025-07-01,2025-09-30,,,78171000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ALAB,,operating_cash_flow,2025-10-01,2025-12-31,,,95265000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ALAB,,operating_cash_flow,2025-12-30,2026-03-31,,,74598000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ALAB,,operating_cash_flow,2026-03-31,2026-06-30,,,87678000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ALAB,,operating_cash_flow,2026-07-01,2026-09-30,,,179201000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ALAB,,revenue,2025-07-01,2025-09-30,,,230575000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ALAB,,revenue,2025-10-01,2025-12-31,,,270583000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ALAB,,revenue,2025-12-30,2026-03-31,,,308361000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ALAB,,revenue,2026-03-31,2026-06-30,,,392400000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ALAB,,revenue,2026-07-01,2026-09-30,,,584899000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMAT,,capex,2025-05-01,2025-07-31,,,584000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMAT,,capex,2025-08-01,2025-10-31,,,785000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMAT,,capex,2025-11-01,2026-01-31,,,646000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMAT,,capex,2026-01-29,2026-04-30,,,635000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMAT,,capex,2026-05-01,2026-07-31,,,707000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMAT,,cost_of_revenue,2025-05-01,2025-07-31,,,3740000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMAT,,cost_of_revenue,2025-08-01,2025-10-31,,,3535000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMAT,,cost_of_revenue,2025-11-01,2026-01-31,,,3577000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMAT,,cost_of_revenue,2026-01-29,2026-04-30,,,3963000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMAT,,cost_of_revenue,2026-05-01,2026-07-31,,,4529000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMAT,,inventory,,2025-07-31,,,5807000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMAT,,inventory,,2025-10-31,,,5915000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMAT,,inventory,,2026-01-31,,,5997000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMAT,,inventory,,2026-04-30,,,6343000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMAT,,inventory,,2026-07-31,,,6564000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMAT,,operating_cash_flow,2025-05-01,2025-07-31,,,2634000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMAT,,operating_cash_flow,2025-08-01,2025-10-31,,,2828000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMAT,,operating_cash_flow,2025-11-01,2026-01-31,,,1686000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMAT,,operating_cash_flow,2026-01-29,2026-04-30,,,845000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMAT,,operating_cash_flow,2026-05-01,2026-07-31,,,3037000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMAT,,revenue,2025-05-01,2025-07-31,,,7302000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMAT,,revenue,2025-08-01,2025-10-31,,,6800000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMAT,,revenue,2025-11-01,2026-01-31,,,7012000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMAT,,revenue,2026-01-29,2026-04-30,,,7910000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMAT,,revenue,2026-05-01,2026-07-31,,,9115000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMD,,capex,2025-07-01,2025-09-30,,,258000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMD,,capex,2025-10-01,2025-12-31,,,222000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMD,,capex,2025-12-30,2026-03-31,,,389000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMD,,capex,2026-03-31,2026-06-30,,,808000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMD,,capex,2026-07-01,2026-09-30,,,648000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMD,,cost_of_revenue,2025-07-01,2025-09-30,,,4466000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMD,,cost_of_revenue,2025-10-01,2025-12-31,,,4693000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMD,,cost_of_revenue,2025-12-30,2026-03-31,,,4837000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMD,,cost_of_revenue,2026-03-31,2026-06-30,,,5333000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMD,,cost_of_revenue,2026-07-01,2026-09-30,,,6167000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMD,,inventory,,2025-09-30,,,7313000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMD,,inventory,,2025-12-31,,,7920000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMD,,inventory,,2026-03-31,,,8045000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMD,,inventory,,2026-06-30,,,8468000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMD,,inventory,,2026-09-30,,,11463000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMD,,operating_cash_flow,2025-07-01,2025-09-30,,,2159000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMD,,operating_cash_flow,2025-10-01,2025-12-31,,,2600000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMD,,operating_cash_flow,2025-12-30,2026-03-31,,,2955000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMD,,operating_cash_flow,2026-03-31,2026-06-30,,,2366000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMD,,operating_cash_flow,2026-07-01,2026-09-30,,,1202000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMD,,revenue,2025-07-01,2025-09-30,,,9246000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMD,,revenue,2025-10-01,2025-12-31,,,10270000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMD,,revenue,2025-12-30,2026-03-31,,,10253000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMD,,revenue,2026-03-31,2026-06-30,,,11536000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMD,,revenue,2026-07-01,2026-09-30,,,13377000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMKR,,capex,2025-07-01,2025-09-30,,,246445000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMKR,,capex,2025-10-01,2025-12-31,,,432083000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMKR,,capex,2025-12-30,2026-03-31,,,224605000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMKR,,capex,2026-03-31,2026-06-30,,,463820000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMKR,,capex,2026-07-01,2026-09-30,,,548381000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMKR,,cost_of_revenue,2025-07-01,2025-09-30,,,1702478000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMKR,,cost_of_revenue,2025-10-01,2025-12-31,,,1573417000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMKR,,cost_of_revenue,2025-12-30,2026-03-31,,,1445669000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMKR,,cost_of_revenue,2026-03-31,2026-06-30,,,1579375000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMKR,,cost_of_revenue,2026-07-01,2026-09-30,,,1627028000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMKR,,inventory,,2025-09-30,,,399892000.0,USD,false,yahoo,,,Inventory,yahoo
+AMKR,,inventory,,2025-12-31,,,437797000.0,USD,false,yahoo,,,Inventory,yahoo
+AMKR,,inventory,,2026-03-31,,,494620000.0,USD,false,yahoo,,,Inventory,yahoo
+AMKR,,inventory,,2026-06-30,,,560681000.0,USD,false,yahoo,,,Inventory,yahoo
+AMKR,,inventory,,2026-09-30,,,603792000.0,USD,false,yahoo,,,Inventory,yahoo
+AMKR,,operating_cash_flow,2025-07-01,2025-09-30,,,168514000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMKR,,operating_cash_flow,2025-10-01,2025-12-31,,,644480000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMKR,,operating_cash_flow,2025-12-30,2026-03-31,,,145087000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMKR,,operating_cash_flow,2026-03-31,2026-06-30,,,236486000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMKR,,operating_cash_flow,2026-07-01,2026-09-30,,,486772000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMKR,,revenue,2025-07-01,2025-09-30,,,1986968000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMKR,,revenue,2025-10-01,2025-12-31,,,1888046000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMKR,,revenue,2025-12-30,2026-03-31,,,1684701000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMKR,,revenue,2026-03-31,2026-06-30,,,1897965000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMKR,,revenue,2026-07-01,2026-09-30,,,1990557000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMZN,,capex,2025-03-31,2025-06-30,,,32183000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMZN,,capex,2025-07-01,2025-09-30,,,35095000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMZN,,capex,2025-10-01,2025-12-31,,,39522000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMZN,,capex,2025-12-30,2026-03-31,,,44203000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMZN,,capex,2026-07-01,2026-09-30,,,77259000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AMZN,,cost_of_revenue,2025-03-31,2025-06-30,,,80809000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMZN,,cost_of_revenue,2025-07-01,2025-09-30,,,88670000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMZN,,cost_of_revenue,2025-10-01,2025-12-31,,,109959000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMZN,,cost_of_revenue,2025-12-30,2026-03-31,,,87463000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMZN,,cost_of_revenue,2026-07-01,2026-09-30,,,94573000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AMZN,,inventory,,2025-06-30,,,40825000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMZN,,inventory,,2025-09-30,,,41494000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMZN,,inventory,,2025-12-31,,,38325000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMZN,,inventory,,2026-03-31,,,36534000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMZN,,inventory,,2026-09-30,,,42632000000.0,USD,false,yahoo,,,Inventory,yahoo
+AMZN,,operating_cash_flow,2025-03-31,2025-06-30,,,32515000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMZN,,operating_cash_flow,2025-07-01,2025-09-30,,,35525000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMZN,,operating_cash_flow,2025-10-01,2025-12-31,,,54459000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMZN,,operating_cash_flow,2025-12-30,2026-03-31,,,26032000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMZN,,operating_cash_flow,2026-07-01,2026-09-30,,,42422000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AMZN,,revenue,2025-03-31,2025-06-30,,,167702000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMZN,,revenue,2025-07-01,2025-09-30,,,180169000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMZN,,revenue,2025-10-01,2025-12-31,,,213386000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMZN,,revenue,2025-12-30,2026-03-31,,,181519000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AMZN,,revenue,2026-07-01,2026-09-30,,,201944000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ANET,,capex,2025-07-01,2025-09-30,,,30100000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ANET,,capex,2025-10-01,2025-12-31,,,37000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ANET,,capex,2025-12-30,2026-03-31,,,54500000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ANET,,capex,2026-03-31,2026-06-30,,,29700000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ANET,,capex,2026-07-01,2026-09-30,,,100700000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ANET,,cost_of_revenue,2025-07-01,2025-09-30,,,818100000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ANET,,cost_of_revenue,2025-10-01,2025-12-31,,,924000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ANET,,cost_of_revenue,2025-12-30,2026-03-31,,,1032200000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ANET,,cost_of_revenue,2026-03-31,2026-06-30,,,1125400000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ANET,,cost_of_revenue,2026-07-01,2026-09-30,,,1331900000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ANET,,inventory,,2025-09-30,,,2155700000.0,USD,false,yahoo,,,Inventory,yahoo
+ANET,,inventory,,2025-12-31,,,2247100000.0,USD,false,yahoo,,,Inventory,yahoo
+ANET,,inventory,,2026-03-31,,,2380000000.0,USD,false,yahoo,,,Inventory,yahoo
+ANET,,inventory,,2026-06-30,,,2535300000.0,USD,false,yahoo,,,Inventory,yahoo
+ANET,,inventory,,2026-09-30,,,3209800000.0,USD,false,yahoo,,,Inventory,yahoo
+ANET,,operating_cash_flow,2025-07-01,2025-09-30,,,1268200000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ANET,,operating_cash_flow,2025-10-01,2025-12-31,,,1261900000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ANET,,operating_cash_flow,2025-12-30,2026-03-31,,,1693500000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ANET,,operating_cash_flow,2026-03-31,2026-06-30,,,1083000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ANET,,operating_cash_flow,2026-07-01,2026-09-30,,,1200900000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ANET,,revenue,2025-07-01,2025-09-30,,,2308300000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ANET,,revenue,2025-10-01,2025-12-31,,,2487800000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ANET,,revenue,2025-12-30,2026-03-31,,,2709000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ANET,,revenue,2026-03-31,2026-06-30,,,3035700000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ANET,,revenue,2026-07-01,2026-09-30,,,3657600000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ARM,,capex,2025-07-01,2025-09-30,,,140000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ARM,,capex,2025-10-01,2025-12-31,,,184000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ARM,,capex,2025-12-30,2026-03-31,,,90000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ARM,,capex,2026-03-31,2026-06-30,,,208000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ARM,,capex,2026-07-01,2026-09-30,,,77000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ARM,,cost_of_revenue,2025-07-01,2025-09-30,,,29000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ARM,,cost_of_revenue,2025-10-01,2025-12-31,,,30000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ARM,,cost_of_revenue,2025-12-30,2026-03-31,,,32000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ARM,,cost_of_revenue,2026-03-31,2026-06-30,,,36000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ARM,,cost_of_revenue,2026-07-01,2026-09-30,,,42000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ARM,,operating_cash_flow,2025-07-01,2025-09-30,,,567000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ARM,,operating_cash_flow,2025-10-01,2025-12-31,,,365000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ARM,,operating_cash_flow,2025-12-30,2026-03-31,,,260000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ARM,,operating_cash_flow,2026-03-31,2026-06-30,,,902000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ARM,,operating_cash_flow,2026-07-01,2026-09-30,,,207000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ARM,,revenue,2025-07-01,2025-09-30,,,1135000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ARM,,revenue,2025-10-01,2025-12-31,,,1242000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ARM,,revenue,2025-12-30,2026-03-31,,,1490000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ARM,,revenue,2026-03-31,2026-06-30,,,1289000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ARM,,revenue,2026-07-01,2026-09-30,,,1443000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ASML,,capex,2025-07-01,2025-09-30,,,315400000.0,EUR,false,yahoo,,,Capital Expenditure,yahoo
+ASML,,capex,2025-10-01,2025-12-31,,,470400000.0,EUR,false,yahoo,,,Capital Expenditure,yahoo
+ASML,,capex,2025-12-30,2026-03-31,,,422300000.0,EUR,false,yahoo,,,Capital Expenditure,yahoo
+ASML,,capex,2026-03-31,2026-06-30,,,386100000.0,EUR,false,yahoo,,,Capital Expenditure,yahoo
+ASML,,capex,2026-07-01,2026-09-30,,,447200000.0,EUR,false,yahoo,,,Capital Expenditure,yahoo
+ASML,,cost_of_revenue,2025-07-01,2025-09-30,,,3635700000.0,EUR,false,yahoo,,,Cost Of Revenue,yahoo
+ASML,,cost_of_revenue,2025-10-01,2025-12-31,,,4649500000.0,EUR,false,yahoo,,,Cost Of Revenue,yahoo
+ASML,,cost_of_revenue,2025-12-30,2026-03-31,,,4121900000.0,EUR,false,yahoo,,,Cost Of Revenue,yahoo
+ASML,,cost_of_revenue,2026-03-31,2026-06-30,,,4291100000.0,EUR,false,yahoo,,,Cost Of Revenue,yahoo
+ASML,,cost_of_revenue,2026-07-01,2026-09-30,,,4962200000.0,EUR,false,yahoo,,,Cost Of Revenue,yahoo
+ASML,,inventory,,2025-09-30,,,11762800000.0,EUR,false,yahoo,,,Inventory,yahoo
+ASML,,inventory,,2025-12-31,,,11429300000.0,EUR,false,yahoo,,,Inventory,yahoo
+ASML,,inventory,,2026-03-31,,,11711200000.0,EUR,false,yahoo,,,Inventory,yahoo
+ASML,,inventory,,2026-06-30,,,11739500000.0,EUR,false,yahoo,,,Inventory,yahoo
+ASML,,inventory,,2026-09-30,,,11907300000.0,EUR,false,yahoo,,,Inventory,yahoo
+ASML,,operating_cash_flow,2025-07-01,2025-09-30,,,559100000.0,EUR,false,yahoo,,,Operating Cash Flow,yahoo
+ASML,,operating_cash_flow,2025-10-01,2025-12-31,,,11410300000.0,EUR,false,yahoo,,,Operating Cash Flow,yahoo
+ASML,,operating_cash_flow,2025-12-30,2026-03-31,,,-2185600000.0,EUR,false,yahoo,,,Operating Cash Flow,yahoo
+ASML,,operating_cash_flow,2026-03-31,2026-06-30,,,1703100000.0,EUR,false,yahoo,,,Operating Cash Flow,yahoo
+ASML,,operating_cash_flow,2026-07-01,2026-09-30,,,11797600000.0,EUR,false,yahoo,,,Operating Cash Flow,yahoo
+ASML,,revenue,2025-07-01,2025-09-30,,,7516000000.0,EUR,false,yahoo,,,Total Revenue,yahoo
+ASML,,revenue,2025-10-01,2025-12-31,,,9718100000.0,EUR,false,yahoo,,,Total Revenue,yahoo
+ASML,,revenue,2025-12-30,2026-03-31,,,8766900000.0,EUR,false,yahoo,,,Total Revenue,yahoo
+ASML,,revenue,2026-03-31,2026-06-30,,,9326500000.0,EUR,false,yahoo,,,Total Revenue,yahoo
+ASML,,revenue,2026-07-01,2026-09-30,,,11662000000.0,EUR,false,yahoo,,,Total Revenue,yahoo
+AVGO,,capex,2025-05-01,2025-07-31,,,142000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AVGO,,capex,2025-08-01,2025-10-31,,,237000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AVGO,,capex,2025-11-01,2026-01-31,,,250000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AVGO,,capex,2026-01-29,2026-04-30,,,231000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AVGO,,capex,2026-05-01,2026-07-31,,,532000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+AVGO,,cost_of_revenue,2025-05-01,2025-07-31,,,5249000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AVGO,,cost_of_revenue,2025-08-01,2025-10-31,,,5766000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AVGO,,cost_of_revenue,2025-11-01,2026-01-31,,,6154000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AVGO,,cost_of_revenue,2026-01-29,2026-04-30,,,6772000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AVGO,,cost_of_revenue,2026-05-01,2026-07-31,,,9135000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+AVGO,,inventory,,2025-07-31,,,2180000000.0,USD,false,yahoo,,,Inventory,yahoo
+AVGO,,inventory,,2025-10-31,,,2270000000.0,USD,false,yahoo,,,Inventory,yahoo
+AVGO,,inventory,,2026-01-31,,,2962000000.0,USD,false,yahoo,,,Inventory,yahoo
+AVGO,,inventory,,2026-04-30,,,4328000000.0,USD,false,yahoo,,,Inventory,yahoo
+AVGO,,inventory,,2026-07-31,,,4523000000.0,USD,false,yahoo,,,Inventory,yahoo
+AVGO,,operating_cash_flow,2025-05-01,2025-07-31,,,7166000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AVGO,,operating_cash_flow,2025-08-01,2025-10-31,,,7703000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AVGO,,operating_cash_flow,2025-11-01,2026-01-31,,,8260000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AVGO,,operating_cash_flow,2026-01-29,2026-04-30,,,10493000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AVGO,,operating_cash_flow,2026-05-01,2026-07-31,,,14197000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+AVGO,,revenue,2025-05-01,2025-07-31,,,15952000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AVGO,,revenue,2025-08-01,2025-10-31,,,18015000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AVGO,,revenue,2025-11-01,2026-01-31,,,19311000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AVGO,,revenue,2026-01-29,2026-04-30,,,22187000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+AVGO,,revenue,2026-05-01,2026-07-31,,,29591000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CDNS,,capex,2025-07-01,2025-09-30,,,33684000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CDNS,,capex,2025-10-01,2025-12-31,,,41041000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CDNS,,capex,2025-12-30,2026-03-31,,,48820000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CDNS,,capex,2026-03-31,2026-06-30,,,59603000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CDNS,,capex,2026-07-01,2026-09-30,,,61806000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CDNS,,cost_of_revenue,2025-07-01,2025-09-30,,,182193000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CDNS,,cost_of_revenue,2025-10-01,2025-12-31,,,188726000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CDNS,,cost_of_revenue,2025-12-30,2026-03-31,,,214535000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CDNS,,cost_of_revenue,2026-03-31,2026-06-30,,,239318000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CDNS,,cost_of_revenue,2026-07-01,2026-09-30,,,235653000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CDNS,,inventory,,2025-09-30,,,286193000.0,USD,false,yahoo,,,Inventory,yahoo
+CDNS,,inventory,,2025-12-31,,,303545000.0,USD,false,yahoo,,,Inventory,yahoo
+CDNS,,inventory,,2026-03-31,,,317951000.0,USD,false,yahoo,,,Inventory,yahoo
+CDNS,,inventory,,2026-06-30,,,390378000.0,USD,false,yahoo,,,Inventory,yahoo
+CDNS,,inventory,,2026-09-30,,,448824000.0,USD,false,yahoo,,,Inventory,yahoo
+CDNS,,operating_cash_flow,2025-07-01,2025-09-30,,,310662000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CDNS,,operating_cash_flow,2025-10-01,2025-12-31,,,553495000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CDNS,,operating_cash_flow,2025-12-30,2026-03-31,,,355782000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CDNS,,operating_cash_flow,2026-03-31,2026-06-30,,,634929000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CDNS,,operating_cash_flow,2026-07-01,2026-09-30,,,423725000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CDNS,,revenue,2025-07-01,2025-09-30,,,1338838000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CDNS,,revenue,2025-10-01,2025-12-31,,,1440114000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CDNS,,revenue,2025-12-30,2026-03-31,,,1474220000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CDNS,,revenue,2026-03-31,2026-06-30,,,1584451000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CDNS,,revenue,2026-07-01,2026-09-30,,,1633311000.0,USD,false,yahoo,,,Total Revenue,yahoo
+COHR,,capex,2025-07-01,2025-09-30,,,103946000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+COHR,,capex,2025-10-01,2025-12-31,,,153598000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+COHR,,capex,2025-12-30,2026-03-31,,,289684000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+COHR,,capex,2026-03-31,2026-06-30,,,562855000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+COHR,,capex,2026-07-01,2026-09-30,,,775547000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+COHR,,cost_of_revenue,2025-07-01,2025-09-30,,,1002178000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+COHR,,cost_of_revenue,2025-10-01,2025-12-31,,,1062809000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+COHR,,cost_of_revenue,2025-12-30,2026-03-31,,,1125696000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+COHR,,cost_of_revenue,2026-03-31,2026-06-30,,,1258458000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+COHR,,cost_of_revenue,2026-07-01,2026-09-30,,,1442559000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+COHR,,inventory,,2025-09-30,,,1632605000.0,USD,false,yahoo,,,Inventory,yahoo
+COHR,,inventory,,2025-12-31,,,1847907000.0,USD,false,yahoo,,,Inventory,yahoo
+COHR,,inventory,,2026-03-31,,,2126823000.0,USD,false,yahoo,,,Inventory,yahoo
+COHR,,inventory,,2026-06-30,,,2581043000.0,USD,false,yahoo,,,Inventory,yahoo
+COHR,,inventory,,2026-09-30,,,3341373000.0,USD,false,yahoo,,,Inventory,yahoo
+COHR,,operating_cash_flow,2025-07-01,2025-09-30,,,45955000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+COHR,,operating_cash_flow,2025-10-01,2025-12-31,,,57900000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+COHR,,operating_cash_flow,2025-12-30,2026-03-31,,,-93797000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+COHR,,operating_cash_flow,2026-03-31,2026-06-30,,,69456000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+COHR,,operating_cash_flow,2026-07-01,2026-09-30,,,-92681000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+COHR,,revenue,2025-07-01,2025-09-30,,,1581378000.0,USD,false,yahoo,,,Total Revenue,yahoo
+COHR,,revenue,2025-10-01,2025-12-31,,,1685629000.0,USD,false,yahoo,,,Total Revenue,yahoo
+COHR,,revenue,2025-12-30,2026-03-31,,,1805641000.0,USD,false,yahoo,,,Total Revenue,yahoo
+COHR,,revenue,2026-03-31,2026-06-30,,,2045533000.0,USD,false,yahoo,,,Total Revenue,yahoo
+COHR,,revenue,2026-07-01,2026-09-30,,,2370324000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CRDO,,capex,2025-05-01,2025-07-31,,,2821000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CRDO,,capex,2025-08-01,2025-10-31,,,23188000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CRDO,,capex,2025-11-01,2026-01-31,,,26514000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CRDO,,capex,2026-01-29,2026-04-30,,,4773000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CRDO,,capex,2026-05-01,2026-07-31,,,7282000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+CRDO,,cost_of_revenue,2025-05-01,2025-07-31,,,72706000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CRDO,,cost_of_revenue,2025-08-01,2025-10-31,,,86981000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CRDO,,cost_of_revenue,2025-11-01,2026-01-31,,,128144000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CRDO,,cost_of_revenue,2026-01-29,2026-04-30,,,138936000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CRDO,,cost_of_revenue,2026-05-01,2026-07-31,,,169923000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+CRDO,,inventory,,2025-07-31,,,116677000.0,USD,false,yahoo,,,Inventory,yahoo
+CRDO,,inventory,,2025-10-31,,,150194000.0,USD,false,yahoo,,,Inventory,yahoo
+CRDO,,inventory,,2026-01-31,,,207958000.0,USD,false,yahoo,,,Inventory,yahoo
+CRDO,,inventory,,2026-04-30,,,250831000.0,USD,false,yahoo,,,Inventory,yahoo
+CRDO,,inventory,,2026-07-31,,,313051000.0,USD,false,yahoo,,,Inventory,yahoo
+CRDO,,operating_cash_flow,2025-05-01,2025-07-31,,,54168000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CRDO,,operating_cash_flow,2025-08-01,2025-10-31,,,61665000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CRDO,,operating_cash_flow,2025-11-01,2026-01-31,,,166217000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CRDO,,operating_cash_flow,2026-01-29,2026-04-30,,,182242000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CRDO,,operating_cash_flow,2026-05-01,2026-07-31,,,90231000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+CRDO,,revenue,2025-05-01,2025-07-31,,,223074000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CRDO,,revenue,2025-08-01,2025-10-31,,,268027000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CRDO,,revenue,2025-11-01,2026-01-31,,,407012000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CRDO,,revenue,2026-01-29,2026-04-30,,,437003000.0,USD,false,yahoo,,,Total Revenue,yahoo
+CRDO,,revenue,2026-05-01,2026-07-31,,,479003000.0,USD,false,yahoo,,,Total Revenue,yahoo
+GOOGL,,capex,2025-07-01,2025-09-30,,,23953000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+GOOGL,,capex,2025-10-01,2025-12-31,,,27851000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+GOOGL,,capex,2025-12-30,2026-03-31,,,35674000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+GOOGL,,capex,2026-03-31,2026-06-30,,,44924000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+GOOGL,,capex,2026-07-01,2026-09-30,,,51355000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+GOOGL,,cost_of_revenue,2025-07-01,2025-09-30,,,41369000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+GOOGL,,cost_of_revenue,2025-10-01,2025-12-31,,,45767000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+GOOGL,,cost_of_revenue,2025-12-30,2026-03-31,,,41271000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+GOOGL,,cost_of_revenue,2026-03-31,2026-06-30,,,45943000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+GOOGL,,cost_of_revenue,2026-07-01,2026-09-30,,,51419000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+GOOGL,,inventory,,2026-06-30,,,9991000000.0,USD,false,yahoo,,,Inventory,yahoo
+GOOGL,,inventory,,2026-09-30,,,13308000000.0,USD,false,yahoo,,,Inventory,yahoo
+GOOGL,,operating_cash_flow,2025-07-01,2025-09-30,,,48414000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+GOOGL,,operating_cash_flow,2025-10-01,2025-12-31,,,52402000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+GOOGL,,operating_cash_flow,2025-12-30,2026-03-31,,,45790000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+GOOGL,,operating_cash_flow,2026-03-31,2026-06-30,,,39069000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+GOOGL,,operating_cash_flow,2026-07-01,2026-09-30,,,42290000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+GOOGL,,revenue,2025-07-01,2025-09-30,,,102346000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+GOOGL,,revenue,2025-10-01,2025-12-31,,,113829000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+GOOGL,,revenue,2025-12-30,2026-03-31,,,109896000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+GOOGL,,revenue,2026-03-31,2026-06-30,,,119796000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+GOOGL,,revenue,2026-07-01,2026-09-30,,,127577000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+INTC,,capex,2025-07-01,2025-09-30,,,2425000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+INTC,,capex,2025-10-01,2025-12-31,,,3488000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+INTC,,capex,2025-12-30,2026-03-31,,,3636000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+INTC,,capex,2026-03-31,2026-06-30,,,2556000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+INTC,,capex,2026-07-01,2026-09-30,,,4024000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+INTC,,cost_of_revenue,2025-07-01,2025-09-30,,,8435000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+INTC,,cost_of_revenue,2025-10-01,2025-12-31,,,8731000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+INTC,,cost_of_revenue,2025-12-30,2026-03-31,,,8230000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+INTC,,cost_of_revenue,2026-03-31,2026-06-30,,,9619000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+INTC,,cost_of_revenue,2026-07-01,2026-09-30,,,9417000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+INTC,,inventory,,2025-09-30,,,11489000000.0,USD,false,yahoo,,,Inventory,yahoo
+INTC,,inventory,,2025-12-31,,,11618000000.0,USD,false,yahoo,,,Inventory,yahoo
+INTC,,inventory,,2026-03-31,,,12426000000.0,USD,false,yahoo,,,Inventory,yahoo
+INTC,,inventory,,2026-06-30,,,12492000000.0,USD,false,yahoo,,,Inventory,yahoo
+INTC,,inventory,,2026-09-30,,,13068000000.0,USD,false,yahoo,,,Inventory,yahoo
+INTC,,operating_cash_flow,2025-07-01,2025-09-30,,,2546000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+INTC,,operating_cash_flow,2025-10-01,2025-12-31,,,4288000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+INTC,,operating_cash_flow,2025-12-30,2026-03-31,,,1096000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+INTC,,operating_cash_flow,2026-03-31,2026-06-30,,,7006000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+INTC,,operating_cash_flow,2026-07-01,2026-09-30,,,5082000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+INTC,,revenue,2025-07-01,2025-09-30,,,13653000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+INTC,,revenue,2025-10-01,2025-12-31,,,13674000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+INTC,,revenue,2025-12-30,2026-03-31,,,13577000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+INTC,,revenue,2026-03-31,2026-06-30,,,16128000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+INTC,,revenue,2026-07-01,2026-09-30,,,16513000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+KLAC,,capex,2025-07-01,2025-09-30,,,95894000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+KLAC,,capex,2025-10-01,2025-12-31,,,105576000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+KLAC,,capex,2025-12-30,2026-03-31,,,85187000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+KLAC,,capex,2026-03-31,2026-06-30,,,89288000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+KLAC,,capex,2026-07-01,2026-09-30,,,194756000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+KLAC,,cost_of_revenue,2025-07-01,2025-09-30,,,1243070000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+KLAC,,cost_of_revenue,2025-10-01,2025-12-31,,,1271210000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+KLAC,,cost_of_revenue,2025-12-30,2026-03-31,,,1327672000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+KLAC,,cost_of_revenue,2026-03-31,2026-06-30,,,1413108000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+KLAC,,cost_of_revenue,2026-07-01,2026-09-30,,,1577791000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+KLAC,,inventory,,2025-09-30,,,3297368000.0,USD,false,yahoo,,,Inventory,yahoo
+KLAC,,inventory,,2025-12-31,,,3282605000.0,USD,false,yahoo,,,Inventory,yahoo
+KLAC,,inventory,,2026-03-31,,,3437046000.0,USD,false,yahoo,,,Inventory,yahoo
+KLAC,,inventory,,2026-06-30,,,3648538000.0,USD,false,yahoo,,,Inventory,yahoo
+KLAC,,inventory,,2026-09-30,,,4090426000.0,USD,false,yahoo,,,Inventory,yahoo
+KLAC,,operating_cash_flow,2025-07-01,2025-09-30,,,1161591000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+KLAC,,operating_cash_flow,2025-10-01,2025-12-31,,,1367607000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+KLAC,,operating_cash_flow,2025-12-30,2026-03-31,,,707451000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+KLAC,,operating_cash_flow,2026-03-31,2026-06-30,,,906430000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+KLAC,,operating_cash_flow,2026-07-01,2026-09-30,,,1530939000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+KLAC,,revenue,2025-07-01,2025-09-30,,,3209696000.0,USD,false,yahoo,,,Total Revenue,yahoo
+KLAC,,revenue,2025-10-01,2025-12-31,,,3297146000.0,USD,false,yahoo,,,Total Revenue,yahoo
+KLAC,,revenue,2025-12-30,2026-03-31,,,3415078000.0,USD,false,yahoo,,,Total Revenue,yahoo
+KLAC,,revenue,2026-03-31,2026-06-30,,,3657556000.0,USD,false,yahoo,,,Total Revenue,yahoo
+KLAC,,revenue,2026-07-01,2026-09-30,,,4136015000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LITE,,capex,2025-07-01,2025-09-30,,,76200000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LITE,,capex,2025-10-01,2025-12-31,,,83600000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LITE,,capex,2025-12-30,2026-03-31,,,124700000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LITE,,capex,2026-03-31,2026-06-30,,,166800000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LITE,,capex,2026-07-01,2026-09-30,,,229800000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LITE,,cost_of_revenue,2025-07-01,2025-09-30,,,352300000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LITE,,cost_of_revenue,2025-10-01,2025-12-31,,,425400000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LITE,,cost_of_revenue,2025-12-30,2026-03-31,,,451400000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LITE,,cost_of_revenue,2026-03-31,2026-06-30,,,529000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LITE,,cost_of_revenue,2026-07-01,2026-09-30,,,618600000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LITE,,inventory,,2025-09-30,,,531600000.0,USD,false,yahoo,,,Inventory,yahoo
+LITE,,inventory,,2025-12-31,,,570400000.0,USD,false,yahoo,,,Inventory,yahoo
+LITE,,inventory,,2026-03-31,,,632800000.0,USD,false,yahoo,,,Inventory,yahoo
+LITE,,inventory,,2026-06-30,,,691600000.0,USD,false,yahoo,,,Inventory,yahoo
+LITE,,inventory,,2026-09-30,,,807700000.0,USD,false,yahoo,,,Inventory,yahoo
+LITE,,operating_cash_flow,2025-07-01,2025-09-30,,,57900000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LITE,,operating_cash_flow,2025-10-01,2025-12-31,,,126700000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LITE,,operating_cash_flow,2025-12-30,2026-03-31,,,203800000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LITE,,operating_cash_flow,2026-03-31,2026-06-30,,,363000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LITE,,operating_cash_flow,2026-07-01,2026-09-30,,,267700000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LITE,,revenue,2025-07-01,2025-09-30,,,533800000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LITE,,revenue,2025-10-01,2025-12-31,,,665500000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LITE,,revenue,2025-12-30,2026-03-31,,,808400000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LITE,,revenue,2026-03-31,2026-06-30,,,1006300000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LITE,,revenue,2026-07-01,2026-09-30,,,1262600000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LRCX,,capex,2025-07-01,2025-09-30,,,185121000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LRCX,,capex,2025-10-01,2025-12-31,,,260879000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LRCX,,capex,2025-12-30,2026-03-31,,,331604000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LRCX,,capex,2026-03-31,2026-06-30,,,188801000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LRCX,,capex,2026-07-01,2026-09-30,,,257697000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LRCX,,cost_of_revenue,2025-07-01,2025-09-30,,,2639294000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LRCX,,cost_of_revenue,2025-10-01,2025-12-31,,,2693629000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LRCX,,cost_of_revenue,2025-12-30,2026-03-31,,,2930961000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LRCX,,cost_of_revenue,2026-03-31,2026-06-30,,,3243498000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LRCX,,cost_of_revenue,2026-07-01,2026-09-30,,,3920565000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LRCX,,inventory,,2025-09-30,,,4095054000.0,USD,false,yahoo,,,Inventory,yahoo
+LRCX,,inventory,,2025-12-31,,,4037682000.0,USD,false,yahoo,,,Inventory,yahoo
+LRCX,,inventory,,2026-03-31,,,3999992000.0,USD,false,yahoo,,,Inventory,yahoo
+LRCX,,inventory,,2026-06-30,,,4276111000.0,USD,false,yahoo,,,Inventory,yahoo
+LRCX,,inventory,,2026-09-30,,,4550544000.0,USD,false,yahoo,,,Inventory,yahoo
+LRCX,,operating_cash_flow,2025-07-01,2025-09-30,,,1778964000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LRCX,,operating_cash_flow,2025-10-01,2025-12-31,,,1480045000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LRCX,,operating_cash_flow,2025-12-30,2026-03-31,,,1141420000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LRCX,,operating_cash_flow,2026-03-31,2026-06-30,,,1457228000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LRCX,,operating_cash_flow,2026-07-01,2026-09-30,,,3497652000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LRCX,,revenue,2025-07-01,2025-09-30,,,5324173000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LRCX,,revenue,2025-10-01,2025-12-31,,,5344791000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LRCX,,revenue,2025-12-30,2026-03-31,,,5841488000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LRCX,,revenue,2026-03-31,2026-06-30,,,6722238000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LRCX,,revenue,2026-07-01,2026-09-30,,,8219418000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LSCC,,capex,2025-07-01,2025-09-30,,,17505000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LSCC,,capex,2025-10-01,2025-12-31,,,21175000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LSCC,,capex,2025-12-30,2026-03-31,,,15424000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LSCC,,capex,2026-03-31,2026-06-30,,,26119000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LSCC,,capex,2026-07-01,2026-09-30,,,28572000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+LSCC,,cost_of_revenue,2025-07-01,2025-09-30,,,42822000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LSCC,,cost_of_revenue,2025-10-01,2025-12-31,,,45855000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LSCC,,cost_of_revenue,2025-12-30,2026-03-31,,,53265000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LSCC,,cost_of_revenue,2026-03-31,2026-06-30,,,59747000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LSCC,,cost_of_revenue,2026-07-01,2026-09-30,,,94915000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+LSCC,,inventory,,2025-09-30,,,90716000.0,USD,false,yahoo,,,Inventory,yahoo
+LSCC,,inventory,,2025-12-31,,,89202000.0,USD,false,yahoo,,,Inventory,yahoo
+LSCC,,inventory,,2026-03-31,,,88231000.0,USD,false,yahoo,,,Inventory,yahoo
+LSCC,,inventory,,2026-06-30,,,100501000.0,USD,false,yahoo,,,Inventory,yahoo
+LSCC,,inventory,,2026-09-30,,,120577000.0,USD,false,yahoo,,,Inventory,yahoo
+LSCC,,operating_cash_flow,2025-07-01,2025-09-30,,,47100000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LSCC,,operating_cash_flow,2025-10-01,2025-12-31,,,57584000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LSCC,,operating_cash_flow,2025-12-30,2026-03-31,,,50255000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LSCC,,operating_cash_flow,2026-03-31,2026-06-30,,,88302000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LSCC,,operating_cash_flow,2026-07-01,2026-09-30,,,95037000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+LSCC,,revenue,2025-07-01,2025-09-30,,,133349000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LSCC,,revenue,2025-10-01,2025-12-31,,,145792000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LSCC,,revenue,2025-12-30,2026-03-31,,,170897000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LSCC,,revenue,2026-03-31,2026-06-30,,,201079000.0,USD,false,yahoo,,,Total Revenue,yahoo
+LSCC,,revenue,2026-07-01,2026-09-30,,,291035000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MCHP,,capex,2025-07-01,2025-09-30,,,36500000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MCHP,,capex,2025-10-01,2025-12-31,,,22500000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MCHP,,capex,2025-12-30,2026-03-31,,,14200000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MCHP,,capex,2026-03-31,2026-06-30,,,13900000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MCHP,,capex,2026-07-01,2026-09-30,,,23100000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MCHP,,cost_of_revenue,2025-07-01,2025-09-30,,,502500000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MCHP,,cost_of_revenue,2025-10-01,2025-12-31,,,479100000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MCHP,,cost_of_revenue,2025-12-30,2026-03-31,,,511600000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MCHP,,cost_of_revenue,2026-03-31,2026-06-30,,,545800000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MCHP,,cost_of_revenue,2026-07-01,2026-09-30,,,553500000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MCHP,,inventory,,2025-09-30,,,1095300000.0,USD,false,yahoo,,,Inventory,yahoo
+MCHP,,inventory,,2025-12-31,,,1057700000.0,USD,false,yahoo,,,Inventory,yahoo
+MCHP,,inventory,,2026-03-31,,,1035400000.0,USD,false,yahoo,,,Inventory,yahoo
+MCHP,,inventory,,2026-06-30,,,1047300000.0,USD,false,yahoo,,,Inventory,yahoo
+MCHP,,inventory,,2026-09-30,,,1117300000.0,USD,false,yahoo,,,Inventory,yahoo
+MCHP,,operating_cash_flow,2025-07-01,2025-09-30,,,88100000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MCHP,,operating_cash_flow,2025-10-01,2025-12-31,,,341400000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MCHP,,operating_cash_flow,2025-12-30,2026-03-31,,,257000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MCHP,,operating_cash_flow,2026-03-31,2026-06-30,,,511500000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MCHP,,operating_cash_flow,2026-07-01,2026-09-30,,,419200000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MCHP,,revenue,2025-07-01,2025-09-30,,,1140400000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MCHP,,revenue,2025-10-01,2025-12-31,,,1186000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MCHP,,revenue,2025-12-30,2026-03-31,,,1311200000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MCHP,,revenue,2026-03-31,2026-06-30,,,1484700000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MCHP,,revenue,2026-07-01,2026-09-30,,,1621500000.0,USD,false,yahoo,,,Total Revenue,yahoo
+META,,capex,2025-07-01,2025-09-30,,,18829000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+META,,capex,2025-10-01,2025-12-31,,,21383000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+META,,capex,2025-12-30,2026-03-31,,,18997000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+META,,capex,2026-03-31,2026-06-30,,,30116000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+META,,capex,2026-07-01,2026-09-30,,,33942000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+META,,cost_of_revenue,2025-07-01,2025-09-30,,,9206000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+META,,cost_of_revenue,2025-10-01,2025-12-31,,,10906000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+META,,cost_of_revenue,2025-12-30,2026-03-31,,,10218000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+META,,cost_of_revenue,2026-03-31,2026-06-30,,,11330000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+META,,cost_of_revenue,2026-07-01,2026-09-30,,,13369000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+META,,operating_cash_flow,2025-07-01,2025-09-30,,,29999000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+META,,operating_cash_flow,2025-10-01,2025-12-31,,,36214000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+META,,operating_cash_flow,2025-12-30,2026-03-31,,,32226000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+META,,operating_cash_flow,2026-03-31,2026-06-30,,,31862000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+META,,operating_cash_flow,2026-07-01,2026-09-30,,,32785000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+META,,revenue,2025-07-01,2025-09-30,,,51242000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+META,,revenue,2025-10-01,2025-12-31,,,59893000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+META,,revenue,2025-12-30,2026-03-31,,,56311000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+META,,revenue,2026-03-31,2026-06-30,,,60801000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+META,,revenue,2026-07-01,2026-09-30,,,64601000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MPWR,,capex,2025-07-01,2025-09-30,,,42515000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MPWR,,capex,2025-10-01,2025-12-31,,,41413000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MPWR,,capex,2025-12-30,2026-03-31,,,70849000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MPWR,,capex,2026-03-31,2026-06-30,,,82423000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MPWR,,capex,2026-07-01,2026-09-30,,,69337000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MPWR,,cost_of_revenue,2025-07-01,2025-09-30,,,330948000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MPWR,,cost_of_revenue,2025-10-01,2025-12-31,,,336888000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MPWR,,cost_of_revenue,2025-12-30,2026-03-31,,,359120000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MPWR,,cost_of_revenue,2026-03-31,2026-06-30,,,439572000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MPWR,,cost_of_revenue,2026-07-01,2026-09-30,,,536870000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MPWR,,inventory,,2025-09-30,,,505680000.0,USD,false,yahoo,,,Inventory,yahoo
+MPWR,,inventory,,2025-12-31,,,564649000.0,USD,false,yahoo,,,Inventory,yahoo
+MPWR,,inventory,,2026-03-31,,,619159000.0,USD,false,yahoo,,,Inventory,yahoo
+MPWR,,inventory,,2026-06-30,,,675849000.0,USD,false,yahoo,,,Inventory,yahoo
+MPWR,,inventory,,2026-09-30,,,764879000.0,USD,false,yahoo,,,Inventory,yahoo
+MPWR,,operating_cash_flow,2025-07-01,2025-09-30,,,239268000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MPWR,,operating_cash_flow,2025-10-01,2025-12-31,,,104910000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MPWR,,operating_cash_flow,2025-12-30,2026-03-31,,,250253000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MPWR,,operating_cash_flow,2026-03-31,2026-06-30,,,227906000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MPWR,,operating_cash_flow,2026-07-01,2026-09-30,,,289915000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MPWR,,revenue,2025-07-01,2025-09-30,,,737176000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MPWR,,revenue,2025-10-01,2025-12-31,,,751155000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MPWR,,revenue,2025-12-30,2026-03-31,,,804185000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MPWR,,revenue,2026-03-31,2026-06-30,,,980642000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MPWR,,revenue,2026-07-01,2026-09-30,,,1202409000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MRVL,,capex,2025-05-01,2025-07-31,,,48600000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MRVL,,capex,2025-08-01,2025-10-31,,,74700000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MRVL,,capex,2025-11-01,2026-01-31,,,115400000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MRVL,,capex,2026-01-29,2026-04-30,,,156200000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MRVL,,capex,2026-05-01,2026-07-31,,,131200000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MRVL,,cost_of_revenue,2025-05-01,2025-07-31,,,995500000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MRVL,,cost_of_revenue,2025-08-01,2025-10-31,,,1004700000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MRVL,,cost_of_revenue,2025-11-01,2026-01-31,,,1070800000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MRVL,,cost_of_revenue,2026-01-29,2026-04-30,,,1157000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MRVL,,cost_of_revenue,2026-05-01,2026-07-31,,,1283700000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MRVL,,inventory,,2025-07-31,,,1051600000.0,USD,false,yahoo,,,Inventory,yahoo
+MRVL,,inventory,,2025-10-31,,,1014500000.0,USD,false,yahoo,,,Inventory,yahoo
+MRVL,,inventory,,2026-01-31,,,1388000000.0,USD,false,yahoo,,,Inventory,yahoo
+MRVL,,inventory,,2026-04-30,,,1400900000.0,USD,false,yahoo,,,Inventory,yahoo
+MRVL,,inventory,,2026-07-31,,,1360600000.0,USD,false,yahoo,,,Inventory,yahoo
+MRVL,,operating_cash_flow,2025-05-01,2025-07-31,,,461600000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MRVL,,operating_cash_flow,2025-08-01,2025-10-31,,,582300000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MRVL,,operating_cash_flow,2025-11-01,2026-01-31,,,373700000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MRVL,,operating_cash_flow,2026-01-29,2026-04-30,,,638800000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MRVL,,operating_cash_flow,2026-05-01,2026-07-31,,,605500000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MRVL,,revenue,2025-05-01,2025-07-31,,,2006100000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MRVL,,revenue,2025-08-01,2025-10-31,,,2074500000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MRVL,,revenue,2025-11-01,2026-01-31,,,2218700000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MRVL,,revenue,2026-01-29,2026-04-30,,,2417800000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MRVL,,revenue,2026-05-01,2026-07-31,,,2739300000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MSFT,,capex,2025-07-01,2025-09-30,,,19394000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MSFT,,capex,2025-10-01,2025-12-31,,,29876000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MSFT,,capex,2025-12-30,2026-03-31,,,30876000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MSFT,,capex,2026-03-31,2026-06-30,,,35802000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MSFT,,capex,2026-07-01,2026-09-30,,,39367000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MSFT,,cost_of_revenue,2025-07-01,2025-09-30,,,24043000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MSFT,,cost_of_revenue,2025-10-01,2025-12-31,,,25978000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MSFT,,cost_of_revenue,2025-12-30,2026-03-31,,,26828000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MSFT,,cost_of_revenue,2026-03-31,2026-06-30,,,29525000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MSFT,,cost_of_revenue,2026-07-01,2026-09-30,,,29720000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MSFT,,inventory,,2025-09-30,,,1130000000.0,USD,false,yahoo,,,Inventory,yahoo
+MSFT,,inventory,,2025-12-31,,,1059000000.0,USD,false,yahoo,,,Inventory,yahoo
+MSFT,,inventory,,2026-03-31,,,1219000000.0,USD,false,yahoo,,,Inventory,yahoo
+MSFT,,inventory,,2026-06-30,,,1397000000.0,USD,false,yahoo,,,Inventory,yahoo
+MSFT,,inventory,,2026-09-30,,,1835000000.0,USD,false,yahoo,,,Inventory,yahoo
+MSFT,,operating_cash_flow,2025-07-01,2025-09-30,,,45057000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MSFT,,operating_cash_flow,2025-10-01,2025-12-31,,,35758000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MSFT,,operating_cash_flow,2025-12-30,2026-03-31,,,46679000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MSFT,,operating_cash_flow,2026-03-31,2026-06-30,,,55441000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MSFT,,operating_cash_flow,2026-07-01,2026-09-30,,,58000000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MSFT,,revenue,2025-07-01,2025-09-30,,,77673000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MSFT,,revenue,2025-10-01,2025-12-31,,,81273000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MSFT,,revenue,2025-12-30,2026-03-31,,,82886000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MSFT,,revenue,2026-03-31,2026-06-30,,,90007000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MSFT,,revenue,2026-07-01,2026-09-30,,,92279000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MU,,capex,2025-06-01,2025-08-31,,,5658000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MU,,capex,2025-08-31,2025-11-30,,,5389000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MU,,capex,2025-11-29,2026-02-28,,,6387000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MU,,capex,2026-03-01,2026-05-31,,,7826000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MU,,capex,2026-06-01,2026-08-31,,,11110000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+MU,,cost_of_revenue,2025-06-01,2025-08-31,,,6261000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MU,,cost_of_revenue,2025-08-31,2025-11-30,,,5997000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MU,,cost_of_revenue,2025-11-29,2026-02-28,,,6105000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MU,,cost_of_revenue,2026-03-01,2026-05-31,,,6400000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MU,,cost_of_revenue,2026-06-01,2026-08-31,,,7182000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+MU,,inventory,,2025-08-31,,,8355000000.0,USD,false,yahoo,,,Inventory,yahoo
+MU,,inventory,,2025-11-30,,,8205000000.0,USD,false,yahoo,,,Inventory,yahoo
+MU,,inventory,,2026-02-28,,,8267000000.0,USD,false,yahoo,,,Inventory,yahoo
+MU,,inventory,,2026-05-31,,,8567000000.0,USD,false,yahoo,,,Inventory,yahoo
+MU,,inventory,,2026-08-31,,,10372000000.0,USD,false,yahoo,,,Inventory,yahoo
+MU,,operating_cash_flow,2025-06-01,2025-08-31,,,5730000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MU,,operating_cash_flow,2025-08-31,2025-11-30,,,8411000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MU,,operating_cash_flow,2025-11-29,2026-02-28,,,11903000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MU,,operating_cash_flow,2026-03-01,2026-05-31,,,25388000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MU,,operating_cash_flow,2026-06-01,2026-08-31,,,43973000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+MU,,revenue,2025-06-01,2025-08-31,,,11315000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MU,,revenue,2025-08-31,2025-11-30,,,13643000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MU,,revenue,2025-11-29,2026-02-28,,,23860000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MU,,revenue,2026-03-01,2026-05-31,,,41456000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+MU,,revenue,2026-06-01,2026-08-31,,,54229000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NVDA,,capex,2025-05-01,2025-07-31,,,1895000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NVDA,,capex,2025-08-01,2025-10-31,,,1636000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NVDA,,capex,2025-11-01,2026-01-31,,,1284000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NVDA,,capex,2026-01-29,2026-04-30,,,1757000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NVDA,,capex,2026-05-01,2026-07-31,,,2677000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NVDA,,cost_of_revenue,2025-05-01,2025-07-31,,,12890000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NVDA,,cost_of_revenue,2025-08-01,2025-10-31,,,15157000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NVDA,,cost_of_revenue,2025-11-01,2026-01-31,,,17034000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NVDA,,cost_of_revenue,2026-01-29,2026-04-30,,,20458000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NVDA,,cost_of_revenue,2026-05-01,2026-07-31,,,24079000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NVDA,,inventory,,2025-07-31,,,14962000000.0,USD,false,yahoo,,,Inventory,yahoo
+NVDA,,inventory,,2025-10-31,,,19784000000.0,USD,false,yahoo,,,Inventory,yahoo
+NVDA,,inventory,,2026-01-31,,,21403000000.0,USD,false,yahoo,,,Inventory,yahoo
+NVDA,,inventory,,2026-04-30,,,25797000000.0,USD,false,yahoo,,,Inventory,yahoo
+NVDA,,inventory,,2026-07-31,,,31575000000.0,USD,false,yahoo,,,Inventory,yahoo
+NVDA,,operating_cash_flow,2025-05-01,2025-07-31,,,15365000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NVDA,,operating_cash_flow,2025-08-01,2025-10-31,,,23751000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NVDA,,operating_cash_flow,2025-11-01,2026-01-31,,,36188000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NVDA,,operating_cash_flow,2026-01-29,2026-04-30,,,50344000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NVDA,,operating_cash_flow,2026-05-01,2026-07-31,,,24077000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NVDA,,revenue,2025-05-01,2025-07-31,,,46743000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NVDA,,revenue,2025-08-01,2025-10-31,,,57006000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NVDA,,revenue,2025-11-01,2026-01-31,,,68127000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NVDA,,revenue,2026-01-29,2026-04-30,,,81615000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NVDA,,revenue,2026-05-01,2026-07-31,,,96221000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NXPI,,capex,2025-07-01,2025-09-30,,,100000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NXPI,,capex,2025-10-01,2025-12-31,,,153000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NXPI,,capex,2025-12-30,2026-03-31,,,121000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NXPI,,capex,2026-03-31,2026-06-30,,,106000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NXPI,,capex,2026-07-01,2026-09-30,,,87000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+NXPI,,cost_of_revenue,2025-07-01,2025-09-30,,,1386000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NXPI,,cost_of_revenue,2025-10-01,2025-12-31,,,1528000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NXPI,,cost_of_revenue,2025-12-30,2026-03-31,,,1393000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NXPI,,cost_of_revenue,2026-03-31,2026-06-30,,,1494000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NXPI,,cost_of_revenue,2026-07-01,2026-09-30,,,1597000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+NXPI,,inventory,,2025-09-30,,,2452000000.0,USD,false,yahoo,,,Inventory,yahoo
+NXPI,,inventory,,2025-12-31,,,2577000000.0,USD,false,yahoo,,,Inventory,yahoo
+NXPI,,inventory,,2026-03-31,,,2523000000.0,USD,false,yahoo,,,Inventory,yahoo
+NXPI,,inventory,,2026-06-30,,,2557000000.0,USD,false,yahoo,,,Inventory,yahoo
+NXPI,,inventory,,2026-09-30,,,2596000000.0,USD,false,yahoo,,,Inventory,yahoo
+NXPI,,operating_cash_flow,2025-07-01,2025-09-30,,,585000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NXPI,,operating_cash_flow,2025-10-01,2025-12-31,,,891000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NXPI,,operating_cash_flow,2025-12-30,2026-03-31,,,793000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NXPI,,operating_cash_flow,2026-03-31,2026-06-30,,,860000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NXPI,,operating_cash_flow,2026-07-01,2026-09-30,,,1256000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+NXPI,,revenue,2025-07-01,2025-09-30,,,3173000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NXPI,,revenue,2025-10-01,2025-12-31,,,3335000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NXPI,,revenue,2025-12-30,2026-03-31,,,3181000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NXPI,,revenue,2026-03-31,2026-06-30,,,3496000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+NXPI,,revenue,2026-07-01,2026-09-30,,,3786000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ON,,capex,2025-07-01,2025-09-30,,,46300000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ON,,capex,2025-10-01,2025-12-31,,,69100000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ON,,capex,2025-12-30,2026-03-31,,,21900000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ON,,capex,2026-03-31,2026-06-30,,,34300000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ON,,capex,2026-07-01,2026-09-30,,,27800000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ON,,cost_of_revenue,2025-07-01,2025-09-30,,,963700000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ON,,cost_of_revenue,2025-10-01,2025-12-31,,,979100000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ON,,cost_of_revenue,2025-12-30,2026-03-31,,,930200000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ON,,cost_of_revenue,2026-03-31,2026-06-30,,,987200000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ON,,cost_of_revenue,2026-07-01,2026-09-30,,,1009300000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ON,,inventory,,2025-09-30,,,2047900000.0,USD,false,yahoo,,,Inventory,yahoo
+ON,,inventory,,2025-12-31,,,1989600000.0,USD,false,yahoo,,,Inventory,yahoo
+ON,,inventory,,2026-03-31,,,2049200000.0,USD,false,yahoo,,,Inventory,yahoo
+ON,,inventory,,2026-06-30,,,2047500000.0,USD,false,yahoo,,,Inventory,yahoo
+ON,,inventory,,2026-09-30,,,2069700000.0,USD,false,yahoo,,,Inventory,yahoo
+ON,,operating_cash_flow,2025-07-01,2025-09-30,,,418700000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ON,,operating_cash_flow,2025-10-01,2025-12-31,,,554500000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ON,,operating_cash_flow,2025-12-30,2026-03-31,,,239100000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ON,,operating_cash_flow,2026-03-31,2026-06-30,,,459700000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ON,,operating_cash_flow,2026-07-01,2026-09-30,,,516400000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ON,,revenue,2025-07-01,2025-09-30,,,1550900000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ON,,revenue,2025-10-01,2025-12-31,,,1530100000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ON,,revenue,2025-12-30,2026-03-31,,,1513300000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ON,,revenue,2026-03-31,2026-06-30,,,1603500000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ON,,revenue,2026-07-01,2026-09-30,,,1722300000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ONTO,,capex,2025-07-01,2025-09-30,,,1379000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ONTO,,capex,2025-10-01,2025-12-31,,,5129000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ONTO,,capex,2025-12-30,2026-03-31,,,3585000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ONTO,,capex,2026-03-31,2026-06-30,,,3657000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ONTO,,capex,2026-07-01,2026-09-30,,,1561000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ONTO,,cost_of_revenue,2025-07-01,2025-09-30,,,107570000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ONTO,,cost_of_revenue,2025-10-01,2025-12-31,,,143074000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ONTO,,cost_of_revenue,2025-12-30,2026-03-31,,,145560000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ONTO,,cost_of_revenue,2026-03-31,2026-06-30,,,159875000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ONTO,,cost_of_revenue,2026-07-01,2026-09-30,,,185266000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ONTO,,inventory,,2025-09-30,,,259370000.0,USD,false,yahoo,,,Inventory,yahoo
+ONTO,,inventory,,2025-12-31,,,298264000.0,USD,false,yahoo,,,Inventory,yahoo
+ONTO,,inventory,,2026-03-31,,,316026000.0,USD,false,yahoo,,,Inventory,yahoo
+ONTO,,inventory,,2026-06-30,,,379243000.0,USD,false,yahoo,,,Inventory,yahoo
+ONTO,,inventory,,2026-09-30,,,424180000.0,USD,false,yahoo,,,Inventory,yahoo
+ONTO,,operating_cash_flow,2025-07-01,2025-09-30,,,83396000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ONTO,,operating_cash_flow,2025-10-01,2025-12-31,,,94996000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ONTO,,operating_cash_flow,2025-12-30,2026-03-31,,,26322000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ONTO,,operating_cash_flow,2026-03-31,2026-06-30,,,61507000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ONTO,,operating_cash_flow,2026-07-01,2026-09-30,,,78750000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ONTO,,revenue,2025-07-01,2025-09-30,,,218193000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ONTO,,revenue,2025-10-01,2025-12-31,,,266866000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ONTO,,revenue,2025-12-30,2026-03-31,,,291949000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ONTO,,revenue,2026-03-31,2026-06-30,,,343129000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ONTO,,revenue,2026-07-01,2026-09-30,,,409748000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ORCL,,capex,2025-06-01,2025-08-31,,,8502000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ORCL,,capex,2025-08-31,2025-11-30,,,12033000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ORCL,,capex,2025-11-29,2026-02-28,,,18635000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ORCL,,capex,2026-03-01,2026-05-31,,,16493000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ORCL,,capex,2026-06-01,2026-08-31,,,28499000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+ORCL,,cost_of_revenue,2025-06-01,2025-08-31,,,4884000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ORCL,,cost_of_revenue,2025-08-31,2025-11-30,,,5374000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ORCL,,cost_of_revenue,2025-11-29,2026-02-28,,,6092000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ORCL,,cost_of_revenue,2026-03-01,2026-05-31,,,6671000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ORCL,,cost_of_revenue,2026-06-01,2026-08-31,,,7733000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+ORCL,,operating_cash_flow,2025-06-01,2025-08-31,,,8140000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ORCL,,operating_cash_flow,2025-08-31,2025-11-30,,,2066000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ORCL,,operating_cash_flow,2025-11-29,2026-02-28,,,7151000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ORCL,,operating_cash_flow,2026-03-01,2026-05-31,,,14620000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ORCL,,operating_cash_flow,2026-06-01,2026-08-31,,,23103000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+ORCL,,revenue,2025-06-01,2025-08-31,,,14926000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ORCL,,revenue,2025-08-31,2025-11-30,,,16058000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ORCL,,revenue,2025-11-29,2026-02-28,,,17190000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ORCL,,revenue,2026-03-01,2026-05-31,,,19184000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+ORCL,,revenue,2026-06-01,2026-08-31,,,19345000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+QCOM,,capex,2025-07-01,2025-09-30,,,407000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+QCOM,,capex,2025-10-01,2025-12-31,,,549000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+QCOM,,capex,2025-12-30,2026-03-31,,,533000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+QCOM,,capex,2026-03-31,2026-06-30,,,496000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+QCOM,,capex,2026-07-01,2026-09-30,,,916000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+QCOM,,cost_of_revenue,2025-07-01,2025-09-30,,,5034000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+QCOM,,cost_of_revenue,2025-10-01,2025-12-31,,,5568000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+QCOM,,cost_of_revenue,2025-12-30,2026-03-31,,,4900000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+QCOM,,cost_of_revenue,2026-03-31,2026-06-30,,,4670000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+QCOM,,cost_of_revenue,2026-07-01,2026-09-30,,,5084000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+QCOM,,inventory,,2025-09-30,,,6526000000.0,USD,false,yahoo,,,Inventory,yahoo
+QCOM,,inventory,,2025-12-31,,,6665000000.0,USD,false,yahoo,,,Inventory,yahoo
+QCOM,,inventory,,2026-03-31,,,7368000000.0,USD,false,yahoo,,,Inventory,yahoo
+QCOM,,inventory,,2026-06-30,,,8379000000.0,USD,false,yahoo,,,Inventory,yahoo
+QCOM,,inventory,,2026-09-30,,,8640000000.0,USD,false,yahoo,,,Inventory,yahoo
+QCOM,,operating_cash_flow,2025-07-01,2025-09-30,,,3996000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+QCOM,,operating_cash_flow,2025-10-01,2025-12-31,,,4965000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+QCOM,,operating_cash_flow,2025-12-30,2026-03-31,,,2449000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+QCOM,,operating_cash_flow,2026-03-31,2026-06-30,,,991000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+QCOM,,operating_cash_flow,2026-07-01,2026-09-30,,,2740000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+QCOM,,revenue,2025-07-01,2025-09-30,,,11271000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+QCOM,,revenue,2025-10-01,2025-12-31,,,12252000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+QCOM,,revenue,2025-12-30,2026-03-31,,,10599000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+QCOM,,revenue,2026-03-31,2026-06-30,,,9947000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+QCOM,,revenue,2026-07-01,2026-09-30,,,10322000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+RMBS,,capex,2025-07-01,2025-09-30,,,5946000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+RMBS,,capex,2025-10-01,2025-12-31,,,6517000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+RMBS,,capex,2025-12-30,2026-03-31,,,11635000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+RMBS,,capex,2026-03-31,2026-06-30,,,9071000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+RMBS,,capex,2026-07-01,2026-09-30,,,6601000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+RMBS,,cost_of_revenue,2025-07-01,2025-09-30,,,36592000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+RMBS,,cost_of_revenue,2025-10-01,2025-12-31,,,40211000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+RMBS,,cost_of_revenue,2025-12-30,2026-03-31,,,36532000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+RMBS,,cost_of_revenue,2026-03-31,2026-06-30,,,41973000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+RMBS,,cost_of_revenue,2026-07-01,2026-09-30,,,47375000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+RMBS,,inventory,,2025-09-30,,,44606000.0,USD,false,yahoo,,,Inventory,yahoo
+RMBS,,inventory,,2025-12-31,,,44098000.0,USD,false,yahoo,,,Inventory,yahoo
+RMBS,,inventory,,2026-03-31,,,58424000.0,USD,false,yahoo,,,Inventory,yahoo
+RMBS,,inventory,,2026-06-30,,,74836000.0,USD,false,yahoo,,,Inventory,yahoo
+RMBS,,inventory,,2026-09-30,,,87235000.0,USD,false,yahoo,,,Inventory,yahoo
+RMBS,,operating_cash_flow,2025-07-01,2025-09-30,,,88429000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+RMBS,,operating_cash_flow,2025-10-01,2025-12-31,,,99817000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+RMBS,,operating_cash_flow,2025-12-30,2026-03-31,,,83209000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+RMBS,,operating_cash_flow,2026-03-31,2026-06-30,,,61249000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+RMBS,,operating_cash_flow,2026-07-01,2026-09-30,,,102480000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+RMBS,,revenue,2025-07-01,2025-09-30,,,178513000.0,USD,false,yahoo,,,Total Revenue,yahoo
+RMBS,,revenue,2025-10-01,2025-12-31,,,190244000.0,USD,false,yahoo,,,Total Revenue,yahoo
+RMBS,,revenue,2025-12-30,2026-03-31,,,180189000.0,USD,false,yahoo,,,Total Revenue,yahoo
+RMBS,,revenue,2026-03-31,2026-06-30,,,207385000.0,USD,false,yahoo,,,Total Revenue,yahoo
+RMBS,,revenue,2026-07-01,2026-09-30,,,218289000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNDK,,capex,2025-07-01,2025-09-30,,,50000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNDK,,capex,2025-10-01,2025-12-31,,,39000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNDK,,capex,2025-12-30,2026-03-31,,,45000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNDK,,capex,2026-03-31,2026-06-30,,,43000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNDK,,capex,2026-07-01,2026-09-30,,,54000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNDK,,cost_of_revenue,2025-07-01,2025-09-30,,,1621000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNDK,,cost_of_revenue,2025-10-01,2025-12-31,,,1484000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNDK,,cost_of_revenue,2025-12-30,2026-03-31,,,1288000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNDK,,cost_of_revenue,2026-03-31,2026-06-30,,,1383000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNDK,,cost_of_revenue,2026-07-01,2026-09-30,,,1653000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNDK,,inventory,,2025-09-30,,,1907000000.0,USD,false,yahoo,,,Inventory,yahoo
+SNDK,,inventory,,2025-12-31,,,1970000000.0,USD,false,yahoo,,,Inventory,yahoo
+SNDK,,inventory,,2026-03-31,,,2238000000.0,USD,false,yahoo,,,Inventory,yahoo
+SNDK,,inventory,,2026-06-30,,,2698000000.0,USD,false,yahoo,,,Inventory,yahoo
+SNDK,,inventory,,2026-09-30,,,3016000000.0,USD,false,yahoo,,,Inventory,yahoo
+SNDK,,operating_cash_flow,2025-07-01,2025-09-30,,,488000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNDK,,operating_cash_flow,2025-10-01,2025-12-31,,,1019000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNDK,,operating_cash_flow,2025-12-30,2026-03-31,,,3038000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNDK,,operating_cash_flow,2026-03-31,2026-06-30,,,7126000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNDK,,operating_cash_flow,2026-07-01,2026-09-30,,,6363000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNDK,,revenue,2025-07-01,2025-09-30,,,2308000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNDK,,revenue,2025-10-01,2025-12-31,,,3025000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNDK,,revenue,2025-12-30,2026-03-31,,,5950000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNDK,,revenue,2026-03-31,2026-06-30,,,8965000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNDK,,revenue,2026-07-01,2026-09-30,,,11031000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNPS,,capex,2025-05-01,2025-07-31,,,38605000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNPS,,capex,2025-08-01,2025-10-31,,,34546000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNPS,,capex,2025-11-01,2026-01-31,,,35320000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNPS,,capex,2026-01-29,2026-04-30,,,54198000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNPS,,capex,2026-05-01,2026-07-31,,,66571000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SNPS,,cost_of_revenue,2025-05-01,2025-07-31,,,380564000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNPS,,cost_of_revenue,2025-08-01,2025-10-31,,,654663000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNPS,,cost_of_revenue,2025-11-01,2026-01-31,,,637382000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNPS,,cost_of_revenue,2026-01-29,2026-04-30,,,629850000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNPS,,cost_of_revenue,2026-05-01,2026-07-31,,,679388000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SNPS,,inventory,,2025-07-31,,,382056000.0,USD,false,yahoo,,,Inventory,yahoo
+SNPS,,inventory,,2025-10-31,,,365190000.0,USD,false,yahoo,,,Inventory,yahoo
+SNPS,,inventory,,2026-01-31,,,393221000.0,USD,false,yahoo,,,Inventory,yahoo
+SNPS,,inventory,,2026-04-30,,,441836000.0,USD,false,yahoo,,,Inventory,yahoo
+SNPS,,inventory,,2026-07-31,,,479129000.0,USD,false,yahoo,,,Inventory,yahoo
+SNPS,,operating_cash_flow,2025-05-01,2025-07-31,,,670960000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNPS,,operating_cash_flow,2025-08-01,2025-10-31,,,639738000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNPS,,operating_cash_flow,2025-11-01,2026-01-31,,,856832000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNPS,,operating_cash_flow,2026-01-29,2026-04-30,,,628934000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNPS,,operating_cash_flow,2026-05-01,2026-07-31,,,812837000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SNPS,,revenue,2025-05-01,2025-07-31,,,1739737000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNPS,,revenue,2025-08-01,2025-10-31,,,2254860000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNPS,,revenue,2025-11-01,2026-01-31,,,2408798000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNPS,,revenue,2026-01-29,2026-04-30,,,2275985000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SNPS,,revenue,2026-05-01,2026-07-31,,,2476822000.0,USD,false,yahoo,,,Total Revenue,yahoo
+STX,,capex,2025-07-01,2025-09-30,,,105000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+STX,,capex,2025-10-01,2025-12-31,,,116000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+STX,,capex,2025-12-30,2026-03-31,,,161000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+STX,,capex,2026-03-31,2026-06-30,,,187000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+STX,,capex,2026-07-01,2026-09-30,,,211000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+STX,,cost_of_revenue,2025-07-01,2025-09-30,,,1592000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+STX,,cost_of_revenue,2025-10-01,2025-12-31,,,1649000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+STX,,cost_of_revenue,2025-12-30,2026-03-31,,,1665000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+STX,,cost_of_revenue,2026-03-31,2026-06-30,,,1731000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+STX,,cost_of_revenue,2026-07-01,2026-09-30,,,1806000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+STX,,inventory,,2025-09-30,,,1496000000.0,USD,false,yahoo,,,Inventory,yahoo
+STX,,inventory,,2025-12-31,,,1498000000.0,USD,false,yahoo,,,Inventory,yahoo
+STX,,inventory,,2026-03-31,,,1530000000.0,USD,false,yahoo,,,Inventory,yahoo
+STX,,inventory,,2026-06-30,,,1571000000.0,USD,false,yahoo,,,Inventory,yahoo
+STX,,inventory,,2026-09-30,,,1700000000.0,USD,false,yahoo,,,Inventory,yahoo
+STX,,operating_cash_flow,2025-07-01,2025-09-30,,,532000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+STX,,operating_cash_flow,2025-10-01,2025-12-31,,,723000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+STX,,operating_cash_flow,2025-12-30,2026-03-31,,,1114000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+STX,,operating_cash_flow,2026-03-31,2026-06-30,,,1305000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+STX,,operating_cash_flow,2026-07-01,2026-09-30,,,1690000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+STX,,revenue,2025-07-01,2025-09-30,,,2629000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+STX,,revenue,2025-10-01,2025-12-31,,,2825000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+STX,,revenue,2025-12-30,2026-03-31,,,3112000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+STX,,revenue,2026-03-31,2026-06-30,,,3629000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+STX,,revenue,2026-07-01,2026-09-30,,,4233000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SWKS,,capex,2025-07-01,2025-09-30,,,61800000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SWKS,,capex,2025-10-01,2025-12-31,,,70700000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SWKS,,capex,2025-12-30,2026-03-31,,,87800000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SWKS,,capex,2026-03-31,2026-06-30,,,87300000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SWKS,,capex,2026-07-01,2026-09-30,,,105300000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+SWKS,,cost_of_revenue,2025-07-01,2025-09-30,,,652700000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SWKS,,cost_of_revenue,2025-10-01,2025-12-31,,,608200000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SWKS,,cost_of_revenue,2025-12-30,2026-03-31,,,558400000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SWKS,,cost_of_revenue,2026-03-31,2026-06-30,,,559800000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SWKS,,cost_of_revenue,2026-07-01,2026-09-30,,,618400000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+SWKS,,inventory,,2025-09-30,,,754700000.0,USD,false,yahoo,,,Inventory,yahoo
+SWKS,,inventory,,2025-12-31,,,767500000.0,USD,false,yahoo,,,Inventory,yahoo
+SWKS,,inventory,,2026-03-31,,,885600000.0,USD,false,yahoo,,,Inventory,yahoo
+SWKS,,inventory,,2026-06-30,,,1015500000.0,USD,false,yahoo,,,Inventory,yahoo
+SWKS,,inventory,,2026-09-30,,,1070000000.0,USD,false,yahoo,,,Inventory,yahoo
+SWKS,,operating_cash_flow,2025-07-01,2025-09-30,,,200000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SWKS,,operating_cash_flow,2025-10-01,2025-12-31,,,395500000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SWKS,,operating_cash_flow,2025-12-30,2026-03-31,,,50300000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SWKS,,operating_cash_flow,2026-03-31,2026-06-30,,,70400000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SWKS,,operating_cash_flow,2026-07-01,2026-09-30,,,33700000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+SWKS,,revenue,2025-07-01,2025-09-30,,,1100200000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SWKS,,revenue,2025-10-01,2025-12-31,,,1035400000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SWKS,,revenue,2025-12-30,2026-03-31,,,943700000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SWKS,,revenue,2026-03-31,2026-06-30,,,934800000.0,USD,false,yahoo,,,Total Revenue,yahoo
+SWKS,,revenue,2026-07-01,2026-09-30,,,1045700000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TER,,capex,2025-03-31,2025-06-30,,,50408000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TER,,capex,2025-07-01,2025-09-30,,,46692000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TER,,capex,2025-10-01,2025-12-31,,,62888000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TER,,capex,2025-12-30,2026-03-31,,,64733000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TER,,capex,2026-03-31,2026-06-30,,,90706000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TER,,cost_of_revenue,2025-03-31,2025-06-30,,,278785000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TER,,cost_of_revenue,2025-07-01,2025-09-30,,,319904000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TER,,cost_of_revenue,2025-10-01,2025-12-31,,,463647000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TER,,cost_of_revenue,2025-12-30,2026-03-31,,,501545000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TER,,cost_of_revenue,2026-03-31,2026-06-30,,,534372000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TER,,inventory,,2025-06-30,,,350505000.0,USD,false,yahoo,,,Inventory,yahoo
+TER,,inventory,,2025-09-30,,,366752000.0,USD,false,yahoo,,,Inventory,yahoo
+TER,,inventory,,2025-12-31,,,379552000.0,USD,false,yahoo,,,Inventory,yahoo
+TER,,inventory,,2026-03-31,,,362757000.0,USD,false,yahoo,,,Inventory,yahoo
+TER,,inventory,,2026-06-30,,,403297000.0,USD,false,yahoo,,,Inventory,yahoo
+TER,,operating_cash_flow,2025-03-31,2025-06-30,,,182089000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TER,,operating_cash_flow,2025-07-01,2025-09-30,,,49050000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TER,,operating_cash_flow,2025-10-01,2025-12-31,,,281639000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TER,,operating_cash_flow,2025-12-30,2026-03-31,,,265124000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TER,,operating_cash_flow,2026-03-31,2026-06-30,,,469138000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TER,,revenue,2025-03-31,2025-06-30,,,651797000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TER,,revenue,2025-07-01,2025-09-30,,,769210000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TER,,revenue,2025-10-01,2025-12-31,,,1083337000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TER,,revenue,2025-12-30,2026-03-31,,,1282494000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TER,,revenue,2026-03-31,2026-06-30,,,1328990000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TSM,,capex,2025-07-01,2025-09-30,,,287452000000.0,TWD,false,yahoo,,,Capital Expenditure,yahoo
+TSM,,capex,2025-10-01,2025-12-31,,,361467698000.0,TWD,false,yahoo,,,Capital Expenditure,yahoo
+TSM,,capex,2025-12-30,2026-03-31,,,351706028000.0,TWD,false,yahoo,,,Capital Expenditure,yahoo
+TSM,,capex,2026-03-31,2026-06-30,,,508395083000.0,TWD,false,yahoo,,,Capital Expenditure,yahoo
+TSM,,capex,2026-07-01,2026-09-30,,,443206000000.0,TWD,false,yahoo,,,Capital Expenditure,yahoo
+TSM,,cost_of_revenue,2025-07-01,2025-09-30,,,401375000000.0,TWD,false,yahoo,,,Cost Of Revenue,yahoo
+TSM,,cost_of_revenue,2025-10-01,2025-12-31,,,394103592000.0,TWD,false,yahoo,,,Cost Of Revenue,yahoo
+TSM,,cost_of_revenue,2025-12-30,2026-03-31,,,382808019000.0,TWD,false,yahoo,,,Cost Of Revenue,yahoo
+TSM,,cost_of_revenue,2026-03-31,2026-06-30,,,410069555000.0,TWD,false,yahoo,,,Cost Of Revenue,yahoo
+TSM,,cost_of_revenue,2026-07-01,2026-09-30,,,501864634000.0,TWD,false,yahoo,,,Cost Of Revenue,yahoo
+TSM,,inventory,,2025-09-30,,,288689063000.0,TWD,false,yahoo,,,Inventory,yahoo
+TSM,,inventory,,2025-12-31,,,288109500000.0,TWD,false,yahoo,,,Inventory,yahoo
+TSM,,inventory,,2026-03-31,,,311453459000.0,TWD,false,yahoo,,,Inventory,yahoo
+TSM,,inventory,,2026-06-30,,,385524542000.0,TWD,false,yahoo,,,Inventory,yahoo
+TSM,,inventory,,2026-09-30,,,427753000000.0,TWD,false,yahoo,,,Inventory,yahoo
+TSM,,operating_cash_flow,2025-07-01,2025-09-30,,,426829000000.0,TWD,false,yahoo,,,Operating Cash Flow,yahoo
+TSM,,operating_cash_flow,2025-10-01,2025-12-31,,,725508762000.0,TWD,false,yahoo,,,Operating Cash Flow,yahoo
+TSM,,operating_cash_flow,2025-12-30,2026-03-31,,,698976265000.0,TWD,false,yahoo,,,Operating Cash Flow,yahoo
+TSM,,operating_cash_flow,2026-03-31,2026-06-30,,,783364977000.0,TWD,false,yahoo,,,Operating Cash Flow,yahoo
+TSM,,operating_cash_flow,2026-07-01,2026-09-30,,,919776000000.0,TWD,false,yahoo,,,Operating Cash Flow,yahoo
+TSM,,revenue,2025-07-01,2025-09-30,,,989918000000.0,TWD,false,yahoo,,,Total Revenue,yahoo
+TSM,,revenue,2025-10-01,2025-12-31,,,1046090449000.0,TWD,false,yahoo,,,Total Revenue,yahoo
+TSM,,revenue,2025-12-30,2026-03-31,,,1134103440000.0,TWD,false,yahoo,,,Total Revenue,yahoo
+TSM,,revenue,2026-03-31,2026-06-30,,,1270380250000.0,TWD,false,yahoo,,,Total Revenue,yahoo
+TSM,,revenue,2026-07-01,2026-09-30,,,1494243284000.0,TWD,false,yahoo,,,Total Revenue,yahoo
+TXN,,capex,2025-07-01,2025-09-30,,,1197000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TXN,,capex,2025-10-01,2025-12-31,,,925000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TXN,,capex,2025-12-30,2026-03-31,,,676000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TXN,,capex,2026-03-31,2026-06-30,,,514000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TXN,,capex,2026-07-01,2026-09-30,,,463000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+TXN,,cost_of_revenue,2025-07-01,2025-09-30,,,2019000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TXN,,cost_of_revenue,2025-10-01,2025-12-31,,,1951000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TXN,,cost_of_revenue,2025-12-30,2026-03-31,,,2026000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TXN,,cost_of_revenue,2026-03-31,2026-06-30,,,2111000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TXN,,cost_of_revenue,2026-07-01,2026-09-30,,,2168000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+TXN,,inventory,,2025-09-30,,,4829000000.0,USD,false,yahoo,,,Inventory,yahoo
+TXN,,inventory,,2025-12-31,,,4804000000.0,USD,false,yahoo,,,Inventory,yahoo
+TXN,,inventory,,2026-03-31,,,4695000000.0,USD,false,yahoo,,,Inventory,yahoo
+TXN,,inventory,,2026-06-30,,,4605000000.0,USD,false,yahoo,,,Inventory,yahoo
+TXN,,inventory,,2026-09-30,,,4672000000.0,USD,false,yahoo,,,Inventory,yahoo
+TXN,,operating_cash_flow,2025-07-01,2025-09-30,,,2190000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TXN,,operating_cash_flow,2025-10-01,2025-12-31,,,2254000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TXN,,operating_cash_flow,2025-12-30,2026-03-31,,,1520000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TXN,,operating_cash_flow,2026-03-31,2026-06-30,,,2703000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TXN,,operating_cash_flow,2026-07-01,2026-09-30,,,3419000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+TXN,,revenue,2025-07-01,2025-09-30,,,4742000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TXN,,revenue,2025-10-01,2025-12-31,,,4423000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TXN,,revenue,2025-12-30,2026-03-31,,,4825000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TXN,,revenue,2026-03-31,2026-06-30,,,5463000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+TXN,,revenue,2026-07-01,2026-09-30,,,6055000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+WDC,,capex,2025-07-01,2025-09-30,,,73000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+WDC,,capex,2025-10-01,2025-12-31,,,92000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+WDC,,capex,2025-12-30,2026-03-31,,,145000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+WDC,,capex,2026-03-31,2026-06-30,,,108000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+WDC,,capex,2026-07-01,2026-09-30,,,227000000.0,USD,false,yahoo,,,Capital Expenditure,yahoo
+WDC,,cost_of_revenue,2025-07-01,2025-09-30,,,1591000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+WDC,,cost_of_revenue,2025-10-01,2025-12-31,,,1637000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+WDC,,cost_of_revenue,2025-12-30,2026-03-31,,,1661000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+WDC,,cost_of_revenue,2026-03-31,2026-06-30,,,1719000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+WDC,,cost_of_revenue,2026-07-01,2026-09-30,,,1847000000.0,USD,false,yahoo,,,Cost Of Revenue,yahoo
+WDC,,inventory,,2025-09-30,,,1393000000.0,USD,false,yahoo,,,Inventory,yahoo
+WDC,,inventory,,2025-12-31,,,1349000000.0,USD,false,yahoo,,,Inventory,yahoo
+WDC,,inventory,,2026-03-31,,,1357000000.0,USD,false,yahoo,,,Inventory,yahoo
+WDC,,inventory,,2026-06-30,,,1511000000.0,USD,false,yahoo,,,Inventory,yahoo
+WDC,,inventory,,2026-09-30,,,1781000000.0,USD,false,yahoo,,,Inventory,yahoo
+WDC,,operating_cash_flow,2025-07-01,2025-09-30,,,672000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+WDC,,operating_cash_flow,2025-10-01,2025-12-31,,,745000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+WDC,,operating_cash_flow,2025-12-30,2026-03-31,,,1123000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+WDC,,operating_cash_flow,2026-03-31,2026-06-30,,,1389000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+WDC,,operating_cash_flow,2026-07-01,2026-09-30,,,1604000000.0,USD,false,yahoo,,,Operating Cash Flow,yahoo
+WDC,,revenue,2025-07-01,2025-09-30,,,2818000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+WDC,,revenue,2025-10-01,2025-12-31,,,3017000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+WDC,,revenue,2025-12-30,2026-03-31,,,3337000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+WDC,,revenue,2026-03-31,2026-06-30,,,3747000000.0,USD,false,yahoo,,,Total Revenue,yahoo
+WDC,,revenue,2026-07-01,2026-09-30,,,4381000000.0,USD,false,yahoo,,,Total Revenue,yahoo

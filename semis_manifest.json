@@ -1,0 +1,229 @@
+{
+  "generated_utc": "2026-11-14T11:00:46Z",
+  "generated_jst": "2026-11-14 20:00 JST",
+  "definitions_version": "1.2",
+  "config_version": "1.6",
+  "us_as_of": "2026-11-13",
+  "backfill": null,
+  "prices_generated_utc": "2026-11-14T10:59:55Z",
+  "prices_failed": [],
+  "rows": 82,
+  "missing_tickers": [],
+  "flags": {
+    "DRAM": [
+      "short_history:157"
+    ],
+    "^VIX": [
+      "jump:2026-11-05"
+    ],
+    "SKHY": [
+      "short_history:90",
+      "adr_ratio_or_data_suspect"
+    ]
+  },
+  "scores": {
+    "S": {
+      "score": 15.0,
+      "coverage_pct": 100,
+      "missing": []
+    },
+    "D": {
+      "score": 22.5,
+      "coverage_pct": 100,
+      "missing": []
+    },
+    "TECHNICAL": 17.2
+  },
+  "levels": {
+    "S1": -2,
+    "S2": -2,
+    "S3": 1,
+    "S4": -2,
+    "S5": -1,
+    "D1": -2,
+    "D2": -1,
+    "D3": -2,
+    "D4": 0,
+    "D5": 2,
+    "D6": -2
+  },
+  "breadth": {
+    "semis_broad": {
+      "tickers_with_data": 42,
+      "above_sma20": {
+        "positive": 10,
+        "valid": 42,
+        "pct": 23.8
+      },
+      "above_sma50": {
+        "positive": 8,
+        "valid": 42,
+        "pct": 19.0
+      },
+      "above_sma200": {
+        "positive": 11,
+        "valid": 41,
+        "pct": 26.8
+      },
+      "up_1w": {
+        "positive": 41,
+        "valid": 42,
+        "pct": 97.6
+      },
+      "up_1m": {
+        "positive": 7,
+        "valid": 42,
+        "pct": 16.7
+      },
+      "median_ret_1m": -12.82
+    },
+    "memory": {
+      "tickers_with_data": 10,
+      "above_sma20": {
+        "positive": 0,
+        "valid": 10,
+        "pct": 0.0
+      },
+      "above_sma50": {
+        "positive": 0,
+        "valid": 10,
+        "pct": 0.0
+      },
+      "above_sma200": {
+        "positive": 2,
+        "valid": 9,
+        "pct": 22.2
+      },
+      "up_1w": {
+        "positive": 10,
+        "valid": 10,
+        "pct": 100.0
+      },
+      "up_1m": {
+        "positive": 0,
+        "valid": 10,
+        "pct": 0.0
+      },
+      "median_ret_1m": -19.3
+    }
+  },
+  "adr": [
+    {
+      "ads": "SKHY",
+      "local": "000660.KS",
+      "fx": "KRW=X",
+      "status": "ok",
+      "date": "2026-11-13",
+      "premium_pct": 44.55,
+      "premium_avg20": 44.99,
+      "premium_min20": 31.36,
+      "premium_max20": 61.2,
+      "ads_ret_1w": 3.49,
+      "local_ret_1w": 7.42,
+      "direction_match": true,
+      "ratio_or_data_suspect": true,
+      "observations": 60,
+      "local_shares_per_ads": 0.1,
+      "ratio_source": "SEC Form 424B4 (2026-07-09): Each ADS represents one-tenth of a common share",
+      "timing_note": "KRX終値（韓国15:30）は同じ日付の米国終値の約14.5時間前。同日比較は近似値"
+    }
+  ],
+  "macro": {
+    "status": "ok",
+    "generated_utc": "2026-11-14T10:59:56Z",
+    "latest": {
+      "BAMLH0A0HYM2": {
+        "date": "2026-11-12",
+        "value": 3.2,
+        "chg_5obs": -0.12,
+        "chg_21obs": 0.04,
+        "chg_63obs": 0.53
+      },
+      "BAMLH0A3HYC": {
+        "date": "2026-11-12",
+        "value": 13.14,
+        "chg_5obs": 0.17,
+        "chg_21obs": 0.47,
+        "chg_63obs": 3.02
+      },
+      "DFII10": {
+        "date": "2026-11-12",
+        "value": 2.86,
+        "chg_5obs": 0.22,
+        "chg_21obs": -0.02,
+        "chg_63obs": 0.44
+      },
+      "DGS10": {
+        "date": "2026-11-12",
+        "value": 5.1,
+        "chg_5obs": 0.2,
+        "chg_21obs": -0.11,
+        "chg_63obs": 0.42
+      },
+      "DGS2": {
+        "date": "2026-11-12",
+        "value": 4.86,
+        "chg_5obs": 0.28,
+        "chg_21obs": 0.07,
+        "chg_63obs": 0.66
+      },
+      "DTWEXBGS": {
+        "date": "2026-11-06",
+        "value": 121.88,
+        "chg_5obs": 0.215,
+        "chg_21obs": 0.625,
+        "chg_63obs": 2.815
+      }
+    },
+    "failed": []
+  },
+  "history_rows": {
+    "levels": 16,
+    "key": 254
+  },
+  "files": [
+    "semis_snapshot.csv",
+    "levels.json",
+    "resilience.json",
+    "adr_premium.csv",
+    "macro_daily.csv",
+    "history_levels.csv",
+    "history_key.csv",
+    "sector_health.json",
+    "history_health.csv",
+    "rebound_quality.json",
+    "history_rebound.csv",
+    "daily_signals.json"
+  ],
+  "resilience": {
+    "state": "調整中",
+    "dd_low_pct": -39.6,
+    "dd_now_pct": -31.6,
+    "next_candidates": [
+      "ADI",
+      "TXN",
+      "SWKS",
+      "SNPS"
+    ],
+    "late_breaks": [
+      "MCHP",
+      "NVDA"
+    ],
+    "sector_leaders": [
+      "SWKS",
+      "NXPI",
+      "SNPS",
+      "TXN",
+      "AMD"
+    ],
+    "sector_laggards": [
+      "SNDK",
+      "CRDO",
+      "STX",
+      "MRVL",
+      "WDC"
+    ]
+  },
+  "price_basis": "split_adjusted_ex_dividends(yahoo_close)",
+  "source": "Yahoo Finance via yfinance (unofficial) / FRED"
+}

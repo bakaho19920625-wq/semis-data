@@ -1,0 +1,6 @@
+us_as_of,label,stage2,stage4,above50,above150,index_pct_vs_ma150,risk_count,washout_count,strip_green_ema21,strip_green_ema50,washout_phase
+2026-11-09,deteriorating,12.2,14.6,19.0,12.2,-16.0,3.0,1.0,0,0,rebound
+2026-11-10,deteriorating,14.6,19.5,14.3,14.6,-16.17,3.0,1.0,1,0,rebound
+2026-11-11,deteriorating,19.5,19.5,23.8,19.5,-11.24,3.0,0.0,3,0,rebound
+2026-11-12,deteriorating,19.5,22.0,26.2,19.5,-11.56,3.0,0.0,3,0,rebound
+2026-11-13,deteriorating,19.5,24.4,19.0,19.5,-14.86,3.0,0.0,1,0,rebound

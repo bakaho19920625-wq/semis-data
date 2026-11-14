@@ -1,0 +1,415 @@
+{
+  "status": "ok",
+  "health_version": "1.1",
+  "us_as_of": "2026-11-13",
+  "universe": {
+    "set": "semis_broad",
+    "tickers": [
+      "NVDA",
+      "AMD",
+      "AVGO",
+      "MRVL",
+      "TSM",
+      "INTC",
+      "ARM",
+      "QCOM",
+      "TXN",
+      "ADI",
+      "NXPI",
+      "MCHP",
+      "ON",
+      "MPWR",
+      "RMBS",
+      "LSCC",
+      "SWKS",
+      "SNPS",
+      "CDNS",
+      "ASML",
+      "AMAT",
+      "LRCX",
+      "KLAC",
+      "TER",
+      "ENTG",
+      "ONTO",
+      "FORM",
+      "NVMI",
+      "CAMT",
+      "MU",
+      "SNDK",
+      "SKHY",
+      "WDC",
+      "STX",
+      "AMKR",
+      "ASX",
+      "COHR",
+      "LITE",
+      "CRDO",
+      "ALAB",
+      "MTSI",
+      "SITM"
+    ],
+    "n": 42
+  },
+  "label": "deteriorating",
+  "label_ja": "悪化中",
+  "label_rule": "弱い＝『線の下で下向き』40%以上／悪化中＝4週前より『線の下で下向き』が10pt以上増、または『線の上で上向き』が10pt以上減って『線の下で下向き』が減っていない／健全＝『線の上で上向き』50%以上かつ『線の下で下向き』20%未満／改善中＝『線の上で上向き』が10pt以上増かつ『線の下で下向き』が増えていない／それ以外どちらとも（market-data E6.3 と同じ順番。ステージは簡易版）",
+  "breadth": {
+    "tickers": 42,
+    "above20": 23.8,
+    "above50": 19.0,
+    "above150": 19.5,
+    "stage_tickers": 41,
+    "stage2": 19.5,
+    "stage4": 24.4,
+    "net_2_minus_4": -4.9,
+    "new_high_13w": 0.0,
+    "new_low_13w": 2.4,
+    "equal_weight_vs_index_13w_pct": -1.96
+  },
+  "breadth_4w_ago": {
+    "tickers": 42,
+    "above20": 0.0,
+    "above50": 9.5,
+    "above150": 26.8,
+    "stage_tickers": 41,
+    "stage2": 26.8,
+    "stage4": 4.9,
+    "net_2_minus_4": 21.9,
+    "new_high_13w": 0.0,
+    "new_low_13w": 19.0
+  },
+  "breadth_meaning": "割合の分母は監視する半導体42銘柄（『線の上で上向き』『線の下で下向き』は150日線のある41銘柄）。線の上で上向き（stage2）＝株価が30週線（150日線）の上で、その線も4週前より上向き。線の下で下向き（stage4）＝株価が線の下で、線も下向き。残りは中間（線を割ったが線はまだ上向き、など）。長い上昇の直後の急落では線がまだ上向きなので『線の下で下向き』は公式のステージ分布の『下落（ステージ4）』より少なく出る。別の数え方なので『下落中』『上昇中』とは書かない。公式（market-data）が取れる日はそちらを先に書く",
+  "index": {
+    "ticker": "SOXX",
+    "close": 149.3,
+    "ma150": 175.36,
+    "pct_vs_ma150": -14.86,
+    "above_ma150": false,
+    "ma150_slope_20d_pct": 3.28,
+    "rs_spy_13w_pct": -16.14,
+    "ret_13w_pct": -18.67,
+    "official_stage_source": "market-data signals.json → stages.etfs（SOXX・SMH）と stages.breadth['監視：半導体']（転記する。ここでは計算しない）"
+  },
+  "risk": {
+    "count": 3,
+    "of": 3,
+    "conditions": {
+      "label_weak_or_deteriorating": {
+        "ja": "判定が悪化中か弱い",
+        "met": true,
+        "value": "悪化中"
+      },
+      "index_below_ma150": {
+        "ja": "SOXXが30週線（150日線）の下",
+        "met": true,
+        "value": -14.86
+      },
+      "rs_vs_market_13w_negative": {
+        "ja": "市場（SPY）と比べた13週がマイナス",
+        "met": true,
+        "value": -16.14
+      }
+    },
+    "reading": "同 24%（基準は13%）",
+    "note": "『予測』ではなく今の危険度。15年の検証で、3条件そろいの週は翌13週に−15%超の下落が24%（0個は9%）。2011〜2018年は3個でも12%で差が小さかった。売買の合図にしない"
+  },
+  "washout": {
+    "count": 0,
+    "of": 3,
+    "conditions": {
+      "above50_lt": {
+        "ja": "50日線の上が5%未満",
+        "met": false,
+        "value": 19.0
+      },
+      "above150_lt": {
+        "ja": "30週線の上が15%未満",
+        "met": false,
+        "value": 19.5
+      },
+      "index_vs_ma150_le": {
+        "ja": "SOXXが30週線から-20%以下",
+        "met": false,
+        "value": -14.86
+      }
+    },
+    "reading": "",
+    "dates_all3_in_history": [
+      "2025-04-03",
+      "2026-11-05"
+    ],
+    "phase": {
+      "code": "rebound",
+      "ja": "反発中・二番底待ち",
+      "anchor_date": "2026-11-05",
+      "anchor_close": 131.9,
+      "days_since_anchor": 6,
+      "close_vs_anchor_pct": 13.19,
+      "low_since_anchor": {
+        "date": "2026-11-05",
+        "pct_vs_anchor": 0.0,
+        "days_after_anchor": 0
+      },
+      "all3_first_off_date": "2026-11-06",
+      "relit_dates": [],
+      "recovery_confirmed_date": null,
+      "breakdown_seen": false,
+      "lines": {
+        "retest_close": 131.9,
+        "breakdown_close": 118.71,
+        "recovery": "50日線の上が50%超"
+      },
+      "expected_from_past": {
+        "retest_low_window": [
+          "2026-11-10",
+          "2026-11-24"
+        ],
+        "retest_low_avg": "2026-11-17",
+        "recovery_window": [
+          "2026-12-03",
+          "2026-12-14"
+        ],
+        "note": "過去5回の営業日数（二番底 3〜13・平均8、回復の確認 20〜27）を起点に足した日付。予測ではなく過去の範囲"
+      }
+    },
+    "after_all3_reference": {
+      "n": 5,
+      "all3_off_days": "1〜4営業日で3条件は外れた（反発のため。数が減るのは通常の動き）",
+      "retest_low_days": {
+        "min": 3,
+        "avg": 8,
+        "median": 9,
+        "max": 13,
+        "each": {
+          "2011-08-08": 9,
+          "2020-03-16": 4,
+          "2022-06-13": 13,
+          "2022-09-30": 10,
+          "2025-04-03": 3
+        }
+      },
+      "retest_low_depth_pct": {
+        "min": -0.5,
+        "median": -6.3,
+        "max": -9.1
+      },
+      "relit_at_retest_low": "5回中4回は二番底の日に3条件が再点灯（残る2022/6は2営業日後に再点灯）。再点灯せずに回復した例はない",
+      "recovery_days": {
+        "min": 20,
+        "median": 24,
+        "max": 27,
+        "note": "回復の確認＝50日線の上が50%超。その時点で起点の終値から+5〜+30%"
+      },
+      "exception": "2022-06-13 は約4か月後（120営業日内）に起点の終値から−18%の安値（悪材料が続いた局面）"
+    },
+    "note": "『売られ尽くし』の目安。そろい数は『いま売られ尽くしているか』だけを見るので、反発すると減る。数が減った理由（まだ売られ尽くしていない／売られ尽くした後に反発した）は phase で区別する。1〜2条件は底探しの入口（だまし約4割）。3条件は過去5回とも26週後に上昇したが、5回とも二番底を試し（3〜13営業日後、−0.5〜−9.1%）、うち1回は約4か月後に−18%。底の確定ではなく、買い下がる局面の目印。確認の工夫（20日線上の急増・21日EMA回復など）はだましを減らさなかった（docs/sector_health.md）"
+  },
+  "strip": {
+    "benches_missing": [],
+    "bands": {
+      "市場": {
+        "bench": "SPY",
+        "components": null,
+        "ema21": {
+          "green": false,
+          "days": 27,
+          "dist_pct": -4.57,
+          "ema_slope_5d_pct": -2.19
+        },
+        "ema50": {
+          "green": false,
+          "days": 25,
+          "dist_pct": -9.49,
+          "ema_slope_5d_pct": -1.89
+        },
+        "rel_13w_pct": -16.14
+      },
+      "テック全体": {
+        "bench": "XLK",
+        "components": null,
+        "ema21": {
+          "green": false,
+          "days": 1,
+          "dist_pct": -0.65,
+          "ema_slope_5d_pct": -0.29
+        },
+        "ema50": {
+          "green": false,
+          "days": 27,
+          "dist_pct": -3.48,
+          "ema_slope_5d_pct": -0.74
+        },
+        "rel_13w_pct": -8.89
+      },
+      "ソフト": {
+        "bench": "IGV",
+        "components": null,
+        "ema21": {
+          "green": false,
+          "days": 1,
+          "dist_pct": -2.33,
+          "ema_slope_5d_pct": -0.89
+        },
+        "ema50": {
+          "green": false,
+          "days": 27,
+          "dist_pct": -7.37,
+          "ema_slope_5d_pct": -1.45
+        },
+        "rel_13w_pct": -14.58
+      },
+      "ハード": {
+        "bench": "hardware_basket",
+        "components": [
+          "AAPL",
+          "ANET",
+          "CSCO",
+          "DELL",
+          "HPE",
+          "SMCI",
+          "CIEN",
+          "GLW",
+          "APH",
+          "NTAP",
+          "HPQ"
+        ],
+        "ema21": {
+          "green": true,
+          "days": 4,
+          "dist_pct": 0.25,
+          "ema_slope_5d_pct": 0.15
+        },
+        "ema50": {
+          "green": false,
+          "days": 38,
+          "dist_pct": -1.81,
+          "ema_slope_5d_pct": -0.41
+        },
+        "rel_13w_pct": -4.59
+      }
+    },
+    "summary": {
+      "ema21": {
+        "green_count": 1,
+        "of": 4,
+        "all_green_days": 0,
+        "all_red_days": 0,
+        "last_all_green": "2026-10-05",
+        "last_all_red": "2026-11-09",
+        "state": "主役ではない",
+        "state_since": "2026-10-12"
+      },
+      "ema50": {
+        "green_count": 0,
+        "of": 4,
+        "all_green_days": 0,
+        "all_red_days": 25,
+        "last_all_green": "2026-09-22",
+        "last_all_red": "2026-11-13",
+        "state": "主役ではない",
+        "state_since": "2026-07-17"
+      }
+    },
+    "note": "帯＝SOXX÷比較相手のRS線がEMAの上（緑）か下（赤）か。表示だけ。15年の検証では、全部緑／全部赤で乗り換える戦略は持ちっぱなしに負けた（年率+14%対+23%）。『主役ではない』は相対的に弱いという描写で、売りの合図ではない"
+  },
+  "subsectors": {
+    "AI計算・製造": {
+      "tickers": [
+        "NVDA",
+        "AMD",
+        "AVGO",
+        "MRVL",
+        "TSM",
+        "ARM",
+        "ALAB",
+        "CRDO"
+      ],
+      "n": 8,
+      "stage2": 12.5,
+      "stage4": 0.0,
+      "net_2_minus_4": 12.5,
+      "above50": 12.5
+    },
+    "製造装置": {
+      "tickers": [
+        "ASML",
+        "AMAT",
+        "LRCX",
+        "KLAC",
+        "TER",
+        "ENTG",
+        "ONTO",
+        "FORM",
+        "NVMI",
+        "CAMT"
+      ],
+      "n": 10,
+      "stage2": 10.0,
+      "stage4": 60.0,
+      "net_2_minus_4": -50.0,
+      "above50": 0.0
+    },
+    "メモリー": {
+      "tickers": [
+        "MU",
+        "SNDK",
+        "SKHY",
+        "WDC",
+        "STX"
+      ],
+      "n": 4,
+      "stage2": 0.0,
+      "stage4": 0.0,
+      "net_2_minus_4": 0.0,
+      "above50": 0.0
+    },
+    "アナログ・汎用": {
+      "tickers": [
+        "TXN",
+        "ADI",
+        "NXPI",
+        "MCHP",
+        "ON",
+        "MPWR",
+        "SWKS",
+        "LSCC",
+        "QCOM",
+        "INTC",
+        "RMBS",
+        "SITM",
+        "MTSI"
+      ],
+      "n": 13,
+      "stage2": 38.5,
+      "stage4": 7.7,
+      "net_2_minus_4": 30.8,
+      "above50": 38.5
+    },
+    "光・後工程": {
+      "tickers": [
+        "COHR",
+        "LITE",
+        "AMKR",
+        "ASX"
+      ],
+      "n": 4,
+      "stage2": 0.0,
+      "stage4": 75.0,
+      "net_2_minus_4": -75.0,
+      "above50": 0.0
+    },
+    "設計ソフト": {
+      "tickers": [
+        "SNPS",
+        "CDNS"
+      ],
+      "n": 2,
+      "stage2": 50.0,
+      "stage4": 0.0,
+      "net_2_minus_4": 50.0,
+      "above50": 100.0
+    }
+  },
+  "generated_utc": "2026-11-14T11:00:46Z",
+  "generated_jst": "2026-11-14 20:00 JST"
+}
