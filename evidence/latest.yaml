@@ -1,50 +1,46 @@
 # SEMI_EVIDENCE
-EVIDENCE_VERSION: v7.2
+EVIDENCE_VERSION: v7.3
 AS_OF:
-  market: 2026-11-06
-  collected: "2026-11-09 01:55 JST"
-  previous_report: 2026-10-30
+  market: 2026-11-13
+  collected: "2026-11-14 10:19 JST"
+  previous_report: 2026-11-06
 BUDGET:
-  searches_used: 16
-  fetches_used: 14
+  searches_used: 13
+  fetches_used: 17
   limit: 30
-  sec_checks_used: 7
+  sec_checks_used: 2
   stopped_early: true
-  note: "合計30回の上限に到達。P1-7（DC_TIMING）は6回ちょうど。取得14回のうち失敗4回（Kioxia決算PDF＝PROVENANCE拒否、technews南亞科ページ＝リダイレクト先が拒否、dramexchange 2本＝2026年1月・6月の旧記事）。SEC確認は data.sec.gov のXBRL APIが直接開けず（WebFetchはPROVENANCE拒否、シェルcurlは403）、検索で見つけた10-Q本文（sec.gov/Archives）で4社の設備投資を確認（7回）。MU・SNDK・WDC・NVDAのXBRL確認は未実施（前回IRで一次確認済みの値のため後回し）。未着手は UNCONFIRMED に列挙"
+  note: "合計30回の上限に到達（検索13・取得17）。P1-7 の a・b・e は6回ちょうど（CoreWeave 検索1・取得2、テキサス 検索1・取得2〔うち1回は取得失敗〕）、f（信用の市場の値）は別枠で検索1・取得1。取得17回のうち失敗3回（texaspolicyresearch・benzinga・cryptobriefing は client_error）、旧記事3回（webull＝AMAT 8月、iconnect007＝TrendForce 7月、statementdog＝9月分）。SEC確認は data.sec.gov に届かず2回（シェル curl＝プロキシ CONNECT 403、WebFetch＝PROVENANCE）。日次11/9〜11/13 の一次確認（TSMC 10月 6-K、ONTO 8-K、AMAT 決算リリース）と報道（CRWV・NBIS・CPI・PPI・NVDA）は予算に数えず転記。未着手は UNCONFIRMED に列挙"
 DATA_NOTES:
-  github_us_as_of: 2026-11-06
-  run_status: "prices/macro/fundamentals/snapshot/signals すべて success（run_utc 2026-11-07T10:44:18Z、70銘柄（config 1.5、川下5銘柄を含む）、prices_failed・missing_tickers なし）"
+  github_us_as_of: 2026-11-13
+  run_status: "prices/macro/fundamentals/snapshot/health/rebound/signals すべて success（run_utc 2026-11-13T22:23:37Z、82行、prices_failed・missing_tickers なし）"
   missing_filled_from_web: []
   flags_checked:
-    - flag: "SKHY: adr_ratio_or_data_suspect, short_history:85"
-      result: "比率の再確認はしない（1 ADS＝普通株0.1株、SEC 424B4 2026-07-09、確認済み）。終値の整合：ADS 127.34（11/6、+2.78%）、原株1,132,000ウォン（11/6 KRX終値、−10.44%）、USD/KRW 1,356.34 → 理論値US$83.46、プレミアム52.58%（20日平均43.65%）。原株だけが11/5の米国急落を映した1日ずれで、方向は一致（direction_match true）"
-    - flag: "DRAM: short_history:152"
-      result: "設定日2026-04-02（Roundhill公式ページで今回再確認）と整合"
+    - flag: "SKHY: adr_ratio_or_data_suspect, short_history:90"
+      result: "比率の再確認はしない（1 ADS＝普通株0.1株、SEC 424B4 2026-07-09、確認済み。manifest の local_shares_per_ads 0.1 と一致）。終値の整合：ADS 131.79（11/13、−4.30%、1週 +3.49%）、原株は1週 +7.42%、direction_match true、プレミアム44.7%（20日平均44.99%、20日レンジ31.36〜61.2%）。11/12のUSD/KRW改訂（1,334.45→1,336.26）でプレミアム46.5%→46.7%（日次11/13）"
+    - flag: "DRAM: short_history:157"
+      result: "設定日2026-04-02（前回 Roundhill 公式ページで確認）と整合"
     - flag: "^VIX: jump:2026-11-05"
-      result: "11/5終値28.18（ザラ場高値28.36）、11/6 25.64。実際の急騰で、データ異常ではない（日次11/6）"
+      result: "11/5終値28.18の実際の急騰（前回確認済み）。11/13は19.30"
   transcribed_from_daily:
-    - "AMD 3Q26決算（globenewswire 一次リリース、2026-11-03、日次11/3）"
-    - "Qualcomm FQ4 FY2026（financefeeds、tier4、日次11/4。今回 aiweekly で2本目を取得）"
-    - "Nanya 10月売上（newtalk、tier3、日次11/3。今回 technews の検索結果で数値一致を確認、本文は取得不可）"
-    - "Kioxia 2Q FY2026 見通し未達（247wallst、tier3、日次11/2。今回 phemex/PANews で2本目を取得）"
-    - "Oracle US$100億の新株発行＋約US$100億の社債（424B2、stocktitan、日次11/2）"
-    - "Marvell による Lumentum 買収発表（全株式交換、企業価値US$1,150億、日次11/2）"
-    - "テキサスDC規制の状態（次期知事発言・ホワイトハウス反応・TCEQ停止継続・PUCT/ERCOT新決定なし、zerohedge tier4＋CNN/CNBC見出し、日次11/6）"
-    - "米10月雇用統計 +16.5万人・失業率4.1%（BLS一次、米国株側の週次 20261106-WEEKLY から日次11/6が転記）"
-    - "原油：ブレント104.77ドル（11/2、−7.63%、stocktitan）、WTI 週−13%で約91ドル（日次11/6）"
-    - "SOXX 3対1分割（11/5、データは調整済み、公式発表未確認、日次11/6）"
-  not_transcribed_headline_only:
-    - "CNBC『Key House Democrat calls for a national data center moratorium』（11/5）、Bloomberg Law『New York lawmakers send Hochul one-year ban on new data centers』（日付未確認）、『Senate Democrats block toothless data center bill』（tdworld関連見出し）"
-    - "247wallst／Invezz『中間選挙の結果とメモリー価格への懸念』（11/4）、Investing.com『Skyworks EPS 予想比+0.01ドル』（11/3）"
-  machine_generated: "2026-11-07T10:44:15Z"
+    - "TSMC 10月売上（Form 6-K 一次、2026-11-10、日次11/10）"
+    - "Onto Innovation 3Q26（8-K ex99.1 一次、2026-11-09、日次11/9）"
+    - "Applied Materials FQ4 FY2026（GlobeNewswire 配信の決算リリースの転載、2026-11-12、日次11/12）"
+    - "CoreWeave 3Q26 の通期ガイダンス・社債利回り16%超、米10月CPI『予想より強い』、NVIDIA の調査と格下げ（TheStreet、2026-11-11、日次11/11）"
+    - "Nebius 3Q26（見出しのみ、fxleaders・TheStreet、日次11/12）"
+    - "NVIDIA CEO退任の報道・米10月PPI（Yahoo Finance、2026-11-13、日次11/13）"
+    - "値動き（NVDA 11/12 寄り付き150.99、AMAT 11/13 −2.74%、NBIS 11/12 −16.84% 等）は data ブランチ"
+  machine_generated: "2026-11-13T22:23:34Z"
   machine_source_kind: yahoo
   machine_status: ok
   machine_issues:
     - "sec_probe: unreachable（HTTP 403 'Undeclared Automated Tool'）のため全40社 Yahoo（階層4）。SEC経路の new_filings_since_prev は空"
-    - "MCHP・SWKS は latest_quarter.period_end が 2026-06-30 のまま（11/5・11/3に発表した9月期がYahooに未反映）"
-    - "AMZN の capex は basis に『純額（PaymentsToAcquireProductiveAssets）』とあるが、値 77,259 は10-Qの総額『Purchases of property and equipment』と一致（純額は 75,878）。定義表記のずれとして記録"
-    - "META・ORCL・ARM の inventory は null（Yahooに項目なし）。GOOGL の days_prev_y・AMZN の qoq/days_prev_q は null（AMZN は 2026-06-30 の capex 行が fundamentals.csv に無い）"
-    - "AMD の yoy 0.4468 は会社発表の+45%と整合、QCOM の yoy −0.0842 は報道の−8.4%と整合"
+    - "今回の収集でも SEC の XBRL API（data.sec.gov）に届かない：シェル curl はプロキシで CONNECT 403（policy denial）、WebFetch は PROVENANCE（許可要求に応答なし）。sec_check_urls の照合は実施できず"
+    - "AMAT は latest_quarter.period_end が 2026-07-31 のまま（11/12に発表したFQ4（10月期）が Yahoo に未反映）。TER は 2026-06-30 のまま（3Q26 未反映）"
+    - "MCHP・SWKS は 2026-09-30 期が反映された（前回は 06-30 のまま）：MCHP 売上 US$1,621.5M（+42.2% YoY、+9.2% QoQ）、SWKS US$1,045.7M（−5.0% YoY、+11.9% QoQ）"
+    - "META・ORCL・ARM の inventory は null（Yahooに項目なし）。GOOGL の days_prev_y・AMZN の qoq/days_prev_q は null"
+    - "AMZN の capex は basis に『純額（PaymentsToAcquireProductiveAssets）』とあるが、値 77,259 は10-Qの総額『Purchases of property and equipment』と一致（純額は 75,878、前回確認）。定義表記のずれ（継続）"
+    - "errors・notes：notes に『SEC に到達できないため Yahoo に切り替え』の1件のみ。errors は空"
 
 MACHINE_FUNDAMENTALS:
   companies_ok: "40/40（米国籍37社＋TSM・ASML・ARM。TSM は TWD、ASML は EUR）"
@@ -53,203 +49,201 @@ MACHINE_FUNDAMENTALS:
     sum: "US$201,923M（MSFT 39,367＋GOOGL 51,355＋AMZN 77,259＋META 33,942）"
     sum_prev_year: "US$97,271M（MSFT 19,394＋GOOGL 23,953＋AMZN 35,095＋META 18,829）"
     yoy: "+107.6%（機械取得 1.0759）"
-    status: "confirmed（4社とも 10-Q のキャッシュフロー計算書で一致、下記 sec_checks）"
+    status: "confirmed（値は前回と同一。前回 4社の10-Qのキャッシュフロー計算書で一致を確認済み。今回は XBRL に届かず再照合なし）"
     missing: []
     filled_from_sec: []
     complete_quarter_end: 2026-09-30
     complete_sum: "US$201,923M"
     complete_yoy: "+107.6%"
   sec_checks:
-    - {ticker: MSFT, item: capex, period_end: 2026-09-30, machine_value: 39367000000, sec_value: 39367000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm", note: "10-Q 3か月『Additions to property and equipment』US$39,367M（前年同期19,394M＝機械と一致）。XBRL API（data.sec.gov）は開けず10-Q本文で確認"}
-    - {ticker: GOOGL, item: capex, period_end: 2026-09-30, machine_value: 51355000000, sec_value: 51355000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm", note: "9か月累計131,953M − 6か月累計80,598M（6/30期10-Q）＝51,355M。前年同期 63,596−39,643＝23,953M も一致"}
-    - {ticker: AMZN, item: capex, period_end: 2026-09-30, machine_value: 77259000000, sec_value: 77259000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000040/amzn-20260930.htm", note: "10-Q 3か月『Purchases of property and equipment』77,259M（総額）。売却収入等1,381Mを引いた純額は75,878M。前年同期35,095M一致。ファイナンスリース取得1,472M、同元本返済433M"}
-    - {ticker: META, item: capex, period_end: 2026-09-30, machine_value: 33942000000, sec_value: 33942000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm", note: "9か月累計83,055M − 6か月累計49,113M（6/30期10-Q）＝33,942M。前年同期 48,308−29,479＝18,829M一致。ファイナンスリース元本返済 2,769−1,805＝964M を足すと34,906M＝会社発表『約US$34.9B』"}
-    - {ticker: MSFT, item: revenue, period_end: 2026-09-30, machine_value: 92279000000, sec_value: 92279000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm", note: "対象外項目だが10-Qで同時に確認（前年同期77,673M）"}
-    - {ticker: GOOGL, item: revenue, period_end: 2026-09-30, machine_value: 127577000000, sec_value: 127577000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm", note: "対象外項目だが同時に確認（前年同期102,346M、Google Cloud 30,709M／前年15,157M）"}
-    - {ticker: META, item: revenue, period_end: 2026-09-30, machine_value: 64601000000, sec_value: 64601000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm", note: "対象外項目だが同時に確認（前年同期51,242M）"}
-    - {ticker: MU, item: "inventory／revenue", period_end: 2026-08-31, machine_value: "10,372M／54,229M", sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0000723125/us-gaap/InventoryNet.json", note: "XBRL API 未到達（PROVENANCE拒否・curl 403）。前回 8-K ex99.1（IR）で同じ値を一次確認済み（US$10.372B／US$54.23B）"}
-    - {ticker: SNDK, item: "inventory／revenue", period_end: 2026-09-30, machine_value: "3,016M／11,031M", sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0002023554/us-gaap/InventoryNet.json", note: "XBRL API 未到達。前回IRリリースで同じ値を一次確認済み（US$3,016M／US$11,031M）"}
-    - {ticker: WDC, item: "inventory／revenue", period_end: 2026-09-30, machine_value: "1,781M／4,381M", sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0000106040/us-gaap/InventoryNet.json", note: "XBRL API 未到達。予算の都合で10-Q検索も未実施"}
-    - {ticker: NVDA, item: revenue, period_end: 2026-07-31, machine_value: 96221000000, sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0001045810/us-gaap/RevenueFromContractWithCustomerExcludingAssessedTax.json", note: "XBRL API 未到達。次回（FQ3 FY27 は11月下旬発表）にまとめて確認"}
+    - {ticker: MSFT, item: capex, period_end: 2026-09-30, machine_value: 39367000000, sec_value: 39367000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm", note: "前回（11/9）の10-Q照合を継承。機械取得の値は不変"}
+    - {ticker: GOOGL, item: capex, period_end: 2026-09-30, machine_value: 51355000000, sec_value: 51355000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm", note: "前回の10-Q照合を継承（9か月−6か月）"}
+    - {ticker: AMZN, item: capex, period_end: 2026-09-30, machine_value: 77259000000, sec_value: 77259000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000040/amzn-20260930.htm", note: "前回の10-Q照合を継承（総額。純額75,878M）"}
+    - {ticker: META, item: capex, period_end: 2026-09-30, machine_value: 33942000000, sec_value: 33942000000, diff_pct: 0.0, result: confirmed, url: "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm", note: "前回の10-Q照合を継承（9か月−6か月）"}
+    - {ticker: MU, item: "inventory／revenue", period_end: 2026-08-31, machine_value: "10,372M／54,229M", sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0000723125/us-gaap/InventoryNet.json", note: "XBRL API 未到達（curl CONNECT 403・WebFetch PROVENANCE。SEC確認2回を使用）。前々回 8-K ex99.1（IR）で同じ値を一次確認済み"}
+    - {ticker: SNDK, item: "inventory／revenue", period_end: 2026-09-30, machine_value: "3,016M／11,031M", sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0002023554/us-gaap/InventoryNet.json", note: "XBRL API 未到達。IRリリースで同じ値を一次確認済み"}
+    - {ticker: WDC, item: "inventory／revenue", period_end: 2026-09-30, machine_value: "1,781M／4,381M", sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0000106040/us-gaap/InventoryNet.json", note: "XBRL API 未到達"}
+    - {ticker: NVDA, item: revenue, period_end: 2026-07-31, machine_value: 96221000000, sec_value: unconfirmed, diff_pct: null, result: no_data, url: "https://data.sec.gov/api/xbrl/companyconcept/CIK0001045810/us-gaap/RevenueFromContractWithCustomerExcludingAssessedTax.json", note: "XBRL API 未到達。FQ3 FY27 は 2026-11-17 発表（8-K で日程確認）"}
   new_filings_since_prev: []
 
 EARNINGS:
-  - company: "AMD"
-    period: "3Q26（2026年7-9月）"
-    reported_on: 2026-11-03
-    revenue: "US$13.4B（機械取得 US$13,377M）"
-    yoy: "+45%（機械取得 +44.7%、QoQ +16.0%）"
-    segment_note: "データセンター売上 US$8.5B（+97% YoY、過去最高）。クライアント・ゲーミング US$3.7B（−8%）。non-GAAP粗利率56%、non-GAAP EPS US$2.09（+74%）。CEO『InstinctとEPYCの需要は一段と強まり、HeliosとVeniceの量産拡大で4Qは成長がさらに加速』。設置場所・電力・許認可の制約に関する記述はリリースになし。在庫US$11,463M（在庫日数169.1日、前期144.5日、前年149.0日、機械取得）"
-    guidance: "4Q26：売上 約US$17.0B±0.3B（約+66% YoY・約+27% QoQ）、non-GAAP粗利率 約55%"
-    guidance_vs_prior: "n/a（前回3Qガイダンスは未取得）"
-    surprise: "unconfirmed（コンセンサス未取得）。株価は11/4 +1.0%（時間外+8%の見出しは消えた）、11/5 −17.3%、11/6 +11.0%（日次）"
-    source: "https://www.globenewswire.com/news-release/2026/11/03/3394824/0/en/amd-reports-third-quarter-2026-financial-results.html ／ https://finance.yahoo.com/quote/AMD/financials/"
-    source_kind: "ir（newswire配信の決算リリース）／yahoo"
-    tier: "1／4"
-    status: "confirmed（日次11/3の一次確認を転記）"
-    pending_xbrl: true
-  - company: "Qualcomm"
-    period: "FQ4 FY2026（2026年7-9月）"
-    reported_on: 2026-11-04
-    revenue: "US$10.32B（機械取得 US$10,322M。aiweekly本文の『US$10.44B』は見出しのUS$10.3Bと矛盾し不採用）"
-    yoy: "−8.4%（機械取得 −8.42%、前年US$11,271M。QoQ +3.8%）"
-    segment_note: "調整後EPS US$2.17。QCT US$9.02B（−8%）：スマホ向け US$5.14B（−26% YoY）、車載 US$1.99B（+89%、過去最高）、IoT US$1.89B（+4%）。データセンター売上 US$650M（当四半期、aiweekly）。利益率の圧迫要因として『ウエハー・組立・テスト・先端パッケージ・メモリーなどの投入コスト上昇。値上げの効果は2027年度下期から』（financefeeds、1本のみ）。年次報告書に『メモリーの不足と値上がりがスマホメーカーの需要を弱めるおそれ』（financefeeds、1本のみ）。7月のFQ3時点でも『メモリー価格の前例のない上昇と供給制約』がFY2026のスマホ向けの循環的逆風、FY2026のAndroidスマホ向け売上は約−20%の見通しと説明（Benzinga、2026-07-30）。在庫US$8,640M（在庫日数154.6日、前期163.3日、前年118.0日、機械取得）"
-    guidance: "FQ1 FY2027：売上 US$10.4B〜11.2B、調整後EPS US$2.15〜2.35（中央値2.25、予想2.32未達と報道）。2027年度データセンター売上目標 US$5B は維持（『供給制約であって需要制約ではない』と会社が説明、aiweekly）"
-    guidance_vs_prior: "unconfirmed"
-    surprise: "売上は予想（約US$10.12B）超、EPS予想2.16に対し2.17（financefeeds）。時間外−5.75%、11/5終値は−9.4%相当（日次：11/4 173.19→11/6 165.41）"
-    source: "https://financefeeds.com/qualcomm-shares-drop-5-75-after-hours-as-q1-earnings-forecast-misses-estimates/ ； https://aiweekly.co/alerts/qualcomm-q4-revenue-drops-8-to-103b-guides-5b-data-center-revenue-in-fiscal-2027 ； https://www.webull.com/news/15315809136616448（7月FQ3の記事）； https://finance.yahoo.com/quote/QCOM/financials/"
-    source_kind: "press／yahoo"
-    tier: "4（2本が売上・スマホ−26%・ガイダンスで一致）"
-    status: "reported_unverified（一次リリースは検索で見つからず未取得。投入コスト・年次報告書の記述は1本のみ）"
-    pending_xbrl: true
-  - company: "Kioxia Holdings"
-    period: "2Q FY2026（2026年7-9月）"
-    reported_on: "2026-10-30（18:45 JST、東京の初取引日は11/2）"
-    revenue: "約2.48兆円（QoQ +40.3%）"
-    yoy: unconfirmed
-    segment_note: "営業利益 約1.995兆円（QoQ +57.1%、コンセンサス1.95兆円比 +2.3%）。中間配当90円。IRページの10/30公表物：決算短信（IFRS、六か月）、株主還元方針と配当、連結子会社の合併。11/6 半期報告書、11/5 統合報告書。CFO説明（247wallst、日次11/2）：出荷時期（一部が9月期に前倒し、一部が3月期に後ずれ）が見通し未達の主因、AIデータセンター需要は堅調、来年の計画生産分は完売済み、3月期に急成長へ戻る見込み。NAND ASP・ビット出荷・在庫・設備投資は取得記事に記載なし。株価は11/2 −15.8%、11/4 −5.4%、11/6 −8.7%（高値比−76.5%）"
-    guidance: "3Q FY2026（10-12月）営業利益 約2兆円（アナリスト予想2.35兆円比 −14.9%）。売上ガイダンス・通期は取得記事に記載なし"
+  - company: "NVIDIA"
+    period: "経営体制の変更（決算ではない）。FQ3 FY2027 決算は 2026-11-17"
+    reported_on: 2026-11-12
+    revenue: "n/a（直近は FQ2 FY2027 US$96,221M、+105.9% YoY、機械取得）"
+    yoy: "n/a"
+    segment_note: "取締役会の発表（8-K）：ジェンスン・フアン氏が社長・CEO・取締役を即日辞任（『has resigned as President, Chief Executive Officer, and a member of the Board, effective immediately』）。CFO コレット・クレス氏が CFO を兼ねたまま暫定CEO。ハーベイ・ジョーンズ氏が初の取締役会議長。辞任の理由は記載なし。常任CEOは社内外から選ぶ。議長『事業・顧客への約束・製品ロードマップは中断なく続く見込み』。調査への言及は発表文になし（報道は11/9から取締役会の独立調査を報じていた、日次11/9〜11/13）"
+    guidance: "発表文に業績見通しなし。FQ3 FY2027 決算は予定どおり 2026-11-17 13:20 PT ごろ、電話会議 14:00 PT"
     guidance_vs_prior: "n/a"
-    surprise: "2Q営業利益は予想超（+2.3%）、3Qガイダンスは予想未達（−14.9%）。いずれも報道のコンセンサス"
-    source: "https://phemex.com/news/article/kioxia-q2-operating-profit-hits-1995-trillion-on-ai-storage-demand-q3-guidance-misses-expectations-101867 ； https://247wallst.com/investing/2026/11/02/micron-falls-4-as-kioxias-cautious-outlook-hits-memory-stocks-western-digital-drops-5-sandisk-slides-3/ ； IR一覧 https://www.kioxia-holdings.com/en-jp/news/2026.html（決算短信PDF https://ssl4.eir-parts.net/doc/285A/tdnet/2902678/00.pdf は取得拒否）"
+    surprise: "n/a。株価 NVDA 11/12 終値166.19（寄り付き150.99）、11/13 162.85（1週 −12.7%）"
+    source: "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm ； https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvda-20261111.htm（8-K本体、未取得）"
+    source_kind: sec_8k
+    tier: 1
+    status: confirmed
+    pending_xbrl: false
+  - company: "Applied Materials"
+    period: "FQ4 FY2026（2026年8-10月）"
+    reported_on: 2026-11-12
+    revenue: "US$10,409M"
+    yoy: "+53%（会社発表）"
+    segment_note: "non-GAAP粗利率50.6%、non-GAAP EPS US$4.16（+92%）。半導体装置（Semiconductor Systems）売上US$7,996M、うちDRAM向け33%。中国比率25%（前四半期26%＝8月の報道）。通期売上US$34,446M（+21%）。CEO『AIが半導体の需要を強く押し上げ続けている』『半導体装置事業は暦年2026年に40%超の成長の見込み』。2027年WFEの数値は取得範囲になし。8月（FQ3）時点の会社説明：2027年も過去最高の年、一部顧客との対話は2030年まで、先端ロジック・DRAM・先端パッケージが2026〜27年のWFE成長の約80%（Benzinga 2026-08-14、前四半期の説明で今回の発言ではない）"
+    guidance: "FQ1 FY2027：売上 US$11.1B±0.5B、non-GAAP EPS US$4.35±0.20（14週の四半期と報道）"
+    guidance_vs_prior: "前四半期ガイダンス（FQ4 US$10.25B±0.5B、EPS 3.82〜4.22）に対し実績は中央値超。FQ1中央値US$11.1B はFQ4実績US$10.409B比 +6.6%"
+    surprise: "unconfirmed（コンセンサス未取得）。株価 11/13 −2.74%（出来高20日平均の1.43倍、日次11/13）"
+    source: "https://www.stocktitan.net/news/AMAT/applied-materials-announces-fourth-quarter-and-fiscal-year-2026-7z5nei8eafpd.html（GlobeNewswire配信の決算リリースの転載、日次11/12）； https://fourweekmba.com/ai-applied-materials-posts-10-4b-guides-11-1b-in-14-weeks/（14週、見出し）； https://www.webull.com/news/15400606166574080（8月FQ3の記事、参考）"
+    source_kind: "ir（newswire配信の決算リリース）"
+    tier: 1
+    status: "confirmed（日次11/12の決算リリース確認を転記）"
+    pending_xbrl: true
+
+  - company: "Onto Innovation"
+    period: "3Q26（2026年7-9月）"
+    reported_on: 2026-11-09
+    revenue: "US$409.7M（機械取得 US$409,748K）"
+    yoy: "+87.8%（機械取得 +87.8%、QoQ +19.4%）。過去最高"
+    segment_note: "non-GAAP EPS US$2.44。受注残US$13億超。先端パッケージ向けが過去最高。CEO『次世代AI・HPCの複雑な構造で工程管理の需要は強い』。HBMへの言及なし。在庫日数208.4日（前期215.9、前年219.4、機械取得）"
+    guidance: "4Q26：売上 US$430M〜450M、non-GAAP EPS US$2.59〜2.79。2026年売上は+45%超の見込み"
+    guidance_vs_prior: "n/a（前回ガイダンス未取得）"
+    surprise: unconfirmed
+    source: "https://www.sec.gov/Archives/edgar/data/0000704532/000119312526453582/onto-ex99_1.htm（8-K ex99.1、日次11/9で一次確認）； https://finance.yahoo.com/quote/ONTO/financials/"
+    source_kind: "sec_8k／yahoo"
+    tier: 1
+    status: "confirmed（日次11/9の一次確認を転記。機械取得と一致）"
+    pending_xbrl: false
+  - company: "CoreWeave（追跡案件、監視40社の外）"
+    period: "3Q26（2026年7-9月）"
+    reported_on: 2026-11-10
+    revenue: "US$3.66B（予想約US$3.55B）"
+    yoy: "+168%"
+    segment_note: "純損失 約US$709M、調整後営業利益 約US$380M（予想約US$246M）、調整後EBITDA 約US$2.3B（62%）。受注残（revenue backlog）US$132.5B（6月 US$104B）。総負債 約US$47B。稼働電力を2026年末までに1.85GWとする目標"
+    guidance: "2026年通期 売上 US$13.0B〜13.3B（引き上げ）、調整後営業利益 US$12.75億〜13.75億（TheStreet、日次11/11）、2026年の設備投資 US$37B〜39B"
+    guidance_vs_prior: "売上・年換算売上ガイダンスとも引き上げ（前回レンジは未取得）"
+    surprise: "売上・損益とも予想超（investinglive、aiweekly）。株価 11/11 大幅高、11/12 −6.86%、11/13 −6.13%（1週 +14.5%）"
+    source: "https://aiweekly.co/alerts/coreweave-q3-revenue-jumps-168-yoy-to-366b-as-backlog-climbs-to-1325b-and-debt（CNBC要約）； https://investinglive.com/stocks/coreweave-q3-beats-on-seven-key-metrics-lifts-full-year-revenue-and-run-rate-guidance/ ； https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-nov-11-2026（日次11/11）"
     source_kind: press
-    tier: "3〜4（2本が2Q営業利益≈1.99〜1.995兆円・3Q約2兆円で一致）"
-    status: reported_unverified
-    pending_xbrl: false
-  - company: "Arm Holdings"
-    period: "FQ2 FY2027（2026年7-9月）"
-    reported_on: 2026-11-04
-    revenue: "US$1,443M（機械取得）"
-    yoy: "+27.1%（QoQ +12.0%、機械取得）"
-    segment_note: "ロイヤルティ・ライセンスの内訳、ガイダンスは未取得。株価は11/4 −5.3%（出来高1.70倍、決算前）、11/6 +4.7%"
+    tier: "3〜4（売上・予想超は2本以上で一致。受注残・設備投資・負債は aiweekly 1本と fourweekmba の見出し）"
+    status: "reported_unverified（IRリリース・8-Kは未取得）"
+    pending_xbrl: true
+  - company: "Nebius（追跡案件、監視40社の外）"
+    period: "3Q26（2026年7-9月）"
+    reported_on: 2026-11-12
+    revenue: "US$980.8M（見出しのみ）"
+    yoy: unconfirmed
+    segment_note: "見出し：過去最高の売上、見通しの弱さと『US$45B規模の設備投資』への懸念で株価下落。NBIS 11/12 −16.84%（出来高2.64倍）、11/13 −9.92%（1週 −10.5%）"
     guidance: unconfirmed
     guidance_vs_prior: unconfirmed
     surprise: unconfirmed
-    source: "https://finance.yahoo.com/quote/ARM/financials/"
-    source_kind: yahoo
+    source: "https://www.fxleaders.com/news/2026/11/12/nbis-stock-faces-100-on-weak-outlook-and-45b-capex-worries-despite-nebius-group-reports-third-quarter-revenue-of-980-8-million-dollars/（見出し、日次11/12）； https://www.thestreet.com/investing/nebius-nbis-stock-sinks-18-despite-record-quarter（見出し）"
+    source_kind: press
     tier: 4
-    status: reported_unverified
+    status: "unconfirmed（見出しのみ。P1-7 の予算6回を CoreWeave と規制に使い本文未取得）"
     pending_xbrl: false
-  - company: "Microsoft"
-    period: "FQ1 FY2027（2026年7-9月）前週分の一次確認"
-    reported_on: 2026-10-28
-    revenue: "US$92,279M（10-Q）"
-    yoy: "+18.8%（前年同期US$77,673M）"
-    segment_note: "10-Q（検索で発見、本文は前半10万字まで取得）で売上と設備投資（現金US$39,367M）を確認。MD&A・リース注記は取得範囲外。Azure +48%・Microsoft Cloud US$63.9B は前回のtier4値のまま。ファイナンスリースを含む設備投資US$45.2B、ファイナンスリースROU取得US$5,192M（前年9,147M）、オペレーティングリースROU取得US$6,523M（前年1,417M）、未開始リースUS$364.6B（『主にデータセンター』）、FCF US$18.6B、データセンター建屋の耐用年数を15年→25年に変更（universalassetowners、tier4、8-K・10-K・説明会を引用）"
-    guidance: "暦年2026年設備投資『should be approximately $170 billion』（CFO Amy Hood、第三者からの容量引き渡しの遅れが理由、tier4）。FQ2（10-12月）設備投資『over $50 billion』（tier4）"
-    guidance_vs_prior: "7月時点の約US$175B（リース区分変更後）比 −US$5B（tier4。fourweekmba・huggingnews・Yahoo見出しも『US$170B』で一致。一次資料は未確認）"
-    surprise: unconfirmed
-    source: "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm ； https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/"
-    source_kind: "sec_10q／press"
-    tier: "1（売上・設備投資）／4（ガイダンス・リース・Azure）"
-    status: "confirmed（売上・設備投資）／reported_unverified（ガイダンス）"
-    pending_xbrl: false
-  - company: "Alphabet"
-    period: "3Q26（2026年7-9月）前週分の一次確認"
-    reported_on: 2026-10-28
-    revenue: "US$127,577M（10-Q）"
-    yoy: "+24.7%（前年同期US$102,346M）"
-    segment_note: "Google Cloud US$30,709M（前年15,157M、+102.6%）。残存履行義務US$567.7B、うちGoogle Cloud US$560.8B（55%強を24か月以内に認識）。9か月設備投資US$131,953M（前年63,596M）。9か月の負債発行（純額）US$85,222M（3Q単独 約US$28,996M、記事は『US$28.7Bの無担保シニア債』）、9か月の普通株発行US$42,870M（3Q単独 US$12,372M・6,400万株、ATM）、強制転換優先株US$19,063M。3Q FCF −US$9.1B、直近12か月US$19.7B（tier4）。自社株買いはゼロ（tier4）。Cloud営業利益率はMD&A取得範囲外"
-    guidance: "2026年設備投資 US$195B〜205B、2027年『US$300B超を示唆』（いずれも前回tier4のまま。10-QのMD&Aは取得範囲外）"
-    guidance_vs_prior: "2026年レンジは7月時点と同じ（tier4）"
-    surprise: unconfirmed
-    source: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm ； https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000071/goog-20260630.htm ； https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/"
-    source_kind: "sec_10q／press"
-    tier: "1（売上・Cloud・RPO・設備投資・資金調達）／4（ガイダンス・FCF）"
-    status: "confirmed（10-Q項目）／reported_unverified（ガイダンス）"
-    pending_xbrl: false
-  - company: "その他の監視銘柄（機械取得のみ、9月期）"
+  - company: "その他の監視銘柄（機械取得で新たに反映された9月期）"
     period: "2026年7-9月"
-    reported_on: "2026-11-02〜11-04"
-    revenue: "ON US$1,722M／LSCC US$291.0M／ANET US$3,658M／COHR US$2,370M／LITE US$1,263M（いずれもYahoo）"
-    yoy: "ON +11.1%／LSCC +118.3%／ANET +58.5%／COHR +49.9%／LITE +136.5%（QoQ：+7.4%／+44.7%／+20.5%／+15.9%／+25.5%）"
-    segment_note: "MCHP（11/5）・SWKS（11/3）は period_end 2026-06-30 のままで未反映。MCHPは決算後 −10.0%・出来高3.58倍（11/6）、MTSI +10.8%、NVMI +11.7%（値動きのみ、内容未確認）。COHRの在庫日数210.8日（前期186.6日、前年148.2日）、ANET 219.3日（205.0／239.8）"
+    reported_on: "2026-11-03〜11-05（前回の期間に発表、機械取得は今回反映）"
+    revenue: "MCHP US$1,621.5M／SWKS US$1,045.7M（いずれもYahoo）"
+    yoy: "MCHP +42.2%／SWKS −5.0%（QoQ：+9.2%／+11.9%）"
+    segment_note: "在庫日数 MCHP 183.7日（前期174.6、前年198.4）、SWKS 157.5日（前期165.1、前年105.2）。決算リリースの内容（MCHPの車載在庫・ガイダンス）は未取得"
     guidance: unconfirmed
     guidance_vs_prior: unconfirmed
-    surprise: unconfirmed
-    source: "https://finance.yahoo.com/quote/ON/financials/ ほか各社の /financials/"
+    surprise: "unconfirmed（前回の見出し：Skyworks EPS 予想比+0.01ドル）"
+    source: "https://finance.yahoo.com/quote/MCHP/financials/ ； https://finance.yahoo.com/quote/SWKS/financials/"
     source_kind: yahoo
     tier: 4
     status: reported_unverified
+    pending_xbrl: false
+  - company: "前回の決算分（AMD・Qualcomm・Kioxia・Arm・Microsoft・Alphabet）"
+    period: "3Q26"
+    reported_on: "2026-10-28〜11-04"
+    revenue: "前回 evidence（2026-11-06）のまま。AMD US$13,377M・QCOM US$10,322M・ARM US$1,443M は機械取得と一致（RECONCILED）"
+    yoy: "前回どおり"
+    segment_note: "今週の新しい一次資料なし（AMD の Google Cloud との協業・格上げの報道は日次11/9、一次未確認）"
+    guidance: "前回どおり"
+    guidance_vs_prior: "n/a"
+    surprise: "前回どおり"
+    source: "evidence/2026-11-06.yaml"
+    source_kind: "ir／press／yahoo"
+    tier: "1〜4"
+    status: "前回の状態を維持（RECONCILED 参照）"
     pending_xbrl: false
 
 CAPEX:
   companies:
     - company: "Microsoft"
       period: "FQ1 FY2027（2026年7-9月）実績／暦年2026年ガイダンス"
-      actual: "US$39,367M（現金ベース、10-Q）。ファイナンスリースを含むCapEx US$45.2B（tier4）"
-      lease: "ファイナンスリースROU取得 US$5,192M（前年同期9,147M）、オペレーティングリースROU取得 US$6,523M（前年1,417M）、未開始リース US$364.6B（主にデータセンター）（tier4、10-Q・説明会を引用）"
-      guidance: "暦年2026年『approximately $170 billion』（CFO）。FQ2 設備投資『over $50 billion』"
-      change_vs_prior: "7月時点の約US$175B比 −US$5B（tier4。前回evidenceの『175Bか170Bか』は170B側で4本の二次情報が一致）"
-      breakdown: "undisclosed（建屋・土地 vs サーバー・GPUの比率は取得資料になし。データセンター・オフィス建屋の耐用年数を15年→25年に変更し、今後のDCリースはオペレーティングリースに寄る、tier4）"
-      timing_note: "『第三者からの容量引き渡しの遅れ』を理由に暦年2026年を引き下げ（後ろ倒し、tier4。地域・相手先は不明）"
-      note: "機械取得は現金ベース（Capital Expenditure 39,367M）で会社の『CapEx incl. finance leases』より約US$5.8B小さい"
-      source: "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm ； https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/ ； https://fourweekmba.com/ai-microsoft-lowers-2026-capex-view-to-170b-eyes-new-funding/（見出し）"
-      source_kind: "sec_10q／press"
-      tier: "1（実績）／4（ガイダンス・リース・時期）"
+      actual: "US$39,367M（現金ベース、機械取得＝前回10-Qで一致）。ファイナンスリースを含むCapEx US$45.2B（tier4、前回）"
+      lease: "ファイナンスリースROU取得 US$5,192M、オペレーティングリースROU取得 US$6,523M、未開始リース US$364.6B（主にデータセンター）（tier4、前回）"
+      guidance: "暦年2026年『approximately $170 billion』（CFO、tier4、前回）。FQ2『over $50 billion』"
+      change_vs_prior: "0（今週の新しい発言なし。一次資料は未確認のまま）"
+      breakdown: "undisclosed"
+      timing_note: "『第三者からの容量引き渡しの遅れ』で暦年2026年を引き下げ（前回、tier4）。今週の更新なし"
+      note: "機械取得の yoy +103.0%（前年同期 US$19,394M）"
+      source: "https://finance.yahoo.com/quote/MSFT/financials/ ； https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/（前回）"
+      source_kind: "yahoo（前回sec_10qで一致）／press"
+      tier: "1（実績）／4（ガイダンス）"
       status: "confirmed（実績）／reported_unverified（ガイダンス・リース・時期）"
       pending_xbrl: false
     - company: "Alphabet"
       period: "3Q26実績／2026年ガイダンス"
-      actual: "US$51,355M（9か月131,953M − 6か月80,598M、10-Q）"
-      lease: "undisclosed（取得範囲にファイナンスリース取得の記載なし）"
-      guidance: "2026年 US$195B〜205B（tier4、据え置き）。2027年『US$300B超を示唆』（tier4）"
-      change_vs_prior: "0（tier4）"
-      breakdown: "undisclosed（MD&Aは取得範囲外）"
-      timing_note: "undisclosed"
-      note: "3Q 負債発行（純額）約US$29.0B、普通株発行US$12.4B（ATM）、FCF −US$9.1B（tier4）。Cloud RPO US$560.8B"
-      source: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm ； https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000071/goog-20260630.htm"
-      source_kind: sec_10q
-      tier: "1（実績・資金調達）／4（ガイダンス）"
+      actual: "US$51,355M（機械取得、yoy +114.4%。前回10-Qで一致）"
+      lease: undisclosed
+      guidance: "2026年 US$195B〜205B、2027年『US$300B超を示唆』（tier4、前回のまま）"
+      change_vs_prior: "0（今週の新しい発言なし）"
+      breakdown: undisclosed
+      timing_note: undisclosed
+      note: "11/9 に AMD と Google Cloud の新たな協業の報道（日次11/9、内容は未確認）"
+      source: "https://finance.yahoo.com/quote/GOOGL/financials/ ； https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm（前回）"
+      source_kind: "yahoo（前回sec_10qで一致）"
+      tier: "1（実績）／4（ガイダンス）"
       status: "confirmed（実績）／reported_unverified（ガイダンス）"
       pending_xbrl: false
     - company: "Amazon"
       period: "3Q26実績／2026年ガイダンス"
-      actual: "US$77,259M（有形固定資産の取得、総額）。売却収入・インセンティブ US$1,381M を引いた純額 US$75,878M（10-Q）"
-      lease: "ファイナンスリースで取得した有形固定資産 US$1,472M（前年同期977M）、ファイナンスリース元本返済 US$433M（前年351M）（10-Q）"
-      guidance: "2026年 現金ベース 約US$220B（IR、据え置き）。2027年の数値なし。AWS売上は『2027年・2028年とも40%超の成長』（CEO、tier4）"
+      actual: "US$77,259M（総額、機械取得 yoy +120.1%。純額 US$75,878M。前回10-Qで一致）"
+      lease: "ファイナンスリースで取得 US$1,472M、元本返済 US$433M（前回10-Q）"
+      guidance: "2026年 約US$220B（IR、前回）"
       change_vs_prior: "0"
-      breakdown: "undisclosed（10-QのMD&Aは取得範囲外）"
-      timing_note: "undisclosed"
-      note: "3Q 長期債務の調達 US$48,102M（10-Q）。非流動の長期債務 US$173,125M。直近12か月FCF 約−US$42.4B（営業CF 168,300 − 取得215,192 ＋ 売却4,535、計算）。機械取得の basis 表記『純額』は実際には総額の値"
-      source: "https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000040/amzn-20260930.htm ； https://ir.aboutamazon.com/news-release/news-release-details/2026/Amazon-com-Announces-Third-Quarter-Results/default.aspx（前回）"
-      source_kind: "sec_10q／ir"
+      breakdown: undisclosed
+      timing_note: undisclosed
+      note: "機械取得の basis 表記『純額』は実際には総額の値（継続）"
+      source: "https://finance.yahoo.com/quote/AMZN/financials/ ； https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000040/amzn-20260930.htm（前回）"
+      source_kind: "yahoo（前回sec_10qで一致）／ir"
       tier: 1
       status: confirmed
       pending_xbrl: false
     - company: "Meta"
       period: "3Q26実績／2026年ガイダンス"
-      actual: "US$33,942M（有形固定資産の取得、9か月83,055M − 6か月49,113M、10-Q）。ファイナンスリース元本返済 US$964M を含む会社定義のCapEx US$34,906M（≒前回『約US$34.9B』）"
-      lease: "ファイナンスリース元本返済 9か月US$2,769M（前年1,770M）、3Q単独 約US$964M（10-Q）。ROU取得額は取得範囲外"
-      guidance: "2026年 US$135B〜145B（8-K、前回確認）。2027年の数値なし"
-      change_vs_prior: "0（前回に下限+US$5B）"
-      breakdown: "undisclosed"
-      timing_note: "undisclosed"
-      note: "9か月 長期債務の発行（純額）US$24,910M（10-Q）。10/26に強制転換優先株＋クラスA普通株の増資を開始、2027-01-19 発効の新定款でクラスC株を導入し約US$60BのATMを計画（tier4）"
-      source: "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm ； https://www.sec.gov/Archives/edgar/data/0001326801/000162828026050705/meta-20260630.htm ； https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/"
-      source_kind: "sec_10q／press"
-      tier: "1（実績・負債）／4（増資の詳細）"
-      status: "confirmed（実績）／reported_unverified（増資詳細）"
+      actual: "US$33,942M（機械取得 yoy +80.3%。会社定義（ファイナンスリース元本込み）US$34,906M。前回10-Qで一致）"
+      lease: "ファイナンスリース元本返済 3Q 約US$964M（前回10-Q）"
+      guidance: "2026年 US$135B〜145B（8-K、前回）"
+      change_vs_prior: "0"
+      breakdown: undisclosed
+      timing_note: undisclosed
+      note: "10/26開始の増資、2027-01-19以降のクラスC ATM 約US$60B（tier4、前回）"
+      source: "https://finance.yahoo.com/quote/META/financials/ ； https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm（前回）"
+      source_kind: "yahoo（前回sec_10qで一致）"
+      tier: 1
+      status: confirmed
       pending_xbrl: false
     - company: "Oracle"
-      period: "FQ1 FY2027（2026年6-8月）実績／ガイダンス"
-      actual: "US$28,499M（Yahoo、+235% YoY、前期16,493M）"
+      period: "FQ1 FY2027（2026年6-8月）実績"
+      actual: "US$28,499M（Yahoo、yoy +235.2%）"
       lease: undisclosed
-      guidance: "unconfirmed（FY2027の設備投資ガイダンス・RPOは未取得。次回決算は12月）"
+      guidance: "unconfirmed（次回決算は12月）"
       change_vs_prior: unconfirmed
       breakdown: undisclosed
       timing_note: undisclosed
-      note: "11/2に US$100億の新株発行と約US$100億の社債発行（424B2）。株価 −8.8%（出来高1.85倍）。条件（利率・年限・担保）は未確認"
-      source: "https://finance.yahoo.com/quote/ORCL/financials/ ； https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026（増資・社債、日次11/2）"
-      source_kind: "yahoo／press"
-      tier: "4／3"
+      note: "11/2 の増資US$100億＋社債約US$100億（前回）。株価 1週 +8.0%（11/13 125.35）"
+      source: "https://finance.yahoo.com/quote/ORCL/financials/"
+      source_kind: yahoo
+      tier: 4
       status: reported_unverified
       pending_xbrl: true
   total_4_yoy:
-    value: "+107.6%（3Q26 合計 US$201,923M vs 3Q25 US$97,271M）。前年比は今回初めて算出"
+    value: "+107.6%（3Q26 合計 US$201,923M vs 3Q25 US$97,271M）"
     quarter_end: 2026-09-30
-    basis: "4社とも機械取得（Yahoo）の値が10-Qのキャッシュフロー計算書と一致（MSFT『Additions to PP&E』、GOOGL・META は9か月−6か月、AMZN は3か月総額）。ファイナンスリースを含まない現金ベースの合計。会社定義（MSFT 45.2B、META 34.9B）で足すと約US$208.7B（AMZN・GOOGLは現金ベースのまま、参考）。前回の『約US$203.0B』は META を会社定義で足したもの。2026年ガイダンス合計（同一基準）は US$720B〜740B（MSFT 約170B＋GOOGL 195〜205B＋AMZN 約220B＋META 135〜145B）"
-    source: "上記4社の10-Q（sec.gov）"
+    basis: "4社とも機械取得（Yahoo）。値は前回と同一で、前回4社の10-Qのキャッシュフロー計算書と一致を確認済み（MSFT『Additions to PP&E』、GOOGL・META は9か月−6か月、AMZN は3か月総額）。今回は XBRL に届かず再照合なし。ファイナンスリースを含まない現金ベース。2026年ガイダンス合計（同一基準）は US$720B〜740B（前回、MSFT・GOOGL は tier4）"
+    source: "fundamentals_latest.json hyperscalers_capex_4.latest（yoy 1.0759）＋ 4社の10-Q（前回）"
     status: confirmed
 
 DC_TIMING:
@@ -257,118 +251,118 @@ DC_TIMING:
     texas_pause:
       state: 継続
       scope:
-        - "TCEQ許認可：知事書簡（2026-09-21）で『データセンターが求めるすべての許可を止め（halt all permits sought by data centers）』『ERCOTの審査が終わるまでデータセンター案件に関するすべての許可の発行を一時停止』。新規・審査中の案件が対象。MW閾値や自家発電・ERCOT域外の例外は明記なし。既存許可・建設中・稼働済み敷地での増設の扱いは書簡に明記なし（法律事務所も未言及）。更新・変更申請の扱いは不明で書面確認を推奨（Beveridge & Diamond）"
-        - "ERCOT大口接続：知事指示（2026-08-03）で25MW以上の案件は接続手続きを進める前に検証・監査。Batch Zero 適格性RFI（2026-09-09開始）、州・地域影響RFI（2026-09-14、回答期限2026-10-12）"
-        - "TWDB（2026-09-14）：既存の水使用報告義務の執行強化"
-      resume_conditions: "『ERCOTの審査完了まで』（知事書簡）。ERCOTは2026-12-10までに報告書を公表予定。TCEQは2026-10-19までに指示への対応を報告。明示の再開日・再開条件（監査完了後に自動再開か、新法が必要か）は公表されていない。次期知事（2027-01-19就任）は『法律ができるまで止める必要がある』と発言（公約・発言扱い）"
-      latest_action_date: "2026-09-21（TCEQ書簡）。2026-10-30〜11-06 の新しい行政措置・PUCT決定・ERCOT決定は確認できず（日次11/6、今回の検索でも11月の公式発表なし）"
-      source: "https://www.bdlaw.com/publications/texas-pauses-all-environmental-permitting-for-data-centers/（2026-09-29、Beveridge & Diamond）； https://www.gtlaw.com/es/insights/2026/9/texas-governor-directs-a-halt-on-data-center-permitting-with-state-agency-audits（検索結果、未取得）； https://www.zerohedge.com/ai/texas-governor-elect-wants-data-center-pause-white-house-says-communities-should-decide（日次11/6）"
-      tier: "2（法律事務所の解説。gov.texas.gov・ERCOT・PUCTの公式ページは今回未取得）"
-      status: "confirmed（措置の存在・範囲は法律事務所2社が一致）／reported_unverified（11月の変化なしは報道・日次ベース）"
+        - "TCEQ許認可：知事書簡（2026-09-21）で TCEQ にデータセンターの許可の発行停止を指示、『no other state agency shall move forward with regulatory approvals related to data centers until this information is acquired』（BakerHostetler 2026-09-23 の引用）。対象は『data center developments に必要なすべての州機関の承認』（同）。MW閾値・自家発電・ERCOT域外の例外の記載なし。既存許可・建設中・稼働済み敷地での増設の扱いは、法律事務所3社（Beveridge & Diamond、BakerHostetler、Greenberg Traurig）の解説にも記載なし"
+        - "ERCOT大口接続：知事指示（2026-08-03）で25MW以上の案件は接続手続きの前に検証・監査（前回確認）。Batch Zero 適格性RFI（2026-09-09開始）、州・地域影響RFI（回答期限2026-10-12）"
+        - "TWDB（2026-09-14）：既存の水使用報告義務の執行強化（前回確認）"
+      resume_conditions: "『監査に必要なデータを取得し審査するまで（until data necessary for those audits has been obtained and reviewed）』（知事発表、BakerHostetler 引用）。ERCOT の監査結果の提出目標日は 2026-12-10（前回確認）。明示の再開日、監査後に自動再開か新法が要るかは公表されていない。次期知事（2027-01-19就任）は『法律ができるまで止める必要がある』と発言（公約扱い、前回）"
+      latest_action_date: "2026-09-21（TCEQ書簡）。2026-11-06〜11-13 の新しい行政措置・PUCT決定・ERCOT決定は検索1回の範囲で確認できず（結果は9月の報道・法律事務所解説のみ。『Abbott Expands Texas Data Center Moratorium』（texaspolicyresearch）の見出しは本文取得に失敗し内容・日付未確認）"
+      source: "https://www.bakerlaw.com/insights/texas-halts-data-center-permitting-pending-state-audits-what-developers-investors-and-energy-users-need-to-know/（2026-09-23）； https://www.bdlaw.com/publications/texas-pauses-all-environmental-permitting-for-data-centers/（2026-09-29、前回）； https://www.gtlaw.com/en/insights/2026/9/texas-governor-directs-a-halt-on-data-center-permitting-with-state-agency-audits（見出し）"
+      tier: "2（法律事務所の解説。gov.texas.gov・ERCOT・PUCT・TCEQ の公式ページは今回も未取得）"
+      status: "confirmed（措置の存在・範囲は法律事務所2社が一致）／reported_unverified（11月に変化なしは検索結果ベース）"
     governor_actions:
       - date: 2026-11-05
-        action: "次期知事ヒノホサ（民主党、就任2027-01-19）がCNNで『テキサス人を守る法律ができるまで、データセンターでやっていることを止める必要がある』と発言。行政命令・法案ではない（就任前の発言＝公約扱い）"
+        action: "次期知事ヒノホサ（民主党、就任2027-01-19）の『テキサス人を守る法律ができるまで、データセンターでやっていることを止める必要がある』発言（前回記録、就任前＝公約扱い）。11/6〜11/13 に新しい発言・措置は確認せず"
         covers_existing_permits: unclear
         covers_under_construction: unclear
         covers_expansion_on_operating_site: unclear
-        source: "https://www.zerohedge.com/ai/texas-governor-elect-wants-data-center-pause-white-house-says-communities-should-decide ； https://www.cnn.com/2026/11/05/economy/data-center-texas-election（見出しのみ）"
+        source: "https://www.zerohedge.com/ai/texas-governor-elect-wants-data-center-pause-white-house-says-communities-should-decide（前回）"
         tier: 4
         status: "estimate（公約・発言）"
     other_states:
       - state: "ニューヨーク州"
-        action: "州議会が新規データセンターの1年間禁止法案を可決し知事（Hochul）に送付（見出しのみ。署名の有無・日付は未確認）"
+        action: "州議会が新規データセンターの1年間禁止法案を可決し知事（Hochul）に送付（前回の見出しのみ）。署名の有無は今回も未確認（予算の範囲で検索せず）"
         date: unconfirmed
-        source: "https://news.bloomberglaw.com/states-of-play/new-york-lawmakers-send-hochul-one-year-ban-on-new-data-centers（見出し）"
+        source: "https://news.bloomberglaw.com/states-of-play/new-york-lawmakers-send-hochul-one-year-ban-on-new-data-centers（見出し、前回）"
         tier: 3
         status: reported_unverified
       - state: "その他の州"
-        action: "新規DCの停止・新規制を出した州の数は未確認（tdworldは『テキサスを含む一部の州の知事が限定的な禁止を実施済み』と記載、州名なし）"
+        action: "新規DCの停止・新規制を出した州の数は未確認（今回は検索せず）。確認済みの停止はテキサス1州"
         date: unconfirmed
-        source: "https://www.tdworld.com/policy/article/55406354/house-passes-bipartisan-legislation-on-data-center-rate-hikes"
-        tier: 3
+        source: "n/a"
+        tier: "n/a"
         status: unconfirmed
     federal:
       - date: 2026-09-18
         body: "下院"
-        subject: "Ratepayer Protection Act（データセンターに伴う電気料金上昇から需要家を守る。開発者に自家電源と送配電増強費用の負担を求める連邦ルールを州が『検討』することを促す。拘束力なし、モラトリアムなし）を417対3で可決"
+        subject: "Ratepayer Protection Act（拘束力なし、モラトリアムなし）を417対3で可決（前回記録）。上院の扱いは未確認"
         companies: "なし"
-        stage: "可決（下院）。上院は未採決（関連見出し『Senate Democrats Block Toothless Data Center Bill』、本文未取得）"
+        stage: 可決
         source: "https://www.tdworld.com/policy/article/55406354/house-passes-bipartisan-legislation-on-data-center-rate-hikes"
         tier: 3
         status: reported_unverified
       - date: unconfirmed
         body: "上院・下院（Sanders／Ocasio-Cortez）"
-        subject: "Data Center Moratorium Act（新規AIデータセンターの全国的な一時停止）"
+        subject: "Data Center Moratorium Act（新規AIデータセンターの全国的な一時停止）。提出日・条文は未確認（前回の見出しのみ）"
         companies: "なし"
-        stage: "法案提出（提出日・条文は未確認、見出しのみ）"
-        source: "https://truthout.org/articles/sanders-and-aoc-introduce-bill-to-pause-new-ai-data-centers-nationwide ； https://www.washingtonexaminer.com/?p=4502917（見出し）"
+        stage: 法案提出
+        source: "https://truthout.org/articles/sanders-and-aoc-introduce-bill-to-pause-new-ai-data-centers-nationwide（見出し、前回）"
         tier: 3
         status: reported_unverified
-      - date: 2026-11-05
-        body: "下院民主党幹部（氏名未確認）"
-        subject: "全国的なデータセンター・モラトリアムを求める発言（CNBC見出し）。ホワイトハウス（NEC委員長ハセット）は『データセンターの成長が続く余地は十分ある』と発言（zerohedge、tier4）"
+      - date: "2026-11-06〜11-13"
+        body: "連邦議会"
+        subject: "新しい公聴会・調査・法案は確認せず（今回は検索せず。新議会は2027-01-03）"
         companies: "なし"
-        stage: "発言（法案・公聴会ではない）"
-        source: "https://www.cnbc.com/2026/11/05/democrats-data-center-restrictions-midterms.html（見出し）； https://ground.news/article/key-house-democrat-calls-for-a-national-data-center-moratorium（見出し）"
-        tier: 4
-        status: reported_unverified
+        stage: "n/a（新規なし）"
+        source: "n/a"
+        tier: "n/a"
+        status: unconfirmed
   projects:
-    - company: "IREN"
-      project: "Childress（テキサス）Horizon 1〜4（Microsoft 5年US$97億契約、GB300 NVL72）"
-      location: "Childress, TX"
-      planned_capacity_mw: "50MW（IT負荷）×4＝200MW。会社全体の目標：AIクラウド総容量 480MW（2026年）、1.2GW（2027年）"
-      stage: "Horizon 1：引き渡し済（Microsoftが受領・検収）。Horizon 2〜4：建設中"
-      energization_eta: "undisclosed（受電日は別記載なし）"
-      delivery_eta: "Horizon 2〜4 は『later this year（2026年中）』（2026-08-13時点）。11月の更新は未確認"
-      billing_eta: undisclosed
-      prev_eta: "n/a（前回evidence v6にDC_TIMINGなし）"
-      shift_months: "unconfirmed（11月時点の更新なし）"
-      status_change: none
-      source: "https://www.sec.gov/Archives/edgar/data/0001878848/000114036126032638/ef20080141_ex99-1.htm（8-K ex99.1、2026-08-13）； https://www.datacenterdynamics.com/en/news/iren-delivers-first-phase-of-ai-capacity-to-microsoft-in-texas/（検索結果、未取得）"
-      tier: 1
-      status: "confirmed（8/13時点）。10/30〜11/6の変更は unconfirmed"
-    - company: "Galaxy Digital"
-      project: "Helios（テキサス）CoreWeave向け第1フェーズ"
-      location: "Dickens County, TX"
-      planned_capacity_mw: "133MW（第1フェーズ）"
-      stage: "unconfirmed（2026年5月時点：最初のデータホールを引き渡し、133MW全体は2Q26末までに引き渡し目標）"
-      energization_eta: undisclosed
-      delivery_eta: "2Q26末（2026年5月時点の会社目標、見出し）。達成の有無は未確認"
-      billing_eta: undisclosed
-      prev_eta: "n/a"
-      shift_months: unconfirmed
-      status_change: none
-      source: "https://www.theenergymag.com/news/market-news/galaxy-digital-reports-q1-2026-results-and-delivery-of-first-helios-data-hall（見出し、2026年5月）"
-      tier: 3
-      status: reported_unverified
     - company: "CoreWeave"
-      project: "全案件（受電・引き渡し・課金開始の予定）"
+      project: "全社（3Q26決算、2026-11-10）"
       location: "米国各地（テキサス含む）"
-      planned_capacity_mw: unconfirmed
-      stage: unconfirmed
+      planned_capacity_mw: "稼働電力（active power）を2026年末までに1.85GW とする目標（aiweekly＝CNBC要約）。契約電力（contracted power）・現在の稼働MWは取得記事に記載なし"
+      stage: "課金中（一部）／建設中（一部）。案件別の段階は未確認"
       energization_eta: unconfirmed
-      delivery_eta: unconfirmed
+      delivery_eta: "unconfirmed（取得2本に案件別の引き渡し時期・遅れの記述なし）"
       billing_eta: unconfirmed
-      prev_eta: "n/a"
+      prev_eta: "n/a（前回は未確認）"
       shift_months: unconfirmed
       status_change: none
-      source: "n/a（決算は2026-11-10）"
-      tier: "n/a"
-      status: unconfirmed
+      source: "https://aiweekly.co/alerts/coreweave-q3-revenue-jumps-168-yoy-to-366b-as-backlog-climbs-to-1325b-and-debt（2026-11-10、CNBC要約）； https://investinglive.com/stocks/coreweave-q3-beats-on-seven-key-metrics-lifts-full-year-revenue-and-run-rate-guidance/（2026-11-10）"
+      tier: "3〜4"
+      status: reported_unverified
     - company: "Nebius"
-      project: "全案件"
+      project: "全社（3Q26決算、2026-11-12）"
       location: "米国・欧州"
       planned_capacity_mw: unconfirmed
       stage: unconfirmed
       energization_eta: unconfirmed
       delivery_eta: unconfirmed
       billing_eta: unconfirmed
-      prev_eta: "n/a"
+      prev_eta: "n/a（前回は未調査）"
+      shift_months: unconfirmed
+      status_change: "none（縮小・中止の報道は見出しの範囲でなし。見出し：3Q売上US$980.8M で過去最高、見通しの弱さと『US$45B規模の設備投資』への懸念で株価下落（日次11/12））"
+      source: "https://www.fxleaders.com/news/2026/11/12/nbis-stock-faces-100-on-weak-outlook-and-45b-capex-worries-despite-nebius-group-reports-third-quarter-revenue-of-980-8-million-dollars/（見出し、日次11/12）"
+      tier: 4
+      status: unconfirmed
+    - company: "IREN"
+      project: "Childress（テキサス）Horizon 1〜4（Microsoft 5年US$97億、GB300 NVL72）"
+      location: "Childress, TX"
+      planned_capacity_mw: "50MW（IT負荷）×4＝200MW（前回）"
+      stage: "Horizon 1：引き渡し済。Horizon 2〜4：建設中（前回、8/13時点）"
+      energization_eta: undisclosed
+      delivery_eta: "Horizon 2〜4 は『2026年中』（8/13時点）。11/6〜11/13 の更新は未確認（決算は11月下旬、日付未確認）"
+      billing_eta: undisclosed
+      prev_eta: "2026年中（前回 evidence）"
+      shift_months: "unconfirmed（今回は調べず）"
+      status_change: none
+      source: "https://www.sec.gov/Archives/edgar/data/0001878848/000114036126032638/ef20080141_ex99-1.htm（8-K ex99.1、2026-08-13、前回）"
+      tier: 1
+      status: "confirmed（8/13時点）。その後の変更は unconfirmed"
+    - company: "Galaxy Digital"
+      project: "Helios（テキサス）CoreWeave向け第1フェーズ"
+      location: "Dickens County, TX"
+      planned_capacity_mw: "133MW（第1フェーズ）"
+      stage: "unconfirmed（2026年5月時点：最初のデータホール引き渡し済、133MW全体は2Q26末までに引き渡し目標）"
+      energization_eta: undisclosed
+      delivery_eta: "2Q26末（5月時点の目標）。達成の有無は今回も未確認"
+      billing_eta: undisclosed
+      prev_eta: "2Q26末（前回 evidence）"
       shift_months: unconfirmed
       status_change: none
-      source: "n/a（予算到達で未調査）"
-      tier: "n/a"
-      status: unconfirmed
+      source: "https://www.theenergymag.com/news/market-news/galaxy-digital-reports-q1-2026-results-and-delivery-of-first-helios-data-hall（見出し、前回）"
+      tier: 3
+      status: reported_unverified
     - company: "Oracle"
       project: "OCI データセンター（Abilene ほか）"
       location: "米国（テキサス含む）"
@@ -377,207 +371,246 @@ DC_TIMING:
       energization_eta: unconfirmed
       delivery_eta: unconfirmed
       billing_eta: unconfirmed
-      prev_eta: "n/a"
+      prev_eta: "unconfirmed（前回）"
       shift_months: unconfirmed
-      status_change: "none（縮小・中止の発表なし。11/2に資金調達を発表）"
-      source: "https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026"
-      tier: 3
+      status_change: "none（11/6〜11/13 に縮小・中止の発表は見出しの範囲でなし。次回決算は12月）"
+      source: "n/a（今回は調べず）"
+      tier: "n/a"
       status: unconfirmed
   financing:
-    - {company: "Oracle", instrument: "増資", amount: "US$100億", rate_pct: "n/a", tenor: "n/a", secured: "no", date: 2026-11-02, vs_prev_terms: unknown, source: "https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026", tier: 3, status: reported_unverified}
-    - {company: "Oracle", instrument: "社債", amount: "約US$100億（424B2）", rate_pct: unconfirmed, tenor: unconfirmed, secured: "no", date: 2026-11-02, vs_prev_terms: unknown, source: "https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026", tier: 3, status: reported_unverified}
-    - {company: "Alphabet", instrument: "社債", amount: "3Q26 負債発行（純額）約US$29.0B（9か月85,222M − 6か月56,226M、10-Q）。記事は『US$28.7B 無担保シニア債』", rate_pct: unconfirmed, tenor: unconfirmed, secured: "no", date: "2026年7-9月", vs_prev_terms: unknown, source: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm ； https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/", tier: "1／4", status: "confirmed（金額）／reported_unverified（条件）"}
-    - {company: "Alphabet", instrument: "増資", amount: "3Q26 普通株発行 US$12,372M（6,400万株、ATM。クラスA US$4.3B＋クラスC US$8.1B）。9か月で強制転換優先株 US$19,063M", rate_pct: "n/a", tenor: "n/a", secured: "no", date: "2026年7-9月", vs_prev_terms: unknown, source: "同上", tier: "1／4", status: confirmed}
-    - {company: "Amazon", instrument: "借入", amount: "3Q26 長期債務の調達 US$48,102M（10-Q）", rate_pct: unconfirmed, tenor: unconfirmed, secured: unknown, date: "2026年7-9月", vs_prev_terms: unknown, source: "https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000040/amzn-20260930.htm", tier: 1, status: confirmed}
-    - {company: "Meta", instrument: "社債", amount: "9か月 長期債務の発行（純額）US$24,910M（10-Q、前年同期ゼロ）", rate_pct: unconfirmed, tenor: unconfirmed, secured: "no", date: "2026年1-9月", vs_prev_terms: unknown, source: "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm", tier: 1, status: confirmed}
-    - {company: "Meta", instrument: "増資", amount: "強制転換優先株＋クラスA普通株の増資を10/26に開始（金額未確認）。クラスC株でのATM約US$60Bを2027-01-19以降に計画", rate_pct: "n/a", tenor: "n/a", secured: "no", date: 2026-10-26, vs_prev_terms: unknown, source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/", tier: 4, status: reported_unverified}
-    - {company: "Microsoft", instrument: "リース", amount: "未開始リース US$364.6B（主にデータセンター、2026-09-30時点）。四半期のリースROU取得 US$11.7B（前年10.6B）", rate_pct: "n/a", tenor: unconfirmed, secured: "n/a", date: 2026-09-30, vs_prev_terms: unknown, source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/", tier: 4, status: reported_unverified}
-    - {company: "CoreWeave／Nebius／IREN／Galaxy", instrument: "社債・借入・増資", amount: "10/30〜11/6の新規発表は未確認（CRWVは11/10決算）", rate_pct: unconfirmed, tenor: unconfirmed, secured: unknown, date: unconfirmed, vs_prev_terms: unknown, source: "n/a", tier: "n/a", status: unconfirmed}
-    - {company: "全社", instrument: "減損", amount: "減損計上の発表は確認できず", rate_pct: "n/a", tenor: "n/a", secured: "n/a", date: unconfirmed, vs_prev_terms: unknown, source: "n/a", tier: "n/a", status: unconfirmed}
+    - {company: "CoreWeave", instrument: 借入, amount: "総負債 約US$47B（3Q26末、aiweekly＝CNBC要約）。2026年の設備投資計画 US$37B〜39B", rate_pct: "unconfirmed（一部の社債利回りは最近16%超＝TheStreet 11/11、日次11/11）", tenor: unconfirmed, secured: unknown, date: 2026-11-10, vs_prev_terms: unknown, source: "https://aiweekly.co/alerts/coreweave-q3-revenue-jumps-168-yoy-to-366b-as-backlog-climbs-to-1325b-and-debt", tier: 4, status: reported_unverified}
+    - {company: "Nebius", instrument: "unknown（設備投資の報道のみ。調達手段は未確認）", amount: "『US$45B規模の設備投資』への懸念（見出しのみ、調達条件は未確認）", rate_pct: unconfirmed, tenor: unconfirmed, secured: unknown, date: 2026-11-12, vs_prev_terms: unknown, source: "https://www.fxleaders.com/news/2026/11/12/nbis-stock-faces-100-on-weak-outlook-and-45b-capex-worries-despite-nebius-group-reports-third-quarter-revenue-of-980-8-million-dollars/（見出し）", tier: 4, status: unconfirmed}
+    - {company: "Oracle", instrument: "増資／社債", amount: "11/2 の US$100億の新株発行＋約US$100億の社債（前回記録）。条件（利率・年限）は今回も未確認", rate_pct: unconfirmed, tenor: unconfirmed, secured: "no", date: 2026-11-02, vs_prev_terms: unknown, source: "https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026（前回）", tier: 3, status: reported_unverified}
+    - {company: "ハイパースケーラー4社・IREN・Galaxy", instrument: "社債・借入・増資", amount: "11/6〜11/13 の新規発表は確認せず（今回は調べず。3Qの調達は前回記録：GOOGL 負債約US$29.0B・普通株US$12.4B、AMZN 長期債務US$48.1B、META 9か月負債US$24.9B・10/26増資開始）", rate_pct: unconfirmed, tenor: unconfirmed, secured: unknown, date: unconfirmed, vs_prev_terms: unknown, source: "evidence/2026-11-06.yaml", tier: "1／4", status: unconfirmed}
+    - {company: "全社", instrument: 減損, amount: "減損計上の発表は確認できず（取得した記事の範囲）", rate_pct: "n/a", tenor: "n/a", secured: "n/a", date: unconfirmed, vs_prev_terms: unknown, source: "n/a", tier: "n/a", status: unconfirmed}
   gpu_rental:
-    - {item: spot_press, gpu: "H100／B200", value: unconfirmed, unit: "US$/GPU時", period: "2026-11", source: "n/a（予算到達で未調査。単一ブローカーの提示価格は使わない）", tier: "n/a", status: unconfirmed}
+    - {item: avg_price_disclosed, gpu: "CoreWeave／Nebius の平均単価", value: "undisclosed（取得記事に記載なし）", unit: "US$/GPU時", period: "3Q26", source: "n/a", tier: "n/a", status: unconfirmed}
+    - {item: spot_press, gpu: "H100／B200", value: unconfirmed, unit: "US$/GPU時", period: "2026-11", source: "n/a（予算の範囲で調べず。単一ブローカーの提示価格は使わない）", tier: "n/a", status: unconfirmed}
   semis_passthrough:
-    - company: "Microsoft（買い手側）"
+    - company: "Applied Materials"
+      date: 2026-11-12
+      quote: "決算リリース（日次11/12の転記範囲）に、設置場所・電力・許認可の不足による出荷・売上計上の後ろ倒しや振り替えの記述はない（『AIが半導体の需要を強く押し上げ続けている』）。説明会の書き起こしは未取得"
+      direction: 影響なし
+      regions_affected: unclear
+      source: "https://www.stocktitan.net/news/AMAT/applied-materials-announces-fourth-quarter-and-fiscal-year-2026-7z5nei8eafpd.html"
+      tier: 1
+      status: "confirmed（リリース本文の範囲）"
+    - company: "Onto Innovation"
+      date: 2026-11-09
+      quote: "8-K ex99.1 に後ろ倒しの記述なし（CEO『次世代AI・HPCの複雑な構造で工程管理の需要は強い』、受注残US$13億超、日次11/9）"
+      direction: 影響なし
+      regions_affected: unclear
+      source: "https://www.sec.gov/Archives/edgar/data/0000704532/000119312526453582/onto-ex99_1.htm"
+      tier: 1
+      status: "confirmed（リリース本文の範囲）"
+    - company: "CoreWeave（川下）"
+      date: 2026-11-10
+      quote: "取得した2本（investinglive、aiweekly）に、データセンター事業者の引き渡し遅れ・電力・許認可による稼働の後ろ倒しの記述なし。通期売上ガイダンスは引き上げ（US$13.0B〜13.3B）"
+      direction: 影響なし
+      regions_affected: unclear
+      source: "https://investinglive.com/stocks/coreweave-q3-beats-on-seven-key-metrics-lifts-full-year-revenue-and-run-rate-guidance/ ； https://aiweekly.co/alerts/coreweave-q3-revenue-jumps-168-yoy-to-366b-as-backlog-climbs-to-1325b-and-debt"
+      tier: "3〜4"
+      status: "reported_unverified（記事の範囲。説明会の書き起こしは未取得）"
+    - company: "Microsoft（買い手側、前回記録）"
       date: 2026-10-28
-      quote: "暦年2026年の設備投資は『approximately $170 billion』、理由は第三者からの容量引き渡しの遅れ（CFO、tier4）"
+      quote: "暦年2026年の設備投資は『approximately $170 billion』、理由は第三者からの容量引き渡しの遅れ（CFO、tier4。今回の更新なし）"
       direction: 後ろ倒し
       regions_affected: unclear
       source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/"
       tier: 4
       status: reported_unverified
-    - company: "AMD"
-      date: 2026-11-03
-      quote: "決算リリースに設置場所・電力・許認可の不足による出荷・売上計上の後ろ倒しや振り替えの記述はない（『InstinctとEPYCの需要は一段と強まり』）。説明会の書き起こしは未取得"
-      direction: 影響なし
-      regions_affected: unclear
-      source: "https://www.globenewswire.com/news-release/2026/11/03/3394824/0/en/amd-reports-third-quarter-2026-financial-results.html"
-      tier: 1
-      status: "confirmed（リリース本文の範囲）"
-    - company: "Qualcomm"
-      date: 2026-11-04
-      quote: "データセンター事業の立ち上がりは『供給制約であって需要制約ではない』（報道）。設置場所・電力の制約への言及はなし"
-      direction: 影響なし
-      regions_affected: unclear
-      source: "https://aiweekly.co/alerts/qualcomm-q4-revenue-drops-8-to-103b-guides-5b-data-center-revenue-in-fiscal-2027"
-      tier: 4
-      status: reported_unverified
     - company: "NVDA・MU・SNDK・LITE・COHR・VRT"
       date: unconfirmed
-      quote: "期間内に決算説明会なし（NVDAは11月下旬、MUは12月中旬）。LITE・COHRの説明会の書き起こしは未取得"
+      quote: "期間内に決算説明会なし（NVDA は 2026-11-17、MU は12月中旬）。LITE・COHR・VRT は前回までに決算済みで書き起こし未取得"
       direction: unclear
       regions_affected: unclear
       source: "n/a"
       tier: "n/a"
       status: unconfirmed
+  market_credit:
+    - {issuer: "CoreWeave", instrument: 5y_cds, detail: "5年CDS。11/5に1,289bp超、11/6（金）に約1,155bp", value: "約1,155（11/6）／1,289超（11/5）", unit: bp, as_of: 2026-11-06, data_vendor: unknown, source: "https://coinpaper.com/38478/core-weave-default-protection-costs-top-1-000-basis-points-even-as-nasdaq-rebounds（2026-11-07、出どころの記載なし）； 24/7 Wall St.（docs/sources.md 13節の確認済みの例、同じ数字）", tier: 4, status: reported_unverified, note: "11/9〜11/13 の新しい値は検索1回・取得1回の範囲で見つからず。今週の値ではない"}
+    - {issuer: "CoreWeave", instrument: bond_yield, detail: "2032年満期 9.625% 社債（US$12.5億）", value: "16超", unit: "%", as_of: "2026-11-06ごろ（記事に日付なし）", data_vendor: unknown, source: "https://coinpaper.com/38478/core-weave-default-protection-costs-top-1-000-basis-points-even-as-nasdaq-rebounds ； TheStreet 2026-11-11『一部の社債利回りは最近16%超』（日次11/11）", tier: 4, status: reported_unverified, note: "基準日が明確でない"}
+    - {issuer: "Oracle", instrument: 5y_cds, detail: "5年CDS", value: "約298（11/6）。10/15は288（S&P Global・LSEG）", unit: bp, as_of: 2026-11-06, data_vendor: "unknown（11/6）／S&P Global・LSEG（10/15）", source: "docs/sources.md 13節の確認済みの例（24/7 Wall St.、Yahoo Finance）。今回の取得記事に Oracle の水準なし", tier: 4, status: reported_unverified, note: "今週の値ではない。出どころの違う数字で前回比を作らない"}
+    - {issuer: "NVIDIA", instrument: 5y_cds, detail: "5年CDS", value: "約139（11/6）", unit: bp, as_of: 2026-11-06, data_vendor: unknown, source: "https://fourweekmba.com/ai-coreweave-cds-is-8x-nvidias-139bp-as-credit-prices-ai-risk/（見出し）； docs/sources.md 13節", tier: 4, status: reported_unverified, note: "CEO退任（11/12）後の値は未確認"}
+  construction_actuals: {month: "2026-08（9月分は11/2ごろ公表済みだが未取得。次の公表は12/1ごろ＝10月分）", saar_usd_bn: 84.95, mom_pct: unconfirmed, yoy_pct: 73, source: "docs/sources.md 13節の確認済みの例（報道経由、2026-11-10 確認）。一次 https://www.census.gov/construction/c30/pdf/privsa.pdf は今回未取得", tier: 3, status: reported_unverified, note: "月1回の項目で、今週は新しい月次の公表なし（今回は対象外）。建物の建設費で GPU 等の機器は含まない"}
 
 FOUNDRY:
   tsmc_monthly:
-    month: "2026-09（更新なし。10月分は11/10の発表見込み、日付は日次11/6のイベント欄）"
-    revenue: "NT$511.86B"
-    yoy: "+54.6%（MoM −0.6%）"
-    trailing3m_yoy: "+50.9%（3Q26、機械取得 TWD 1,494.2B・yoy +50.95% と一致）。1〜9月累計 +41.1%"
-    advanced_node_share: "3Q26：7nm以下79%（2nm 8%、3nm 33%）"
-    source: "https://pr.tsmc.com/english/news/3343 ／ https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm ／ https://finance.yahoo.com/quote/TSM/financials/"
-    status: "confirmed（前回値、新規発表なし）"
+    month: "2026-10"
+    revenue: "NT$586.89B（連結）"
+    yoy: "+59.7%（MoM +14.7%）"
+    trailing3m_yoy: "n/a（4Q26は10月単月のみ。参考：3Q26 +50.9%、9月単月 +54.6%）。1〜10月累計 NT$4,485.62B（+43.3% YoY。前回の1〜9月累計 +41.1%）"
+    advanced_node_share: "3Q26：7nm以下79%（3nm 33%、2nm 8%）。四半期のため更新なし（次は1月の4Q26決算）"
+    source: "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm（Form 6-K、2026-11-10、日次11/10で一次確認）"
+    status: "confirmed（日次11/10の一次確認を転記）"
   taiwan_memory_monthly:
     - company: "Nanya Technology"
       month: "2026-10"
-      revenue: "NT$46,476M（自己申告連結、12か月連続で過去最高と報道）。1〜10月累計 NT$311,761M（+602.2% YoY）"
+      revenue: "NT$46,476M（自己申告連結。前回記録、更新なし）"
       yoy: "+487.7%"
-      mom: "+3.1%"
-      source: "https://newtalk.tw/news/view/2026-11-03/1069052（日次11/3）； https://finance.technews.tw/2026/11/03/ntc-2408-202610-financial-report/（検索結果の要約で同じ数値、本文はリダイレクト先が取得拒否）"
-      status: "reported_unverified（報道2本が一致、MOPS一次は未取得）"
-    - company: "Nanya Technology"
-      month: "3Q26（説明会の報道）"
-      revenue: "NT$133,649M（+61.9% QoQ）、粗利率85.7%、EPS NT$25.4。会社説明：『4QのDRAM平均販売単価はまだ上昇余地があり粗利率も改善見込み』『顧客は供給契約の期間延長を希望』『新規能力は装置搬入から量産まで時間がかかり短期の供給不足は解消しにくい』"
-      yoy: unconfirmed
-      mom: "n/a"
-      source: "https://newtalk.tw/news/view/2026-11-03/1069052"
-      status: reported_unverified
+      mom: "+3.1%（9月 NT$45,091M 比。9月は NT$450.91億・+576.62% YoY、1〜9月累計 NT$2,652.85億・+626.95%＝statementdog 2026-10-08 で確認）"
+      source: "https://newtalk.tw/news/view/2026-11-03/1069052（前回）； https://statementdog.com/news/17832（9月分）"
+      status: "reported_unverified（報道2本一致、MOPS一次は未取得）"
     - company: "Winbond"
-      month: "2026-09／2026-10"
-      revenue: "9月 NT$28,249M（検索結果の要約のみ、本文未取得→UNCONFIRMED に seen_value）。10月分は未発表（例年10日前後）"
-      yoy: "9月 +256.7%（要約）"
-      mom: "9月 +3.4%（要約）"
-      source: "https://finance.technews.tw/2026/10/05/wec-2344-202609-financial-report/（検索結果の要約のみ）"
-      status: unconfirmed
+      month: "2026-10"
+      revenue: "NT$29,361M（検索結果の見出しのみ。本文は未取得）"
+      yoy: "+257.0%（見出し）"
+      mom: "+3.9%（見出し）。1〜10月累計 NT$209,788M（+195.4%、見出し）"
+      source: "https://finance.technews.tw/2026/11/06/wec-2344-202610-financial-report/（検索結果の見出し。2026-11-06 公表）"
+      status: "unconfirmed（見出しのみ。UNCONFIRMED に seen_value）"
+    - company: "Winbond"
+      month: "2026-09"
+      revenue: "NT$28,249M（NT$282.49億）"
+      yoy: "+256.67%"
+      mom: "+3.44%。1〜9月累計 NT$180,427M（+187.39%）。3Q NT$82,331M（+37.6% QoQ、+278.2% YoY）。会社説明：DRAMの供給は『仍相當吃緊』、3Qは販売価格とビット出荷がともに上昇、会長『AIデータセンターの成長が続けば2027年のメモリー総需要は今年を超える可能性』"
+      source: "https://statementdog.com/news/17832（2026-10-08）"
+      status: "reported_unverified（tier4。前回の要約値 NT$28,249M と一致）"
+    - company: "ESMT（晶豪科、参考）"
+      month: "2026-09"
+      revenue: "NT$7,460M"
+      yoy: "+470.23%"
+      mom: "−5.6%（8月が過去最高）"
+      source: "https://statementdog.com/news/17832"
+      status: reported_unverified
 
 MEMORY_PRICES:
   - product: "TrendForce 製品別契約価格（conventional DRAM、HBM、server DDR5、mobile LPDDR、DDR4、NAND TLC/QLC、eSSD、client SSD）・スポット"
     type: "contract／spot"
-    period: "2026-10-23以降の新規発表、4Q26実績、1Q27予測"
-    change_qoq_or_mom: "unconfirmed（検索2回・取得2回。見つかったのは2026-01-05『1Q26 conventional DRAM +55〜60%・NAND +33〜38%』と2026-06-02『HBM契約価格は2027年に数倍』の旧記事のみ。日次11/3・11/4の検索でも新規発表なし。4Q26予測 DRAM +10〜15%・NAND +15〜20%（9/30）から更新なし）"
+    period: "2026-11-06以降の新規発表、4Q26実績、1Q27予測"
+    change_qoq_or_mom: "unconfirmed（検索1回で11月の新規発表は見つからず。3週連続。日次11/9〜11/13の検索でも新規なし。4Q26予測 DRAM +10〜15%・NAND +15〜20%（9/30）から更新なし）"
     level: unconfirmed
-    source: "https://dramexchange.com/WeeklyResearch/Post/2/12574.html（2026-01-05）； https://dramexchange.com/WeeklyResearch/Post/2/12718.html（2026-06-02）"
+    source: "n/a（検索結果は 2026-05-29・06-02・07-30 の旧リリース、Counterpoint『memory price tracker november』（有料、未取得）、cryptobriefing『TrendForce PC DRAM prices rise 4Q26』（日付未確認、未取得））"
     tier: 2
     status: unconfirmed
+  - product: "DRAM・NAND 2027年の需給見通し（TrendForce、参考：今週の新規発表ではない）"
+    type: contract
+    period: "2026〜2027年（2026-07-30 公表）"
+    change_qoq_or_mom: "DRAM：2026年の充足率 約−1〜−2%、『2027年に需給ギャップはさらに広がる』、新規能力の寄与は2H27から、本格的な出力は2028年。価格は『upward trajectory』。NAND：『2027年に充足率がプラスに転じる』『2H27に供給が緩む環境に入る』『供給制約からよりバランスした市場へ』。消費者向けは2027年も出荷減。上振れ要因はエージェントAIの普及"
+    level: undisclosed
+    source: "https://iconnect007.com/article/150995/2027-memory-market-sees-diverging-dram-nand-trends/150992/smt（TrendForce のリリース転載、2026-07-30）"
+    tier: 2
+    status: "confirmed（7月時点の見通し。期間内の新規発表ではない）"
   - product: "HBM 契約価格（TrendForce、2027年見通し）"
     type: contract
     period: "2027年"
-    change_qoq_or_mom: "『数倍（multiples higher）』の見出し、倍率の数値なし。年次価格メカニズムのため四半期の市況上昇が契約価格に反映されにくいと説明。HBMのDRAMウエハー投入比率は2025年末18%・2026年末22%・2027年末30%（ビット供給比率8%・9%・13%）の推定"
+    change_qoq_or_mom: "『数倍』の見出し（2026-06-02、前回記録）。今週の更新なし"
     level: undisclosed
-    source: "https://dramexchange.com/WeeklyResearch/Post/2/12718.html（2026-06-02、旧記事）"
+    source: "https://dramexchange.com/WeeklyResearch/Post/2/12718.html（前回）"
     tier: 2
-    status: "confirmed（6月時点の記事。期間内の新規発表ではない）"
-  - product: "汎用DRAM ASP（Nanya）"
+    status: "confirmed（6月時点の記事）"
+  - product: "汎用DRAM（Winbond・Nanya の会社説明）"
     type: contract
-    period: "4Q26見通し"
-    change_qoq_or_mom: "『まだ上昇余地がある』（数値なし、会社発言の報道）"
+    period: "3Q26実績・4Q26見通し"
+    change_qoq_or_mom: "Winbond：3Qは販売価格とビット出荷がともに上昇、DRAM供給は『仍相當吃緊』。Nanya：『4QのDRAM平均販売単価はまだ上昇余地』（前回）、『記憶體價格與需求同步回升』。数値なし"
     level: undisclosed
-    source: "https://newtalk.tw/news/view/2026-11-03/1069052"
-    tier: 3
+    source: "https://statementdog.com/news/17832（2026-10-08）； https://newtalk.tw/news/view/2026-11-03/1069052（前回）"
+    tier: "3〜4"
     status: reported_unverified
-  - product: "メモリー価格（買い手側：Qualcomm）"
-    type: "contract（スマホ向けの投入コスト）"
-    period: "FQ4 FY2026〜FY2027"
-    change_qoq_or_mom: "『メモリーなどの投入コスト上昇』で利益率が圧迫、値上げ転嫁は2027年度下期から。『メモリーの不足と値上がりがスマホメーカーの需要を弱めるおそれ』（年次報告書）。7月時点：『メモリー価格の前例のない上昇と供給制約』"
-    level: undisclosed
-    source: "https://financefeeds.com/qualcomm-shares-drop-5-75-after-hours-as-q1-earnings-forecast-misses-estimates/ ； https://www.webull.com/news/15315809136616448（7月）"
-    tier: 4
-    status: reported_unverified
-  - product: "NAND（Kioxia・SanDisk）ASP・ビット出荷"
+  - product: "DRAM（Applied Materials の顧客の投資配分、参考）"
     type: contract
-    period: "2Q FY2026／FQ1 FY2027"
-    change_qoq_or_mom: "unconfirmed（Kioxiaは決算PDF取得拒否、SanDiskはリリースに記載なし）"
-    level: unconfirmed
-    source: "n/a"
-    tier: "n/a"
-    status: unconfirmed
+    period: "FQ4 FY2026"
+    change_qoq_or_mom: "AMAT の半導体装置売上のうち DRAM 向け33%（決算リリース、日次11/12）。価格ではなく装置投資の配分"
+    level: "n/a"
+    source: "https://www.stocktitan.net/news/AMAT/applied-materials-announces-fourth-quarter-and-fiscal-year-2026-7z5nei8eafpd.html"
+    tier: 1
+    status: confirmed
 
 SUPPLY_INVENTORY:
-  - {company: "Micron", item: inventory_days, value: 131.4, prev_q: 121.8, prev_y: 121.4, period: "FQ4 2026（2026-08-31）。棚卸資産US$10,372M（8-Kで一次確認済み）", source: "https://finance.yahoo.com/quote/MU/financials/", source_kind: yahoo, status: "reported_unverified（日数。金額は前回8-Kで一致）"}
-  - {company: "SanDisk", item: inventory_days, value: 166.0, prev_q: 177.5, prev_y: 107.1, period: "FQ1 FY2027（2026-09-30）。棚卸資産US$3,016M（IRで一次確認済み）", source: "https://finance.yahoo.com/quote/SNDK/financials/", source_kind: yahoo, status: "reported_unverified（日数。金額は前回IRで一致）"}
-  - {company: "Western Digital", item: inventory_days, value: 87.7, prev_q: 80.0, prev_y: 79.7, period: "FQ1 FY2027（2026-09-30）。棚卸資産US$1,781M、売上US$4,381M（+55.5% YoY）", source: "https://finance.yahoo.com/quote/WDC/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "Seagate", item: inventory_days, value: 85.7, prev_q: 82.6, prev_y: 85.5, period: "FQ1 FY2027（2026-09-30）。売上US$4,233M（+61.0% YoY）", source: "https://finance.yahoo.com/quote/STX/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "NVIDIA", item: inventory_days, value: 119.3, prev_q: 114.7, prev_y: 105.6, period: "FQ2 FY2027（2026-07-31）。棚卸資産US$31,575M（+22.4% QoQ）", source: "https://finance.yahoo.com/quote/NVDA/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Micron", item: inventory_days, value: 131.4, prev_q: 121.8, prev_y: 121.4, period: "FQ4 2026（2026-08-31）。棚卸資産US$10,372M（8-Kで一次確認済み）。更新なし（次回12月中旬）", source: "https://finance.yahoo.com/quote/MU/financials/", source_kind: yahoo, status: "reported_unverified（日数。金額は8-Kで一致。XBRL未照合）"}
+  - {company: "SanDisk", item: inventory_days, value: 166.0, prev_q: 177.5, prev_y: 107.1, period: "FQ1 FY2027（2026-09-30）。棚卸資産US$3,016M（IRで一次確認済み）", source: "https://finance.yahoo.com/quote/SNDK/financials/", source_kind: yahoo, status: "reported_unverified（日数。XBRL未照合）"}
+  - {company: "Western Digital", item: inventory_days, value: 87.7, prev_q: 80.0, prev_y: 79.7, period: "FQ1 FY2027（2026-09-30）。棚卸資産US$1,781M", source: "https://finance.yahoo.com/quote/WDC/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Seagate", item: inventory_days, value: 85.7, prev_q: 82.6, prev_y: 85.5, period: "FQ1 FY2027（2026-09-30）", source: "https://finance.yahoo.com/quote/STX/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "NVIDIA", item: inventory_days, value: 119.3, prev_q: 114.7, prev_y: 105.6, period: "FQ2 FY2027（2026-07-31）。棚卸資産US$31,575M。FQ3 は11/17", source: "https://finance.yahoo.com/quote/NVDA/financials/", source_kind: yahoo, status: reported_unverified}
   - {company: "AMD", item: inventory_days, value: 169.1, prev_q: 144.5, prev_y: 149.0, period: "3Q26（2026-09-30）。棚卸資産US$11,463M", source: "https://finance.yahoo.com/quote/AMD/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "Broadcom", item: inventory_days, value: 45.1, prev_q: 58.2, prev_y: 37.8, period: "FQ3 FY2026（2026-07-31）", source: "https://finance.yahoo.com/quote/AVGO/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "Applied Materials", item: inventory_days, value: 131.9, prev_q: 145.7, prev_y: 141.3, period: "FQ3 FY2026（2026-07-31）。FQ4は11/12発表", source: "https://finance.yahoo.com/quote/AMAT/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "Lam Research", item: inventory_days, value: 105.6, prev_q: 120.0, prev_y: 141.2, period: "FQ1 FY2027（2026-09-30）。売上US$8,219M（機械取得、前回tier4の『US$8.22B』と一致）", source: "https://finance.yahoo.com/quote/LRCX/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "KLA", item: inventory_days, value: 235.9, prev_q: 235.0, prev_y: 241.4, period: "FQ1 FY2027（2026-09-30）。売上US$4,136M（+28.9% YoY）", source: "https://finance.yahoo.com/quote/KLAC/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "Qualcomm", item: inventory_days, value: 154.6, prev_q: 163.3, prev_y: 118.0, period: "FQ4 FY2026（2026-09-30）。棚卸資産US$8,640M（前年比で日数+36.6日）", source: "https://finance.yahoo.com/quote/QCOM/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Broadcom", item: inventory_days, value: 45.1, prev_q: 58.2, prev_y: 37.8, period: "FQ3 FY2026（2026-07-31）。FQ4は12月", source: "https://finance.yahoo.com/quote/AVGO/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Applied Materials", item: inventory_days, value: 131.9, prev_q: 145.7, prev_y: 141.3, period: "FQ3 FY2026（2026-07-31）。FQ4（10月期、11/12発表）は機械取得に未反映", source: "https://finance.yahoo.com/quote/AMAT/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Lam Research", item: inventory_days, value: 105.6, prev_q: 120.0, prev_y: 141.2, period: "FQ1 FY2027（2026-09-30）", source: "https://finance.yahoo.com/quote/LRCX/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "KLA", item: inventory_days, value: 235.9, prev_q: 235.0, prev_y: 241.4, period: "FQ1 FY2027（2026-09-30）", source: "https://finance.yahoo.com/quote/KLAC/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Qualcomm", item: inventory_days, value: 154.6, prev_q: 163.3, prev_y: 118.0, period: "FQ4 FY2026（2026-09-30）", source: "https://finance.yahoo.com/quote/QCOM/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Microchip", item: inventory_days, value: 183.7, prev_q: 174.6, prev_y: 198.4, period: "2026-09-30（今回反映）", source: "https://finance.yahoo.com/quote/MCHP/financials/", source_kind: yahoo, status: reported_unverified}
+  - {company: "Onto Innovation", item: inventory_days, value: 208.4, prev_q: 215.9, prev_y: 219.4, period: "3Q26（2026-09-30）", source: "https://finance.yahoo.com/quote/ONTO/financials/", source_kind: yahoo, status: reported_unverified}
   - {company: "TSMC", item: inventory_days, value: 77.6, prev_q: 85.6, prev_y: 65.5, period: "3Q26（2026-09-30、TWD）", source: "https://finance.yahoo.com/quote/TSM/financials/", source_kind: yahoo, status: reported_unverified}
-  - {company: "Kioxia", item: contract, value: "来年（2027年）の計画生産分は完売済み（CFO、報道）。3Qガイダンス未達は出荷時期（9月期への前倒し・3月期への後ずれ）が主因と説明", period: "2026-10-30 説明", source: "https://247wallst.com/investing/2026/11/02/micron-falls-4-as-kioxias-cautious-outlook-hits-memory-stocks-western-digital-drops-5-sandisk-slides-3/", source_kind: press, status: reported_unverified}
-  - {company: "Nanya Technology", item: contract, value: "顧客は供給契約の期間延長を希望。新規能力は装置搬入から量産まで時間がかかり短期の供給不足は解消しにくい（会社説明、報道）", period: "2026-11 説明会の報道", source: "https://newtalk.tw/news/view/2026-11-03/1069052", source_kind: press, status: reported_unverified}
-  - {company: "Microsoft", item: contract, value: "未開始リース US$364.6B（主にデータセンター）。第三者からの容量引き渡しの遅れ（tier4）", period: 2026-09-30, source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/", source_kind: press, status: reported_unverified}
+  - {company: "Winbond", item: contract, value: "DRAM供給は『仍相當吃緊』、逼迫は続く見込み。会長『AIデータセンターの成長が続けば2027年のメモリー総需要は今年を超える可能性』", period: "2026-10 の報道（3Q説明）", source: "https://statementdog.com/news/17832", source_kind: press, status: reported_unverified}
+  - {company: "Kioxia／Nanya", item: contract, value: "Kioxia『2027年の計画生産分は完売』、Nanya『顧客は供給契約の期間延長を希望』（前回、報道。今週の更新なし）", period: "2026-10-30／11-03", source: "evidence/2026-11-06.yaml", source_kind: press, status: reported_unverified}
   - {company: "SK hynix", item: "capex／inventory_days", value: "unconfirmed（2027年CapEX額・在庫日数は今回も未取得）", period: "3Q26", source: "n/a", source_kind: "n/a", status: unconfirmed}
 
 EQUIPMENT:
-  - company: "Lam Research"
-    item: wfe_outlook
-    value: "暦年2026年 US$150B台半ば／暦年2027年 US$200B超（暫定）（前回tier4、更新なし）。機械取得の売上US$8,219Mは前回値と一致（matches_machine）"
-    period: "2026-10-21 説明会"
-    source: "https://sec-api.io/insights/financial-analysis-of-lam-research-lrcx-q1-fy27-earnings"
-    status: reported_unverified
   - company: "KLA"
-    item: "wfe_outlook／china_share／backlog"
-    value: "unconfirmed（10/28発表の内容は今回も未取得。機械取得：FQ1 FY2027売上US$4,136M、+28.9% YoY、+13.1% QoQ、在庫日数235.9日）"
-    period: "FQ1 FY2027"
-    source: "https://finance.yahoo.com/quote/KLAC/financials/"
-    status: unconfirmed
+    item: "wfe_outlook／china_share"
+    value: "暦年2026年WFE（先端パッケージ込み）の見通しを『US$150B台半ば』に引き上げ、暦年2027年は『US$200B超』を見込む。中国比率は FQ1 34%（最大の地域）、12月期は低下し暦年2026年は20%台後半の見込み。FQ1 売上US$4.14B（+29% YoY、+13% QoQ、ガイダンス中央値超）、FQ2（12月期）ガイダンス US$4.7B±0.2B。先端パッケージ向け工程管理装置は暦年2026年に約US$1.1B（+70%超）。12月期の工程管理装置ではメモリー約40%（うちDRAM約84%・NAND約16%）"
+    period: "FQ1 FY2027（2026-10-28 発表）"
+    source: "https://www.securities.io/kla-posts-fiscal-q1-revenue-of-4-14-billion-above-guidance-midpoint/（2026-10-28）"
+    status: "reported_unverified（tier4。決算リリース・説明会の一次は未取得。機械取得の売上US$4,136M と一致）"
+  - company: "Lam Research"
+    item: "wfe_outlook／china_share"
+    value: "暦年2026年 US$150B台半ば／暦年2027年 US$200B超（暫定）／中国35.1%（前回 tier4、更新なし）。KLA の見通しと数値が一致"
+    period: "2026-10-21 説明会"
+    source: "https://sec-api.io/insights/financial-analysis-of-lam-research-lrcx-q1-fy27-earnings（前回）"
+    status: reported_unverified
+  - company: "Applied Materials"
+    item: "wfe_outlook／china_share"
+    value: "中国比率25%（FQ4 FY2026。8月のFQ3は26%）。半導体装置売上のうちDRAM向け33%。『半導体装置事業は暦年2026年に40%超の成長』。2027年WFEの数値は取得範囲になし（8月時点では『2027年も過去最高の年』『一部顧客との対話は2030年まで』）。FQ1 FY2027 ガイダンス US$11.1B±0.5B（14週）"
+    period: "FQ4 FY2026（2026-11-12 発表）"
+    source: "https://www.stocktitan.net/news/AMAT/applied-materials-announces-fourth-quarter-and-fiscal-year-2026-7z5nei8eafpd.html（日次11/12）； https://www.webull.com/news/15400606166574080（8月、参考）"
+    status: "confirmed（決算リリースの範囲）／unconfirmed（2027年WFEの数値）"
   - company: "ASML"
     item: "backlog／wfe_outlook／china_share"
-    value: "unconfirmed（機械取得：3Q26売上EUR 11,662M、+55.2% YoY、+25.0% QoQ、在庫日数218.4日（前期249.0、前年294.4））"
+    value: "unconfirmed（今回も未取得。機械取得：3Q26売上EUR 11,662M、+55.2% YoY、在庫日数218.4日）"
     period: "3Q26"
     source: "https://finance.yahoo.com/quote/ASML/financials/"
     status: unconfirmed
-  - company: "Applied Materials"
-    item: "wfe_outlook／china_share"
-    value: "unconfirmed（FQ4 FY2026は2026-11-12発表、market-data の earnings_within_5d で日付確定）"
-    period: "FQ4 FY2026"
-    source: "n/a"
-    status: unconfirmed
+  - company: "Onto Innovation"
+    item: backlog
+    value: "受注残US$13億超、2026年売上+45%超の見込み、4Q売上ガイダンスUS$430M〜450M（日次11/9、8-K）"
+    period: "3Q26"
+    source: "https://www.sec.gov/Archives/edgar/data/0000704532/000119312526453582/onto-ex99_1.htm"
+    status: confirmed
 
 PACKAGING:
-  - item: "TSMC CoWoS月産能力・増強計画"
-    value: unconfirmed
-    period: "2026-2027"
-    source: "n/a（予算到達で未調査）"
-    status: unconfirmed
+  - item: "TSMC CoWoS 月産能力（報道・アナリスト推定）"
+    value: "2026年：13万枚超（工商時報が引くアナリスト）／約10.6万枚（Goldman Sachs、年127.5万枚）。2027年：目標20万枚（工商時報）／約22.75万枚（Goldman、年273万枚、+114%）。2028年：約29万枚（Goldman、+27%）。9月の報道では『2028年までに倍増』"
+    period: "2026〜2028"
+    source: "https://trendforce.com/news/2026/10/27/news-tsmc-reportedly-eyes-20-cowos-price-hike-skips-equipment-price-renegotiations-amid-ai-demand-surge（2026-10-27、工商時報ほか）； https://www.trendforce.com/news/2026-09-14/news-tsmc-reportedly-targets-22-2nm-16-3nm-capacity-boost-by-mid-2027-cowos-to-double-by-2028/（見出し）"
+    status: "reported_unverified（サプライチェーン報道・アナリスト推定。TSMCの開示ではない。推定値に幅）"
+  - item: "TSMC CoWoS 価格・ウエハー価格（報道）"
+    value: "CoWoS は最大20%の値上げを検討（工商時報は受託・OSATで10〜20%）、開始時期は未記載。ウエハー価格は2027年1月から3〜6%引き上げ（2nm・3nmが最大、自由時報）。装置のリードタイムは3〜6か月→6〜8か月に伸び、TSMCは値引き交渉なしで発注（工商時報）。5倍レチクルの CoWoS は量産中、9倍・14倍は開発中（CEO、決算説明会）"
+    period: "2026-10-27 の報道"
+    source: "https://trendforce.com/news/2026/10/27/news-tsmc-reportedly-eyes-20-cowos-price-hike-skips-equipment-price-renegotiations-amid-ai-demand-surge"
+    status: reported_unverified
+  - item: "後工程のテスト時間（報道）"
+    value: "Blackwell の最終テスト時間は Hopper の約4倍、Rubin は約7倍になりうる（Nomura、ソウル経済）"
+    period: "2026-10"
+    source: "同上"
+    status: reported_unverified
+  - item: "Onto Innovation の先端パッケージ向け売上"
+    value: "3Q26に過去最高（金額は取得範囲になし、8-K）"
+    period: "3Q26"
+    source: "https://www.sec.gov/Archives/edgar/data/0000704532/000119312526453582/onto-ex99_1.htm"
+    status: confirmed
   - item: "Amkor 3Q26（前回値）"
-    value: "Computing比率26%、4Q売上ガイダンスUS$1.90B〜2.00B（更新なし）。機械取得の売上US$1,991M は前回8-Kと一致"
+    value: "Computing比率26%、4Q売上ガイダンスUS$1.90B〜2.00B（更新なし）"
     period: "3Q26"
     source: "https://www.sec.gov/Archives/edgar/data/0001047127/000104712726000049/amkr9302026erex-991.htm"
     status: confirmed
 
 TIERING_TECH:
-  - topic: "QLC eSSD（Kioxia E1.L、ハイパースケール向け）"
-    fact: "2026-10-09 にハイパースケールデータセンター向けE1.L QLC SSDを発表、2026-10-13 にエンタープライズSSDの直接液冷（DLC）対応を発表（IR一覧の見出し。製品の出荷段階は本文未取得）"
-    stage_0_5: "4（製品発表。量産出荷・顧客採用の段階は未確認）"
-    evidence_grade_A_D: B
-    source: "https://www.kioxia-holdings.com/en-jp/news/2026.html（https://www.kioxia.com/en-jp/business/news/2026/20261009-1.html、https://www.kioxia.com/en-jp/business/news/2026/20261013-1.html）"
-    status: "confirmed（発表の事実）"
-  - topic: "HBM4（SK hynix・Samsung）、HBM4E、QLC SSD（Samsung）、4F² DRAM"
-    fact: "前回evidence（10/30）から新しい一次発表なし"
-    stage_0_5: "前回どおり（HBM4 4、HBM4E 3、QLC SSD 4）"
+  - topic: "HBF（High Bandwidth Flash、SanDisk・SK hynix）"
+    fact: "2026-08-03 に OCP の枠組みで最初の HBF 技術仕様を公開（2月の作業開始から6か月）。範囲：システム・電気インターフェース、基本性能、xPU-HBF ホストインターフェース、HBFダイスタックの信頼性・パッケージ指針、読み書きのソフトウェア指針。HBM と共存する設計。Google と Tenstorrent がコンソーシアムに参加。対象は AI 推論（LLM の提供）。サンプル・顧客認定・量産の日付、容量・帯域の数値は発表になし"
+    stage_0_5: "1（標準化：OCP 仕様の第1版を公開。試作・顧客認定の公表なし）"
+    evidence_grade_A_D: A
+    source: "https://www.sandisk.com/company/newsroom/press-releases/2026/2026-08-03-Sandisk-and-sk-hynix-advance-global-standardization-of-hbf（SanDisk の一次リリース）"
+    status: "confirmed（8月時点の発表。期間内の新規発表ではない）"
+  - topic: "QLC eSSD（Kioxia E1.L）・HBM4／HBM4E・4F² DRAM"
+    fact: "前回 evidence から新しい一次発表なし（今回は調べず）"
+    stage_0_5: "前回どおり（QLC eSSD 4、HBM4 4、HBM4E 3）"
     evidence_grade_A_D: "前回どおり"
-    source: "evidence/2026-10-30.yaml"
+    source: "evidence/2026-11-06.yaml"
     status: "confirmed（前回値）"
-  - topic: "HBF／CXL／CPO・光I/O／SRAM中心設計"
-    fact: "unconfirmed（予算到達で未調査。Marvell による Lumentum 買収（11/2、企業価値US$1,150億、全株式交換、2028年上半期完了見込み）は光部品の統合に関係する事実として記録）"
+  - topic: "CXL／CPO・光I/O／SRAM中心設計"
+    fact: "unconfirmed（予算到達で未調査）"
     stage_0_5: "n/a"
     evidence_grade_A_D: "n/a"
-    source: "https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026（日次11/2）"
+    source: "n/a"
     status: unconfirmed
 
 AI_EFFICIENCY:
@@ -595,99 +628,114 @@ TEARDOWN:
     source: "n/a"
 
 POLICY_GEO:
-  - event: "米中間選挙（11/3）：民主党が上下両院を制し、テキサス州知事も民主党ヒノホサ。11/5の半導体急落（SOX −12.2%、2020年3月以来）の見出しは『AIデータセンターの規制・建設遅延の懸念』。公式の新しい措置は出ていない（DC_TIMING参照）"
-    date: "2026-11-03〜11-05"
-    affected: "AIデータセンター建設（テキサス）、半導体・メモリー株全般、川下5銘柄（CRWV・NBIS・IREN・GLXY・VRT）"
-    source: "https://finance.yahoo.com/markets/article/nvidia-amd-micron-sandsik-lead-chip-sector-higher-134336542.html（日次11/6）； https://www.zerohedge.com/ai/texas-governor-elect-wants-data-center-pause-white-house-says-communities-should-decide"
-    tier: "3〜4"
-    status: "reported_unverified（選挙結果は日次で確認済み、急落理由は報道の解釈）"
-  - event: "米国の対中輸出規制・関税：10/30〜11/6に新しい措置は検索で確認できず。既存：232条に基づく半導体関税（25%、例外付き、2026年1月の報道）、301条の中国製半導体への追加関税は2027年6月発効予定（法律事務所の解説の見出し）、2026年4月の輸出管理の執行強化（見出し）"
-    date: "2026-10-30〜11-06"
-    affected: "対中出荷（装置・チップ）、中国製レガシー半導体の輸入"
-    source: "https://perkinscoie.com/insights/article/presidential-action-semiconductors-and-critical-minerals-under-section-232（見出し）； https://www.jdsupra.com/legalnews/blank-slate-or-bargaining-chip-9945113/（見出し）"
-    tier: "2（見出しのみ）"
-    status: "unconfirmed（新規措置なしは検索1回の範囲）"
-  - event: "原油：ブレント 104.77ドル（11/2、−7.63%、米イラン協議への期待）、WTIは週で−13%の約91ドル（11/6、日次）。前回の117.64ドル（10/30）から低下。ホルムズ海峡の一次確認は未了"
-    date: "2026-11-02〜11-06"
-    affected: "インフレ（X2）・地政学（X4）"
-    source: "https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026 ； 日次11/6"
-    tier: "3〜4"
-    status: reported_unverified
-  - event: "台湾・韓国の重大ニュース：確認できず（台湾メモリー株の11/3ストップ安の理由は見出しのみ『AI先行き懸念、中間選挙の様子見、外資売り越し』）"
-    date: "2026-10-30〜11-06"
+  - event: "NVIDIA の CEO 交代：ジェンスン・フアン氏が社長・CEO・取締役を即日辞任、CFO コレット・クレス氏が暫定CEO、ハーベイ・ジョーンズ氏が取締役会議長（8-K、理由の記載なし）。報道は11/9から『CEOが中国の情報活動の標的になった疑い』を受けた取締役会の独立調査を報じていた（報道、一次未確認）。政府機関の措置は報道にも出ていない"
+    date: 2026-11-12
+    affected: "NVIDIA（決算 11/17）、AI半導体全般（11/13は監視42銘柄すべて下落、日次）"
+    source: "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm ； 日次11/9〜11/13（Motley Fool・TheStreet・Yahoo Finance）"
+    tier: "1（辞任・暫定体制）／3〜4（調査の経緯）"
+    status: "confirmed（辞任・暫定体制）／reported_unverified（調査の内容）"
+  - event: "米国の対中輸出規制・関税：BIS の公式ニュース一覧に 2026-10-15〜11-14 の新しい項目なし（最新は 10/2 の執行和解）。既存：2026-01-13 に H200・MI325X 等の対中ライセンス審査を個別審査に変更、2026-07-10 に UAE を A:5 に再分類、2026-02-12 に Applied Materials が US$252M の制裁金（中国向け装置の無許可輸出）"
+    date: "2026-11-06〜11-13"
+    affected: "対中出荷（装置・AIチップ）"
+    source: "https://www.bis.gov/news-updates"
+    tier: 1
+    status: "confirmed（公式一覧に新規なし）"
+  - event: "台湾・韓国の重大ニュース：今回は検索せず（日次11/9〜11/13にも該当なし）。アジアのメモリー株は 11/9 に台湾が大幅高（Winbond +10.0%、Nanya +7.7%）、11/13 は SK hynix 原株 −3.0%・Samsung −1.0%・Kioxia −2.2%（data）"
+    date: "2026-11-06〜11-13"
     affected: unconfirmed
-    source: "https://newtalk.tw/news/view/2026-11-03/1069052（見出し）"
-    tier: 3
+    source: "data ブランチ（semis_snapshot.csv）、日次11/9"
+    tier: "n/a"
     status: unconfirmed
+  - event: "原油：11/12 に原油高をきっかけに債券が売られ10年金利が10月以来の高さ（Yahoo Finance の報道、日次11/13）。水準は未確認。前回のブレント104.77ドル（11/2）以降の値は取得せず"
+    date: 2026-11-12
+    affected: "インフレ（X2）・地政学（X4）"
+    source: "https://finance.yahoo.com/markets/live/stock-market-today-friday-november-13-dow-sp-500-nasdaq-nvidia-ppi-141451558.html（日次11/13）"
+    tier: 3
+    status: reported_unverified
 
 MACRO:
   - item: "DGS10（米10年国債利回り）"
-    value: "4.84%（5本 −0.14pt、21本 −0.43pt、63本 +0.15pt）"
-    as_of: 2026-11-05
-    source: "semis_manifest.json（FRED）"
+    value: "5.10%（5本 +0.20pt、21本 −0.11pt、63本 +0.42pt）。^TNX 終値 5.154%（11/13）"
+    as_of: 2026-11-12
+    source: "semis_manifest.json（FRED）／semis_snapshot.csv"
     status: confirmed
   - item: "DFII10（米10年実質金利）"
-    value: "2.60%（5本 −0.03pt、21本 −0.31pt、63本 +0.17pt）"
-    as_of: 2026-11-05
+    value: "2.86%（5本 +0.22pt、21本 −0.02pt、63本 +0.44pt）"
+    as_of: 2026-11-12
+    source: "semis_manifest.json（FRED）"
+    status: confirmed
+  - item: "DGS2（米2年国債利回り）"
+    value: "4.86%（5本 +0.28pt、21本 +0.07pt、63本 +0.66pt）"
+    as_of: 2026-11-12
     source: "semis_manifest.json（FRED）"
     status: confirmed
   - item: "DTWEXBGS（ドル指数・広義）"
-    value: "121.666（5本 +0.345、21本 +0.696＝約+0.6%、63本 +1.962）"
-    as_of: 2026-10-30
+    value: "121.88（5本 +0.215、21本 +0.625、63本 +2.815）"
+    as_of: 2026-11-06
     source: "semis_manifest.json（FRED、週次遅延）"
     status: confirmed
-  - item: "米10月雇用統計"
-    value: "非農業部門雇用者数 +16.5万人（予想約+6万人）、失業率4.1%、8〜9月分 +8.4万人の上方修正。12月利上げの織り込みは65〜68%（報道）"
-    as_of: 2026-11-06
-    source: "米国株側の週次レポート 20261106-WEEKLY（BLS一次）経由、日次11/6から転記"
-    status: "confirmed（転記）"
+  - item: "HYスプレッド（BAMLH0A0HYM2）／CCC格（BAMLH0A3HYC）"
+    value: "3.20%（5本 −0.12、21本 +0.04、63本 +0.53）／13.14%（5本 +0.17、21本 +0.47、63本 +3.02）"
+    as_of: 2026-11-12
+    source: "semis_manifest.json macro.latest（FRED、ICE BofA）"
+    status: confirmed
+  - item: "米10月CPI"
+    value: "総合 前月比 +0.4%（季節調整済み）、コア +0.3%、エネルギー +0.7%、食品 +0.5%。前年比は BLS が公表せず（2025年10月分が政府閉鎖で未収集のため）。報道は『予想より高い』（abc7・stockanalysis の見出し）。次回（11月分）は 2026-12-10"
+    as_of: 2026-11-10
+    source: "https://www.bls.gov/news.release/cpi.htm"
+    status: confirmed
+  - item: "米10月PPI"
+    value: "総合 前月比 +0.3%（予想 +0.4%、前月 +1.3%）、前年比 +6.5%（2022年11月以来の大きさ）。コアは未確認"
+    as_of: 2026-11-13
+    source: "https://finance.yahoo.com/markets/live/stock-market-today-friday-november-13-dow-sp-500-nasdaq-nvidia-ppi-141451558.html（BLS の発表の報道、日次11/13）"
+    status: reported_unverified
   - item: "FOMC（2026-10-28）"
-    value: "3.75〜4.00%で据え置き、利上げ主張の反対2票（前回確認、更新なし）。次回FOMCは12月（日付未確認）"
+    value: "3.75〜4.00%で据え置き、利上げ主張の反対2票（前回確認、更新なし）。12月会合の利上げは報道で『ほぼ織り込み』（TheStreet 11/11、Capital.com のアナリスト、日次11/11）。次回FOMCの日付は未確認"
     as_of: 2026-10-28
-    source: "https://www.federalreserve.gov/monetarypolicy/files/monetary20261028a1.pdf"
-    status: "confirmed（前回値）"
-  - item: "米CPI（9月分）／PCE（9月分）／10月CPI（11/10発表）"
-    value: "unconfirmed（検索1回で数値を含むページなし。10月CPIは2026-11-10 8:30 ET）"
-    as_of: "n/a"
-    source: "n/a"
-    status: unconfirmed
+    source: "https://www.federalreserve.gov/monetarypolicy/files/monetary20261028a1.pdf（前回）"
+    status: "confirmed（決定）／reported_unverified（織り込み）"
   - item: "VIX"
-    value: "25.64（11/6、−9.0%。11/5終値28.18、ザラ場高値28.36）"
-    as_of: 2026-11-06
-    source: "semis_snapshot.csv／levels.json"
+    value: "19.30（11/13、+3.21%、1週 −24.7%。11/5終値28.18）"
+    as_of: 2026-11-13
+    source: "semis_snapshot.csv"
+    status: confirmed
+  - item: "USD/KRW"
+    value: "1,335.11（11/13、1週 −1.57%＝ウォン高。前回 1,356.34）"
+    as_of: 2026-11-13
+    source: "semis_snapshot.csv"
     status: confirmed
 
 DRAM_ETF:
-  checked: true
-  holdings_as_of: "2026-09-30（公式ページ『Top Exposures (as of 09/30/2026)』。表示はロゴのみ：Micron、Samsung、SK hynix、CXMT、Seagate。ウェイトは空欄（JSで読み込まれる数値はスクレイプで空）"
-  nav_premium_pct: "unconfirmed（公式ページの NAV・市場価格・プレミアム/ディスカウント欄が空）"
-  spread_bps: "unconfirmed（30日中央値ビッドアスク欄が空）"
-  aum: "unconfirmed（公式ページ欄が空。検索結果の要約（etfbeacon）に『AUM $26.92B、NAV $58.92、保有14』とあるが日付不明でNAVが11/6終値39.29と整合しないため不採用、UNCONFIRMED に seen_value）"
-  top5_pct: "unconfirmed（ウェイト非表示）"
-  policy_change: "なし（目論見書補足・分配・分割・ティッカー変更の告知は表示なし。運用：アクティブ、非分散型、Cboe BZX上場、設定2026-04-02、経費率0.65%、四半期リバランス、トータルリターン・スワップを併用（RIC分散要件のため）、『メモリー企業』の定義は売上または利益の50%以上がHBM・DRAM・NAND・NOR・HDD・特殊メモリー。預託証券の原証券が無議決権優先株の場合があるとのリスク記載）"
-  source: "https://www.roundhillinvestments.com/etf/dram/（2026-11-09 取得）"
+  checked: false
+  holdings_as_of: "2026-09-30（前回 11/9 の確認値。月1回の項目で、11月分は前回確認済みのため今回は対象外。flags の DRAM は short_history:157 のみで異常なし）"
+  nav_premium_pct: "unconfirmed（前回、公式ページの欄が空）"
+  spread_bps: "unconfirmed（前回）"
+  aum: "unconfirmed（前回）"
+  top5_pct: "unconfirmed（前回）"
+  policy_change: "前回確認でなし（次回確認は12月の最初の実行）"
+  source: "https://www.roundhillinvestments.com/etf/dram/（2026-11-09 取得、前回）"
 
 MARKET_FILL: []
 
 FUNDAMENTAL_LEVELS:
   - item: "TSMC 3か月累計売上YoY（NT$）"
-    value: "+50.9%（3Q26）"
+    value: "+50.9%（3Q26。4Q26は10月単月のみ）"
     prev: "+50.9%（3Q26）"
-    change: "0（新規発表なし。10月月次は11/10見込み）"
+    change: "0"
     as_of: 2026-10-15
     source: "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm"
   - item: "TSMC 単月売上YoY"
-    value: "+54.6%（2026-09、NT$511.86B）"
-    prev: "+54.6%（2026-09）"
-    change: "0"
-    as_of: 2026-10-08
-    source: "https://pr.tsmc.com/english/news/3343"
-  - item: "TSMC 1〜9月累計YoY"
-    value: "+41.1%"
-    prev: "+41.1%"
-    change: "0"
-    as_of: 2026-10-08
-    source: "https://pr.tsmc.com/english/news/3343"
+    value: "+59.7%（2026-10、NT$586.89B、MoM +14.7%）"
+    prev: "+54.6%（2026-09、NT$511.86B）"
+    change: "+5.1pt"
+    as_of: 2026-11-10
+    source: "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm"
+  - item: "TSMC 年初来累計YoY"
+    value: "+43.3%（1〜10月、NT$4,485.62B）"
+    prev: "+41.1%（1〜9月）"
+    change: "+2.2pt"
+    as_of: 2026-11-10
+    source: "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm"
   - item: "TSMC 先端ノード比率（7nm以下／3nm／2nm）"
     value: "79% / 33% / 8%（3Q26）"
     prev: "79% / 33% / 8%（3Q26）"
@@ -696,7 +744,7 @@ FUNDAMENTAL_LEVELS:
     source: "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm"
   - item: "TSMC 4Q26売上ガイダンス"
     value: "US$52.3B〜54.3B（中央値+14.1% QoQ）、粗利率65〜67%"
-    prev: "US$52.3B〜54.3B、粗利率65〜67%"
+    prev: "同上"
     change: "0"
     as_of: 2026-10-15
     source: "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm"
@@ -707,75 +755,81 @@ FUNDAMENTAL_LEVELS:
     as_of: 2026-10-15
     source: "https://www.crnasia.com/news/2026/components-and-peripherals/tsmc-third-quarter-revenue-tops-guidance-as-ceo-says-ai-dema"
   - item: "ハイパースケーラー4社 四半期CapEx合計（現金ベース）"
-    value: "US$201.923B（3Q26、SEC 10-Qで4社確認）"
-    prev: "約US$203.0B（3Q26、計算。METAは会社定義34.9B）"
-    change: "−US$1.1B（定義を現金ベースに統一。METAのファイナンスリース元本0.964Bを除外）。実質の数値変更なし"
-    as_of: 2026-11-09
-    source: "MSFT・GOOGL・AMZN・META の10-Q（sec.gov）"
+    value: "US$201.923B（3Q26）"
+    prev: "US$201.923B（3Q26）"
+    change: "0（次は1月下旬〜2月の4Q26決算）"
+    as_of: 2026-09-30
+    source: "fundamentals_latest.json ／ 4社の10-Q（前回）"
   - item: "4社CapEx合計YoY"
-    value: "+107.6%（3Q26 US$201.923B vs 3Q25 US$97.271B、SEC確認済み）"
-    prev: "unconfirmed（前回は3Q25値未取得）"
-    change: "n/a（新規）。参考：2Q26 +77% YoY（前回値）"
-    as_of: 2026-11-09
-    source: "fundamentals_latest.json hyperscalers_capex_4.latest（yoy 1.0759）＋ 4社10-Q"
+    value: "+107.6%（3Q26、SEC確認済み＝前回）"
+    prev: "+107.6%（3Q26）"
+    change: "0"
+    as_of: 2026-09-30
+    source: "fundamentals_latest.json hyperscalers_capex_4.latest（yoy 1.0759）"
   - item: "ハイパースケーラー4社 2026年CapExガイダンス合計"
-    value: "US$720B〜740B（MSFT 約170B（tier4）＋GOOGL 195〜205B（tier4）＋AMZN 約220B（一次）＋META 135〜145B（一次））"
-    prev: "US$725B〜745B（MSFT 175Bの場合）／US$720B〜740B（MSFT 170Bの場合）"
-    change: "MSFTを170Bに確定扱い（tier4の4本が一致）で上限 −US$5B。7月時点の同一基準（US$720B〜745B）比：下限0・上限 −US$5B"
-    as_of: 2026-11-09
-    source: "universalassetowners（MSFT CFO引用）、前回evidence"
+    value: "US$720B〜740B（MSFT 約170B（tier4）＋GOOGL 195〜205B（tier4）＋AMZN 約220B＋META 135〜145B）"
+    prev: "US$720B〜740B"
+    change: "0（今週の新しい発言なし）"
+    as_of: 2026-10-28
+    source: "evidence/2026-11-06.yaml"
   - item: "Microsoft 暦年2026年CapExガイダンス"
-    value: "約US$170B（CFO『approximately $170 billion』、第三者容量の引き渡し遅れが理由）。FQ2は『US$50B超』"
-    prev: "約US$175B（aiweekly本文）または約US$170B（見出し）"
-    change: "−US$5B（7月比）。一次資料は未確認（tier4）"
+    value: "約US$170B（tier4、一次未確認）"
+    prev: "約US$170B"
+    change: "0"
     as_of: 2026-10-28
     source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/"
   - item: "Microsoft 未開始リース"
-    value: "US$364.6B（主にデータセンター）"
-    prev: null
-    change: "n/a（新規）"
+    value: "US$364.6B（主にデータセンター、tier4）"
+    prev: "US$364.6B"
+    change: "0"
     as_of: 2026-09-30
-    source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/（10-Qを引用、tier4）"
+    source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/"
   - item: "Google Cloud 残存履行義務（RPO）"
-    value: "US$560.8B（全社US$567.7B、55%強を24か月以内に認識）"
-    prev: null
-    change: "n/a（新規）"
+    value: "US$560.8B"
+    prev: "US$560.8B"
+    change: "0"
     as_of: 2026-09-30
     source: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm"
   - item: "AMD データセンター売上／4Q26売上ガイダンス"
-    value: "US$8.5B（+97% YoY、3Q26）／約US$17.0B±0.3B（約+27% QoQ）"
-    prev: null
-    change: "n/a（新規）"
+    value: "US$8.5B（+97% YoY、3Q26）／約US$17.0B±0.3B。全社売上は機械取得 US$13,377M と一致"
+    prev: "US$8.5B／約US$17.0B±0.3B（pending_xbrl）"
+    change: "0"
     as_of: 2026-11-03
     source: "https://www.globenewswire.com/news-release/2026/11/03/3394824/0/en/amd-reports-third-quarter-2026-financial-results.html"
   - item: "Qualcomm スマホ向け売上YoY／FQ1 FY2027売上ガイダンス"
-    value: "−26%（US$5.14B、FQ4 FY2026）／US$10.4B〜11.2B"
-    prev: null
-    change: "n/a（新規）"
+    value: "−26%（US$5.14B）／US$10.4B〜11.2B（tier4）。全社売上は機械取得 US$10,322M と一致"
+    prev: "同上"
+    change: "0"
     as_of: 2026-11-04
-    source: "financefeeds ； aiweekly（tier4、2本一致）"
+    source: "financefeeds ； aiweekly（前回）"
   - item: "Kioxia 四半期営業利益／3Qガイダンス"
-    value: "約1.995兆円（2Q FY2026、QoQ +57.1%）／3Q 約2兆円（予想2.35兆円比 −14.9%）"
-    prev: null
-    change: "n/a（新規）"
+    value: "約1.995兆円（2Q FY2026）／3Q 約2兆円（予想比 −14.9%）（tier3〜4）"
+    prev: "同上"
+    change: "0"
     as_of: 2026-10-30
-    source: "phemex（PANews）； 247wallst（tier3〜4、2本一致）"
+    source: "phemex ； 247wallst（前回）"
   - item: "Nanya 10月売上YoY／MoM"
     value: "+487.7%／+3.1%（NT$46,476M）"
-    prev: "unconfirmed（9月・10月とも未取得）"
-    change: "n/a（新規）"
+    prev: "+487.7%／+3.1%"
+    change: "0（MOPS一次は未取得）"
     as_of: 2026-11-03
     source: "https://newtalk.tw/news/view/2026-11-03/1069052"
+  - item: "Winbond 10月売上YoY／MoM"
+    value: "+257.0%／+3.9%（NT$29,361M。検索結果の見出しのみ、要確認）"
+    prev: "9月 +256.67%／+3.44%（NT$28,249M。statementdog で今回確認）"
+    change: "YoY +0.3pt、MoM +0.5pt（10月は見出しの値）"
+    as_of: 2026-11-06
+    source: "https://finance.technews.tw/2026/11/06/wec-2344-202610-financial-report/（見出し）； https://statementdog.com/news/17832"
   - item: "Conventional DRAM 契約価格QoQ（TrendForce予測）"
     value: "+10〜15%（4Q26）"
     prev: "+10〜15%（4Q26）"
-    change: "0（10/23以降の新規発表は見つからず）"
+    change: "0（11月の新規発表は見つからず。3週連続）"
     as_of: 2026-09-30
     source: "https://technews.tw/?p=1622115"
   - item: "NAND Flash 契約価格QoQ（TrendForce予測）"
     value: "+15〜20%（4Q26）"
     prev: "+15〜20%（4Q26）"
-    change: "0（新規発表は見つからず）"
+    change: "0"
     as_of: 2026-09-30
     source: "https://technews.tw/?p=1622115"
   - item: "HBM価格前期比（TrendForce）"
@@ -791,240 +845,261 @@ FUNDAMENTAL_LEVELS:
     as_of: 2026-09-30
     source: "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000018/a2026q4ex991-pressrelease.htm"
   - item: "Micron 棚卸資産（US$）／在庫日数"
-    value: "US$10.372B／131.4日（機械取得。前期121.8日、前年121.4日）"
-    prev: "US$10.372B／日数は未算出"
-    change: "0／n/a（日数は新規）"
-    as_of: 2026-09-03
-    source: "8-K ex99.1（金額）／fundamentals_latest.json（日数）"
-  - item: "Micron FY2026設備投資"
-    value: "純額US$27.37B、FY27非開示"
-    prev: "純額US$27.37B、FY27非開示"
+    value: "US$10.372B／131.4日（前期121.8日、前年121.4日）"
+    prev: "US$10.372B／131.4日"
     change: "0"
-    as_of: 2026-09-30
-    source: "https://www.sec.gov/Archives/edgar/data/0000723125/000072312526000018/a2026q4ex991-pressrelease.htm"
+    as_of: 2026-08-31
+    source: "8-K ex99.1（金額）／fundamentals_latest.json（日数）"
   - item: "Samsung 四半期営業利益／DS部門／2026年設備投資見通し"
-    value: "107.4兆ウォン／DS 売上147.1兆・営業利益106.5兆ウォン／約84.4兆ウォン（DS 76.8兆）"
-    prev: "同上（3Q26確報）"
-    change: "0（新規発表なし）"
+    value: "107.4兆ウォン／DS 売上147.1兆・営業利益106.5兆ウォン／約84.4兆ウォン"
+    prev: "同上"
+    change: "0"
     as_of: 2026-10-29
     source: "https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results"
   - item: "SK hynix 3Q26営業利益／LTA比率"
     value: "83.3兆ウォン／2027・2028年能力の半分超（報道）"
     prev: "同上"
-    change: "0（新規発表なし。ASP・bit・2027年CapEX・在庫日数は今回も未取得）"
+    change: "0"
     as_of: 2026-10-28
     source: "https://www.sec.gov/Archives/edgar/data/0002120882/000119312526434994/d162547d6k.htm"
   - item: "SanDisk 四半期売上／non-GAAP粗利率／Datacenter売上／在庫日数"
-    value: "US$11.031B / 85.1% / US$4.802B / 166.0日（機械取得、前期177.5日、前年107.1日）。FQ2ガイダンスUS$12.2B〜12.6B"
-    prev: "US$11.031B / 85.1% / US$4.802B / 日数未算出"
-    change: "0／日数は新規"
+    value: "US$11.031B / 85.1% / US$4.802B / 166.0日。FQ2ガイダンスUS$12.2B〜12.6B"
+    prev: "同上"
+    change: "0（8対1分割は11/19発効、11/20から分割後の取引）"
     as_of: 2026-10-29
-    source: "https://investor.sandisk.com/news-releases/news-release-details/sandisk-reports-fiscal-first-quarter-2027-financial-results ／ fundamentals_latest.json"
+    source: "https://investor.sandisk.com/news-releases/news-release-details/sandisk-reports-fiscal-first-quarter-2027-financial-results"
   - item: "Intel CCPG売上YoY／4Q26売上ガイダンス"
     value: "−5%（US$8.1B）／US$15.0B〜16.0B"
     prev: "同上"
     change: "0"
     as_of: 2026-10-29
     source: "https://www.intc.com/filings-reports/all-sec-filings/content/0000050863-26-000188/q326earningsrelease.htm"
-  - item: "WFE見通し（Lam Research）／Lam 中国比率"
-    value: "暦年2026年 US$150B台半ば／暦年2027年 US$200B超（暫定）／35.1%"
-    prev: "同上"
-    change: "0（KLA・ASML・AMATは未確認のまま。AMATは11/12）"
-    as_of: 2026-10-21
-    source: "https://sec-api.io/insights/financial-analysis-of-lam-research-lrcx-q1-fy27-earnings"
+  - item: "WFE見通し（装置大手）"
+    value: "暦年2026年 US$150B台半ば／暦年2027年 US$200B超：KLA（10/28、引き上げ、securities.io tier4）と Lam（10/21、tier4）で一致。AMAT は2027年の数値を取得範囲で確認できず（引き下げの記載なし）"
+    prev: "暦年2026年 US$150B台半ば／2027年 US$200B超（Lam 1社、tier4）"
+    change: "同じ数値を2社目（KLA）で確認。引き下げの会社 0社"
+    as_of: 2026-11-12
+    source: "https://www.securities.io/kla-posts-fiscal-q1-revenue-of-4-14-billion-above-guidance-midpoint/ ； https://sec-api.io/insights/financial-analysis-of-lam-research-lrcx-q1-fy27-earnings"
+  - item: "装置大手の中国比率"
+    value: "Lam 35.1%（FQ1）／KLA 34%（FQ1、暦年2026年は20%台後半の見込み）／AMAT 25%（FQ4）"
+    prev: "Lam 35.1%（KLA・AMAT は未確認）"
+    change: "n/a（KLA・AMAT は新規）"
+    as_of: 2026-11-12
+    source: "同上 ／ AMAT 決算リリース（日次11/12）"
+  - item: "Applied Materials 四半期売上／次四半期ガイダンス"
+    value: "US$10,409M（FQ4 FY2026、+53% YoY）／FQ1 FY2027 US$11.1B±0.5B（中央値 +6.6% QoQ、14週）"
+    prev: "FQ4ガイダンス US$10.25B±0.5B（8月）"
+    change: "実績は前回ガイダンス中央値比 +1.6%（予測F2026-10-30-2 の条件：FQ1中央値≧FQ4実績 を満たす）"
+    as_of: 2026-11-12
+    source: "https://www.stocktitan.net/news/AMAT/applied-materials-announces-fourth-quarter-and-fiscal-year-2026-7z5nei8eafpd.html"
+  - item: "TSMC CoWoS 月産能力（推定）"
+    value: "2026年 10.6万〜13万枚超／2027年 20万〜22.75万枚（工商時報・Goldman Sachs、報道）"
+    prev: unconfirmed
+    change: "n/a（新規）"
+    as_of: 2026-10-27
+    source: "https://trendforce.com/news/2026/10/27/news-tsmc-reportedly-eyes-20-cowos-price-hike-skips-equipment-price-renegotiations-amid-ai-demand-surge"
+  - item: "CoreWeave 受注残／2026年売上ガイダンス"
+    value: "US$132.5B（3Q26末）／US$13.0B〜13.3B（引き上げ）（報道、要確認）"
+    prev: "unconfirmed（6月末の受注残 US$104B＝記事内の比較値）"
+    change: "受注残 +US$28.5B（+27%、6月比）"
+    as_of: 2026-11-10
+    source: "https://aiweekly.co/alerts/coreweave-q3-revenue-jumps-168-yoy-to-366b-as-backlog-climbs-to-1325b-and-debt"
   - item: "E3基準: 株価 NVDA／TSM／MU／ASML"
-    value: "186.64／375.44／690.00／1,424.75"
-    prev: "204.64／406.13／884.74／1,565.90（2026-10-30）"
-    change: "−8.80%／−7.56%／−22.01%／−9.01%（予想PER・EPS予想は今回も未収集：検索1回で数値なし）"
-    as_of: 2026-11-06
+    value: "162.85／398.73／778.31／1,495.16"
+    prev: "186.64／375.44／690.00／1,424.75（2026-11-06）"
+    change: "−12.75%／+6.20%／+12.80%／+4.94%"
+    as_of: 2026-11-13
     source: "semis_snapshot.csv（data ブランチ）"
+  - item: "E3: 予想PER（コンセンサス）"
+    value: "MU 6.01倍／NVDA 19.93倍（S&P 500 20.30倍）。TSM・ASML は未取得。基準は『今後1年の予想利益』（TradingView、Benzinga 2026-10-07）"
+    prev: "unconfirmed（E3は3回連続で未収集）"
+    change: "n/a（初回取得。10/7時点の値で、今週の株価ではない）"
+    as_of: 2026-10-07
+    source: "https://www.webull.com/news/15707031534519297（Benzinga の転載、status: consensus）"
   - item: "E3参考: MU 単純年率化PER（推定）"
-    value: "約4.52倍（690.00 ÷ 152.60）"
-    prev: "約5.80倍（884.74 ÷ 152.60）"
-    change: "−1.28倍"
-    as_of: 2026-11-06
+    value: "約5.10倍（778.31 ÷ 152.60）"
+    prev: "約4.52倍（690.00 ÷ 152.60）"
+    change: "+0.58倍"
+    as_of: 2026-11-13
     source: "計算（推定。FQ1 2027ガイダンスEPS US$38.15×4）"
   - item: "X1基準: DFII10／DGS10／DTWEXBGS"
-    value: "2.60%（11/5、21本 −0.31pt）／4.84%（11/5、21本 −0.43pt）／121.666（10/30、21本 +0.696）"
-    prev: "2.63%（10/29、21本 −0.28pt）／4.98%（10/29）／121.32（10/23、21本 +1.203）"
-    change: "−0.03pt／−0.14pt／+0.346"
-    as_of: 2026-11-05
+    value: "2.86%（11/12、5本 +0.22pt・21本 −0.02pt・63本 +0.44pt）／5.10%（11/12、21本 −0.11pt）／121.88（11/6、21本 +0.625）"
+    prev: "2.60%（11/5）／4.84%（11/5）／121.666（10/30）"
+    change: "+0.26pt／+0.26pt／+0.214"
+    as_of: 2026-11-12
     source: "semis_manifest.json（FRED）"
+  - item: "HYスプレッド／CCC格（ICE BofA）"
+    value: "3.20%／13.14%（11/12）"
+    prev: "n/a（前回は未記録。5本前比 −0.12／+0.17、21本前比 +0.04／+0.47）"
+    change: "n/a"
+    as_of: 2026-11-12
+    source: "semis_manifest.json macro.latest（FRED）"
+  - item: "米CPI（10月）"
+    value: "総合 +0.4% MoM、コア +0.3% MoM（前年比は BLS が公表せず）"
+    prev: "unconfirmed（9月分は未取得）"
+    change: "n/a（新規）"
+    as_of: 2026-11-10
+    source: "https://www.bls.gov/news.release/cpi.htm"
   - item: "SKHY プレミアム／20日平均／理論値"
-    value: "52.58% / 43.65% / US$83.46（原株1,132,000ウォン、USD/KRW 1,356.34）"
-    prev: "40.79% / 43.68% / US$105.98"
-    change: "+11.79pt / −0.03pt / −21.2%（原株−10.4%（11/6）とADS+2.8%の1日ずれ。11/5は31.36%で20日レンジの下限）"
-    as_of: 2026-11-06
+    value: "44.70% / 44.99% / US$91.08（原株1,216,000ウォン、USD/KRW 1,335.11）"
+    prev: "52.58% / 43.65% / US$83.46（11/6）"
+    change: "−7.88pt / +1.34pt / +9.13%"
+    as_of: 2026-11-13
     source: "semis_manifest.json ／ adr_premium.csv"
-  - item: "テクニカル（参考）: SOX／SOXX（分割後）／DRAM 終値、S・D スコア"
-    value: "9,390.25／136.53／39.29、S 3.8・D 3.8・TECHNICAL 3.8（11/5は S 0.0・D 0.0）"
-    prev: "10,688.80／460.10（分割前＝153.37）／48.01、S 23.8・D 17.5・TECHNICAL 21.9"
-    change: "SOX −12.1%／SOXX −11.0%（分割調整後）／DRAM −18.2%。S −20.0・D −13.7"
-    as_of: 2026-11-06
+  - item: "テクニカル（参考）: SOX／SOXX／DRAM 終値、S・D スコア"
+    value: "10,146.32／149.30／42.40、S 15.0・D 22.5・TECHNICAL 17.2"
+    prev: "9,390.25／136.53／39.29、S 3.8・D 3.8・TECHNICAL 3.8（11/6）"
+    change: "SOX +8.05%／SOXX +9.35%／DRAM +7.92%。S +11.2・D +18.7・TECHNICAL +13.4"
+    as_of: 2026-11-13
     source: "levels.json ／ history_levels.csv ／ semis_snapshot.csv"
 
 RECONCILED:
-  - {item: "revenue", company: "Alphabet", period: "3Q26", prev_value: "US$127.6B（tier4）", new_value: "US$127,577M（10-Q）", diff_pct: 0.02, result: confirmed, source: "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm"}
-  - {item: "capex", company: "Alphabet", period: "3Q26", prev_value: "US$51.4B（tier4）", new_value: "US$51,355M（10-Q、9か月−6か月）", diff_pct: 0.09, result: confirmed, source: "同上 ； https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000071/goog-20260630.htm"}
-  - {item: "Google Cloud revenue", company: "Alphabet", period: "3Q26", prev_value: "US$30.7B（+103% YoY、tier4）", new_value: "US$30,709M（前年15,157M、+102.6%、10-Q）", diff_pct: 0.03, result: confirmed, source: "同上"}
-  - {item: "revenue", company: "Microsoft", period: "FQ1 FY2027", prev_value: "US$92.3B（tier4）", new_value: "US$92,279M（10-Q）", diff_pct: 0.02, result: confirmed, source: "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm"}
-  - {item: "capex（現金）", company: "Microsoft", period: "FQ1 FY2027", prev_value: "US$39.4B（tier4、リース扱い不明）", new_value: "US$39,367M（10-Q『Additions to property and equipment』）。ファイナンスリース込みはUS$45.2B（tier4）", diff_pct: 0.08, result: confirmed, source: "同上"}
-  - {item: "2026年CapExガイダンス", company: "Microsoft", period: "暦年2026年", prev_value: "約US$175B（aiweekly本文）／約US$170B（見出し）", new_value: "約US$170B（CFO引用、tier4。4本の二次情報が一致）", diff_pct: -2.9, result: pending, source: "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/（一次資料未確認のため pending）"}
-  - {item: "capex", company: "Amazon", period: "3Q26", prev_value: "US$77.3B（IR、有形固定資産の取得）", new_value: "US$77,259M（10-Q、総額。純額75,878M）", diff_pct: 0.05, result: confirmed, source: "https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000040/amzn-20260930.htm"}
-  - {item: "capex", company: "Meta", period: "3Q26", prev_value: "約US$34.9B（8-K、会社定義）", new_value: "US$33,942M（10-Q、有形固定資産の取得）＋ファイナンスリース元本964M＝US$34,906M", diff_pct: 0.02, result: "confirmed（定義差：会社定義はファイナンスリース元本を含む。現金ベースの機械取得値33,942Mとの差は2.8%）", source: "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm ； https://www.sec.gov/Archives/edgar/data/0001326801/000162828026050705/meta-20260630.htm"}
-  - {item: "4社 四半期CapEx合計", company: "MSFT・GOOGL・AMZN・META", period: "3Q26", prev_value: "約US$203.0B（計算、定義混在）", new_value: "US$201,923M（現金ベース、SEC）", diff_pct: -0.53, result: "confirmed（差はMETAの定義差0.964B＋端数）", source: "4社10-Q"}
-  - {item: "revenue", company: "Lam Research", period: "FQ1 FY2027", prev_value: "US$8.22B（sec-api.io、tier4）", new_value: "US$8,219M（Yahoo）", diff_pct: 0.01, result: matches_machine, source: "https://finance.yahoo.com/quote/LRCX/financials/"}
-  - {item: "revenue", company: "Amkor", period: "3Q26", prev_value: "US$1.991B（8-K）", new_value: "US$1,991M（Yahoo）", diff_pct: 0.0, result: matches_machine, source: "https://finance.yahoo.com/quote/AMKR/financials/"}
-  - {item: "revenue／inventory", company: "SanDisk", period: "FQ1 FY2027", prev_value: "US$11,031M／US$3,016M（IR）", new_value: "US$11,031M／US$3,016M（Yahoo）", diff_pct: 0.0, result: matches_machine, source: "https://finance.yahoo.com/quote/SNDK/financials/（XBRL未照合）"}
-  - {item: "revenue／inventory", company: "Micron", period: "FQ4 2026", prev_value: "US$54.23B／US$10.372B（8-K）", new_value: "US$54,229M／US$10,372M（Yahoo）", diff_pct: 0.0, result: matches_machine, source: "https://finance.yahoo.com/quote/MU/financials/（XBRL未照合）"}
-  - {item: "revenue", company: "Intel", period: "3Q26", prev_value: "US$16.5B（一次）", new_value: "US$16,513M（Yahoo）", diff_pct: 0.08, result: matches_machine, source: "https://finance.yahoo.com/quote/INTC/financials/"}
-  - {item: "revenue（TWD）", company: "TSMC", period: "3Q26", prev_value: "+50.9% YoY（6-K）", new_value: "TWD 1,494,243M、yoy +50.95%（Yahoo）", diff_pct: 0.0, result: matches_machine, source: "https://finance.yahoo.com/quote/TSM/financials/"}
-  - {item: "Samsung 3Q26 売上YoY", company: "Samsung Electronics", period: "3Q26", prev_value: "unconfirmed（計算では+126.9%）", new_value: "unconfirmed（機械取得の対象外）", diff_pct: null, result: pending, source: "n/a"}
-  - {item: "SK hynix 説明会の内容（LTA・HBM発注2倍超）", company: "SK hynix", period: "3Q26", prev_value: "報道（Herald、tier3）", new_value: "一次資料未取得", diff_pct: null, result: pending, source: "n/a"}
-  - {item: "Lam WFE見通し・中国比率", company: "Lam Research", period: "FQ1 FY2027", prev_value: "tier4（sec-api.io）", new_value: "一次資料未取得", diff_pct: null, result: pending, source: "n/a"}
-  - {item: "Amazon コンセンサス比", company: "Amazon", period: "3Q26", prev_value: "報道（sedaily、tier3）", new_value: "未取得", diff_pct: null, result: pending, source: "n/a"}
+  - {item: "revenue", company: "AMD", period: "3Q26", prev_value: "US$13.4B（決算リリース、pending_xbrl）", new_value: "US$13,377M（Yahoo）", diff_pct: -0.17, result: matches_machine, source: "https://finance.yahoo.com/quote/AMD/financials/（XBRL未到達で SEC 照合はできず）"}
+  - {item: "revenue", company: "Qualcomm", period: "FQ4 FY2026", prev_value: "US$10.32B（報道2本、pending_xbrl）", new_value: "US$10,322M（Yahoo）", diff_pct: 0.02, result: matches_machine, source: "https://finance.yahoo.com/quote/QCOM/financials/"}
+  - {item: "revenue", company: "Arm", period: "FQ2 FY2027", prev_value: "US$1,443M（Yahoo）", new_value: "US$1,443M（Yahoo）", diff_pct: 0.0, result: matches_machine, source: "https://finance.yahoo.com/quote/ARM/financials/（同じ出どころ。一次は未取得）"}
+  - {item: "capex", company: "Oracle", period: "FQ1 FY2027", prev_value: "US$28,499M（Yahoo、pending_xbrl）", new_value: "US$28,499M（Yahoo）", diff_pct: 0.0, result: pending, source: "XBRL未到達（SEC 照合できず）"}
+  - {item: "inventory／revenue", company: "Micron", period: "FQ4 2026", prev_value: "US$10,372M／US$54,229M（Yahoo＝8-Kと一致）", new_value: "同じ（Yahoo）", diff_pct: 0.0, result: pending, source: "XBRL未到達（curl CONNECT 403・WebFetch PROVENANCE）"}
+  - {item: "inventory／revenue", company: "SanDisk", period: "FQ1 FY2027", prev_value: "US$3,016M／US$11,031M（Yahoo＝IRと一致）", new_value: "同じ（Yahoo）", diff_pct: 0.0, result: pending, source: "XBRL未到達"}
+  - {item: "inventory／revenue", company: "Western Digital", period: "FQ1 FY2027", prev_value: "US$1,781M／US$4,381M（Yahoo）", new_value: "同じ（Yahoo）", diff_pct: 0.0, result: pending, source: "XBRL未到達"}
+  - {item: "revenue", company: "NVIDIA", period: "FQ2 FY2027", prev_value: "US$96,221M（Yahoo）", new_value: "同じ（Yahoo）", diff_pct: 0.0, result: pending, source: "XBRL未到達。FQ3 は11/17"}
+  - {item: "2026年CapExガイダンス", company: "Microsoft", period: "暦年2026年", prev_value: "約US$170B（tier4）", new_value: "一次資料未取得", diff_pct: null, result: pending, source: "n/a"}
+  - {item: "2026年CapExガイダンス", company: "Alphabet", period: "暦年2026年", prev_value: "US$195B〜205B（tier4）", new_value: "一次資料未取得", diff_pct: null, result: pending, source: "n/a"}
+  - {item: "2Q FY2026 営業利益・3Qガイダンス", company: "Kioxia", period: "2Q FY2026", prev_value: "約1.995兆円／約2兆円（報道2本）", new_value: "一次資料未取得（機械取得の対象外）", diff_pct: null, result: pending, source: "n/a"}
+  - {item: "WFE見通し・中国比率", company: "Lam Research", period: "FQ1 FY2027", prev_value: "2026年 US$150B台半ば・2027年 US$200B超・中国35.1%（tier4）", new_value: "Lam の一次は未取得。KLA が同じWFE見通しを示した（securities.io、tier4）", diff_pct: null, result: pending, source: "https://www.securities.io/kla-posts-fiscal-q1-revenue-of-4-14-billion-above-guidance-midpoint/"}
+  - {item: "10月売上", company: "Nanya Technology", period: "2026-10", prev_value: "NT$46,476M（報道2本）", new_value: "MOPS一次未取得", diff_pct: null, result: pending, source: "n/a"}
+  - {item: "9月売上", company: "Winbond", period: "2026-09", prev_value: "NT$28,249M（検索結果の要約のみ）", new_value: "NT$282.49億（statementdog 本文、tier4）", diff_pct: 0.0, result: pending, source: "https://statementdog.com/news/17832（報道の本文で一致。MOPS一次は未取得のため confirmed にしない）"}
+  - {item: "Samsung 3Q26 売上YoY／SK hynix 説明会の内容／Amazon コンセンサス比", company: "Samsung・SK hynix・Amazon", period: "3Q26", prev_value: "unconfirmed／報道（Herald）／報道（sedaily）", new_value: "未取得", diff_pct: null, result: pending, source: "n/a"}
 
 EVENTS_NEXT_14D:
-  - date: 2026-11-09
-    event: "Onto Innovation（ONTO）決算（引け後）。FRBボウマン副議長の討論。アジアが11/6の米国の反発を映す日（SKHYプレミアムは計算上縮む見込み）"
-    why_it_matters: "計測装置の受注（F2の補助）、SKHYプレミアムの1日ずれの解消"
-  - date: 2026-11-10
-    event: "米10月CPI 8:30 ET（22:30 JST）。TSMC 10月月次売上（見込み）。CoreWeave（CRWV）決算（受電・引き渡し・課金開始の3つの日付、新規調達の条件）。FRBウォラー理事・ボウマン副議長の講演。Winbond 10月月次（例年10日前後）"
-    why_it_matters: "X2、F1・予測F2026-10-23-3、DC_TIMING.projects（CRWV）と financing、legacy DRAM"
-  - date: 2026-11-11
-    event: "退役軍人の日（債券市場休場、株式は通常取引）"
-    why_it_matters: "マクロ系列（FRED）が1日欠ける"
-  - date: 2026-11-12
-    event: "Applied Materials FQ4 FY2026（引け後）、Cisco"
-    why_it_matters: "F2（2027年WFE見通し、中国比率）、予測F2026-10-30-2、下方トリガーのファンダ条件（装置2社以上の引き下げ）"
-  - date: 2026-11-13
-    event: "米10月PPI 8:30 ET"
-    why_it_matters: "X2"
+  - date: 2026-11-17
+    event: "NVIDIA FQ3 FY2027 決算 13:20 PT ごろ、電話会議 14:00 PT（8-K で予定どおりと確認）。暫定CEO（クレス氏、CFO兼務）の下で初の決算"
+    why_it_matters: "A2（DC売上・ガイダンス）、予測F2026-10-30-1、経営体制の説明、NVDA の在庫日数（M4）と売上の SEC 確認"
   - date: 2026-11-19
-    event: "PUCT会合（固定日程、変更なし）。SanDisk 8対1分割の発効（11/20から分割後の取引）"
-    why_it_matters: "DC_TIMING（監査の進捗・Batch Zeroの新期限）、価格データの連続性（SOXXに続き2件目）"
+    event: "SanDisk 8対1分割の発効（11/20から分割後の取引）"
+    why_it_matters: "価格データの連続性（SOXXに続き2件目）"
+  - date: 2026-11-26
+    event: "米感謝祭（株式市場休場）。11/27 は短縮取引"
+    why_it_matters: "日次データの欠け・薄商い"
   - date: "2026-11下旬（日付未確認）"
-    event: "NVIDIA FQ3 FY2027。Nebius・IREN（11月、日付未確認）の決算"
-    why_it_matters: "A2、予測F2026-10-30-1、DC_TIMING.projects（Horizon 2〜4の引き渡し時期）"
+    event: "IREN 決算、Nebius の説明会資料（3Q は11/12発表済み）"
+    why_it_matters: "DC_TIMING.projects（Horizon 2〜4 の引き渡し時期）、予測F2026-11-06-1"
   - date: "変更なし"
-    event: "固定日程（12/10 ERCOT監査結果の公表目標、12/17 PUCT会合、2027-01-03 新議会、01-12 州議会開会、01-19 新知事就任）に変更は確認されず。TCEQの対応報告（10/19期限）の公表内容は未確認"
-    why_it_matters: "judge.md 12節の表の日程は据え置き"
+    event: "固定日程（PUCT 11/19・12/17、ERCOT監査結果の提出目標 12/10、新議会 2027-01-03、州議会開会 01-12、新知事就任 01-19）の変更は確認されず（検索1回の範囲）。14日より先の新しい日程：米11月CPI 2026-12-10（BLS）"
+    why_it_matters: "judge.md 12節の表の日程は据え置き。X2"
 
 IMPLICATIONS:
-  - "4社の3Q26設備投資合計（現金ベースUS$201.9B、+107.6% YoY）が4社とも10-Qで一致したことは、A1の『実績』側の確度を上げ、2026年ガイダンス合計（US$720〜740B、7月比で上限−5B）はMSFTの約170Bがtier4のままという区別になる"
-  - "MSFTの『第三者からの容量引き渡しの遅れ』による暦年2026年の引き下げ（tier4）と未開始リースUS$364.6Bは、A4（稼働タイミング）とA1の両方に関係し、金額の減少ではなく時期の後ろ倒しの事例"
-  - "Alphabetの3Q資金調達（負債約US$29.0B、普通株US$12.4B、FCF −US$9.1B）、Amazonの3Q長期債務調達US$48.1B、Metaの9か月負債US$24.9Bと増資、Oracleの11/2 US$200億は、反転リスク『AI投資の資金調達・信用』の材料（件数は増加、条件の悪化は未確認）"
-  - "AMDのデータセンター売上+97%と4Qガイダンス+27% QoQは、A2とHBM需要（M2）の両方に関係。株価は好決算に反応せず11/5に−17%"
-  - "Qualcommのスマホ向け−26%と『メモリーの不足と値上がりがスマホ需要を弱めるおそれ』（報道）は、M2（川下の数量）とM4（在庫）に関係し、メモリー価格の上昇が買い手側の需要に効き始めた事例（7月時点から継続）"
-  - "Kioxiaの3Q営業利益ガイダンス約2兆円（予想比−14.9%）は出荷時期の説明で、来年分完売の発言はM5に、ガイダンス未達はE1に関係"
-  - "Nanyaの10月売上+487.7% YoY・4Q ASP上昇余地・契約期間延長の要望は、legacy DRAM（M1）とM5に関係。株価は11/3ストップ安"
-  - "テキサスの停止措置は8〜9月から継続しており、11/5の選挙で変わったのは解除時期と条件の見通し（次期知事の発言）。公式の新措置・PUCT/ERCOT決定はなく、連邦は下院可決済みの拘束力のない法案と提出段階のモラトリアム法案"
-  - "IRENのHorizon 1（50MW）はMicrosoftに引き渡し済み（8/13）、Horizon 2〜4は2026年中の予定で、11月の更新は未確認。CRWVの11/10決算が案件進捗の最初の確認機会"
-  - "TrendForceの新しい契約価格発表（4Q26実績、1Q27予測）は2週連続で見つからず、M1とTHESIS_INVALIDATION(2)の判定材料は9/30の予測のまま"
-  - "メモリー株は11/5にMU −17.5%・SNDK −22.3%、韓国・日本・台湾は11/6に−4.6〜−10.4%で、市況の一次情報（契約価格上昇の継続、完売）と株価の乖離はさらに広がった"
-  - "SKHYプレミアム52.6%は原株の1日遅れの急落で広がった計算上の値で、11/9の原株で縮む見込み。11/5は31.4%で別枠トリガー（30%割れ）に1.4ptまで接近していた"
-  - "SOXXの3対1分割（11/5）とSanDiskの8対1分割（11/19）は、価格データと週次LEVELSの水準の読み替えに関係"
+  - "NVIDIA の CEO 即日辞任と暫定CEO（CFO兼務）の下での 11/17 決算は、A2 の判定材料に経営体制の説明が加わる事実で、11/13 は監視42銘柄すべてが下落した"
+  - "KLA が暦年2027年WFEを『US$200B超』とし Lam と同じ数値になったこと、AMAT の FQ1 ガイダンス中央値がFQ4実績を+6.6%上回ったことは、F2 と下げの引き金のファンダ条件（装置2社以上の引き下げ）の両方に関係"
+  - "TSMC 10月売上 +59.7% YoY・1〜10月累計 +43.3% は F1 と予測F2026-10-23-3 に関係"
+  - "装置3社の中国比率（Lam 35.1%、KLA 34%→暦年20%台後半、AMAT 25%）は X3 と F2 の両方に関係。BIS の公式一覧に10/15以降の新しい措置はない"
+  - "CoreWeave の受注残US$132.5B（6月比+27%）・通期売上ガイダンス引き上げと、総負債約US$47B・2026年設備投資US$37B〜39B は、A6 と反転リスク『AI投資の資金調達・信用』の両方に関係。稼働の日付は未確認のまま"
+  - "Nebius は見出しの範囲で『売上は過去最高、見通しの弱さと設備投資への懸念』。数値は未確認で DC_TIMING の材料としては未使用"
+  - "テキサスの停止措置は9/21から継続し、11/6〜11/13 に公式の新措置は見つからず。既存許可・建設中・増設の扱いは法律事務所3社の解説にも書かれていない"
+  - "米10月CPI（+0.4% MoM、コア +0.3%）は前年比が公表されず、10月PPIは前年比+6.5%（報道）。10年実質金利は11/5の2.60%から11/12の2.86%へ+26bp で、X1・X2 に関係"
+  - "TrendForce の新しい契約価格発表（4Q26実績、1Q27予測）は3週連続で見つからず、M1 と THESIS_INVALIDATION(2) の材料は9/30の予測のまま。7/30の見通しでは DRAM は2027年も逼迫、NAND は2H27に緩む"
+  - "Winbond 10月売上 +257.0% YoY（見出し）・『DRAM供給は相当逼迫』と Nanya 10月 +487.7% は legacy DRAM（M1）と M5 に関係"
+  - "CoWoS 能力の2027年推定（月20万〜22.75万枚）と最大20%の値上げ検討（報道）は F3 に関係し、TSMCの開示ではない"
+  - "HBF は2026-08に OCP 仕様の第1版を公開した段階（段階1、HBMと共存する設計）で、HBM 搭載量の下方修正の事実はない（R4）"
+  - "CRWV の5年CDS は 11/5 1,289bp超→11/6 約1,155bp（出どころ不明）以降の値が見つからず、HY 3.20%・CCC 13.14%（11/12、CCCは21本で+0.47pt）が機械取得の信用の値"
+  - "E3 の予想PERは 10/7 時点で MU 6.01倍・NVDA 19.93倍（S&P 500 20.30倍）で、TSM・ASML は未取得"
 
 UNCONFIRMED:
-  - item: "Microsoft 暦年2026年CapEx 約US$170Bの一次確認（説明会の原文、ファイナンスリースの扱い）、Azure FQ2ガイダンス"
-    tried: "WebSearch 1回、WebFetch 2回（10-Qの前半10万字は財務諸表まで、後半はNotes 4〜5でMD&Aに届かず）＋ universalassetowners（tier4）"
-    reason: "10-QのMD&Aが取得範囲外。二次情報4本（universalassetowners・fourweekmba・huggingnews・Yahoo）は約US$170Bで一致"
-    seen_value: "約US$170B（CFO Amy Hood）、FQ2『US$50B超』"
-  - item: "Alphabet 2026年CapExガイダンス（US$195B〜205B）・2027年『US$300B超』の一次確認、Cloud営業利益率"
-    tried: "WebFetch 2回（10-Q 9/30期・6/30期、いずれもMD&Aは取得範囲外）"
-    reason: "10-QのMD&Aが取得範囲外。8-K ex99.1は検索結果に出ず"
-    seen_value: "n/a"
-  - item: "Kioxia 2Q FY2026 決算短信の一次確認（売上・営業利益・3Qガイダンス・出荷時期の説明・NAND ASP・ビット・在庫・設備投資）"
-    tried: "WebSearch 1回、WebFetch 2回（IR一覧は取得、決算短信PDF https://ssl4.eir-parts.net/doc/285A/tdnet/2902678/00.pdf は取得拒否）＋ phemex（tier4）"
-    reason: "PDFがPROVENANCE拒否。報道2本（phemex/PANews、247wallst）で営業利益≈1.99〜1.995兆円・3Q約2兆円が一致"
-    seen_value: "売上2.48兆円（+40.3% QoQ）、営業利益1.995兆円、3Q営業利益約2兆円、中間配当90円"
-  - item: "Qualcomm FQ4 FY2026 の一次リリース（投入コスト上昇・メモリー不足の年次報告書の原文、在庫コメント、粗利率ガイダンス）"
-    tried: "WebSearch 1回、WebFetch 2回（webullは7月FQ3の記事、aiweeklyはCNBC要約）"
-    reason: "qualcomm.com のIRページが検索結果に出ず。売上・スマホ−26%・ガイダンスは2本一致、投入コストの記述はfinancefeeds 1本のみ"
-    seen_value: "aiweekly本文の売上『US$10.44B』（見出しUS$10.3Bと矛盾、不採用）"
-  - item: "Arm FQ2 FY2027 の内容（ロイヤルティ、ガイダンス）、MCHP・SWKS・MTSI・NVMI・ANET・COHR・LITE・ON・LSCC・CAMT・SITM の決算リリース（MCHPの車載在庫・ガイダンス）"
-    tried: "未着手（機械取得の売上のみ転記）"
+  - item: "NVIDIA CEO辞任の理由・取締役会の調査の内容（8-K本体 nvda-20261111.htm）"
+    tried: "WebSearch 1回、WebFetch 1回（8-K添付のプレスリリース）"
+    reason: "プレスリリースに理由・調査の記載なし。8-K本体は予算の都合で未取得"
+    seen_value: "報道：CEO が中国の情報活動の標的になった疑い、Baird の格下げ、Morgan Stanley がトップピックから除外（日次11/9〜11/13）"
+  - item: "Applied Materials の説明会（2027年WFEの数値、DRAM・先端パッケージ・中国の見通し）"
+    tried: "WebSearch 1回、WebFetch 1回（webull＝8月FQ3の記事だった）"
+    reason: "検索結果に今回の説明会の要約が出ず"
+    seen_value: "8月：『2027年も過去最高の年』、先端ロジック・DRAM・先端パッケージが2026〜27年のWFE成長の約80%"
+  - item: "CoreWeave の受電・引き渡し・課金開始の案件別の日付、契約電力、新規調達の条件、IRリリース本文"
+    tried: "WebSearch 1回、WebFetch 2回（investinglive、aiweekly）"
+    reason: "取得2本に日付・案件の記載なし。investors.coreweave.com は検索結果に出ず"
+    seen_value: "fourweekmba『Backlog Jumps 27% to $132.5B』（見出し）、business-news-today『US$846M の利息負担』（見出し）"
+  - item: "Nebius 3Q26 の見通し・設備投資・受電の日付、IREN・Galaxy・Oracle の11月の進捗"
+    tried: "未着手（P1-7 の6回を CoreWeave と規制に使用）"
     reason: "予算到達"
-    seen_value: "Investing.com見出し『Skyworks EPS予想比+0.01ドル、売上予想超』"
-  - item: "TrendForce等の10/23以降の製品別価格（HBM、server DDR5、LPDDR、DDR4、NAND TLC/QLC、eSSD、client SSD、スポット）、4Q26実績、1Q27予測"
-    tried: "WebSearch 2回（英語・中国語）、WebFetch 2回（dramexchange 2本＝2026-01-05・2026-06-02の旧記事）"
-    reason: "11月の新規発表が検索結果に出ず。日次11/3・11/4の検索でも同じ"
-    seen_value: "uanalyze.com.tw『DRAM Q1合約價再漲5成、NAND也漲逾3成』（1Q26の旧記事とみられる、未取得）"
-  - item: "Winbond 9月・10月月次売上の一次確認、Nanya 10月売上のMOPS一次確認"
-    tried: "WebSearch 1回、WebFetch 2回（technewsはリダイレクト先が取得拒否）"
-    reason: "一次（MOPS）未取得。Nanyaは報道2本一致で採用、Winbondは要約のみ"
-    seen_value: "Winbond 2026-09 NT$28,249M（+3.4% MoM、+256.7% YoY）、1〜9月NT$180,427M（+187.4%）"
-  - item: "テキサス州の公式ページ（gov.texas.gov、ERCOT、PUCT、TCEQ）での11月の新発表の有無、TCEQの10/19対応報告の内容、PUCT 11/19会合の議題"
-    tried: "WebSearch 1回、WebFetch 1回（Beveridge & Diamond、tier2）"
-    reason: "P1-7の予算6回のうち規制に2回。公式ページは検索結果に出ず（出たのは8〜9月の報道・法律事務所解説）"
-    seen_value: "n/a"
-  - item: "連邦：Sanders／Ocasio-Cortez の Data Center Moratorium Act の提出日・条文、『全国モラトリアム』を求めた下院民主党幹部の氏名、上院での Ratepayer Protection Act の扱い。他州：ニューヨーク州の1年禁止法案の可決日・知事の署名"
-    tried: "WebSearch 1回、WebFetch 1回（tdworld 9/18）"
-    reason: "予算到達。CNBC・Bloomberg Lawは取得不可"
-    seen_value: "下院可決 417-3（Ratepayer Protection Act、9/18）、NY州議会が1年禁止法案を知事に送付（見出し）"
-  - item: "追跡案件5社（ORCL・CRWV・NBIS・IREN・GLXY）の10/30〜11/6の受電・引き渡し・課金開始の予定変更、新規社債・増資の条件（Oracle 424B2の利率・年限）、GPUレンタル価格"
-    tried: "WebSearch 1回、WebFetch 1回（IREN 8-K 2026-08-13）"
-    reason: "予算到達。11月の一次発表は検索結果に出ず（CRWVは11/10決算）"
-    seen_value: "datacenterdynamics『IREN delivers first phase of AI capacity to Microsoft in Texas』（日付未確認）、Galaxy『Helios 133MW を2Q末までに引き渡し目標』（5月）"
-  - item: "DRAM ETF（Roundhill）のNAV乖離・スプレッド・AUM・保有ウェイト・上位集中"
-    tried: "WebSearch 1回、WebFetch 1回（公式ページの数値欄が空）"
-    reason: "公式ページの数値はJSで読み込まれスクレイプで取れず。ファクトシートPDFは未取得"
-    seen_value: "etfbeacon要約『AUM $26.92B、ER 0.65%、NAV $58.92、保有14、設定2026年4月』（日付不明。NAVが11/6終値39.29と整合せず古い値とみられる）"
-  - item: "KLA FQ1 FY2027（10/28）・ASML 3Q26 のWFE見通し・受注・中国比率、Lamの一次資料"
-    tried: "未着手（機械取得の売上・在庫日数のみ）"
-    reason: "予算到達"
-    seen_value: "n/a"
-  - item: "予想PER・EPS予想（NVDA・TSM・MU・ASML）（E3）、Intel・SanDisk・Lam・AMD・QCOMのコンセンサス比（E2）"
-    tried: "WebSearch 1回（ycharts等のページは出たが数値なし、取得は予算到達）"
-    reason: "予算到達"
-    seen_value: "n/a"
-  - item: "米CPI（9月分）・PCE（9月分）の値"
-    tried: "WebSearch 1回（予想記事・予測市場のみ）"
-    reason: "予算到達。10月CPIは11/10"
-    seen_value: "n/a"
-  - item: "対中輸出規制・関税の10/30〜11/6の新規措置、台湾・韓国の重大ニュース、原油・ホルムズの一次確認"
-    tried: "WebSearch 1回（結果は1〜4月の既存措置の解説）"
-    reason: "予算到達"
-    seen_value: "n/a"
-  - item: "SK hynix 3Q26のDRAM/NAND ASP・bit出荷、4Qビットガイダンス、HBM売上比率、2027年CapEX、在庫日数。Samsung 3Q26売上YoY"
+    seen_value: "Nebius 3Q 売上US$980.8M、『US$45B規模の設備投資』（見出し）"
+  - item: "テキサス州の公式ページ（gov.texas.gov・ERCOT・PUCT・TCEQ）の11月の発表、PUCT 11/19 の議題、『Abbott Expands Texas Data Center Moratorium』の内容と日付"
+    tried: "WebSearch 1回、WebFetch 2回（texaspolicyresearch＝取得失敗、BakerHostetler＝9/23）"
+    reason: "検索結果は9月の報道・法律事務所解説のみ。公式ページは出ず"
+    seen_value: "texaspolicyresearch『Abbott Expands Texas Data Center Moratorium』（見出し、日付不明）"
+  - item: "NY州の1年禁止法案への知事署名の有無、他州の新規制、連邦の公聴会・法案の進展"
     tried: "未着手"
-    reason: "予算到達"
+    reason: "P1-7 の予算6回に到達"
     seen_value: "n/a"
-  - item: "SOXX 3対1分割（11/5）の公式発表（iShares）"
-    tried: "未着手"
-    reason: "予算到達（データは調整済み、1週騰落はSOX・SMHと整合）"
-    seen_value: "n/a"
-  - item: "CoWoS能力、HBF/CXL/CPO/SRAM中心設計の段階、AI効率化、分解・BOM"
-    tried: "未着手"
-    reason: "予算到達（P2項目）"
-    seen_value: "n/a"
+  - item: "TrendForce 等の11月の製品別契約価格（HBM、server DDR5、LPDDR、DDR4、NAND、eSSD、client SSD、スポット）、4Q26実績、1Q27予測"
+    tried: "WebSearch 1回、WebFetch 2回（iconnect007＝7/30の旧リリース、cryptobriefing＝取得失敗）"
+    reason: "新規発表が検索結果に出ず"
+    seen_value: "cryptobriefing『TrendForce PC DRAM prices rise 4Q26』（見出し、日付不明）、udn『TrendForce：明年記憶體市況分化 DRAM 供給持續吃緊、NAND 轉趨寬鬆』（見出し、日付不明）"
+  - item: "Winbond 10月売上の本文・MOPS一次確認、Nanya 10月売上の MOPS 一次確認"
+    tried: "WebSearch 1回、WebFetch 1回（statementdog＝9月分）"
+    reason: "technews の10月分は見出しのみ（前回リダイレクト先が取得拒否）"
+    seen_value: "Winbond 2026-10 NT$293.61億（+3.9% MoM、+257.0% YoY）、1〜10月 NT$2,097.88億（+195.4%）"
+  - item: "信用の市場の値（11/9〜11/13 の CRWV・ORCL・NVDA の5年CDS、CRWV 2032年債の利回り）"
+    tried: "WebSearch 1回、WebFetch 1回（coinpaper＝11/7 の記事）"
+    reason: "検索結果に今週の値を含む主要報道が出ず"
+    seen_value: "fourweekmba『CoreWeave CDS Is 8x Nvidia's 139bp』（見出し）"
   - item: "MU・SNDK・WDC の在庫・売上、NVDA の売上の SEC XBRL 確認"
-    tried: "data.sec.gov への WebFetch 1回（PROVENANCE拒否）、シェル curl 1回（プロキシ403）"
-    reason: "XBRL APIが開けず、10-Q検索に主予算を使う余地なし。MU・SNDKは前回IRで一次確認済みの値と機械取得が一致"
+    tried: "シェル curl 1回（プロキシ CONNECT 403）、WebFetch 1回（PROVENANCE：許可要求に応答なし）"
+    reason: "data.sec.gov に届かない（前回と同じ）"
     seen_value: "n/a"
+  - item: "Microsoft 暦年2026年CapEx 約US$170B・Alphabet 2026年 US$195B〜205B の一次確認"
+    tried: "未着手（今週は新しい発言なし）"
+    reason: "予算の優先順位"
+    seen_value: "n/a"
+  - item: "E3：TSM・ASML の予想PER・EPS予想、NVDA・MU の今週時点の値"
+    tried: "WebSearch 1回、WebFetch 2回（benzinga＝取得失敗、webull 転載＝10/7 の値）"
+    reason: "TSM・ASML は記事の対象外"
+    seen_value: "MU 6.01倍・NVDA 19.93倍（10/7、TradingView）"
+  - item: "ASML 3Q26 の受注・WFE見通し・中国比率"
+    tried: "未着手"
+    reason: "予算到達"
+    seen_value: "n/a"
+  - item: "米10月コアPPI、原油の水準、次回FOMCの日付"
+    tried: "未着手（PPI は日次11/13の Yahoo Finance 報道を転記）"
+    reason: "予算到達"
+    seen_value: "n/a"
+  - item: "DC建設の実績（米国勢調査局 C30、9月分＝11/2ごろ公表）"
+    tried: "未着手"
+    reason: "月1回の項目で今週は新しい公表なし。9月分は前回（v7.2）の範囲外で未取得"
+    seen_value: "2026年8月 年率849.5億ドル、前年比+73%（docs/sources.md の確認済みの例）"
+  - item: "GPU レンタル価格（ネオクラウドの平均単価、主要報道2本以上が一致するスポット価格）"
+    tried: "未着手"
+    reason: "P1-7 の予算到達"
+    seen_value: "n/a"
+  - item: "SK hynix 3Q26のASP・bit出荷・HBM比率・2027年CapEX・在庫日数、Samsung 3Q26売上YoY、Kioxia・Qualcomm の一次リリース"
+    tried: "未着手（前回から継続）"
+    reason: "予算到達"
+    seen_value: "n/a"
+  - item: "CXL／CPO・光I/O／SRAM中心設計の段階、AI効率化の本番採用、分解・BOM"
+    tried: "未着手"
+    reason: "予算到達（P2項目。HBF のみ調査）"
+    seen_value: "n/a"
+  - item: "KLA の一次資料（決算リリース・説明会）"
+    tried: "WebSearch 1回、WebFetch 1回（securities.io、tier4）"
+    reason: "ir.kla.com は検索結果に出ず"
+    seen_value: "非GAAP EPS US$1.22（記事の値。株式分割の有無は未確認）"
 
 SOURCES:
-  - "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm（Microsoft 10-Q、2回取得）"
-  - "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000084/goog-20260930.htm（Alphabet 10-Q 9/30期）"
-  - "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000071/goog-20260630.htm（Alphabet 10-Q 6/30期）"
-  - "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066773/meta-20260930.htm（Meta 10-Q 9/30期）"
-  - "https://www.sec.gov/Archives/edgar/data/0001326801/000162828026050705/meta-20260630.htm（Meta 10-Q 6/30期）"
-  - "https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000040/amzn-20260930.htm（Amazon 10-Q）"
-  - "https://www.universalassetowners.com/newsroom/hyperscaler-q3-capex-debt-equity-leases/（tier4、2026-11-01）"
-  - "https://www.kioxia-holdings.com/en-jp/news/2026.html（Kioxia IR一覧）"
-  - "https://ssl4.eir-parts.net/doc/285A/tdnet/2902678/00.pdf（Kioxia決算短信、取得拒否）"
-  - "https://phemex.com/news/article/kioxia-q2-operating-profit-hits-1995-trillion-on-ai-storage-demand-q3-guidance-misses-expectations-101867（tier4）"
-  - "https://www.webull.com/news/15315809136616448（Benzinga、Qualcomm FQ3 2026-07-30）"
-  - "https://aiweekly.co/alerts/qualcomm-q4-revenue-drops-8-to-103b-guides-5b-data-center-revenue-in-fiscal-2027（tier4）"
-  - "https://dramexchange.com/WeeklyResearch/Post/2/12574.html（2026-01-05、旧）"
-  - "https://dramexchange.com/WeeklyResearch/Post/2/12718.html（2026-06-02、旧）"
-  - "https://finance.technews.tw/2026/11/03/ntc-2408-202610-financial-report/（リダイレクト、本文取得不可）"
-  - "https://www.bdlaw.com/publications/texas-pauses-all-environmental-permitting-for-data-centers/（Beveridge & Diamond、2026-09-29）"
-  - "https://www.tdworld.com/policy/article/55406354/house-passes-bipartisan-legislation-on-data-center-rate-hikes（2026-09-18）"
-  - "https://www.sec.gov/Archives/edgar/data/0001878848/000114036126032638/ef20080141_ex99-1.htm（IREN 8-K ex99.1、2026-08-13）"
-  - "https://www.roundhillinvestments.com/etf/dram/（Roundhill DRAM）"
-  - "日次から転記: https://www.globenewswire.com/news-release/2026/11/03/3394824/0/en/amd-reports-third-quarter-2026-financial-results.html ； https://financefeeds.com/qualcomm-shares-drop-5-75-after-hours-as-q1-earnings-forecast-misses-estimates/ ； https://newtalk.tw/news/view/2026-11-03/1069052 ； https://247wallst.com/investing/2026/11/02/micron-falls-4-as-kioxias-cautious-outlook-hits-memory-stocks-western-digital-drops-5-sandisk-slides-3/ ； https://www.stocktitan.net/articles/stock-market-today-live-november-2-2026 ； https://www.zerohedge.com/ai/texas-governor-elect-wants-data-center-pause-white-house-says-communities-should-decide ； https://finance.yahoo.com/markets/article/nvidia-amd-micron-sandsik-lead-chip-sector-higher-134336542.html"
-  - "見出しのみ: https://www.cnbc.com/2026/11/05/democrats-data-center-restrictions-midterms.html ； https://www.cnn.com/2026/11/05/economy/data-center-texas-election ； https://news.bloomberglaw.com/states-of-play/new-york-lawmakers-send-hochul-one-year-ban-on-new-data-centers ； https://truthout.org/articles/sanders-and-aoc-introduce-bill-to-pause-new-ai-data-centers-nationwide ； https://fourweekmba.com/ai-microsoft-lowers-2026-capex-view-to-170b-eyes-new-funding/ ； https://finance.technews.tw/2026/10/05/wec-2344-202609-financial-report/ ； https://etfbeacon.com/etf/DRAM"
-  - "data ブランチ: /home/claude/sd-data/semis_manifest.json ／ run_status.json ／ levels.json ／ fundamentals_latest.json ／ fundamentals.csv ／ semis_snapshot.csv ／ adr_premium.csv ／ macro_daily.csv ／ history_levels.csv（us_as_of 2026-11-06、生成 2026-11-07 19:44 JST）"
-  - "米国株側: /home/claude/mkt_signals.json（基準日 2026-11-06、ST-1.5b／engine 1.4b、転記のみ）"
-  - "前回: /home/claude/semis-data/evidence/2026-10-30.yaml ／ handoff/2026-10-30.yaml ／ reports/daily/2026-11-02.md・11-03.md・11-04.md・11-06.md"
+  - "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm（NVIDIA 8-K 添付リリース、2026-11-12）"
+  - "https://www.webull.com/news/15400606166574080（Benzinga、AMAT FQ3、2026-08-14、参考）"
+  - "https://investinglive.com/stocks/coreweave-q3-beats-on-seven-key-metrics-lifts-full-year-revenue-and-run-rate-guidance/（2026-11-10）"
+  - "https://aiweekly.co/alerts/coreweave-q3-revenue-jumps-168-yoy-to-366b-as-backlog-climbs-to-1325b-and-debt（2026-11-10、CNBC要約）"
+  - "https://www.texaspolicyresearch.com/?p=12852（取得失敗）"
+  - "https://www.bakerlaw.com/insights/texas-halts-data-center-permitting-pending-state-audits-what-developers-investors-and-energy-users-need-to-know/（2026-09-23）"
+  - "https://coinpaper.com/38478/core-weave-default-protection-costs-top-1-000-basis-points-even-as-nasdaq-rebounds（2026-11-07）"
+  - "https://statementdog.com/news/17832（2026-10-08、台湾メモリー9月売上）"
+  - "https://finance.technews.tw/2026/11/06/wec-2344-202610-financial-report/（見出しのみ）"
+  - "https://iconnect007.com/article/150995/2027-memory-market-sees-diverging-dram-nand-trends/150992/smt（TrendForce 2026-07-30）"
+  - "https://cryptobriefing.com/trendforce-pc-dram-prices-rise-4q26/（取得失敗）"
+  - "https://www.bis.gov/news-updates（BIS 公式一覧）"
+  - "https://www.bls.gov/news.release/cpi.htm（米10月CPI、2026-11-10）"
+  - "https://www.benzinga.com/node/62215069（取得失敗）／ https://www.webull.com/news/15707031534519297（Benzinga 転載、2026-10-07）"
+  - "https://www.securities.io/kla-posts-fiscal-q1-revenue-of-4-14-billion-above-guidance-midpoint/（2026-10-28）"
+  - "https://trendforce.com/news/2026/10/27/news-tsmc-reportedly-eyes-20-cowos-price-hike-skips-equipment-price-renegotiations-amid-ai-demand-surge（2026-10-27）"
+  - "https://www.sandisk.com/company/newsroom/press-releases/2026/2026-08-03-Sandisk-and-sk-hynix-advance-global-standardization-of-hbf（2026-08-03）"
+  - "https://data.sec.gov/api/xbrl/companyconcept/CIK0000723125/us-gaap/InventoryNet.json（SEC確認、到達できず）"
+  - "日次から転記: https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm（TSMC 10月、日次11/10）； https://www.sec.gov/Archives/edgar/data/0000704532/000119312526453582/onto-ex99_1.htm（ONTO、日次11/9）； https://www.stocktitan.net/news/AMAT/applied-materials-announces-fourth-quarter-and-fiscal-year-2026-7z5nei8eafpd.html（AMAT、日次11/12）； https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-nov-11-2026（CRWV・CPI・NVDA、日次11/11）； https://www.fxleaders.com/news/2026/11/12/nbis-stock-faces-100-on-weak-outlook-and-45b-capex-worries-despite-nebius-group-reports-third-quarter-revenue-of-980-8-million-dollars/（NBIS 見出し、日次11/12）； https://finance.yahoo.com/markets/live/stock-market-today-friday-november-13-dow-sp-500-nasdaq-nvidia-ppi-141451558.html（PPI・NVDA、日次11/13）"
+  - "data ブランチ: /home/claude/sd-data/semis_manifest.json ／ run_status.json ／ levels.json ／ fundamentals_latest.json ／ fundamentals.csv ／ semis_snapshot.csv ／ adr_premium.csv ／ macro_daily.csv ／ history_levels.csv（us_as_of 2026-11-13、生成 2026-11-14 07:23 JST）"
+  - "前回: /home/claude/semis-data/evidence/2026-11-06.yaml（= 上書き前の evidence/latest.yaml）／ handoff/latest.yaml ／ reports/daily/2026-11-09.md〜11-13.md"
