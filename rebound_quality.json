@@ -1,0 +1,281 @@
+{
+  "version": "1.1",
+  "status": "ok",
+  "us_as_of": "2026-11-27",
+  "prev_date": "2026-11-25",
+  "context": {
+    "index": "SOXX",
+    "dd_from_high_pct": -38.6,
+    "dd_low_pct": -43.5,
+    "high_date": "2026-06-22",
+    "low_date": "2026-11-20",
+    "in_correction": true,
+    "correction_rule": "SOXXが直近252営業日の高値（終値）から-10%以下",
+    "selloff_day": {
+      "date": "2026-11-20",
+      "index_ret_pct": -10.55,
+      "bars_ago": 4,
+      "rule": "直近10営業日でSOXXが最も下げた日（-4%以下のときだけ）"
+    }
+  },
+  "indexes": [
+    {
+      "name": "S&P500",
+      "price_ticker": "^GSPC",
+      "volume_ticker": "SPY",
+      "status": "ok",
+      "close": 7297.49,
+      "ret_1d_pct": 1.6,
+      "ret_5d_pct": 1.7,
+      "dv_vs_5d": 0.46,
+      "dv_vs_50d": 0.77,
+      "dv_vs_selloff_day": 0.28,
+      "volume_word": "少ない",
+      "high_date": "2026-10-06",
+      "low_date": "2026-11-20",
+      "dd_low_pct": -11.6,
+      "dd_now_pct": -6.7,
+      "retrace_pct": 42.6
+    },
+    {
+      "name": "QQQ（ナスダック100）",
+      "price_ticker": "QQQ",
+      "volume_ticker": "QQQ",
+      "status": "ok",
+      "close": 650.99,
+      "ret_1d_pct": 2.69,
+      "ret_5d_pct": 0.92,
+      "dv_vs_5d": 0.42,
+      "dv_vs_50d": 0.7,
+      "dv_vs_selloff_day": 0.28,
+      "volume_word": "少ない",
+      "high_date": "2026-10-06",
+      "low_date": "2026-11-20",
+      "dd_low_pct": -19.9,
+      "dd_now_pct": -14.3,
+      "retrace_pct": 28.1
+    },
+    {
+      "name": "SOX",
+      "price_ticker": "^SOX",
+      "volume_ticker": "SOXX",
+      "status": "ok",
+      "close": 9186.71,
+      "ret_1d_pct": 4.69,
+      "ret_5d_pct": -2.47,
+      "dv_vs_5d": 0.65,
+      "dv_vs_50d": 0.98,
+      "dv_vs_selloff_day": 0.48,
+      "volume_word": "平均並み",
+      "high_date": "2026-06-22",
+      "low_date": "2026-11-20",
+      "dd_low_pct": -42.5,
+      "dd_now_pct": -37.2,
+      "retrace_pct": 12.5
+    }
+  ],
+  "semis": {
+    "n": 42,
+    "status": "ok",
+    "up": 42,
+    "down": 0,
+    "avg_ret_pct": 5.74,
+    "median_ret_pct": 5.43,
+    "up_on_thin": 42,
+    "up_on_heavy": 0,
+    "down_on_thin": 0,
+    "down_on_heavy": 0,
+    "median_dv_vs_50d": 0.5,
+    "median_dv_vs_5d": 0.49,
+    "agg_dv_vs_5d": 0.47,
+    "agg_dv_vs_50d": 0.61,
+    "top_dv_ticker": "NVDA",
+    "top_dv_share_pct": 26.7,
+    "agg_ex_top_dv_vs_5d": 0.52,
+    "agg_ex_top_dv_vs_50d": 0.57,
+    "laggard_lead": {
+      "prior_bars": 20,
+      "rank_corr": -0.4,
+      "worst_third_avg_ret_pct": 7.44,
+      "best_third_avg_ret_pct": 5.53,
+      "word": "売られた銘柄ほど上げた",
+      "n": 42
+    },
+    "agg_dv_vs_selloff_day": 0.4
+  },
+  "memory_us": {
+    "n": 5,
+    "status": "ok",
+    "up": 5,
+    "down": 0,
+    "avg_ret_pct": 9.24,
+    "median_ret_pct": 7.6,
+    "up_on_thin": 5,
+    "up_on_heavy": 0,
+    "down_on_thin": 0,
+    "down_on_heavy": 0,
+    "median_dv_vs_50d": 0.62,
+    "median_dv_vs_5d": 0.58,
+    "agg_dv_vs_5d": 0.64,
+    "agg_dv_vs_50d": 0.61,
+    "top_dv_ticker": "MU",
+    "top_dv_share_pct": 57.0,
+    "agg_ex_top_dv_vs_5d": 0.75,
+    "agg_ex_top_dv_vs_50d": 0.57,
+    "laggard_lead": {
+      "prior_bars": 20,
+      "rank_corr": null,
+      "worst_third_avg_ret_pct": null,
+      "best_third_avg_ret_pct": null,
+      "word": null,
+      "n": 5
+    },
+    "rows": [
+      {
+        "ticker": "MU",
+        "ret_1d_pct": 7.6,
+        "dv_vs_50d": 0.66,
+        "dv_vs_5d": 0.57
+      },
+      {
+        "ticker": "SNDK",
+        "ret_1d_pct": 15.96,
+        "dv_vs_50d": 0.64,
+        "dv_vs_5d": 0.88
+      },
+      {
+        "ticker": "SKHY",
+        "ret_1d_pct": 7.52,
+        "dv_vs_50d": 0.62,
+        "dv_vs_5d": 0.63
+      },
+      {
+        "ticker": "WDC",
+        "ret_1d_pct": 7.22,
+        "dv_vs_50d": 0.44,
+        "dv_vs_5d": 0.58
+      },
+      {
+        "ticker": "STX",
+        "ret_1d_pct": 7.9,
+        "dv_vs_50d": 0.36,
+        "dv_vs_5d": 0.56
+      }
+    ],
+    "agg_dv_vs_selloff_day": 0.55
+  },
+  "names": [
+    {
+      "ticker": "NVDA",
+      "ret_1d_pct": 0.8,
+      "dv_vs_50d": 0.76,
+      "dv_vs_5d": 0.38,
+      "dv_vs_selloff_day": 0.35
+    },
+    {
+      "ticker": "AMD",
+      "ret_1d_pct": 4.56,
+      "dv_vs_50d": 0.57,
+      "dv_vs_5d": 0.37,
+      "dv_vs_selloff_day": 0.32
+    },
+    {
+      "ticker": "AVGO",
+      "ret_1d_pct": 3.82,
+      "dv_vs_50d": 0.6,
+      "dv_vs_5d": 0.45,
+      "dv_vs_selloff_day": 0.29
+    },
+    {
+      "ticker": "TSM",
+      "ret_1d_pct": 3.21,
+      "dv_vs_50d": 0.58,
+      "dv_vs_5d": 0.38,
+      "dv_vs_selloff_day": 0.28
+    },
+    {
+      "ticker": "MU",
+      "ret_1d_pct": 7.6,
+      "dv_vs_50d": 0.66,
+      "dv_vs_5d": 0.57,
+      "dv_vs_selloff_day": 0.49
+    },
+    {
+      "ticker": "SNDK",
+      "ret_1d_pct": 15.96,
+      "dv_vs_50d": 0.64,
+      "dv_vs_5d": 0.88,
+      "dv_vs_selloff_day": 0.83
+    },
+    {
+      "ticker": "SKHY",
+      "ret_1d_pct": 7.52,
+      "dv_vs_50d": 0.62,
+      "dv_vs_5d": 0.63,
+      "dv_vs_selloff_day": 0.51
+    },
+    {
+      "ticker": "WDC",
+      "ret_1d_pct": 7.22,
+      "dv_vs_50d": 0.44,
+      "dv_vs_5d": 0.58,
+      "dv_vs_selloff_day": 0.48
+    },
+    {
+      "ticker": "STX",
+      "ret_1d_pct": 7.9,
+      "dv_vs_50d": 0.36,
+      "dv_vs_5d": 0.56,
+      "dv_vs_selloff_day": 0.47
+    }
+  ],
+  "leveraged": {
+    "SOXL": {
+      "dv_usd_bn": 10.63,
+      "ret_1d_pct": 14.21,
+      "dv_vs_50d": 0.95,
+      "rank_in_history": 66,
+      "history_days": 756,
+      "record_date": "2026-06-09",
+      "record_usd_bn": 25.16
+    },
+    "SOXS": {
+      "dv_usd_bn": 4.41,
+      "ret_1d_pct": -14.79,
+      "dv_vs_50d": 1.02,
+      "rank_in_history": 37,
+      "history_days": 756,
+      "record_date": "2026-11-05",
+      "record_usd_bn": 11.59
+    },
+    "combined_vs_base": {
+      "ratio": 2.88,
+      "avg_50d": 3.02,
+      "percentile_in_history": 33.0,
+      "history_days": 756,
+      "meaning": "（SOXL＋SOXS）の売買代金 ÷ SOXX の売買代金。高いほど短期の値幅取りが多い"
+    }
+  },
+  "summary_ja": [
+    "指数：S&P500 +1.60%（売買代金は50日平均の0.77倍＝少ない、5日平均の0.46倍）、QQQ（ナスダック100） +2.69%（売買代金は50日平均の0.70倍＝少ない、5日平均の0.42倍）、SOX +4.69%（売買代金は50日平均の0.98倍＝平均並み、5日平均の0.65倍）。S&P500とSOXの売買代金はSPY・SOXXで代用",
+    "投げ売りの日（11/20、SOXX -10.6%）と比べた売買代金：S&P500 0.28倍、QQQ（ナスダック100） 0.28倍、SOX 0.48倍、半導体の合計 0.40倍",
+    "高値からの下げ幅のうち戻した割合：S&P500 42.6%（高値から-6.7%）、QQQ（ナスダック100） 28.1%（高値から-14.3%）、SOX 12.5%（高値から-37.2%）",
+    "半導体42銘柄：上げ42・下げ0（平均+5.7%）。上げた銘柄のうち、売買代金が50日平均より少ないのは42、1.5倍以上は0。合計の売買代金は5日平均の0.47倍、うちNVDAが26.7%を占め、除くと0.52倍",
+    "主役：売られた銘柄ほど上げた（直前20日の騰落率が下位3分の1の銘柄は今日平均+7.4%、上位3分の1は+5.5%、順位相関-0.40）（買い戻しが中心の日に出やすい形。これだけで先の上げ下げは分からない）",
+    "メモリー（米国5銘柄）：MU +7.6%（売買代金は50日平均の0.66倍）、SNDK +16.0%（売買代金は50日平均の0.64倍）、SKHY +7.5%（売買代金は50日平均の0.62倍）、WDC +7.2%（売買代金は50日平均の0.44倍）、STX +7.9%（売買代金は50日平均の0.36倍）",
+    "レバレッジETF：SOXL 売買代金 約106億ドル（50日平均の0.95倍、手元の756日で66番目）、SOXS 売買代金 約44億ドル（50日平均の1.02倍、手元の756日で37番目）。（SOXL＋SOXS）÷SOXX は2.88（50日平均3.02、手元の期間で下から33%の位置）"
+  ],
+  "reading": "描写であり予測ではない。手元の約3年（高値から10%以上下げた局面で1日+4%以上上げた18回）では、売買代金の比や「売られた銘柄ほど上げた」の強さだけで、その後の上げ下げは分けられなかった（docs/rebound_quality.md）。底の局面（売られ尽くした後の経過）は sector_health.json の washout.phase を見る",
+  "definitions": {
+    "dv": "売買代金＝終値×出来高",
+    "dv_vs_50d": "当日の売買代金÷直前50営業日の平均（50日平均の何倍か。日次の表の出来高比＝20日平均とは基準が違う）",
+    "dv_vs_5d": "同÷直前5営業日の平均",
+    "dv_vs_selloff_day": "同÷投げ売りの日の売買代金",
+    "retrace_pct": "高値→その後の安値の下げ幅のうち、いままでに戻した割合（終値）",
+    "thin": "50日平均の1.0倍未満",
+    "heavy": "50日平均の1.5倍以上",
+    "volume_word": "50日平均比 0.8未満＝少ない、1.2超＝多い、その間＝平均並み"
+  },
+  "generated_utc": "2026-11-28T12:29:19Z",
+  "generated_jst": "2026-11-28 21:29 JST"
+}

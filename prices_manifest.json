@@ -1,0 +1,22 @@
+{
+  "generated_utc": "2026-11-28T12:28:25Z",
+  "generated_jst": "2026-11-28 21:28 JST",
+  "runtime_sec": 13,
+  "source": "Yahoo Finance via yfinance (unofficial)",
+  "yfinance_version": "1.8.0",
+  "price_basis": "split_adjusted_ex_dividends(yahoo_close)",
+  "period": "3y",
+  "us_as_of": "2026-11-27",
+  "rows": 59863,
+  "tickers_requested": 83,
+  "tickers_ok": 83,
+  "tickers_failed": [
+    "KLAC"
+  ],
+  "tickers_behind_us": [],
+  "rows_kept_from_previous": 765,
+  "unclosed_dropped": {
+    "date": null,
+    "rows": 0
+  }
+}
