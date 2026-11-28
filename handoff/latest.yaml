@@ -1,140 +1,149 @@
 # SEMI_HANDOFF
 PROMPT_VERSION: v6.9
-AS_OF: {market: 2026-11-20, report_check: "2026-11-21 10:46 JST"}
-PREVIOUS_REPORT: 2026-11-13
+AS_OF: {market: 2026-11-27, report_check: "2026-11-28 11:00 JST"}
+PREVIOUS_REPORT: 2026-11-20
 DATA:
-  github_us_as_of: 2026-11-20
-  run_status: "prices/macro/fundamentals/snapshot/health/rebound/signals すべて success（run_utc 2026-11-20T22:23:54Z、82行、prices_failed・missing_tickers なし）"
+  github_us_as_of: 2026-11-27
+  run_status: "prices/macro/fundamentals/snapshot/health/rebound/signals すべて success（run_utc 2026-11-27T22:23:17Z、82行、missing_tickers なし）。prices_failed は SOXL のみ（stale:2d、最後は 11/25 終値 32.02）"
   missing:
-    - "DRAM: SMA200・52週（short_history:162、設定日2026-04-02）"
-    - "SKHY: SMA200・52週・調整耐性（short_history:95）。adr_ratio_or_data_suspect は比率確認済み、11/20 のプレミアム縮小の一部は KRX との時差"
-    - "DFII10・DGS10・DGS2・HY・CCC は 2026-11-19 時点、DTWEXBGS は 2026-11-13 時点"
-    - "fuel_latest.yaml は 11/6 週の値（更新 2026-11-10 10:05 JST）。2週続けて未更新"
-    - "SNDK は 8対1分割（11/19発効）。history_key.csv の 11/18 以前は分割前の値"
-    - "証拠: TrendForce の11月の製品別価格・4Q26実績・1Q27予測（4週続けて公開の新規なし）、NVIDIA 説明会の書き起こし・FQ3 ガイダンスの前回値・コンセンサス、IREN の遅れの本文、TCEQ・ERCOT・PUCT の公式ページ、NY州の措置の法的形式、今週の CDS、GPU レンタル価格、予想PER、ASML の受注・中国比率、SEC XBRL の照合（3週連続で到達できず）"
+    - "SOXL: 11/27 の値なし（prices_failed）。第1段階の Web の補い（日付のない 46.92）は不採用"
+    - "DRAM: SMA200・52週（short_history:166、設定日2026-04-02）"
+    - "SKHY: SMA200・52週・調整耐性（short_history:99）。adr_ratio_or_data_suspect は比率確認済み、11/26 の米国休場で ADS と原株の日数がずれる"
+    - "DFII10・DGS10・DGS2 は 2026-11-25、HY・CCC は 2026-11-26、DTWEXBGS は 2026-11-20 時点"
+    - "fuel_latest.yaml は 11/13 週の値（更新 2026-11-22 09:22 JST）。11/16〜20 の急落の後の持ち高は未取得"
+    - "11/26 休場のため semis_snapshot.csv の ret_1w は 11/19 比。前回比（11/20 終値比）は本文3節で計算"
+    - "証拠: TrendForce の1Q27 DRAM・HBM・server DDR5・LPDDR・DDR4 の数値（有料資料）、IREN Q1 FY27 の本文、テキサス州機関の公式ページ・ERCOT の受電承認停止の開始日、他州の今週の新規、今週の CDS、GPU レンタル価格、MU・TSM・ASML の予想PER、Ga/Ge 禁輸停止措置の期限後の扱い、BIS 規則の公示の実日付、SEC XBRL の照合（4週連続で到達できず）"
   web_fallback: []
-  notes: "PROMPT_VERSION v6.9（前回と同じ）。証拠 v7.3 は検索15・取得15で上限30（stopped_early）、SEC確認2回は到達できず。機械取得は Yahoo 40/40社（sec_probe HTTP 403）、NVDA FQ3・AMAT FQ4・TER 3Q は未反映、sec_checks は4社CapEx confirmed（継承）・MU/SNDK/WDC/NVDA no_data、RECONCILED の mismatch 0件（matches_machine 4・confirmed 1・pending 13）。DC_TIMING あり（v7.3）。market-data signals.json は基準日 2026-11-20（同じ）、ST-1.5b／engine 1.4b。判定時のWeb確認 1回（TCEQ の再開の公式発表の有無、公式ページは出ず）。据え置き（材料なし）の回数付き小項目なし。除外 E3（5回目）。coverage：A 100／M 100／F 100／E 70／X 100／S・D 100"
-VIEW: {semiconductor: 中立, memory: やや強気}
+  notes: "PROMPT_VERSION v6.9（前回と同じ）。証拠 v7.3 は検索13・取得15＝28（上限30の手前）、SEC確認2回は到達できず。機械取得は Yahoo 40/40社（sec_probe HTTP 403）、NVDA FQ3・AMAT FQ4・TER 3Q・ADI FQ4 は未反映、前回から値が変わった会社なし。sec_checks は4社CapEx confirmed（継承）・MU/SNDK/WDC/NVDA no_data、RECONCILED の mismatch 0件（matches_machine 4・pending 15）。DC_TIMING あり（v7.3）。market-data signals.json は基準日 2026-11-27（同じ）、ST-1.5b／engine 1.4b。判定時のWeb確認 0回。据え置き（材料なし）の回数付き小項目なし。除外 E3（6回目）。coverage：A 100／M 100／F 100／E 70／X 100／S・D 100"
+VIEW: {semiconductor: 中立, memory: 中立}
 SCORES:
-  total: {score: 59.9, band: "54.9-64.9", change_vs_prev: "−3.1（63.0→59.9。段階変更あり。X1 0→−1 で −1.3、X3 −1→−2 で −0.9、テクニカルで −0.9。ラベルはやや強気→中立、帯の上端はやや強気）"}
-  category: {ai: "14.3/20", memory: "17.8/25", foundry_equipment: "17.0/20", earnings_valuation: "7.5/10", technical: "0.9/10", macro: "2.4/15"}
-  sub: {ai_infra: 71.3, memory_cycle: 71.3, foundry_equipment: 85.0, earnings_valuation: 75.0, macro: 16.3, sox_momentum: 7.5, memory_equity_momentum: 11.2, technical: 8.6}
+  total: {score: 57.5, band: "52.5-62.5", change_vs_prev: "−2.4（59.9→57.5。段階変更あり。M1・M2・M3 +1→0 で −3.75、X1 −1→0 で +1.31、テクニカルで +0.12。半導体の見方は中立のまま、メモリーの見方はやや強気→中立。帯の上端はやや強気）"}
+  category: {ai: "14.3/20", memory: "14.1/25", foundry_equipment: "17.0/20", earnings_valuation: "7.5/10", technical: "1.0/10", macro: "3.8/15"}
+  sub: {ai_infra: 71.3, memory_cycle: 56.3, foundry_equipment: 85.0, earnings_valuation: 75.0, macro: 25.0, sox_momentum: 7.5, memory_equity_momentum: 15.0, technical: 9.8}
   coverage_pct: {A: 100, M: 100, F: 100, E: 70, X: 100, S: 100, D: 100}
   drivers:
-    - "X1 0→−1: DFII10 2.88%（11/19）、21本 +11bp（基準日 10/20 の 2.77%）で +10〜+25bp の帯。5本 +2bp、63本 +53bp。DTWEXBGS 21本 +0.647（約+0.5%）で調整なし"
-    - "X3 −1→−2: BIS 暫定最終規則（11/16 公表：遠隔利用1,200万TPP超の対中提供、インドネシア・マレーシア・シンガポール・タイ・ブラジル向けに許可要件、ファウンドリー/OSAT の顧客審査、AI Diffusion Rule 撤回。法律事務所の解説）。NVIDIA の FQ4 見通しは中国のDC演算売上ゼロを仮定（発表文）、許可済み Hopper の対中出荷停止（説明会、報道）、中国は『必要な措置』を表明、Ga/Ge 禁輸停止措置の期限 11/27。中国ゼロが新規則によるかは未確認（確信度C）"
-    - "S3 +1→0: SOXX 上昇/下落出来高比 0.99→0.82（levels.json）"
-    - "S5 −1→−2: VIX 19.30→35.89、rv20/rv60 1.44（levels.json）"
-    - "D2 −1→−2: DRAM 対SOXX 20本 +0.5%→−6.5%、60本 −11.8%、対SPY 20本 −19.9%・60本 −30.8%（levels.json）"
-    - "D4 0→+1: 上昇/下落出来高比 DRAM 0.93→0.97・MU 0.89→1.03（levels.json）"
-    - "D5 +2→−2: SKHYプレミアム 25.26% と20日平均 43.18% の差 17.92pt、方向一致（levels.json。一部は KRX との時差）"
+    - "M1 +1→0: TrendForce（11/19）NAND 4Q26 契約予測 +15〜20%→+8〜13%（中央値 −7pt）、1Q27 −0〜5%、2Q27 から全製品で下落。NAND スポット2週 −20%（TrendForce News 11/17）。DRAM は 4Q26 +10〜15%（9/30、改定の記載なし）で2027年を通じて上げ幅が縮小（11/27）。製品間でまちまち"
+    - "M2 +1→0: 中国の大手クラウドが2027年の企業向け SSD の調達を削減（北米の追加を上回る）、PC・スマホのブランドは2027年に NAND 搭載容量を削減する計画（TrendForce 11/19・11/25）。server DRAM の中国の削減は北米が吸収し DRAM のビット需要は強い。HBM の材料なし"
+    - "M3 +1→0: NAND の2027年ビット供給 +25〜30%・業界設備投資 US$29.9B（+26.7%）が弱まる需要と重なる。DRAM のビット供給も2026〜2028年に大きく伸びる（TrendForce 11/19・11/27）"
+    - "X1 −1→0: DFII10 2.73%（11/25）、21本 +7bp（基準 10/26 の2.66%）で ±10bp 以内。5本 −15bp、63本 +41bp。DTWEXBGS 21本 +1.9%（121.34→123.60）で調整なし"
+    - "D4 +1→0: 上昇/下落出来高比 DRAM 0.97→0.86・MU 1.03→1.01（levels.json）"
+    - "D5 −2→+1: SKHYプレミアム 43.51% と20日平均 42.69% の差 0.82pt、方向不一致（levels.json。11/26 の米国休場で日数がずれる）"
 LEVELS:
   A: {A1: 2, A2: 1, A3: 1, A4: -1, A5: 0, A6: 1}
-  M: {M1: 1, M2: 1, M3: 1, M4: 0, M5: 1, M6: 1}
+  M: {M1: 0, M2: 0, M3: 0, M4: 0, M5: 1, M6: 1}
   F: {F1: 2, F2: 1, F3: 1}
   E: {E1: 1, E2: 1, E3: "未確認(除外)"}
-  X: {X1: -1, X2: -2, X3: -2, X4: 0}
+  X: {X1: 0, X2: -2, X3: -2, X4: 0}
   S: {S1: -2, S2: -2, S3: 0, S4: -2, S5: -2}
-  D: {D1: -2, D2: -2, D3: -2, D4: 1, D5: -2, D6: -2}
+  D: {D1: -2, D2: -2, D3: -2, D4: 0, D5: 1, D6: -2}
 LEVEL_NOTES:
-  A1: "+2（維持、直近開示の状態）: 3Q26 4社合計 US$201,923M（+107.6% YoY、4社の10-Qで確認済み）。2026年ガイダンス合計 US$720〜740B（MSFT・GOOGL は tier4 要確認）。SemiAnalysis の推計引き下げ（2028年 −28%、報道）は第三者で会社の計画ではない"
-  A2: "+1（維持）: NVIDIA FQ3 DC US$107.6B（+110% YoY、要確認）は+2の条件の1つ。ガイダンスの予想比は未確認、供給制約の記述なし、棚卸資産 +25.8% QoQ、粗利率ガイダンス 71〜72%（FQ3 74.8%）で+2にしない"
-  A3: "+1（維持）: 利益率改善の複数社開示なし。NVIDIA の粗利率は低下見通し"
-  A4: "−1（維持）: テキサスは条件付き再開（TCEQ 審査再開、ERCOT 接続は未確認）、NY州は50MW以上の新規許可の1年停止（2026-07-14から、今回数え直し）。実質の全面停止は1州＋テキサスの一部。追跡案件の後ろ倒しの決算での確認 0件（IREN は見出しのみ）。補足『停止1州で主要案件のずれが未確認』に該当"
-  A5: "0（維持）: NVIDIA（11/17）・AMAT・ONTO に設置場所・電力による後ろ倒しの記述なし。受電待ちの追跡案件の数は増えていない（確認できる範囲）"
-  A6: "+1（維持）: Meta の Vera Rubin 展開拡大（NVIDIA 発表文）、CoreWeave 受注残 US$132.5B（前回、要確認）。1社の発言中心で+2にしない"
-  M1: "+1（維持、直近開示の状態）: TrendForce 4Q26 予測 DRAM +10〜15%・NAND +15〜20%（9/30）から4週更新なし。台湾報道『4Q の値上げ幅は縮小』、HBM の前期比は未確認"
-  M2: "+1（維持）: NVIDIA DC +110% は搭載先の拡大と同じ向き（HBM への言及なし）。GPU レンタル価格は使わない（R15）。搭載量・出荷の下方修正なし"
-  M3: "+1（維持）: DRAM の新規能力は2H27から（TrendForce 7月）、2027年の需給ギャップは拡大の可能性（台湾報道）"
-  M4: "0（維持）: MU 131.4日（前期121.8）、SNDK 166.0、WDC 87.7、STX 85.7（Yahoo、要確認）。減産・稼働低下なし"
-  M5: "+1（維持）: Kioxia 2027年分完売・Nanya 契約延長要望・SK hynix LTA（報道、更新なし）。SK hynix 2027年 CapEX 未確認"
-  M6: "+1（維持）: QLC eSSD（段階4）・eSSD（段階5）。HBF は段階1"
+  A1: "+2（維持、直近開示の状態）: 3Q26 4社合計 US$201,923M（+107.6% YoY、4社の10-Qで確認済み）。2026年ガイダンス合計 US$720〜740B（MSFT・GOOGL は tier4 要確認）。TrendForce は北米の大手クラウドが2027年の見通しを再び引き上げと記載"
+  A2: "+1（維持）: 新しい一次なし。NVIDIA FQ3 DC US$107.6B（+110% YoY、要確認）、供給制約の記述なし、棚卸資産 +25.8% QoQ"
+  A3: "+1（維持）: 利益率改善の複数社開示なし。HPE の2027年度のクラウド・AI 部門の営業利益率の見通し 約14%（前年度18.4%、監視外・報道）"
+  A4: "−1（維持）: テキサスは条件付き再開（TCEQ は審査再開・11/16 に許可発行、ERCOT は新しい大口負荷の受電承認を停止中〔今回判明、前からの措置、25〜75MW未満は対象外〕）、NY州は50MW以上の新規許可の1年停止。決算での後ろ倒し確認 0件（IREN は見出しのみ）。補足『停止1州で主要案件のずれが未確認』に該当"
+  A5: "0（維持）: ADI（11/24）に設置場所・電力による後ろ倒しの記述なし。受電待ちの追跡案件の数は増えていない（確認できる範囲）。ERCOT の受電承認の停止は A4 側で数える（R11）"
+  A6: "+1（維持）: 北米の大手クラウドの2027年見通しの再引き上げ（TrendForce）、HPE 受注 +88%（監視外・報道）。中国の大手クラウドの削減は M2 で数えた（R11）"
+  M1: "0（+1→0）: NAND は4Q26 予測の引き下げ・1Q27 −0〜5%・スポット2週 −20%、DRAM は4Q26 +10〜15%で2027年を通じて上げ幅縮小。HBM の前期比は未確認。製品間でまちまち"
+  M2: "0（+1→0）: DRAM のビット需要は強い（北米が中国の削減を吸収）。NAND は中国の企業向け SSD の2027年削減と端末の搭載容量の削減で下方修正。GPU レンタル価格は使わない（R15）"
+  M3: "0（+1→0）: NAND 2027年ビット供給 +25〜30%、設備投資 +26.7%、2Q27 から全製品が下落の局面。DRAM の供給も大きく伸び上げ幅が縮む。需給は均衡の側"
+  M4: "0（維持）: MU 131.4日（前期121.8）、SNDK 166.0、WDC 87.7、STX 85.7（Yahoo、要確認）。減産・稼働低下の報告なし"
+  M5: "+1（維持）: SK hynix LTA（2027・28年能力の半分超、報道）、Kioxia 2027年分完売（報道）。NAND の設備投資の増加は M3 で数えた（R11）"
+  M6: "+1（維持）: QLC 企業向け SSD（段階4）・企業向け SSD（段階5）。HBF は段階1、Kioxia GP Series は段階2"
   F1: "+2（維持）: TSMC 10月 +59.7% YoY、1〜10月 +43.3%、7nm以下 79%（3Q26）。11月分は12/10"
-  F2: "+1（維持）: ASML『2027・2028年の計画供給は需要を完全には満たさない』、4Q26 ガイダンス EUR 14.2〜15.2B（会社リリース）。KLA・Lam の WFE 見通し（tier4）。4社の受注残の増加は数値で未確認で+2にしない"
-  F3: "+1（維持）: CoWoS 増強・値上げ検討（報道、更新なし）。前倒しの開示なし"
-  E1: "+1（維持）: NVIDIA FQ4 ガイダンス +12.3% QoQ、FY2028 見通しの引き上げ（報道）。Intel・Amkor の引き下げ、QCOM の EPS ガイダンス未達が残る"
-  E2: "+1（維持）: NVIDIA は予想超（報道、コンセンサスの数値は未取得）"
-  E3: "未確認（除外、5回目）: 今週の予想PERが取れない。基準株価 NVDA 125.53／TSM 318.71／MU 594.51／ASML 1,266.22（前回比 −22.92%／−20.07%／−23.62%／−15.31%）"
-  X1: "−1（0→−1）: DFII10 2.88%（11/19）、21本 +11bp・5本 +2bp・63本 +53bp。DTWEXBGS 122.65（11/13）、21本 +0.5%で調整なし"
-  X2: "−2（維持）: 10月PPI 前年比 +6.5%・コア +5.0%（BLS）、FOMC 議事要旨『ほぼすべての参加者』が追加利上げを適切と判断、Waller 理事は12月に0.5ポイント（報道）。フィラデルフィア連銀 6.3（報道）"
-  X3: "−2（−1→−2）: BIS 暫定最終規則（11/16）、NVIDIA の中国DC演算ゼロの前提（発表文）、中国の対抗措置の表明、Ga/Ge 期限 11/27"
-  X4: "0（維持）: 台湾・韓国の政治・軍事の重大事象なし。米中首脳会談（深圳）は結果未取得"
-EVIDENCE_CONFIDENCE: "総合C（A: C（A1 の実績と NVIDIA の DC 売上はA、ガイダンスの予想比・A4・A5 は C〜D）／M: C（価格の新しい一次情報なし）／F: B（F1 はA、ASML は会社リリース、KLA・Lam は tier4）／E: C（コンセンサス未取得）／X: B（X1 は FRED で A、X2 は PPI・議事要旨が一次、X3 は C〜B）／S・D: A）"
-REGIME: "ファンダ上昇局面（NVIDIA DC +110%・FQ4 +12%、4社CapEx 3Q26 +107.6% SEC確認、TSMC 10月 +59.7%、ASML『2027・28年の供給は需要に届かない』、メモリー供給は逼迫）× 株価は売られ尽くし後の二番底を試し中（SOX は11/5安値を割り 8,408.59、S 7.5・D 11.2、公式ステージは半導体の76.3%が下落）× マクロは引き締め側（12月利上げ観測、実質金利の上昇）× 規制・信用が重し（BIS 新規則、NY・テキサス、HY 拡大）。市場の論点は AI 投資の回収・資金繰りと12月の利上げ"
-KEY_CHANGE: "11/20 に SOX −10.73%（8,408.59）で11/5安値 9,011.14 を割り、S 15.0→7.5・D 22.5→11.2。NVIDIA FQ3 は DC +110%・FQ4 ガイダンス +12.3% で需要を確かめたが株価は1週 −22.9%。BIS の暫定最終規則と NVIDIA の中国ゼロ前提で X3 −1→−2、10年実質金利の21本 +11bp で X1 0→−1、総合 63.0→59.9 で市況の見方はやや強気→中立。反転リスクは発動2→4（金利・VIX・対中、SKHY）、米国内のDC規制は NY州の数え直しで警戒へ、下げの引き金が成立。予測は3本判定（hit 2・miss 1、累積6勝2敗）。4d：底の目安が11/20に3/3で再点灯（二番底を試し中、起点比 −6.4%、底割れの線まで −3.8%）"
+  F2: "+1（維持）: ASML『2027・2028年の計画供給は需要を完全には満たさない』、4Q26 ガイダンス EUR 14.2〜15.2B（会社リリース）。今週の見通し変更なし。NAND 業界の2027年設備投資 +26.7%（TrendForce）は加点しない"
+  F3: "+1（維持）: CoWoS 増強・値上げ検討（報道、更新なし）"
+  E1: "+1（維持）: NVIDIA・AMAT・Micron・TSMC・ASML の次四半期ガイダンスは前四半期より上。ADI の FQ1 は中央値 US$4.4B（FQ4 比 +0.6%）・EPS 3.82（FQ4 4.06）、Intel・Amkor の引き下げ、QCOM の EPS 未達が残る"
+  E2: "+1（維持）: ADI のコンセンサス比は未取得。NVIDIA は予想超（報道）"
+  E3: "未確認（除外、6回目）: NVDA の予想PER 約11.7倍（FactSet、11/10、報道経由）・FY2028 EPS US$15.75 で 11/27 は約9.55倍（計算）。前回値と出どころが違い、MU・TSM・ASML は未取得。基準株価 NVDA 150.49／TSM 353.34／MU 646.95／ASML 1,325.82（前回比 +19.88%／+10.87%／+8.82%／+4.71%）"
+  X1: "0（−1→0）: DFII10 2.73%（11/25）、21本 +7bp・5本 −15bp・63本 +41bp。DTWEXBGS 123.60（11/20）、21本 +1.9%で調整なし"
+  X2: "−2（維持）: 10月PCE コア前年比 +3.3%（BEA、予想を0.1pt上回る〔報道〕）、7〜9月期 GDP 年率4.3%（報道）、12月の0.25pt 利上げを完全に織り込み（報道）。10月PPI 前年比 +6.5%（BLS）"
+  X3: "−2（維持）: BIS 暫定最終規則（11/19 公示で発効の予定、既存DCは90日以内に許可取得）、上海の DC の Blackwell 報道、来週の議会の輸出規制の証言、Ga/Ge 禁輸停止措置の期限 11/27 の扱いは不明、NVIDIA の中国DC演算ゼロの前提"
+  X4: "0（維持）: 台湾・韓国の政治・軍事の重大事象なし。KOSPI の5,000割れは市場の動き"
+EVIDENCE_CONFIDENCE: "総合C（A: C（A1 の実績と NVIDIA の DC 売上はA、A4・A5 は C〜D）／M: C（TrendForce の公開リリース3本で方向は一致、数値は一部、スポットは二次）／F: B（F1 はA、ASML は会社リリース、KLA・Lam は tier4）／E: C（コンセンサス未取得）／X: B（X1 は FRED で A、PCE は BEA、X3 は C〜B）／S・D: A）"
+REGIME: "ファンダは AI 計算・受託製造が強いまま（4社CapEx 3Q26 +107.6% SEC確認、TSMC 10月 +59.7%、ASML『供給は需要に届かない』）だが、メモリーは値上がりの山を越える局面へ（TrendForce: NAND は1Q27 から下落・2Q27 から全製品、DRAM は2027年を通じて上げ幅縮小・2028年に下落）× 株価は売られ尽くし後の反発・二番底待ち（SOXX は起点比 +1.65%、11/25 日中に底割れの線を一度割る、S 7.5・D 15.0、公式ステージは半導体の78.9%が下落）× マクロは引き締め側（12月利上げを織り込み、実質金利の上昇は一服）× 規制・信用が重し（BIS 規則、テキサスの受電承認停止、NY州、HY・CCC の拡大）"
+KEY_CHANGE: "TrendForce の3本のリリース（11/19・11/25・11/27）で NAND の契約価格予測が 4Q26 +8〜13%（前 +15〜20%）・1Q27 −0〜5%・2Q27 から全製品下落、DRAM は2027年を通じて上げ幅縮小に変わり、M1・M2・M3 を +1→0（M 71.3→56.3）、メモリーの見方はやや強気→中立。10年実質金利の21本変化が +7bp に戻り X1 −1→0。総合 59.9→57.5（中立のまま）。反転リスクは製品別価格の悪化が発動、金利・VIX と SKHY は警戒へ（発動4→3）。SOX は前回終値比 +9.25% だが S は 7.5 のまま。4d：底の目安 3/3→2/3（反発中・二番底待ち、起点比 +1.65%）。予測の判定 0本（累積6勝2敗）、新規4本"
 SIGNALS:
-  AI_CAPEX: "強気（3Q26 US$201.9B +107.6% SEC確認、2026年ガイダンス US$720〜740B、今週の会社の変更なし。SemiAnalysis の推計引き下げは第三者・報道）"
-  TSMC_FOUNDRY: "強気（10月 +59.7% YoY、1〜10月 +43.3%。4Q26 ガイダンス US$52.3〜54.3B。BIS 規則でファウンドリーの顧客審査が厳しくなった）"
-  EQUIPMENT: "やや強気〜強気（ASML『2027・28年の供給は需要を満たさない』・4Q26 EUR 14.2〜15.2B〔会社リリース〕、KLA・Lam の WFE 2027年 US$200B超〔tier4〕、見通し引き下げ 0社）"
+  AI_CAPEX: "強気（3Q26 US$201.9B +107.6% SEC確認、2026年ガイダンス US$720〜740B、会社の変更なし。北米の大手クラウドは2027年見通しを再引き上げ、中国の大手クラウドは調達を削減〔TrendForce〕）"
+  TSMC_FOUNDRY: "強気（10月 +59.7% YoY、1〜10月 +43.3%。4Q26 ガイダンス US$52.3〜54.3B。11月分は12/10）"
+  EQUIPMENT: "やや強気〜強気（ASML『2027・28年の供給は需要を満たさない』、KLA・Lam の WFE 2027年 US$200B超〔tier4〕、見通し引き下げ 0社。NAND 業界の2027年設備投資 +26.7%〔TrendForce〕）"
   ADVANCED_PACKAGING: "やや強気（CoWoS 2027年 月20万〜22.75万枚の推定・最大20%値上げ検討〔報道、更新なし〕）"
-  HBM: "強気（新しい一次なし。NVIDIA は HBM に触れず。『HBM Downgrade』は有料レポートの題名のみ）"
-  COMMODITY_DRAM: "強気・減速（4Q26 +10〜15% 予測から4週更新なし。台湾報道『4Q の値上げ幅は縮小、2027年のギャップは拡大の可能性』）"
-  LEGACY_DRAM: "やや強気（Nanya 10月 +487.7%・Winbond +257.0%〔報道、要確認〕）"
-  NAND_TLC: "強気・注意（4Q26 +15〜20% 予測、2H27 に供給が緩む見通し〔7月〕）"
-  NAND_QLC: "やや強気（Kioxia E1.L QLC 段階4、価格未確認）"
-  NAND_ESSD: "強気（4Q26 で上げ幅が前期より大きい唯一の品目〔9/30予測〕、SanDisk DC 段階5）"
-  HBF_SCM: "標準化（段階1：2026-08 OCP 仕様第1版、HBM と共存）"
-  MEMORY_CAPEX_QUALITY: "中立〜良（Kioxia 2027年分完売・Nanya 契約延長要望・SK hynix LTA。装置の DRAM 向け配分の厚さは2H27以降の供給増の論点）"
-  INVENTORY: "注意・強まる（NVIDIA 棚卸資産 US$39.7B〔QoQ +25.8%〕、MU 131.4日、買い手側 AMD・QCOM・MCHP・SWKS は前年比増、要確認）"
-  OPTICAL_MEMORY_TIERING: "未確認（KV キャッシュの退避は題名のみ。HBM 搭載量の下方修正なし、R4）"
+  HBM: "強気（新しい数値なし。中国の削減の対象に HBM の記載なし）"
+  COMMODITY_DRAM: "やや強気・減速（4Q26 +10〜15% 予測〔9/30〕、2027年を通じて上げ幅縮小・2H27 横ばいの可能性・2028年下落〔TrendForce 11/27〕。弱気の想定は4Q27 から下落）"
+  LEGACY_DRAM: "やや強気（Nanya 10月 +487.7%・Winbond +257.0%〔報道、要確認〕。11月分は12月上旬）"
+  NAND_TLC: "弱い兆し（スポット2週 −20%、512Gb TLC wafer 3週 −23.3%〔二次〕、4Q26 +8〜13%、1Q27 −0〜5%、2Q27 から全製品下落〔TrendForce 11/19〕）"
+  NAND_QLC: "やや強気・注意（Kioxia E1.L QLC 段階4、価格は未確認。NAND 全体は下落の局面へ）"
+  NAND_ESSD: "やや強気・注意（4Q26 +15〜20%〔10月末時点の予測〕、中国の大手クラウドの2027年削減が北米の追加を上回る〔TrendForce〕）"
+  HBF_SCM: "標準化（HBF 段階1：2026-08 OCP 仕様）・試作（Kioxia GP Series 段階2：HBM の拡張、評価サンプルは2026年末まで）"
+  MEMORY_CAPEX_QUALITY: "中立（NAND 2027年の設備投資 +26.7%・ビット +25〜30% は汎用の側。SK hynix の LTA・Kioxia の2027年完売は残る）"
+  INVENTORY: "注意・強まる（ADI 棚卸資産 前年比 +25.8%、NVIDIA US$39.7B〔QoQ +25.8%〕、MU 131.4日、要確認。減産なし）"
+  OPTICAL_MEMORY_TIERING: "未確認（Kioxia GP Series は HBM を補う外部の階層で段階2。HBM 搭載量の下方修正なし、R4）"
   SRAM_ARCHITECTURE: "未確認（未調査、R6）"
-  AI_EFFICIENCY: "未確認（今週の新規なし、TurboQuant は3月で数値なし。R7）"
-  KOREA_MARKET_STRUCTURE: "弱い（SK hynix 原株 1週 −8.5%・高値比 −61.9%、Samsung −11.1%、USD/KRW 1,346.13〔ウォン安〕、SKHY プレミアム 25.26%〔30%割れ〕）"
+  AI_EFFICIENCY: "未確認（今週の新規なし。端末の NAND 搭載容量の削減は価格への対応で効率化ではない、R7）"
+  KOREA_MARKET_STRUCTURE: "弱い・振れが大きい（KOSPI 11/25 に5,000割れ、SK hynix 原株 1週 −0.27%・高値比 −62.0%、Samsung −2.18%、USD/KRW 1,333.0〔小幅なウォン高〕、SKHY プレミアム 43.51%〔30%割れ解消〕）"
 DRAM_ETF:
-  signal: "弱気（D1 −2。終値33.36＜SMA20 43.53＜SMA50 51.09、SMA20 傾き −9.3%。高値比 −58.7%、1週 −21.3%）"
+  signal: "弱気（D1 −2。終値37.57＜SMA20 40.69＜SMA50 49.59、SMA20 傾き −11.9%。高値比 −53.5%、前回終値比 +12.62%）"
   holdings_as_of: "2026-09-30（公式ページ、ロゴのみ・ウェイト非表示。次の確認は12月の最初の実行）"
   nav_premium: "未確認（公式ページの数値欄が空）"
-  limitation: "設定162営業日で SMA200・52週 N/A。アクティブ運用・スワップ・非分散型。NAV乖離・スプレッド・AUM 未確認でテクニカル確信度B。CXMT（R10）・Seagate（HDD）を含み純DRAMではない。SOXX・SMH と保有が重なる（R11）"
+  limitation: "設定166営業日で SMA200・52週 N/A。アクティブ運用・スワップ・非分散型。NAV乖離・スプレッド・AUM 未確認でテクニカル確信度B。CXMT（R10）・Seagate（HDD）を含み純DRAMではない。SOXX・SMH と保有が重なる（R11）"
 SKHY_ADR:
-  premium_pct: 25.26
-  avg20: 43.18
+  premium_pct: 43.51
+  avg20: 42.69
   ratio_verified: "確認済み（SEC 424B4 2026-07-09: 1 ADS＝普通株0.1株）。manifest の local_shares_per_ads 0.1 と一致"
-  signal: "割高度の急縮小（D5 −2、差17.92pt、方向一致）。R13 で業績に結び付けない。20日レンジ 25.26〜61.2%の下限、理論値 US$82.68（原株1,113,000ウォン、USD/KRW 1,346.13）まで縮めば約−20%。別枠の30%割れが成立。一部は KRX との約14.5時間の時差"
+  signal: "割高度は20日平均並みに戻った（D5 +1、差0.82pt、方向不一致）。R13 で業績に結び付けない。20日レンジ 24.21〜61.2%、理論値 US$83.27（原株1,110,000ウォン、USD/KRW 1,333.0）まで縮めば約−30%。別枠の30%割れは解消。11/26 の米国休場で ADS は2日分・原株は2営業日分"
 SECTOR_RS:
   bench: SOXX
-  leaders: ["SWKS（rs_soxx_60 +39.3）", "NXPI（+33.7）", "TXN（+28.5）", "ADI（+21.9）", "QCOM（+20.5）"]
-  laggards: ["CRDO（−28.9）", "SNDK（−27.8）", "LITE（−22.3）", "MRVL（−19.8）", "STX（−16.5）"]
-  flips: ["前回の上位5・下位5の中で leader⇄laggard の入れ替わりなし（SNPS・AMD はリーダーのまま上位5から外れ、WDC は下位6位以下、LITE が下位5へ）。SKHY は中立→ラガード。区分はリーダー13→13、中立11→12、ラガード18→17。メモリー5銘柄と NVDA はラガード"]
+  leaders: ["SWKS（rs_soxx_60 +40.7）", "NXPI（+30.6）", "TXN（+30.4）", "QCOM（+25.3）", "MPWR（+23.5）"]
+  laggards: ["SNDK（−36.3）", "LITE（−21.1）", "STX（−17.2）", "INTC（−16.5）", "WDC（−15.1）"]
+  flips: ["前回の上位5・下位5の中で leader⇄laggard の入れ替わりなし（ADI はリーダーのまま上位5から外れ、CRDO・MRVL はラガードのまま下位5から外れ、MPWR・INTC・WDC が入った）。NVDA はラガード→中立、AMD はリーダー→中立。区分はリーダー13→12、中立12→15、ラガード17→15。メモリー5銘柄はラガード"]
 CORRECTION:
   bench: SOXX
   state: 調整中
   high: 2026-06-22
   low: 2026-11-20
   dd_low: -43.5
-  dd_now: -43.5
-  next_candidates: ["TXN（B、同調×先行、R_held 0.55、R_now 0.47、高値比−20.6%）", "SWKS（B、同調×先行、0.88、0.44、−19.2%）"]
+  dd_now: -38.6
+  next_candidates: ["TXN（B、同調×先行、R_held 0.55、R_now 0.39、高値比−15.2%）", "SWKS（B、同調×先行、0.88、0.14、−5.2%）"]
   late_breaks: []
 MARKET_CONTEXT:
-  source_as_of: 2026-11-20
+  source_as_of: 2026-11-27
   definition_version: "ST-1.5b / engine 1.4b"
-  tape_regime: "D（confirmed）"
+  tape_regime: "C（confirmed）"
   ix3_guard: true
   megacap_led: true
-  tech_pct_down20: 82.7
+  tech_pct_down20: 67.0
   tech_label: broad_decline
-  ex_tech_pct_down20: 36.6
-  sp500_pct_down20: 45.6
+  ex_tech_pct_down20: 26.6
+  sp500_pct_down20: 34.5
   sp500_label: null
-  fb1_d5_hold: 70.0
-  fb1_d5_ret: -0.70
-  fb1_d10_ret: -1.53
+  fb1_d5_hold: 69.7
+  fb1_d5_ret: -0.64
+  fb1_d10_ret: -1.48
   fb1_stalling: true
   reversal_status: 発動
-  top_sectors: [ヘルスケア, 金融, 生活必需品]
-  leaders_market: 49
-  leaders_market_4w: 63
-  leaders_tech: 1
-  leaders_tech_4w: 11
-  leaders_semi: "0（4週前1。SWKS が外れた。新規・脱落の一覧〔各上位15件〕に semis_broad の銘柄なし）"
+  top_sectors: [ヘルスケア, 金融, 資本財]
+  leaders_market: 66
+  leaders_market_4w: 60
+  leaders_tech: 5
+  leaders_tech_4w: 9
+  leaders_semi: "1（SWKS。4週前3。semis_broad の脱落 AMD・ENTG、新規なし〔各上位15件〕）"
   hedge_allowed: true
   hedge_status: allowed
-  spy_model_pct: 20
+  spy_model_pct: 40
   spy_model_signal: buy
   spy_model_since: 2026-04-10
 FUNDAMENTAL_LEVELS:
-  - {item: "NVIDIA 四半期売上／DC売上YoY", value: "US$115.8B（FQ3 FY2027、+103% YoY・+20% QoQ）／DC US$107.6B（+110% YoY・+21% QoQ）（要確認）", as_of: 2026-11-17, source: "NVIDIA 決算リリース（investor.nvidia.com）"}
+  - {item: "NAND Flash 契約価格QoQ（TrendForce予測、4Q26）", value: "+8〜13%（2026-11-19 に引き下げ。前 +15〜20%〔9/30〕、中央値 −7pt）", as_of: 2026-11-19, source: "TrendForce プレスリリース（trendforce.com/presscenter/news/20261119-13314.html）"}
+  - {item: "NAND Flash 契約価格QoQ（TrendForce予測、1Q27）", value: "−0〜5%（初出）。2Q27 から全製品が下落の局面", as_of: 2026-11-19, source: "TrendForce プレスリリース（20261119-13314）"}
+  - {item: "NAND 2027年 ビット供給／業界設備投資（TrendForce）", value: "+25〜30% YoY／US$29.9B（+26.7% YoY）", as_of: 2026-11-19, source: "TrendForce プレスリリース（20261119-13314）"}
+  - {item: "NAND スポット（TrendForce）", value: "2週間で −20%（11/17 の記事）。512Gb TLC wafer US$14.267（11/9、3週で −23.3%、二次記事の転載、要確認）", as_of: 2026-11-17, source: "TrendForce News／xenospectrum"}
+  - {item: "Conventional DRAM 契約価格QoQ（TrendForce予測）", value: "4Q26 +10〜15%（9/30、改定の記載なし）。1Q27 の数値は非公開。2027年を通じて上げ幅縮小、2H27 横ばいの可能性、2028年下落（基本）、4Q27 から下落（弱気の想定）", as_of: 2026-11-27, source: "TrendForce プレスリリース（20261127-13327）／iconnect007（9/30）"}
+  - {item: "メモリー業界の2027年売上予測（TrendForce）", value: "DRAM US$1.15兆（+69% YoY）／NAND US$4,193億（+29% YoY）（引き下げ後、旧値の記載なし）", as_of: 2026-11-25, source: "TrendForce プレスリリース（20261125-13321）"}
+  - {item: "HBM価格前期比（TrendForce）", value: "未確認（今週のリリース3本に HBM の数値なし）", as_of: "N/A", source: "TrendForce"}
+  - {item: "enterprise SSD 契約価格QoQ（TrendForce予測、4Q26）", value: "+15〜20%（10月末時点。11/19 の改定の有無は不明）", as_of: 2026-11-17, source: "TrendForce News"}
+  - {item: "NVIDIA 四半期売上／DC売上YoY", value: "US$115.8B（FQ3 FY2027、+103% YoY）／DC US$107.6B（+110% YoY）（要確認）", as_of: 2026-11-17, source: "NVIDIA 決算リリース（investor.nvidia.com）"}
   - {item: "NVIDIA 次四半期売上ガイダンス／粗利率ガイダンス", value: "FQ4 US$130.0B±3%（FQ3 比 +12.3%、14週）／71.0〜72.0%（中国DC演算ゼロの前提）", as_of: 2026-11-17, source: "NVIDIA 決算リリース"}
-  - {item: "NVIDIA 棚卸資産／推定在庫日数", value: "US$39,724M（QoQ +25.8%）／約124日（計算・推定、前期119.3日）", as_of: 2026-10-25, source: "NVIDIA 決算リリース／fundamentals_latest.json"}
+  - {item: "NVIDIA 棚卸資産／推定在庫日数", value: "US$39,724M（QoQ +25.8%）／約124日（計算・推定）", as_of: 2026-10-25, source: "NVIDIA 決算リリース／fundamentals_latest.json"}
+  - {item: "Analog Devices 四半期売上／次四半期ガイダンス", value: "US$4,373M（FQ4 FY2026、+42% YoY、+8.7% QoQ）／FQ1 FY2027 US$4.4B±0.15B（+0.6%）、調整後EPS US$3.82±0.20（FQ4 4.06）。棚卸資産 US$2,084M（+25.8% YoY）（要確認）", as_of: 2026-11-24, source: "ADI Form 8-K Ex.99.1"}
   - {item: "TSMC 単月売上YoY", value: "+59.7%（2026-10、NT$586.89B、MoM +14.7%）", as_of: 2026-11-10, source: "TSMC Form 6-K（tsm-revenue20261110.htm）"}
   - {item: "TSMC 年初来累計YoY", value: "+43.3%（1〜10月、NT$4,485.62B）", as_of: 2026-11-10, source: "TSMC Form 6-K"}
   - {item: "TSMC 3か月累計売上YoY（NT$）", value: "+50.9%（3Q26。4Q26 は10月単月のみ）", as_of: 2026-10-15, source: "TSMC 6-K"}
@@ -142,162 +151,159 @@ FUNDAMENTAL_LEVELS:
   - {item: "TSMC 4Q26売上ガイダンス／2026年設備投資", value: "US$52.3〜54.3B（中央値 +14.1% QoQ）、粗利率65〜67%／US$60〜64B", as_of: 2026-10-15, source: "TSMC 6-K／CRN Asia"}
   - {item: "ハイパースケーラー4社 四半期CapEx合計（現金ベース）", value: "US$201.923B（3Q26）、前年比 +107.6%", as_of: 2026-09-30, source: "4社の10-Q（照合済み）／fundamentals_latest.json"}
   - {item: "ハイパースケーラー4社 2026年CapExガイダンス合計", value: "US$720〜740B（MSFT 約170B・GOOGL 195〜205B は tier4 要確認）", as_of: 2026-10-28, source: "evidence/2026-11-06.yaml"}
-  - {item: "AIアクセラレーター設備投資の第三者推計（SemiAnalysis、参考）", value: "2028年 US$7,580億（旧 US$1兆540億、−28%）／2030年 US$9,230億（約−40%）（報道、要確認）", as_of: 2026-11-16, source: "Invezz"}
-  - {item: "ASML 3Q26売上／4Q26ガイダンス／2026年", value: "EUR 11,662M（+55.2% YoY、粗利率57.5%）／EUR 14.2〜15.2B（粗利率 約57%）／EUR 44〜45B。『2027・2028年の計画供給は需要を完全には満たさない』", as_of: 2026-10-14, source: "ASML プレスリリース（seekingalpha 配信）"}
-  - {item: "WFE見通し（装置大手）", value: "暦年2026年 US$150B台半ば／2027年 US$200B超（KLA 引き上げ・Lam で一致、tier4 要確認）。引き下げ 0社", as_of: 2026-11-12, source: "securities.io（KLA）／sec-api.io（Lam）"}
-  - {item: "装置大手の中国比率", value: "Lam 35.1%（FQ1）／KLA 34%（FQ1）／AMAT 25%（FQ4）／ASML 未確認", as_of: 2026-11-12, source: "前回まで"}
-  - {item: "Applied Materials 四半期売上／次四半期ガイダンス", value: "US$10,409M（FQ4 FY2026、+53% YoY、要確認）／FQ1 FY2027 US$11.1B±0.5B（14週）", as_of: 2026-11-12, source: "AMAT 決算リリース（stocktitan 転載）"}
-  - {item: "Onto Innovation 売上／受注残／4Qガイダンス", value: "US$409.7M（+87.8% YoY）／US$13億超／US$430〜450M", as_of: 2026-11-09, source: "ONTO 8-K ex99.1"}
-  - {item: "TSMC CoWoS 月産能力（推定）", value: "2026年 10.6万〜13万枚超／2027年 20万〜22.75万枚（報道・アナリスト推定）", as_of: 2026-10-27, source: "TrendForce News"}
-  - {item: "Conventional DRAM／NAND 契約価格QoQ（TrendForce予測）", value: "+10〜15%／+15〜20%（4Q26、4週更新なし）", as_of: 2026-09-30, source: "iconnect007（TrendForce リリース転載）"}
-  - {item: "HBM価格前期比（TrendForce）", value: "未確認（2027年『数倍』〔6月〕・『+121% YoY』〔関連記事の見出し〕）", as_of: "N/A", source: "dramexchange／iconnect007"}
-  - {item: "Nanya／Winbond 10月売上YoY", value: "+487.7%（NT$46,476M、報道3本）／+257.0%（NT$29,361M、報道2本）（要確認）", as_of: 2026-11-06, source: "technews／setn"}
+  - {item: "AIアクセラレーター設備投資の第三者推計（SemiAnalysis、参考）", value: "2028年 US$7,580億／2030年 US$9,230億（報道、要確認）", as_of: 2026-11-16, source: "Invezz"}
+  - {item: "ASML 3Q26売上／4Q26ガイダンス／2026年", value: "EUR 11,662M（+55.2% YoY）／EUR 14.2〜15.2B／EUR 44〜45B", as_of: 2026-10-14, source: "ASML プレスリリース"}
+  - {item: "WFE見通し（装置大手）", value: "暦年2026年 US$150B台半ば／2027年 US$200B超（KLA・Lam、tier4 要確認）。引き下げ 0社", as_of: 2026-11-12, source: "securities.io／sec-api.io"}
+  - {item: "Applied Materials 四半期売上／次四半期ガイダンス", value: "US$10,409M（FQ4 FY2026、+53% YoY、要確認）／FQ1 FY2027 US$11.1B±0.5B", as_of: 2026-11-12, source: "AMAT 決算リリース（stocktitan 転載）"}
+  - {item: "TSMC CoWoS 月産能力（推定）", value: "2026年 10.6万〜13万枚超／2027年 20万〜22.75万枚（報道）", as_of: 2026-10-27, source: "TrendForce News"}
+  - {item: "Nanya／Winbond 10月売上YoY", value: "+487.7%（NT$46,476M）／+257.0%（NT$29,361M）（報道、要確認）", as_of: 2026-11-06, source: "technews／setn"}
   - {item: "Micron 四半期売上／non-GAAP粗利率／EPS", value: "US$54.23B / 87.0% / US$33.42（FQ4 2026）。FQ1 2027ガイダンス US$61.5B±1.5B / 約86.25% / US$38.15±1.00", as_of: 2026-09-30, source: "Micron 8-K ex99.1"}
   - {item: "Micron 棚卸資産／在庫日数", value: "US$10.372B／131.4日（前期121.8、要確認）", as_of: 2026-08-31, source: "Micron 8-K／fundamentals_latest.json"}
   - {item: "SK hynix 3Q26営業利益／LTA比率", value: "83.3兆ウォン／2027・2028年能力の半分超（報道）", as_of: 2026-10-28, source: "SK hynix 6-K"}
-  - {item: "Samsung 3Q26営業利益／DS部門／2026年設備投資", value: "107.4兆ウォン／DS 営業利益106.5兆ウォン／約84.4兆ウォン", as_of: 2026-10-29, source: "news.samsung.com"}
-  - {item: "SanDisk 売上／Datacenter売上／在庫日数", value: "US$11.031B / US$4.802B / 166.0日（8対1分割 11/19発効）", as_of: 2026-10-29, source: "investor.sandisk.com／fundamentals_latest.json"}
-  - {item: "米国内のDC停止・新規制の州の数", value: "2（テキサス＝条件付き再開、NY州＝50MW以上の新規の裁量的許可を1年停止〔2026-07-14から、今回数え直し〕）", as_of: 2026-11-18, source: "Texas Tribune・Fox 7・Al Jazeera（報道、要確認）"}
-  - {item: "E3: 予想PER（コンセンサス）", value: "今週は未取得。参考：MU 6.01倍／NVDA 19.93倍（10/7）。TSM・ASML は未取得", as_of: 2026-10-07, source: "Benzinga（TradingView）の転載"}
-  - {item: "E3基準: 株価 NVDA／TSM／MU／ASML", value: "125.53／318.71／594.51／1,266.22（前回比 −22.92%／−20.07%／−23.62%／−15.31%）", as_of: 2026-11-20, source: "semis_snapshot.csv"}
-  - {item: "E3参考: MU 単純年率化PER（推定）", value: "約3.90倍（594.51 ÷ 152.60。前回5.10倍）", as_of: 2026-11-20, source: "計算（推定）"}
-  - {item: "X1基準: DFII10／DGS10／DGS2／DTWEXBGS", value: "2.88%（21本 +11bp〔基準10/20 2.77%〕・5本 +2bp・63本 +53bp）／5.04%／4.76%／122.65（11/13、21本 +0.647）", as_of: 2026-11-19, source: "FRED（semis_manifest.json）"}
-  - {item: "米10月PPI（最終需要）", value: "前月比 +0.3%・前年比 +6.5%／食品・エネルギー除く +0.3%・+5.0%", as_of: 2026-11-13, source: "BLS（dol.gov ppi_11132026.pdf）"}
-  - {item: "HY／CCC スプレッド", value: "3.52%／13.61%（11/19。1週 +0.32pt／+0.47pt）", as_of: 2026-11-19, source: "FRED（semis_manifest.json macro.latest）"}
-  - {item: "SKHY プレミアム／20日平均／理論値", value: "25.26% / 43.18% / US$82.68（原株1,113,000ウォン、USD/KRW 1,346.13）", as_of: 2026-11-20, source: "adr_premium.csv"}
+  - {item: "Samsung 3Q26営業利益／DS部門", value: "107.4兆ウォン／DS 営業利益106.5兆ウォン", as_of: 2026-10-29, source: "news.samsung.com"}
+  - {item: "SanDisk 売上／Datacenter売上／在庫日数", value: "US$11.031B / US$4.802B / 166.0日", as_of: 2026-10-29, source: "investor.sandisk.com／fundamentals_latest.json"}
+  - {item: "米国内のDC停止・新規制の州の数", value: "2（テキサス＝条件付き再開：TCEQ は審査再開、ERCOT は新しい大口負荷の受電承認を停止中〔25〜75MW未満は除外〕。NY州＝50MW以上の新規の裁量的許可を1年停止〔2026-07-14から〕）", as_of: 2026-11-19, source: "Gibson Dunn（2026-11-16〜19）／Al Jazeera（報道、要確認）"}
+  - {item: "ERCOT Batch Zero（条件付き分類）", value: "base load 204案件・66.4GW、studied load 158案件・127.9GW。検討期限 2027-04-09 は延長の見込み", as_of: 2026-11-19, source: "Gibson Dunn"}
+  - {item: "E3: 予想PER（コンセンサス）", value: "NVDA 次の12か月 約11.7倍（FactSet、11/10）・FY2028 EPS US$15.75（11/11）で 11/27 は約9.55倍（計算）。MU・TSM・ASML は未取得", as_of: 2026-11-11, source: "fourweekmba（FactSet・Nasdaq の転記）"}
+  - {item: "E3基準: 株価 NVDA／TSM／MU／ASML", value: "150.49／353.34／646.95／1,325.82（前回比 +19.88%／+10.87%／+8.82%／+4.71%）", as_of: 2026-11-27, source: "semis_snapshot.csv"}
+  - {item: "E3参考: MU 単純年率化PER（推定）", value: "約4.24倍（646.95 ÷ 152.60。前回3.90倍）", as_of: 2026-11-27, source: "計算（推定）"}
+  - {item: "X1基準: DFII10／DGS10／DGS2／DTWEXBGS", value: "2.73%（21本 +7bp〔基準10/26 2.66%〕・5本 −15bp・63本 +41bp）／4.85%／4.61%（11/25）／123.60（11/20、21本 +1.9%）", as_of: 2026-11-25, source: "FRED（semis_manifest.json）"}
+  - {item: "米10月PCE物価／コア", value: "前月比 +0.3%・前年比 +3.8%／コア 前月比 +0.3%・前年比 +3.3%", as_of: 2026-11-25, source: "BEA"}
+  - {item: "米10月PPI（最終需要）", value: "前月比 +0.3%・前年比 +6.5%／食品・エネルギー除く +0.3%・+5.0%", as_of: 2026-11-13, source: "BLS"}
+  - {item: "HY／CCC スプレッド", value: "3.77%／14.17%（11/26。1週 +0.25pt／+0.56pt、21本 +0.63／+1.10）", as_of: 2026-11-26, source: "FRED（semis_manifest.json macro.latest）"}
+  - {item: "SKHY プレミアム／20日平均／理論値", value: "43.51% / 42.69% / US$83.27（原株1,110,000ウォン、USD/KRW 1,333.0）", as_of: 2026-11-27, source: "adr_premium.csv／semis_manifest.json"}
 DC_TIMING:
   regulation_state: 条件付き再開
-  states_with_pause: "2（テキサス＝条件付き再開〔TCEQ は審査再開、ERCOT の大口接続は未確認〕、NY州＝50MW以上の新規の裁量的許可を1年停止〔2026-07-14から。新しい措置ではなく数え直し、法的形式は未確認〕）"
-  governor_action_scope: "未就任（次期知事の『法律ができるまで停止を続ける』は公約。既存許可・建設中・増設の対象は unclear。現知事の事務所は11/13〔推定〕に TCEQ へ ERCOT の情報収集の完了を通知）"
+  states_with_pause: "2（テキサス＝条件付き再開〔TCEQ は審査再開・11/16 に許可発行、ERCOT は新しい大口負荷の受電承認を停止中、25〜75MW未満は除外〕、NY州＝50MW以上の新規の裁量的許可を1年停止〔2026-07-14から〕。他州の今週の新規は未調査）"
+  governor_action_scope: "未就任（次期知事の『議会が新しい保護策を通すまで停止』は公約で、形式・範囲・期間は未定。現知事の指示〔9/21〕は新規許可が対象・固定の終了日なし、建設中・増設は unclear）"
   projects:
-    - {company: CoreWeave, project: "全社", stage: "課金中（一部、Vera Rubin NVL72 稼働＝NVIDIA 発表文）／建設中（一部）", energization_eta: 未確認, delivery_eta: 未確認, billing_eta: 未確認, shift_vs_prev: "比較不能（前回も未確認）", status_change: none}
-    - {company: Nebius, project: "全社", stage: "課金中（一部、Vera Rubin 稼働＝NVIDIA 発表文）", energization_eta: 未確認, delivery_eta: 未確認, billing_eta: 未確認, shift_vs_prev: "比較不能（前回は見出しのみ）", status_change: "none（縮小・中止の発表なし）"}
-    - {company: IREN, project: "Childress（TX）Horizon 1〜4（Microsoft 5年US$97億）", stage: "Horizon 1 引き渡し済／2〜4 建設中", energization_eta: 非開示, delivery_eta: "2026年中（8/13時点。11月更新は未確認）", billing_eta: 非開示, shift_vs_prev: "未確認（『iren texas data center microsoft delays』の見出しあり、日付不明・本文未取得）", status_change: "none（縮小・中止・解約の発表なし）"}
+    - {company: CoreWeave, project: "全社", stage: "課金中（一部、Vera Rubin NVL72 稼働）／建設中（一部）", energization_eta: 未確認, delivery_eta: 未確認, billing_eta: 未確認, shift_vs_prev: "比較不能（今週は調べず）", status_change: none}
+    - {company: Nebius, project: "全社", stage: "課金中（一部、Vera Rubin 稼働）", energization_eta: 未確認, delivery_eta: 未確認, billing_eta: 未確認, shift_vs_prev: "比較不能", status_change: "none（縮小・中止の発表なし）"}
+    - {company: IREN, project: "Childress（TX）Horizon 1〜4（Microsoft 5年US$97億）", stage: "Horizon 1 引き渡し済／2〜4 建設中", energization_eta: 非開示, delivery_eta: "2026年中（8/13時点。Q1 FY27 の更新は本文未取得）", billing_eta: 非開示, shift_vs_prev: "未確認（Q1 FY27 決算の見出しに『年率売上の目標が1月にずれた』『資金面からの設備投資の削減』。案件・月数は未取得で数えない）", status_change: "none（縮小・中止・解約の発表は確認せず）"}
     - {company: Galaxy Digital, project: "Helios（TX）第1フェーズ133MW（CoreWeave向け）", stage: "未確認（5月：最初のデータホール引き渡し済）", energization_eta: 非開示, delivery_eta: "2Q26末の目標（達成未確認）", billing_eta: 非開示, shift_vs_prev: 変化なし, status_change: none}
-    - {company: Oracle, project: "OCI（Abilene ほか）", stage: "課金中（一部、Vera Rubin NVL72・Vera CPU が一般提供＝NVIDIA 発表文）", energization_eta: 未確認, delivery_eta: 未確認, billing_eta: 未確認, shift_vs_prev: "変化なし（決算は12月）", status_change: none}
+    - {company: Oracle, project: "OCI（Abilene ほか）", stage: "課金中（一部、Vera Rubin NVL72・Vera CPU が一般提供）", energization_eta: 未確認, delivery_eta: 未確認, billing_eta: 未確認, shift_vs_prev: "変化なし（決算は12月中旬）", status_change: none}
   projects_delayed: "0（決算で確認したもの。前回も0。IREN は見出しのみで数えない）"
-  financing_signal: "同水準（追跡案件・ハイパースケーラーの今週の新規調達は確認されず、新しい増資・減損なし。FOMC 議事要旨の『AI関連債務の急増』『DC 建設資金の HY スプレッド拡大』と HY・CCC の拡大は市場の値で警戒の裏付け。Anthropic の上場 約US$813億は調達の成功）"
+  financing_signal: "同水準（追跡案件・ハイパースケーラーの今週の新規調達は確認されず、減損なし。IREN の『資金面からの設備投資の削減』は見出しのみ。HY・CCC の2週連続の拡大は市場の値で警戒の裏付け。Anthropic の公開価格割れ〔報道〕）"
   gpu_rental_signal: 未確認
-  passthrough_signal: "後ろ倒しの発言 0社（NVIDIA 11/17・AMAT・ONTO に記述なし。買い手側 MSFT 1社は A4 で使用）。影響地域の数は不明"
+  passthrough_signal: "後ろ倒しの発言 0社（ADI 11/24、NVIDIA・AMAT・ONTO は前回まで記述なし。買い手側 MSFT 1社は A4 で使用）。影響地域の数は不明"
   scenario_lean: 基本
 FLOWS_CREDIT:
-  fuel: {week_ending: 2026-11-06, remaining_pct: 80, level: "多い", hf_net_pctile: 0, discretionary_pctile: 3, systematic_pctile: 44, cta_next_week_usd_bn: -28, buyback_open_pct: 85, source_updated: "2026-11-10 10:05 JST"}
+  fuel: {week_ending: 2026-11-13, remaining_pct: 80, level: "多い", hf_net_pctile: 2, discretionary_pctile: 13, systematic_pctile: 37, cta_next_week_usd_bn: 28, buyback_open_pct: 82, source_updated: "2026-11-22 09:22 JST"}
   market_credit:
     - {issuer: CoreWeave, instrument: 5y_cds, value: "約1155", unit: bp, as_of: 2026-11-06, status: reported_unverified}
     - {issuer: CoreWeave, instrument: "bond_yield（2032年満期 9.625%）", value: "16超", unit: "%", as_of: "2026-11-06ごろ（日付なし）", status: reported_unverified}
     - {issuer: Oracle, instrument: 5y_cds, value: "約298", unit: bp, as_of: 2026-11-06, status: reported_unverified}
     - {issuer: NVIDIA, instrument: 5y_cds, value: "約139", unit: bp, as_of: 2026-11-06, status: reported_unverified}
-  hy_oas: {value_pct: 3.52, date: 2026-11-19, chg_21obs: 0.25}
-  ccc_oas: {value_pct: 13.61, date: 2026-11-19, chg_21obs: 0.54}
+  hy_oas: {value_pct: 3.77, date: 2026-11-26, chg_21obs: 0.63}
+  ccc_oas: {value_pct: 14.17, date: 2026-11-26, chg_21obs: 1.1}
   construction: {month: "2026-08", saar_usd_bn: 84.95, yoy_pct: 73}
 DOWNSTREAM_RS:
-  - {ticker: CRWV, close: 39.51, ret_1w: -25.64, rs_soxx_20: -4.57, rs_soxx_60: -24.94, dd_from_high: -71.37}
-  - {ticker: NBIS, close: 81.31, ret_1w: -29.83, rs_soxx_20: -26.19, rs_soxx_60: -33.24, dd_from_high: -71.64}
-  - {ticker: IREN, close: 11.82, ret_1w: -34.95, rs_soxx_20: -29.96, rs_soxx_60: -41.29, dd_from_high: -82.58}
-  - {ticker: GLXY, close: 11.22, ret_1w: -21.98, rs_soxx_20: -0.98, rs_soxx_60: -26.09, dd_from_high: -67.30}
-  - {ticker: VRT, close: 166.24, ret_1w: -17.73, rs_soxx_20: 8.13, rs_soxx_60: -8.72, dd_from_high: -55.81}
+  - {ticker: CRWV, close: 44.15, ret_1w: -1.69, rs_soxx_20: -5.59, rs_soxx_60: -25.66, dd_from_high: -68.0}
+  - {ticker: NBIS, close: 89.46, ret_1w: -7.70, rs_soxx_20: -26.26, rs_soxx_60: -36.38, dd_from_high: -68.80}
+  - {ticker: IREN, close: 13.61, ret_1w: -5.55, rs_soxx_20: -26.42, rs_soxx_60: -45.84, dd_from_high: -79.94}
+  - {ticker: GLXY, close: 11.69, ret_1w: -5.11, rs_soxx_20: -13.79, rs_soxx_60: -31.62, dd_from_high: -65.93}
+  - {ticker: VRT, close: 178.71, ret_1w: -3.39, rs_soxx_20: -5.60, rs_soxx_60: -10.59, dd_from_high: -52.50}
 SECTOR_HEALTH:
-  as_of: 2026-11-20
+  as_of: 2026-11-27
   health_version: "1.1"
   label: weak
-  label_prev: deteriorating
+  label_prev: weak
   official_label: weak
-  official_pct_stage: {"1": 13.2, "2": 2.6, "3": 7.9, "4": 76.3}
+  official_pct_stage: {"1": 13.2, "2": 0.0, "3": 7.9, "4": 78.9}
   soxx_stage: "4A(-)"
   smh_stage: "4A(-)"
-  breadth: {stage2: 2.4, stage4: 41.5, above20: 0.0, above50: 0.0, above150: 2.4, net: -39.1}
+  breadth: {stage2: 2.4, stage4: 53.7, above20: 7.1, above50: 7.1, above150: 2.4, net: -51.3}
   risk_count: 3
   risk_conditions_met: [label_weak_or_deteriorating, index_below_ma150, rs_vs_market_13w_negative]
-  washout_count: 3
-  washout_conditions_met: [above50_lt, above150_lt, index_vs_ma150_le]
+  washout_count: 2
+  washout_conditions_met: [above150_lt, index_vs_ma150_le]
   washout_last_all3: 2026-11-05
-  washout_phase: {code: retest_relit, ja: "二番底を試し中（3条件が再点灯）", anchor_date: 2026-11-05, anchor_close: 131.9, close_vs_anchor_pct: -6.44, retest_line: 131.9, breakdown_line: 118.71, low_since_anchor_pct: -6.44, relit_dates: [2026-11-20], recovery_confirmed_date: null}
-  strip: {ema21: {green: 0, of: 4, state: "主役ではない", since: 2026-10-12}, ema50: {green: 0, of: 4, state: "主役ではない", since: 2026-07-17, all_red_days: 30, all_green_days: 0}}
+  washout_phase: {code: rebound, ja: "反発中・二番底待ち", anchor_date: 2026-11-05, anchor_close: 131.9, close_vs_anchor_pct: 1.65, retest_line: 131.9, breakdown_line: 118.71, low_since_anchor_pct: -6.44, relit_dates: [2026-11-20, 2026-11-24, 2026-11-25], recovery_confirmed_date: null}
+  strip: {ema21: {green: 0, of: 4, state: "主役ではない", since: 2026-10-12}, ema50: {green: 0, of: 4, state: "主役ではない", since: 2026-07-17, all_red_days: 34, all_green_days: 0}}
   benches_missing: []
-  subsectors_strongest: "設計ソフト 0（50日線上0%）、アナログ・汎用 −15.4（0%）"
+  subsectors_strongest: "設計ソフト 0（50日線上0%）、メモリー −25（0%）。50日線上の銘柄があるのはアナログ・汎用だけ（−46.1、23.1%）"
   subsectors_weakest: "製造装置 −80.0（0%）、光・後工程 −75.0（0%）"
 FORECASTS:
-  open: [F2026-10-23-4, F2026-10-23-6, F2026-10-30-3, F2026-10-30-4, F2026-10-30-5, F2026-10-30-6, F2026-11-06-1, F2026-11-06-2, F2026-11-06-4, F2026-11-06-5, F2026-11-13-2, F2026-11-13-3, F2026-11-13-4, F2026-11-13-5]
-  new: [F2026-11-20-1, F2026-11-20-2, F2026-11-20-3, F2026-11-20-4]
-  resolved:
-    - "F2026-10-30-1: hit（早期判定。NVIDIA FQ3 DC US$107.6B、前年比 +110% ≥ +30%。決算リリース 2026-11-17、pending_xbrl。Brier 0.04）"
-    - "F2026-11-13-1: hit（早期判定。FQ4 ガイダンス中央値 US$130.0B ≥ FQ3 実績 US$115.8B（+12.3%、14週）。Brier 0.04）"
-    - "F2026-11-06-3: miss（早期判定。SOX 11/20 終値 8,408.59 < 9,011.14。理由は想定外イベント〔NVIDIA 決算後の AI 関連の売りの広がり、FOMC 議事要旨〕。Brier 0.09）"
+  open: [F2026-10-23-4, F2026-10-23-6, F2026-10-30-3, F2026-10-30-4, F2026-10-30-5, F2026-10-30-6, F2026-11-06-1, F2026-11-06-2, F2026-11-06-4, F2026-11-06-5, F2026-11-13-2, F2026-11-13-3, F2026-11-13-4, F2026-11-13-5, F2026-11-20-1, F2026-11-20-2, F2026-11-20-3, F2026-11-20-4]
+  new: [F2026-11-27-1, F2026-11-27-2, F2026-11-27-3, F2026-11-27-4]
+  resolved: []
+  notes: "今週の判定 0本（期限到来の open なし）。F2026-11-06-5 は TrendForce 11/19 の初出の1Q27 NAND 予測 −0〜5%（中央値 −2.5%）で条件を下回る見込み、metric_source の12月下旬〜1月上旬のリリースで確定。F2026-11-06-2 は公式発表の原文が未取得で保留"
 TRACK_RECORD: {hit: 6, miss: 2, void: 0, brier_avg: 0.116}
 REVERSAL_RISKS:
   triggered:
-    - "テック内部の崩れ・ブレイクが伸びない地合い（機械判定で発動: テック内部ラベル broad_decline（−20%以上 82.7%）かつ IX3 成立。FB1_stalling も真。前回も発動）"
-    - "DRAM ETFの相対強度低下・下落日出来高増（発動・強まる: 対SOXX 20本 −6.5%（前回 +0.5%）、60本 −11.8%、対SPY 60本 −30.8%、高値比 −58.7%。上昇/下落出来高比 0.97。流動性は未確認）"
-    - "金利・VIX急騰、対中規制、台湾・地政学（警戒→発動: VIX 35.89・1週 +86%・52週の終値高値、VIX÷VIX3M 1.16 の逆転。BIS 暫定最終規則〔11/16〕、中国の対抗措置の表明、Ga/Ge 期限 11/27。12月利上げ観測。10年は 4.912% へ低下）"
-    - "SKHYプレミアム急縮小、韓国市場・ウォン急変（警戒→発動: 25.26%〔前回 44.70%〕で別枠の30%割れ、一部は KRX との時差。ウォン 1週 +0.7% のウォン安）"
+    - "テック内部の崩れ・ブレイクが伸びない地合い（機械判定で発動: テック内部ラベル broad_decline（−20%以上 67.0%、前回82.7%）かつ IX3 成立。FB1_stalling も真。前回も発動）"
+    - "DRAM ETFの相対強度低下・下落日出来高増（発動: 対SOXX 20本 −5.7%・60本 −13.4%、対SPY 60本 −28.3%、高値比 −53.5%。上昇/下落出来高比 0.86。流動性は未確認）"
+    - "製品別価格の悪化（未発動→発動: NAND スポット2週 −20%、4Q26 契約予測 +15〜20%→+8〜13%、1Q27 −0〜5%、2Q27 から全製品下落〔TrendForce〕。DRAM は上げ幅の縮小で下落ではない）"
   warning:
-    - "AI CapEx鈍化・AI収益化失望（警戒・強まる: 会社の CapEx は不変、SemiAnalysis の推計引き下げ〔第三者、報道〕、NVIDIA 好決算でも1週 −22.9%、議事要旨『AI関連株の評価の低下』）"
-    - "在庫増・稼働率低下・commodity bit供給増（警戒・強まる: NVIDIA 棚卸資産 US$39.7B〔QoQ +25.8%〕、MU 131.4日、買い手側の在庫日数は前年比増〔要確認〕。減産なし）"
-    - "電力・冷却・パッケージ・ネットワーク制約（警戒: 新しい材料なし。売る側の後ろ倒し発言 0社）"
-    - "AI投資の資金調達・信用（警戒: 議事要旨が AI 関連債務の急増と DC 建設資金の HY スプレッド拡大に言及、HY 3.52%・CCC 13.61% へ拡大。悲観サイン4つの決算での確認 0、Anthropic 上場は調達の成功）"
-    - "米国内のDC規制・許認可（未発動→警戒: 停止・新規制の州が2つ目〔NY州、7月からの措置を今回確認＝数え直し〕。テキサスは条件付き再開、決算での後ろ倒し確認 0件）"
+    - "金利・VIX急騰、対中規制、台湾・地政学（発動→警戒: VIX 35.89→23.81、VIX÷VIX3M 1.16→1.00、実質金利21本 +7bp。対中は X3 −2 のまま〔BIS 規則、上海の DC の Blackwell 報道、議会の証言、Ga/Ge 期限の扱い不明〕。12月利上げは織り込み済み）"
+    - "SKHYプレミアム急縮小、韓国市場・ウォン急変（発動→警戒: プレミアム 25.26%→43.51% で30%割れ解消。KOSPI 11/25 に5,000割れ、SK hynix 原株同日 −11.05%）"
+    - "AI CapEx鈍化・AI収益化失望（警戒: 会社の CapEx は不変。中国の大手クラウドの2027年の調達削減と北米の引き上げが同時、Anthropic の公開価格割れ、HPE の AI 部門の利益率低下見通し〔報道〕）"
+    - "在庫増・稼働率低下・commodity bit供給増（警戒・強まる: NAND 2027年ビット +25〜30%・設備投資 +26.7%、ADI 棚卸資産 +25.8% YoY、NVIDIA +25.8% QoQ。減産なし）"
+    - "電力・冷却・パッケージ・ネットワーク制約（警戒: 売る側の後ろ倒し発言 0社。ERCOT の受電承認停止は規制の項目で数える）"
+    - "AI投資の資金調達・信用（警戒: HY 3.77%・CCC 14.17% へ2週続けて拡大、IREN の『資金面からの設備投資の削減』は見出しのみ。悲観サイン4つの決算での確認 0）"
+    - "米国内のDC規制・許認可（警戒: 停止・新規制の州 2〔テキサス＝条件付き再開、ERCOT の受電承認停止が判明、NY州〕。決算での後ろ倒し確認 0件。受電承認が年明けまで止まれば発動に近い）"
   not_triggered:
-    - "TSMC月次・先端ノード・装置受注の悪化（未発動: TSMC 10月 +59.7%、ASML『2027・28年の供給は需要を満たさない』、見通し引き下げ 0社）"
-    - "製品別価格の悪化（未発動: 新しい価格発表なし。『4Q の値上げ幅は縮小』は下落ではない）"
-    - "AI効率化による総ビット需要の下方修正（未発動: 新規なし、R7）"
-    - "光・CXL・HBF・SRAM採用と同時のHBM搭載量・発注下方修正（未発動: HBF は標準化段階、『HBM Downgrade』は題名のみ、R4）"
+    - "TSMC月次・先端ノード・装置受注の悪化（未発動: TSMC 10月 +59.7%、見通し引き下げ 0社）"
+    - "AI効率化による総ビット需要の下方修正（未発動: 新規なし、端末の搭載容量の削減は価格への対応、R7）"
+    - "光・CXL・HBF・SRAM採用と同時のHBM搭載量・発注下方修正（未発動: Kioxia GP は HBM の拡張で段階2、HBF は標準化段階、R4）"
 SCENARIOS:
-  "0-3M": {bull: 15, base: 45, bear: 40, base_case: "需要の一次データ（NVIDIA DC +110%・FQ4 +12%、TSMC +59.7%、ASML の供給不足の発言）は強いまま、12月 FOMC の利上げ観測と AI 投資の回収・資金繰りへの疑いで、二番底の過程で底割れの線（SOXX 118.71≒SOX 約8,090）近辺を試し、SOX 7,800〜9,800 のレンジ。4Q26 契約価格は予測どおり上昇、1Q27 予測は上昇継続・減速。DRAM ETF 28〜40、MU 500〜720"}
-  "3-12M": {bull: 20, base: 45, bear: 35, base_case: "契約価格の上昇率は1H27に鈍化、2Q27以降は横ばい〜小幅下落の製品も出るが HBM・eSSD はプラス。NAND は2H27に緩む。DC の稼働時期は州・案件ごとに明暗、半導体の売上計上は一部後ろ倒し。金利は利上げ後に高止まり。SOX 8,000〜12,000、メモリー株は低PERとの乖離が続く"}
-  "1-3Y": {bull: 30, base: 40, bear: 30, base_case: "2027年に調整を挟み2028年に次のサイクル。AI の構造需要でサイクルの振れ幅は従来より小さいが消えない。DC 規制は立地の分散（他州・海外）を進め、長期の需要総量は変えない"}
-TOP_UPSIDE_TRIGGER: "ファンダ: TrendForce 1Q27 DRAM 予測 +5%以上、Micron の FQ2 ガイダンス中央値が FQ1 実績以上（12月中旬）、12月 FOMC 通過後に10年実質金利の21本変化が±10bp以内、ERCOT・PUCT（12/10・12/17）で再開の道筋、IREN・NBIS の引き渡しが予定どおり → 価格: 第一段階＝SOX が終値で9,011.14（11/5終値）を回復して5営業日維持（いま+7.2%）と VIX 25割れ・VIX÷VIX3M 1未満、第二段階＝SOX が10,447（7月安値、いま+24.2%）を回復し S 45以上（いま7.5）、半導体 SMA50 上比率30%超（いま0%）"
-TOP_DOWNSIDE_TRIGGER: "成立中（11/20）：ファンダ条件『米国内のDC規制・許認可が警戒以上』（NY州の数え直し）＋価格条件『SOX が終値で9,011.14を割る』（8,408.59）。需要の一次データによる成立ではない。次の段: ファンダ条件＝KLA・ASML・AMAT のうち2社以上が WFE・2027年見通しを引き下げ（いま0社）、TrendForce の4Q26実績が conventional DRAM +10%未満／1Q27予測が0%以下、MSFT 以外の1社以上が2026/2027年CapExを引き下げ、反転リスク『米国内のDC規制・許認可』か『AI投資の資金調達・信用』が発動 ＋ 価格条件: SOXX が終値で底割れの線118.71を5営業日下回る（いま3.8%上）。別枠: SKHY プレミアム30%割れは成立中（25.26%）"
-THESIS_INVALIDATION: "未発動。条件（いずれか1つで発動しラベルを1段階下げる）: (1) 4社のうち2社以上が2026年CapExを引き下げ（現状は MSFT 1社・−5B・tier4）、(2) TrendForce の1Q27 conventional DRAM 契約価格予測がマイナス（未公表）、(3) TSMC が4Q26または2026年通年ガイダンスを引き下げ（なし）"
+  "0-3M": {bull: 15, base: 45, bear: 40, base_case: "需要の一次データ（TSMC 10月 +59.7%、4社 CapEx +107.6%）は強いまま、12月 FOMC の利上げとメモリーの値段の見通しの引き下げで二番底の過程の振れが続き、SOX 8,100〜10,200 のレンジ（下値は SOXX 118.71≒SOX 約8,130 を試しうる）。4Q26 の DRAM 契約価格は予測どおり上昇、1Q27 予測は DRAM 上昇・減速、NAND マイナス。DRAM ETF 30〜44、MU 540〜760"}
+  "3-12M": {bull: 15, base: 45, bear: 40, base_case: "DRAM の上げ幅は2027年を通じて縮み 2H27 に横ばい、NAND は1Q27 から下落し2Q27 から全製品で下落。HBM と北米の大手クラウド向けの需要は続く。DC の稼働時期は州・案件ごとに明暗。金利は利上げ後に高止まり。SOX 8,000〜11,500、メモリー株は低PERと利益の山の織り込みが続く"}
+  "1-3Y": {bull: 30, base: 40, bear: 30, base_case: "2027年後半〜2028年に価格の調整（TrendForce の基本は2028年に DRAM も下落）を挟み、その後に次のサイクル。AI の構造需要でサイクルの振れ幅は従来より小さいが消えない。DC 規制は立地の分散を進め、長期の需要総量は変えない"}
+TOP_UPSIDE_TRIGGER: "ファンダ: TrendForce 1Q27 DRAM 予測 +5%以上・2Q27 NAND 予測 0%以上、Micron の FQ2 ガイダンス中央値が FQ1 実績以上（12月中旬）、12月 FOMC 通過後も10年実質金利の21本変化が±10bp以内（いま +7bp）、ERCOT・PUCT（12/10・12/17）で受電承認の再開、IREN・NBIS の引き渡しが予定どおり → 価格: 第一段階＝SOX が終値で9,011.14（11/5終値）の上を5営業日維持（11/27 で1日目、いま+1.9%）と VIX 25割れ（成立、23.81）・VIX÷VIX3M 1未満（いま1.00）、第二段階＝SOX が10,447（7月安値、いま+13.7%）を回復し S 45以上（いま7.5）、半導体 SMA50 上比率30%超（いま7.1%）"
+TOP_DOWNSIDE_TRIGGER: "第1段は11/20に成立（ファンダ『米国内のDC規制・許認可が警戒以上』＋価格『SOX が終値で9,011.14を割る』）、11/27 は SOX 9,186.71 で上に戻った（11/24・25 は下）。次の段: ファンダ条件のうち『製品別価格の悪化が発動』（NAND、11/19）が成立。ほかのファンダ条件＝KLA・ASML・AMAT のうち2社以上が WFE・2027年見通しを引き下げ（いま0社）、TrendForce の1Q27 conventional DRAM 予測が0%以下、MSFT 以外の1社以上が2026/2027年CapExを引き下げ、反転リスク『米国内のDC規制・許認可』か『AI投資の資金調達・信用』が発動。価格条件＝SOXX が終値で底割れの線118.71を5営業日下回る（いま12.9%上、11/25 に日中で一度割った）は未成立"
+THESIS_INVALIDATION: "未発動。条件（いずれか1つで発動しラベルを1段階下げる）: (1) 4社のうち2社以上が2026年CapExを引き下げ（現状は MSFT 1社・−5B・tier4）、(2) TrendForce の1Q27 conventional DRAM 契約価格予測がマイナス（数値は非公開、方向は上げ幅の縮小）、(3) TSMC が4Q26または2026年通年ガイダンスを引き下げ（なし）"
 NEXT_CHECKPOINTS:
-  - "2026-11-24: ADI 決算（セクター内のリーダー、次の候補から外れたばかり）。11/24 までが二番底の時期の目安（過去の範囲。SOXX 118.71＝底割れの線）"
-  - "2026-11-26: 米感謝祭で休場、11/27 短縮取引"
-  - "2026-11-27: 中国の対米ガリウム・ゲルマニウム・アンチモン禁輸の停止措置の期限（X3）"
-  - "2026-11下旬（日付未確認）: IREN 決算・Nebius の資料（DC_TIMING.projects、IREN の遅れの見出しの確認、予測 F2026-11-06-1）"
-  - "2026-12-01ごろ: 米国勢調査局 建設支出（C30）10月分"
+  - "2026-11-30〜12-04（日付未確認）: 議会の半導体の輸出規制の証言（X3）"
+  - "2026-12-01: Marvell・Credo 決算（予測 F2026-11-27-2、設置場所・電力の発言）、米10月 JOLTS、建設支出 10月分（ごろ）"
+  - "2026-12上旬（日付未確認）: Nanya・Winbond 11月売上（予測 F2026-11-27-3、M1）、DRAM ETF の保有・NAV 乖離（12月の最初の実行）"
+  - "2026-12-03〜12-14: 4d の回復の確認の時期の目安（過去の範囲、50日線の上が50%超）"
   - "2026-12-08〜09: FOMC（予測 F2026-11-13-2、X1・X2）"
-  - "2026-12-10: ERCOT の DC 監査の最終結果の PUCT への提出（予測 F2026-11-06-2、A4）、米11月CPI（X2）、TSMC 11月月次（F1）"
-  - "2026-12-15: 米11月PPI"
+  - "2026-12-10: ERCOT の Batch Zero 検証・地域影響の審査の報告と DC 監査の結果（予測 F2026-11-06-2、A4）、米11月CPI（X2）、TSMC 11月月次（予測 F2026-11-27-1、F1）"
+  - "2026-12-15: 米11月PPI、予測 F2026-11-27-1・-3 の期限"
   - "2026-12中旬（日付未確認）: Micron FQ1 2027（予測 F2026-10-23-4・F2026-11-20-2）、Oracle FQ2、Broadcom FQ4"
-  - "2026-12-17: PUCT 会合（ERCOT の結果の議論、停止解除・再開条件）"
-  - "2026-12-31: 予測 F2026-10-30-4・F2026-11-13-3・F2026-11-06-1・F2026-11-06-2・F2026-11-20-1・F2026-11-20-3 の期限"
+  - "2026-12-17: PUCT 公開会合（ERCOT の報告、受電承認の再開の有無）"
+  - "2026-12-31: 予測 F2026-10-23-4・F2026-10-30-4・F2026-11-06-1・F2026-11-06-2・F2026-11-13-2・F2026-11-13-3・F2026-11-20-1・F2026-11-20-2・F2026-11-20-3 の期限"
   - "2026-12下旬〜2027-01上旬: TrendForce 1Q27 契約価格予測（M1、前提が崩れる条件(2)、予測 F2026-10-30-3・F2026-11-06-5）"
-  - "2027-01-03: 新議会、01-10: 米中の通商休戦の条件の期限（見出しのみ）、01-12: テキサス州議会開会、01-14: PUCT 会合、01-19: 新知事就任"
+  - "2027-01-03（日曜で変更の可能性）: 新議会、01-10: 米中の通商休戦の条件の期限（見出しのみ）、01-12: テキサス州議会開会、01-14: PUCT 会合、01-18ごろ: BIS 規則の意見募集の期限（11/19 公示なら）、01-19: 新知事就任"
   - "2027-01中旬: TSMC 4Q26 決算（予測 F2026-11-13-4）、ASML 4Q26"
-  - "2027-02下旬: NVIDIA FQ4 FY2027（予測 F2026-11-20-4）"
-  - "2027-05-07: 予測 F2026-11-13-5（SOXX 26週、起点 2026-11-05 の終値131.90）"
+  - "2027-02-17ごろ: BIS 規則の既存DCの許可取得の期限（11/19 発効なら）。2月下旬: NVIDIA FQ4 FY2027（予測 F2026-11-20-4）"
+  - "2027-03-12: テキサス州議会の法案提出の最終日。2027-04-09: Batch Zero の検討期限（延長の見込み）。2027-04-15: 予測 F2026-10-23-6・F2026-10-30-6・F2026-11-27-4 の期限"
+  - "2027-05-07: 予測 F2026-11-13-5（SOXX 26週、起点 2026-11-05 の終値131.90）。2027-05-31: テキサス州議会の会期末"
   - "2027-07-14ごろ: NY州の50MW以上の DC の新規許可の1年停止の期限"
-  - "市場: SOX 8,342.21（20・60日安値）／約8,090（SOXX 底割れの線の換算）／9,011.14（11/5終値）／9,800／10,202（SMA20）／10,447（7月安値）／10,921（SMA200）、SOXX 118.71（底割れの線）／122.20（安値）／131.90（二番底の線）／150.02（SMA20）／160.97（SMA200）、半導体 SMA50 上比率 0%→30%、VIX 25・VIX÷VIX3M 1.0、DRAM 33.32／43.53（SMA20）、MU 500／720、SKHY プレミアム30%、10年実質の21本変化 +10bp／+25bp、HY 3.52%"
+  - "市場: SOX 8,129（20・60日安値、日中）／約8,130（SOXX 底割れの線の換算）／8,408.59（11/20終値）／9,011.14（11/5終値）／9,733（SMA20）／9,800／10,447（7月安値）／10,940（SMA200）、SOXX 118.18（20・60日安値、日中）／118.71（底割れの線）／123.40（11/20終値）／131.90（二番底の線）／142.59（SMA20）／161.27（SMA200）、半導体 SMA50 上比率 7.1%→30%・50%、VIX 25・VIX÷VIX3M 1.0、DRAM 31.92／40.69（SMA20）、MU 540／760、SKHY プレミアム30%、10年実質の21本変化 +10bp／+25bp、HY 3.77%・CCC 14.17%"
 UNCONFIRMED_ITEMS:
-  - "要確認: NVIDIA FQ3 FY2027（売上 US$115.8B、DC US$107.6B、FQ4 ガイダンス US$130.0B、棚卸資産 US$39,724M。pending_xbrl）。説明会の発言（FY2028 売上成長 約70%→約75%、許可済み Hopper の対中出荷停止、議会の聞き取り）、FQ3 ガイダンスの前回値、コンセンサス比"
-  - "要確認: テキサス TCEQ の許可審査の再開（広報の声明を報道4本以上が引用）の公式発表の原文、ERCOT の大口接続の承認の再開の有無、PUCT 11/19 会合の結果、Batch Zero の新期限"
-  - "要確認: NY州の50MW以上の DC の新規の裁量的許可の1年停止（2026-07-14）の法的形式・発効日・既存許可と建設中の扱い、NY州知事室の一次"
-  - "要確認: IREN の Texas（Childress）案件の遅れの有無と月数（cryptobriefing の見出しのみ）"
-  - "要確認: SemiAnalysis の AI アクセラレーター投資推計の引き下げ（原文未確認）、Anthropic の上場（約 US$813億）と種類株 US$260億の購入合意（目論見書未確認）"
-  - "要確認: BIS 暫定最終規則の一次（BIS・連邦官報）と公示・発効の実日付、米中首脳会談（深圳）の結果、通商休戦の条件（1/10 期限）、ガリウム等の措置の延長の有無"
-  - "要確認: Applied Materials FQ4 FY2026（売上 US$10,409M、FQ1 ガイダンス US$11.1B。pending_xbrl）、KLA・Lam の WFE 見通し・中国比率（tier4）、ASML の受注・受注残・中国比率"
-  - "要確認: CoreWeave 3Q26（売上 US$3.66B、受注残 US$132.5B、総負債 約US$47B ほか。pending_xbrl）、Nebius 3Q26、案件別の受電・引き渡し・課金開始の日付"
-  - "要確認: Nanya 10月売上 NT$46,476M・Winbond NT$29,361M の MOPS 一次、Winbond 3Q 粗利率 70.6%（見出し）、台湾の報道のアナリストの見方"
-  - "要確認: Microsoft 暦年2026年CapEx 約US$170B・Alphabet 2026年 US$195〜205B の一次確認"
-  - "要確認: 在庫日数（Yahoo）: MU 131.4／SNDK 166.0／WDC 87.7／STX 85.7／AMD 169.1／QCOM 154.6／MCHP 183.7／SWKS 157.5。NVIDIA の推定在庫日数 約124日（計算）。SEC XBRL 照合（3週連続で到達できず）"
-  - "要確認: TSMC CoWoS 能力・値上げ・装置リードタイム（報道・アナリスト推定）、DC 建設支出 2026年8月 年率 US$849.5億（報道経由）と9月分の一次"
-  - "要確認: FRB 高官の発言（Waller 理事の0.5ポイント、Cook 理事）、フィラデルフィア連銀 6.3・ミシガン大学 51.5・新規失業保険申請 20.3万件（報道）、FRB の2027年会合日程の改定の中身"
-  - "今週の CoreWeave・Oracle・NVIDIA の5年CDS、CoreWeave 2032年債の利回り（2週続けて新しい値なし）"
-  - "TrendForce 等の11月の製品別契約価格（HBM、server DDR5、LPDDR、DDR4、NAND TLC/QLC、eSSD、client SSD、スポット）、4Q26実績、1Q27予測（4週続けて公開の新規なし）"
-  - "予想PER・EPS予想（NVDA・TSM・MU・ASML の今週時点）（E3 除外5回目）"
-  - "SK hynix 3Q26 の ASP・bit 出荷・HBM 比率・2027年 CapEX・在庫日数、Samsung 3Q26 売上YoY、Kioxia・Qualcomm の一次リリース"
-  - "CXL／CPO・光I/O／SRAM 中心設計の段階、KV キャッシュの退避（TrendForce の有料レポートの中身）、AI 効率化の本番採用、分解・BOM、GPU レンタル価格"
-  - "AMD の空売り公表（Hunterbrook）の主張の中身と会社の反応"
-  - "DRAM ETF（Roundhill）の NAV乖離・スプレッド・AUM・保有ウェイト（12月の最初の実行で確認）、fuel_latest.yaml の11/13週・11/20週の値"
+  - "要確認：NVIDIA FQ3 FY2027（売上 US$115.8B、DC US$107.6B、FQ4 ガイダンス US$130.0B、棚卸資産 US$39,724M。pending_xbrl）、CEO 復帰（11/23、8-K 未確認）、説明会の発言・コンセンサス比"
+  - "要確認：Analog Devices FQ4 FY2026（売上 US$4,373M、FQ1 ガイダンス US$4.4B±0.15B、棚卸資産 US$2,084M。8-K の値、pending_xbrl）、コンセンサス比"
+  - "要確認：NAND スポットの週次の価格（512Gb TLC wafer US$18.592→14.267、XenoSpectrum の転載）、BofA の1Q27 NAND 予測（スマホ・PC −5〜−10%、孫引き1本）"
+  - "要確認：TrendForce の1Q27 conventional DRAM・HBM・server DDR5・LPDDR・DDR4 の数値（有料資料）、企業向け SSD の4Q26 予測の改定の有無"
+  - "要確認：テキサス TCEQ の審査再開の公式発表の原文、ERCOT の新しい大口負荷の受電承認の停止の開始日と公式文書、PUCT 11/19 会合の結果、gov.texas.gov の『PUC And ERCOT Actions』の発表（日付未確認）"
+  - "要確認：NY州の50MW以上の DC の新規の裁量的許可の1年停止（2026-07-14）の法的形式・既存許可と建設中の扱い、他州の11/21〜11/27 の新しい措置"
+  - "要確認：IREN の Q1 FY27 決算の本文（Childress Horizon 2〜4 の受電・引き渡し・課金開始の時期、年率売上の目標時期のずれの月数、設備投資の削減額、資金調達の条件）"
+  - "要確認：HPE FQ4（売上 +50%、受注 +88%、2027年度のクラウド・AI 部門の営業利益率 約14%）、Anthropic の公開価格割れ（11/24）、7〜9月期 GDP 年率4.3%・新規失業保険申請 18.9万件、12月 FOMC の織り込み（報道）"
+  - "要確認：BIS 暫定最終規則の連邦官報の公示の実日付・文書番号、中国のガリウム・ゲルマニウム・アンチモン禁輸停止措置（11/27 期限）の延長・失効、上海の DC の Blackwell の件（Bloomberg 原文）、議会の輸出規制の証言の委員会と日付、301条の関税案の USTR の一次、米中首脳会談の結果、通商休戦の条件（1/10 期限）"
+  - "要確認：Nanya 10月売上 NT$46,476M・Winbond NT$29,361M の MOPS 一次、Kioxia の7〜9月 ASP（前期比20%台半ば）と2027年完売の一次"
+  - "要確認：Microsoft 暦年2026年CapEx 約US$170B・Alphabet 2026年 US$195〜205B の一次確認、SemiAnalysis の推計の原文、Applied Materials FQ4（pending_xbrl）、KLA・Lam の WFE 見通し・中国比率（tier4）、ASML の受注・中国比率"
+  - "要確認：CoreWeave 3Q26（売上 US$3.66B、受注残 US$132.5B、総負債 約US$47B。pending_xbrl）、Nebius 3Q26、案件別の受電・引き渡し・課金開始の日付"
+  - "要確認：在庫日数（Yahoo）: MU 131.4／SNDK 166.0／WDC 87.7／STX 85.7／AMD 169.1／QCOM 154.6／MCHP 183.7／SWKS 157.5。NVIDIA の推定在庫日数 約124日（計算）。SEC XBRL 照合（4週連続で到達できず）"
+  - "要確認：NVDA の予想PER 約11.7倍（FactSet、TradingKey 経由）・FY2028 EPS US$15.75（Nasdaq）、TSMC CoWoS 能力・値上げ（報道・推定）、DC 建設支出 2026年8月 年率 US$849.5億（報道経由）"
+  - "今週の CoreWeave・Oracle・NVIDIA の5年CDS、CoreWeave 2032年債の利回り（3週続けて新しい値なし）"
+  - "MU・TSM・ASML の予想PER・EPS予想（E3 除外6回目）"
+  - "SOXL の 11/27 終値（prices_failed）"
+  - "SK hynix 3Q26 の ASP・bit 出荷・HBM 比率・2027年 CapEX・在庫日数、Samsung 3Q26 売上YoY"
+  - "CXL／CPO・光I/O／SRAM 中心設計の段階、KV キャッシュの退避（有料レポートの中身）、Kioxia GP Series の今週の新規発表の有無、AI 効率化の本番採用、分解・BOM、GPU レンタル価格"
+  - "DRAM ETF（Roundhill）の NAV乖離・スプレッド・AUM・保有ウェイト（12月の最初の実行で確認）、fuel_latest.yaml の11/20週以降の値"
 PRIMARY_SOURCES:
-  - "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/default.aspx（NVIDIA FQ3 FY2027、2026-11-17）"
-  - "https://seekingalpha.com/pr/20684919（ASML 3Q26 プレスリリースの配信、2026-10-14）"
-  - "https://www.federalreserve.gov/monetarypolicy/fomcminutes20261028.htm（FOMC 議事要旨、2026-11-18）"
-  - "https://www.dol.gov/newsroom/economicdata/ppi_11132026.pdf（BLS 10月PPI、2026-11-13）"
-  - "https://www.steptoe.com/en/news-publications/international-compliance-blog/bis-targets-data-center-remote-access-and-imposes-steeper-requirements-on-foundries-and-osats.html（BIS 暫定最終規則の解説、tier2）"
-  - "https://www.texastribune.org/2026/11/17/tceq-environmental-data-center-permits-resume/（2026-11-17）／ https://www.fox7austin.com/news/texas-data-center-permits-moving-forward-again-after-abbott-pause（2026-11-18）"
-  - "https://www.aljazeera.com/amp/economy/2026/7/14/new-york-imposes-landmark-one-year-ban-on-large-data-centres（NY州、2026-07-14）"
-  - "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000796/tsm-revenue20261110.htm（TSMC Form 6-K、10月売上、2026-11-10）"
-  - "前回から継続: 4社の10-Q（3Q26）、SK hynix 6-K、Samsung 3Q26、SanDisk FQ1 FY2027、Micron FQ4 2026 8-K、ONTO 8-K、AMAT 決算リリース、IREN 8-K（2026-08-13）、HBF リリース（2026-08-03）、BLS 10月CPI"
-  - "二次（tier3〜4）: Invezz（SemiAnalysis・反トラスト訴訟）、Motley Fool・stocktitan（CNBC 要約：NVIDIA 説明会、Anthropic、FRB 高官、景況指標）、thenextweb（中国の反応）、technews・setn（台湾メモリー月次）、iconnect007（TrendForce 9/30）、coinpaper・fourweekmba（CDS）、HPPR・runtimewire（テキサス、判定時の検索結果の見出し）"
-  - "data ブランチ: run_status.json / semis_manifest.json / levels.json / resilience.json / semis_snapshot.csv / sector_health.json / history_health.csv / history_key.csv / history_levels.csv / rebound_quality.json / adr_premium.csv / macro_daily.csv / fundamentals_latest.json（us_as_of 2026-11-20、生成 2026-11-21 07:23 JST）"
-  - "米国株側: market-data data ブランチ signals.json（基準日 2026-11-20、ST-1.5b／engine 1.4b、転記のみ）、main ブランチ reports/flows/fuel_latest.yaml（11/6 週、更新 2026-11-10）"
+  - "https://www.trendforce.com/presscenter/news/20261119-13314.html（TrendForce、NAND 4Q26 改定・1Q27、2026-11-19）"
+  - "https://www.trendforce.com/presscenter/news/20261125-13321.html（TrendForce、2027年のメモリー売上、2026-11-25）"
+  - "https://www.trendforce.com/presscenter/news/20261127-13327.html（TrendForce、DRAM 2027〜2028年、2026-11-27）"
+  - "https://www.trendforce.com/news/2026/11/17/news-nand-spot-prices-reverse-course-sliding-20-in-2-weeks-amid-weak-consumer-demand-ymtc-competition/（TrendForce News、2026-11-17）"
+  - "https://www.sec.gov/Archives/edgar/data/6281/000000628126000087/adiq426exhibit991.htm（ADI Form 8-K Ex.99.1、2026-11-24）"
+  - "https://www.bea.gov/news/2026/personal-income-and-outlays-october-2026（BEA 10月PCE、2026-11-25）"
+  - "https://www.gibsondunn.com/texas-data-center-critical-dates-and-procedures-following-the-2026-elections/（Gibson Dunn、テキサス、2026-11-16〜19、tier2）"
+  - "https://www.morganlewis.com/pubs/2026/11/commerce-targets-remote-access-to-advanced-semiconductors-in-new-interim-final-rule（Morgan Lewis、BIS 暫定最終規則、2026-11-18、tier2）"
+  - "https://www.kioxia.com/en-jp/business/news/2026/20260317-1.html（Kioxia GP Series、2026-03-17）"
+  - "前回から継続: NVIDIA FQ3 FY2027 決算リリース、4社の10-Q（3Q26）、TSMC Form 6-K（10月売上）、ASML 3Q26 リリース、SK hynix 6-K、Samsung 3Q26、SanDisk FQ1 FY2027、Micron FQ4 2026 8-K、ONTO 8-K、AMAT 決算リリース、IREN 8-K（2026-08-13）、HBF リリース（2026-08-03）、BLS 10月PPI、FOMC 議事要旨（11/18）"
+  - "二次（tier3〜4）: xenospectrum（TrendForce の週次の転載・BofA）、fourweekmba（NVDA PER）、Yahoo Finance・Vista Partners・Motley Fool・StockTitan（日次11/23〜11/27 の転記）、finviz・cryptobriefing（IREN の見出し）、sedaily・Korea JoongAng Daily（KOSPI の見出し）、coinpaper（CDS、前回まで）"
+  - "data ブランチ: run_status.json / semis_manifest.json / levels.json / resilience.json / semis_snapshot.csv / sector_health.json / history_health.csv / history_key.csv / history_levels.csv / rebound_quality.json / adr_premium.csv / macro_daily.csv / fundamentals_latest.json（us_as_of 2026-11-27、生成 2026-11-28 07:23 JST）"
+  - "米国株側: market-data data ブランチ signals.json（基準日 2026-11-27、ST-1.5b／engine 1.4b、転記のみ）、main ブランチ reports/flows/fuel_latest.yaml（11/13 週、更新 2026-11-22）"
